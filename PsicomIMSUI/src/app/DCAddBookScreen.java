@@ -1,5 +1,6 @@
 package app;
 import java.awt.Color;
+import java.util.HashMap;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -204,9 +205,29 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addButtonActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	HashMap map;
+    	
+        try{
+            String title = titleField.getText();
+            String itemCode = itemCodeField.getText();
+            String price = priceField.getText();
+            String author = authorField.getText();
+            String releaseDate = releaseDateChooser.getDateFormatString();
+            
+
+            try{
+                map = doCommand("addUser", username, password, password2);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private void authorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorFieldActionPerformed
         // TODO add your handling code here:
