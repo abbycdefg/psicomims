@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import app.components.Admin;
 import app.components.Inventory;
 import app.entity.Book;
@@ -39,7 +40,7 @@ class URLHandler extends AbstractHandler {
 	private Inventory in;
 	
 
-
+	
 	public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
 			throws IOException, ServletException {
 
@@ -53,7 +54,25 @@ class URLHandler extends AbstractHandler {
 		if (request.getMethod().equals("POST"))
 		{
 			try {
-				if (target.equalsIgnoreCase("/addUser")) {
+				
+				
+				if (target.equalsIgnoreCase("/adminLogin")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String username = map.get("username");
+					String password = map.get("password");
+
+					
+					if(ad.checkUser(ad.getUsername(username)) && password.equals(ad.getPassword(username))){
+						response.getWriter().println("Success!");
+
+					}
+					else{
+
+						response.getWriter().println("Invalid request.");
+					}	
+				}
+				else if (target.equalsIgnoreCase("/addUser")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
 					String username = map.get("username");
@@ -64,13 +83,30 @@ class URLHandler extends AbstractHandler {
 					if(!ad.checkUser(username) && password.equals(password2)){
 							ad.addUser(username, password);
 							response.getWriter().println("You have succesfully registered " + username + ".");
-}
+							JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
 					else{
 						response.getWriter().println("Invalid request.");
 					}
 				}
 				else if (target.equalsIgnoreCase("/updatePassword")) {
-					updatePassword(request, response);
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String username = map.get("username");
+					String oldPassword = map.get("oldPassword");
+					String newPassword = map.get("newPassword");
+					String newPassword2 = map.get("newPassword2");
+					
+					if(ad.checkUser(ad.getUsername(username)) && oldPassword.equals(ad.getPassword(username)) && newPassword.equals(newPassword2)){
+						ad.updatePassword(ad.getUsername(username), newPassword);
+						response.getWriter().println("You have succesfully updated the password to " + newPassword + ".");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+
+					}
+					else{
+
+						response.getWriter().println("Invalid request.");
+					}	
 		
 				}
 				else if (target.equalsIgnoreCase("/addBook")) {
@@ -111,27 +147,7 @@ class URLHandler extends AbstractHandler {
 		((Request) request).setHandled(true);
 	}
 	
-	@Transactional
-	private void updatePassword(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-			HashMap<String, String> map = convertJsonToCommand(request);
 
-			String username = map.get("username");
-			String oldPassword = map.get("oldPassword");
-			String newPassword = map.get("newPassword");
-			String newPassword2 = map.get("newPassword2");
-			
-			if(ad.checkUser(ad.getUsername(username)) && oldPassword.equals(ad.getPassword(username)) && newPassword.equals(newPassword2)){
-				ad.updatePassword(ad.getUsername(username), newPassword);
-				response.getWriter().println("You have succesfully updated the password to " + newPassword + ".");
-				JOptionPane.showMessageDialog(null, "Success!", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-			else{
-
-				response.getWriter().println("Invalid request.");
-			}		
-				
-	}
 
 	public static String readStreamAsString(InputStream is) throws IOException {
 		InputStreamReader isr = new InputStreamReader(is);
@@ -165,5 +181,7 @@ class URLHandler extends AbstractHandler {
 			throw new RuntimeException(e);
 		}
 	}
+	
+
 }
 
