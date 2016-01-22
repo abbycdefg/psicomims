@@ -98,7 +98,7 @@ class URLHandler extends AbstractHandler {
 			if(ad.checkUser(ad.getUsername(username)) && oldPassword.equals(ad.getPassword(username)) && newPassword.equals(newPassword2)){
 				ad.updatePassword(ad.getUsername(username), newPassword);
 				response.getWriter().println("You have succesfully updated the password to " + newPassword + ".");
-				JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Success!", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else{
 
