@@ -195,16 +195,15 @@ public class ADLogInScreen extends javax.swing.JFrame {
 
             try{
                 map = doCommand("adminLogin", username, password);
-                String msg = (String) map.get("message");
-                System.out.println("taeeee" + msg);
-                if(msg.equals("Success!")){
-                	System.out.println("tae2" +msg);
+                System.out.println(reply);
+                if(reply.equals("Success!")){
+                	System.out.println("tae2");
         	        this.dispose();
         	        ADHomeScreen a = new ADHomeScreen();
         	        a.setVisible(true);
                 }
                 else{
-                	System.out.println("tae"+msg);
+                	System.out.println("tae");
                 }
             }
             catch (Exception e){
@@ -276,6 +275,8 @@ public class ADLogInScreen extends javax.swing.JFrame {
     private javax.swing.JTextField usernameField;
     // End of variables declaration//GEN-END:variables
     
+    private String reply;
+    
     private HashMap doCommand(String command, String username, String password) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
@@ -292,7 +293,7 @@ public class ADLogInScreen extends javax.swing.JFrame {
         
         
         // SEND TO SERVICE
-        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        reply = NetUtil.postJsonDataToUrl(url1, json1);
         System.out.println("REPLY = "+reply);
         
         

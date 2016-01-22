@@ -57,7 +57,7 @@ class URLHandler extends AbstractHandler {
 					String password = map.get("password");
 
 					
-					if(ad.checkUser(ad.getUsername(username)) && password.equals(ad.getPassword(username))){
+					if(username != null && password != null && ad.checkUser(ad.getUsername(username)) && password.equals(ad.getPassword(username))){
 						response.getWriter().println("Success!");
 					}
 					else{

@@ -204,7 +204,7 @@ public class ADLogInScreen extends javax.swing.JFrame {
         	        a.setVisible(true);
                 }
                 else{
-                	System.out.println("tae"+msg);
+                	System.out.println("tae"+,sg);
                 }
             }
             catch (Exception e){

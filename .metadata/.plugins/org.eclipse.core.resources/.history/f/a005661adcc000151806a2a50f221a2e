@@ -197,7 +197,7 @@ public class ADLogInScreen extends javax.swing.JFrame {
                 map = doCommand("adminLogin", username, password);
                 String msg = (String) map.get("message");
                 System.out.println("taeeee" + msg);
-                if(msg.equals("Success!")){
+                if(msg.equals("")){
                 	System.out.println("tae2" +msg);
         	        this.dispose();
         	        ADHomeScreen a = new ADHomeScreen();

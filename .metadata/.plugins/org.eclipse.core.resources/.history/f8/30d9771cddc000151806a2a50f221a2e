@@ -61,7 +61,6 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("Success!");
 					}
 					else{
-
 						response.getWriter().println("Invalid request.");
 					}	
 				}
