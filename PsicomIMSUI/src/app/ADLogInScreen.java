@@ -6,9 +6,13 @@ package app;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.*;
+
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 public class ADLogInScreen extends javax.swing.JFrame {
 
     /**
@@ -182,7 +186,39 @@ public class ADLogInScreen extends javax.swing.JFrame {
     }
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+    	HashMap map;
+    	String msg = "";
+    	
+        try{
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+            
 
+            try{
+                map = doCommand("adminLogin", username, password);
+                msg = (String) map.get("message");
+                System.out.println(msg);
+                if(msg.equals("Success!")){
+                	System.out.println("tae2" +msg);
+        	        this.dispose();
+        	        ADHomeScreen a = new ADHomeScreen();
+        	        a.setVisible(true);
+                }
+                else{
+                	System.out.println("tae");
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        
+        
+    	
     }
 
     private void forgotPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotPasswordButtonActionPerformed
@@ -240,4 +276,46 @@ public class ADLogInScreen extends javax.swing.JFrame {
     private javax.swing.JTextField passwordField;
     private javax.swing.JTextField usernameField;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String username, String password) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("username", username);
+        map.put("password", password);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
+    }
 }
