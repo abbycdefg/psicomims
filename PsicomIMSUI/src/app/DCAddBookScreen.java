@@ -2,6 +2,8 @@ package app;
 import java.awt.Color;
 import java.util.HashMap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -214,10 +216,11 @@ public class DCAddBookScreen extends javax.swing.JFrame {
             String price = priceField.getText();
             String author = authorField.getText();
             String releaseDate = releaseDateChooser.getDateFormatString();
+          
             
 
             try{
-                map = doCommand("addUser", username, password, password2);
+                map = doCommand("addBook", title, itemCode, price, author, releaseDate);
                 
             }
             catch (Exception e){
@@ -295,4 +298,43 @@ public class DCAddBookScreen extends javax.swing.JFrame {
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate ) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("title", title);
+        map.put("itemCode", itemCode);
+        map.put("price", price);
+        map.put("author", author);
+        map.put("releaseDate", releaseDate);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
 }

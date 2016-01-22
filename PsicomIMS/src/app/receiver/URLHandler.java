@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import app.components.Admin;
+import app.components.Inventory;
+import app.entity.Book;
 import app.entity.User;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -32,6 +34,10 @@ class URLHandler extends AbstractHandler {
 	
 	@Autowired
 	private Admin ad;
+	
+	@Autowired
+	private Inventory in;
+	
 
 
 	public void handle(String target, HttpServletRequest request, HttpServletResponse response, int dispatch)
@@ -65,6 +71,26 @@ class URLHandler extends AbstractHandler {
 				}
 				else if (target.equalsIgnoreCase("/updatePassword")) {
 					updatePassword(request, response);
+		
+				}
+				else if (target.equalsIgnoreCase("/addBook")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String title = map.get("title");
+					String itemCode = map.get("itemCode");
+					String price = map.get("price");
+					String author = map.get("author");
+					String releaseDate = map.get("releaseDate");
+					double priceDb = Double.parseDouble(price);
+
+					
+					if(!in.checkItemCode(itemCode)){
+							in.addBook(title, itemCode, priceDb, author, releaseDate);
+							response.getWriter().println("You have succesfully added " + title + ".");
+}
+					else{
+						response.getWriter().println("Invalid request.");
+					}
 		
 				}
 				else {
