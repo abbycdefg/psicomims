@@ -11,7 +11,6 @@ import java.util.Map;
 
 import javax.swing.*;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 public class ADLogInScreen extends javax.swing.JFrame {
 
@@ -134,7 +133,7 @@ public class ADLogInScreen extends javax.swing.JFrame {
 
         copyrightLabel.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel.setForeground(new java.awt.Color(255, 255, 255));
-        copyrightLabel.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/VS1.1.png"))); // NOI18N
 
@@ -196,15 +195,14 @@ public class ADLogInScreen extends javax.swing.JFrame {
             try{
                 map = doCommand("adminLogin", username, password);
                 String msg = (String) map.get("message");
-                System.out.println("taeeee" + msg);
-                if(msg.equals("Success!")){
-                	System.out.println("tae2" +msg);
-        	        this.dispose();
+                
+                if(msg.trim().equals("Success!")){
+                	this.dispose();
         	        ADHomeScreen a = new ADHomeScreen();
         	        a.setVisible(true);
                 }
                 else{
-                	System.out.println("tae"+msg);
+                	JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             catch (Exception e){
