@@ -4,13 +4,27 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.awt.print.Book;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import javax.swing.table.DefaultTableModel;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -147,6 +161,9 @@ public class DCBooksTab extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        
+        this.displayAll();
+        
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -399,21 +416,51 @@ public class DCBooksTab extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_signOutButtonActionPerformed
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addButtonActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
+       	this.dispose();
+    	DCAddBookScreen a = new DCAddBookScreen();
+    	a.setVisible(true);
+    }
 
-    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_viewButtonActionPerformed
+    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+	    	this.getData();
+	    	this.dispose();
+	    	DCViewBookScreen a = new DCViewBookScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+    		int row = booksTable.getSelectedRow();
+    		String title = booksTable.getValueAt(row, 0).toString();
+    		String itemCode = booksTable.getValueAt(row, 1).toString();
+    		String price = booksTable.getValueAt(row, 2).toString();
+    		String author = booksTable.getValueAt(row, 3).toString();
+    		String releaseDate = booksTable.getValueAt(row, 4).toString();
+    		
+	    	this.dispose();
+	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, row);
+	    	a.setVisible(true); 
+    		}
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+    		int row = booksTable.getSelectedRow();
+    		this.dispose();
+    		DCDeleteBookScreen a = new DCDeleteBookScreen(row);
+	    	a.setVisible(true); 
+    		}
+    }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
@@ -500,7 +547,7 @@ public class DCBooksTab extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
-    private javax.swing.JTable booksTable;
+    private static javax.swing.JTable booksTable;
     private javax.swing.JLabel copyrightLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
@@ -516,4 +563,67 @@ public class DCBooksTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+    
+    public static String getData(){
+    	int selectedRowIndex = booksTable.getSelectedRow();
+    	int selectedColumnIndex = booksTable.getSelectedColumn();
+    	String selectedCell = (String) booksTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    }
+    
+    
+    public void displayAll(){
+    	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "AUTHOR", "RELEASE DATE"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String title = "";
+        String itemCode = "";
+        String price = "";
+        String author = "";
+        String releaseDate = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM book");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                title = rs.getString("title");
+                itemCode = rs.getString("item_code");
+                price = rs.getString("price");
+                author = rs.getString("author");
+                releaseDate = rs.getString("release_date");
+                model.addRow(new Object[]{title, itemCode, price, author, releaseDate});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        booksTable = new JTable(model);
+        booksTable.setModel(model);
+        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+
 }
+

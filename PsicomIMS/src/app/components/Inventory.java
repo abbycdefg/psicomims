@@ -40,5 +40,24 @@ public class Inventory {
     	return b.getId()!= null;    	
     }
     
+    public boolean editBook(String title, String itemCode, double price, String author, String releaseDate, Long id) {
+    	Book b = bookDao.findById(id+1);
+    	b.setTitle(title);
+    	b.setItemCode(itemCode);
+    	b.setPrice(price);
+    	b.setAuthor(author);
+    	b.setReleaseDate(releaseDate);
+    	b = bookDao.save(b);
+    	
+    	return b.getId()!= null;    	
+    }
+    
+    public boolean deleteBook(Long id) {
+    	Book b = bookDao.findById(id);
+    	bookDao.delete(b);
+    	
+    	return b.getId()!= null;    	
+    }
+    
 
 }

@@ -9,4 +9,5 @@ import app.entity.Book;
 public interface BookRepository extends JpaRepository<Book, Long> 
 {
 	public Book findByItemCode(String itemCode);
+	public Book findById(Long id);
 }

@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
+
 import app.components.Admin;
 import app.components.Inventory;
 import app.entity.Book;
@@ -129,6 +131,44 @@ class URLHandler extends AbstractHandler {
 					}
 		
 				}
+				else if (target.equalsIgnoreCase("/editBook")) {
+					
+						try {
+							HashMap<String, String> map = convertJsonToCommand(request);
+
+							String title = map.get("title");
+							String itemCode = map.get("itemCode");
+							String price = map.get("price");
+							String author = map.get("author");
+							String releaseDate = map.get("releaseDate");
+							String rowId = map.get("id");
+							double priceDb = Double.parseDouble(price);
+							Long id = Long.parseLong(rowId);
+							
+							in.editBook(title, itemCode, priceDb, author, releaseDate, id);
+							response.getWriter().println("You have succesfully edited " + title + ".");
+						} catch (Exception e) {
+							response.getWriter().println("Invalid.");
+						}
+
+				}
+				else if (target.equalsIgnoreCase("/deleteBook")) {
+					
+					try {
+						HashMap<String, String> map = convertJsonToCommand(request);
+
+
+						String rowId = map.get("id");
+						Long id = Long.parseLong(rowId);
+						
+						in.deleteBook(id);
+						response.getWriter().println("You have succesfully deleted a book.");
+					} catch (Exception e) {
+						response.getWriter().println("Invalid.");
+					}
+
+			}
+				
 				else {
 					// Invalid request
 					response.getWriter().println("Unsupported POST request: " + target);

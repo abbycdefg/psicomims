@@ -203,9 +203,11 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+      	this.dispose();
+    	DCBooksTab a = new DCBooksTab();
+    	a.setVisible(true);
+    }
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	HashMap map;
@@ -221,6 +223,9 @@ public class DCAddBookScreen extends javax.swing.JFrame {
 
             try{
                 map = doCommand("addBook", title, itemCode, price, author, releaseDate);
+            	this.dispose();
+            	DCBooksTab a = new DCBooksTab();
+            	a.setVisible(true);
                 
             }
             catch (Exception e){
