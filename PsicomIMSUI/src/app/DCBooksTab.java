@@ -424,14 +424,13 @@ public class DCBooksTab extends javax.swing.JFrame {
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
-	    	this.getData();
-	    	this.dispose();
-	    	DCViewBookScreen a = new DCViewBookScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-    	}
+    		int row = booksTable.getSelectedRow();
+    		String itemCode = booksTable.getValueAt(row, 1).toString();
+    		
+    		this.dispose();
+    		DCDeleteBookScreen a = new DCDeleteBookScreen(itemCode);
+	    	a.setVisible(true); 
+    		}
     }
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
