@@ -1,5 +1,8 @@
 package app;
 import java.awt.Color;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,12 +14,26 @@ import java.awt.Color;
  *
  * @author Abby
  */
-public class DCEditBookScreen extends javax.swing.JFrame {
 
+public class DCEditBookScreen extends javax.swing.JFrame {
+	private static int rowId;
     /**
      * Creates new form DCEditBookScreen
      */
-    public DCEditBookScreen() {
+	public DCEditBookScreen() {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);       
+    }
+	
+    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDate, int rowId) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -27,6 +44,13 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        titleField.setText(title);
+        itemCodeField.setText(itemCode);
+        priceField.setText(price);
+        authorField.setText(author);
+        releaseDateChooser.setDateFormatString(releaseDate);
+        rowId = this.rowId;
     }
 
     /**
@@ -208,9 +232,32 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	HashMap map;
+    	
+        try{
+            String title = titleField.getText();
+            String itemCode = itemCodeField.getText();
+            String price = priceField.getText();
+            String author = authorField.getText();
+            String releaseDate = releaseDateChooser.getDateFormatString();           
+
+            try{
+            	String idString = String.valueOf(rowId);
+                map = doCommand("editBook", title, itemCode, price, author, releaseDate, idString);
+            	this.dispose();
+            	DCBooksTab a = new DCBooksTab();
+            	a.setVisible(true);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private void authorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorFieldActionPerformed
         // TODO add your handling code here:
@@ -274,4 +321,44 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate, String id ) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        
+       
+        map.put("title", title);
+        map.put("itemCode", itemCode);
+        map.put("price", price);
+        map.put("author", author);
+        map.put("releaseDate", releaseDate);
+        map.put("id", id);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
 }

@@ -1,5 +1,8 @@
 package app;
 import java.awt.Color;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,7 +15,7 @@ import java.awt.Color;
  * @author Abby
  */
 public class DCDeleteBookScreen extends javax.swing.JFrame {
-
+	private static int rowId;
     /**
      * Creates new form DCDeleteBookScreen
      */
@@ -27,6 +30,20 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+    }
+    
+    public DCDeleteBookScreen(int row) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+    
+        Color y = new Color(205, 0, 69);
+        yesButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        rowId = row;
     }
 
     /**
@@ -115,13 +132,27 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void yesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_yesButtonActionPerformed
+    private void yesButtonActionPerformed(java.awt.event.ActionEvent evt) {
+      HashMap map;
+    	       
+            try{
+            	String idString = String.valueOf(rowId);
+                map = doCommand("deleteBook", idString);
+            	this.dispose();
+            	DCBooksTab a = new DCBooksTab();
+            	a.setVisible(true);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+    	DCBooksTab a = new DCBooksTab();
+    	a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -164,4 +195,40 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
     private javax.swing.JLabel deleteLabel;
     private javax.swing.JButton yesButton;
     // End of variables declaration//GEN-END:variables
+    private HashMap doCommand(String command, String id ) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        
+      
+        map.put("id", id);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+    
 }
