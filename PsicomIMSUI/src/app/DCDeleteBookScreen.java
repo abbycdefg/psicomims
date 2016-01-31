@@ -15,8 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Abby
  */
 public class DCDeleteBookScreen extends javax.swing.JFrame {
-	private static int rowId;
-    /**
+    private static String itemCode;
+	/**
      * Creates new form DCDeleteBookScreen
      */
     public DCDeleteBookScreen() {
@@ -32,7 +32,7 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCDeleteBookScreen(int row) {
+    public DCDeleteBookScreen(String itemCode1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -43,7 +43,7 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
-        rowId = row;
+        itemCode = itemCode1;
     }
 
     /**
@@ -136,8 +136,7 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
       HashMap map;
     	       
             try{
-            	String idString = String.valueOf(rowId);
-                map = doCommand("deleteBook", idString);
+                map = doCommand("deleteBook", itemCode);
             	this.dispose();
             	DCBooksTab a = new DCBooksTab();
             	a.setVisible(true);
@@ -195,14 +194,14 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
     private javax.swing.JLabel deleteLabel;
     private javax.swing.JButton yesButton;
     // End of variables declaration//GEN-END:variables
-    private HashMap doCommand(String command, String id ) throws Exception
+    private HashMap doCommand(String command, String itemCode ) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
         HashMap<String, Object> map = new HashMap<String, Object>();
         
       
-        map.put("id", id);
+        map.put("itemCode", itemCode);
 
         
         // CONVERT JAVA DATA TO JSON

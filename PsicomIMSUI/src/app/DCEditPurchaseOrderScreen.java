@@ -1,5 +1,8 @@
-package app;
+
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,6 +30,22 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        editBooksButton.setOpaque(false);
+        editBooksButton.setContentAreaFilled(false);
+        editBooksButton.setBorderPainted(false);
+        editBooksButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = editBooksButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                editBooksButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                editBooksButton.setFont(originalFont);
+            }
+        });
     }
 
     /**
@@ -49,18 +68,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         outletLabel = new javax.swing.JLabel();
         editButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        bookDetailsPanel = new javax.swing.JPanel();
-        bookDetailsLabel = new javax.swing.JLabel();
-        titleLabel = new javax.swing.JLabel();
-        titleField = new javax.swing.JTextField();
-        quantityLabel = new javax.swing.JLabel();
-        quantityField = new javax.swing.JTextField();
-        orderLabel = new javax.swing.JLabel();
-        orderField = new javax.swing.JTextField();
-        itemCodeLabel1 = new javax.swing.JLabel();
-        itemCodeField = new javax.swing.JTextField();
-        deliveryDateLabel = new javax.swing.JLabel();
-        deliveryDateChooser = new com.toedter.calendar.JDateChooser();
+        editBooksButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Edit Purchase Order");
@@ -131,127 +139,17 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
             }
         });
 
-        bookDetailsPanel.setBackground(new java.awt.Color(88, 101, 113));
-
-        bookDetailsLabel.setFont(new java.awt.Font("Calibri", 2, 18)); // NOI18N
-        bookDetailsLabel.setForeground(new java.awt.Color(255, 255, 255));
-        bookDetailsLabel.setText("Book Details");
-
-        titleLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        titleLabel.setForeground(new java.awt.Color(255, 255, 255));
-        titleLabel.setText("Title");
-
-        titleField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        titleField.addActionListener(new java.awt.event.ActionListener() {
+        editBooksButton.setBackground(new java.awt.Color(255, 255, 255));
+        editBooksButton.setFont(new java.awt.Font("Calibri", 2, 18)); // NOI18N
+        editBooksButton.setForeground(new java.awt.Color(255, 255, 255));
+        editBooksButton.setText("Click here to edit books");
+        editBooksButton.setBorder(null);
+        editBooksButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editBooksButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                titleFieldActionPerformed(evt);
+                editBooksButtonActionPerformed(evt);
             }
         });
-
-        quantityLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        quantityLabel.setForeground(new java.awt.Color(255, 255, 255));
-        quantityLabel.setText("Quantity");
-
-        quantityField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        quantityField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quantityFieldActionPerformed(evt);
-            }
-        });
-
-        orderLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        orderLabel.setForeground(new java.awt.Color(255, 255, 255));
-        orderLabel.setText("Order");
-
-        orderField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        orderField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                orderFieldActionPerformed(evt);
-            }
-        });
-
-        itemCodeLabel1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        itemCodeLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        itemCodeLabel1.setText("Item Code");
-
-        itemCodeField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        itemCodeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemCodeFieldActionPerformed(evt);
-            }
-        });
-
-        deliveryDateLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        deliveryDateLabel.setForeground(new java.awt.Color(255, 255, 255));
-        deliveryDateLabel.setText("Delivery Date");
-
-        javax.swing.GroupLayout bookDetailsPanelLayout = new javax.swing.GroupLayout(bookDetailsPanel);
-        bookDetailsPanel.setLayout(bookDetailsPanelLayout);
-        bookDetailsPanelLayout.setHorizontalGroup(
-            bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(bookDetailsLabel)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookDetailsPanelLayout.createSequentialGroup()
-                        .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                                        .addComponent(titleLabel)
-                                        .addGap(248, 248, 248))
-                                    .addComponent(titleField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(3, 3, 3)
-                                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(itemCodeLabel1)
-                                    .addComponent(itemCodeField)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, bookDetailsPanelLayout.createSequentialGroup()
-                                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                                        .addGap(153, 153, 153)
-                                        .addComponent(orderLabel))
-                                    .addComponent(quantityLabel)
-                                    .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                                        .addComponent(quantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(35, 35, 35)
-                                        .addComponent(orderField, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(deliveryDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(deliveryDateLabel))))
-                        .addGap(28, 28, 28))))
-        );
-        bookDetailsPanelLayout.setVerticalGroup(
-            bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(bookDetailsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(itemCodeLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                        .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(quantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(orderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
-                        .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(quantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(orderField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(deliveryDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deliveryDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -287,9 +185,9 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(bookDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addGap(230, 230, 230)
+                        .addComponent(editBooksButton)))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -313,8 +211,8 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
                     .addComponent(contactPersonField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(outletField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addComponent(bookDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(editBooksButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -344,21 +242,9 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void titleFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleFieldActionPerformed
+    private void editBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBooksButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_titleFieldActionPerformed
-
-    private void quantityFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quantityFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_quantityFieldActionPerformed
-
-    private void orderFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_orderFieldActionPerformed
-
-    private void itemCodeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCodeFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemCodeFieldActionPerformed
+    }//GEN-LAST:event_editBooksButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,28 +282,17 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel bookDetailsLabel;
-    private javax.swing.JPanel bookDetailsPanel;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField contactPersonField;
     private javax.swing.JLabel contactPersonLabel;
     private com.toedter.calendar.JDateChooser dateTodayChooser;
     private javax.swing.JLabel dateTodayLabel;
-    private com.toedter.calendar.JDateChooser deliveryDateChooser;
-    private javax.swing.JLabel deliveryDateLabel;
+    private javax.swing.JButton editBooksButton;
     private javax.swing.JButton editButton;
     private javax.swing.JLabel editPurchaseOrderLabel;
-    private javax.swing.JTextField itemCodeField;
-    private javax.swing.JLabel itemCodeLabel1;
-    private javax.swing.JTextField orderField;
-    private javax.swing.JLabel orderLabel;
     private javax.swing.JTextField outletField;
     private javax.swing.JLabel outletLabel;
     private javax.swing.JTextField purchaseOrderNumberField;
     private javax.swing.JLabel purchaseOrderNumberLabel;
-    private javax.swing.JTextField quantityField;
-    private javax.swing.JLabel quantityLabel;
-    private javax.swing.JTextField titleField;
-    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

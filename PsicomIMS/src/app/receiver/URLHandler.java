@@ -140,11 +140,9 @@ class URLHandler extends AbstractHandler {
 							String price = map.get("price");
 							String author = map.get("author");
 							String releaseDate = map.get("releaseDate");
-							String rowId = map.get("id");
 							double priceDb = Double.parseDouble(price);
-							Long id = Long.parseLong(rowId);
-							
-							in.editBook(title, itemCode, priceDb, author, releaseDate, id);
+
+							in.editBook(title, itemCode, priceDb, author, releaseDate);
 							response.getWriter().println("You have succesfully edited " + title + ".");
 						} catch (Exception e) {
 							response.getWriter().println("Invalid.");
@@ -157,10 +155,9 @@ class URLHandler extends AbstractHandler {
 						HashMap<String, String> map = convertJsonToCommand(request);
 
 
-						String rowId = map.get("id");
-						Long id = Long.parseLong(rowId);
+						String itemCode = map.get("itemCode");
 						
-						in.deleteBook(id);
+						in.deleteBook(itemCode);
 						response.getWriter().println("You have succesfully deleted a book.");
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
