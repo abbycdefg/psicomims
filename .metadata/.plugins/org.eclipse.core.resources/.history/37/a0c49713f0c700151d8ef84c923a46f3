@@ -1,0 +1,44 @@
+package snippet;
+
+public class Snippet {
+	 Color x = new Color(32, 55, 73);
+	        this.getContentPane().setBackground(x);
+	        
+	        signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+	            Font originalFont = null;
+	            public void mouseEntered(java.awt.event.MouseEvent evt) {
+	                originalFont = signOutButton.getFont();
+	                Map attributes = originalFont.getAttributes();
+	                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+	                signOutButton.setFont(originalFont.deriveFont(attributes));
+	            }
+	            public void mouseExited(java.awt.event.MouseEvent evt) {
+	                signOutButton.setFont(originalFont);
+	            }
+	        });
+	        
+	             searchField.addFocusListener(new FocusListener(){            
+	            @Override
+	            public void focusLost(FocusEvent arg0) {
+	            }
+	
+	            @Override
+	            public void focusGained(FocusEvent arg0) {
+	                searchField.setText("");
+	            }
+	        }); 
+	             
+	        
+	        
+	        searchField.addFocusListener(new FocusListener(){            
+	            @Override
+	            public void focusLost(FocusEvent arg0) {
+	            }
+	
+	            @Override
+	            public void focusGained(FocusEvent arg0) {
+	                searchField.setText("");
+	            }
+	        });
+}
+
