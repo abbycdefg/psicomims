@@ -67,7 +67,6 @@ class URLHandler extends AbstractHandler {
 					
 					if(ad.checkUser(ad.getUsername(username)) && password.equals(ad.getPassword(username))){
 						response.getWriter().println("Success!");
-
 					}
 					else{
 
