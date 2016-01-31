@@ -444,7 +444,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     		String releaseDate = booksTable.getValueAt(row, 4).toString();
     		
 	    	this.dispose();
-	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, row);
+	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate);
 	    	a.setVisible(true); 
     		}
 
@@ -456,8 +456,10 @@ public class DCBooksTab extends javax.swing.JFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
+    		String itemCode = booksTable.getValueAt(row, 1).toString();
+    		
     		this.dispose();
-    		DCDeleteBookScreen a = new DCDeleteBookScreen(row);
+    		DCDeleteBookScreen a = new DCDeleteBookScreen(itemCode);
 	    	a.setVisible(true); 
     		}
     }

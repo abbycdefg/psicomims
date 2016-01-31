@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 
 public class DCEditBookScreen extends javax.swing.JFrame {
-	private static int rowId;
     /**
      * Creates new form DCEditBookScreen
      */
@@ -33,7 +32,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);       
     }
 	
-    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDate, int rowId) {
+    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDate) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -47,10 +46,10 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         
         titleField.setText(title);
         itemCodeField.setText(itemCode);
+        itemCodeField.setEditable(false);
         priceField.setText(price);
         authorField.setText(author);
         releaseDateChooser.setDateFormatString(releaseDate);
-        rowId = this.rowId;
     }
 
     /**
@@ -228,9 +227,11 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_titleFieldActionPerformed
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+    	DCBooksTab a = new DCBooksTab();
+    	a.setVisible(true);
+    }
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	HashMap map;
@@ -243,8 +244,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
             String releaseDate = releaseDateChooser.getDateFormatString();           
 
             try{
-            	String idString = String.valueOf(rowId);
-                map = doCommand("editBook", title, itemCode, price, author, releaseDate, idString);
+                map = doCommand("editBook", title, itemCode, price, author, releaseDate);
             	this.dispose();
             	DCBooksTab a = new DCBooksTab();
             	a.setVisible(true);
@@ -321,7 +321,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate, String id ) throws Exception
+    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -333,7 +333,6 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         map.put("price", price);
         map.put("author", author);
         map.put("releaseDate", releaseDate);
-        map.put("id", id);
 
         
         // CONVERT JAVA DATA TO JSON
