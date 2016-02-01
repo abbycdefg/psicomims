@@ -82,12 +82,14 @@ class URLHandler extends AbstractHandler {
 
 					
 					if(!ad.checkUser(username) && password.equals(password2)){
+						System.out.println(ad.checkUser(username));
 							ad.addUser(username, password);
 							response.getWriter().println("You have succesfully registered " + username + ".");
 							JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						System.out.println(ad.checkUser(username));
 					}
 				}
 				else if (target.equalsIgnoreCase("/updatePassword")) {

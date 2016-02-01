@@ -25,19 +25,19 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
-        addAnotherBookButton.setOpaque(false);
-        addAnotherBookButton.setContentAreaFilled(false);
-        addAnotherBookButton.setBorderPainted(false);
-        addAnotherBookButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        addBooksButton.setOpaque(false);
+        addBooksButton.setContentAreaFilled(false);
+        addBooksButton.setBorderPainted(false);
+        addBooksButton.addMouseListener(new java.awt.event.MouseAdapter() {
             Font originalFont = null;
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                originalFont = addAnotherBookButton.getFont();
+                originalFont = addBooksButton.getFont();
                 Map attributes = originalFont.getAttributes();
                 attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-                addAnotherBookButton.setFont(originalFont.deriveFont(attributes));
+                addBooksButton.setFont(originalFont.deriveFont(attributes));
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                addAnotherBookButton.setFont(originalFont);
+                addBooksButton.setFont(originalFont);
             }
         });
         
@@ -68,19 +68,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         totalAmountLabel = new javax.swing.JLabel();
         addButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        bookDetailsPanel = new javax.swing.JPanel();
-        bookDetailsLabel = new javax.swing.JLabel();
-        itemCodeLabel1 = new javax.swing.JLabel();
-        itemCodeField = new javax.swing.JTextField();
-        quantityLabel = new javax.swing.JLabel();
-        quantityField = new javax.swing.JTextField();
-        discountPriceLabel = new javax.swing.JLabel();
-        discountedPriceField = new javax.swing.JTextField();
-        srpLabel = new javax.swing.JLabel();
-        srpField = new javax.swing.JTextField();
-        titleLabel = new javax.swing.JLabel();
-        titleField = new javax.swing.JTextField();
-        addAnotherBookButton = new javax.swing.JButton();
+        addBooksButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Delivery Receipt");
@@ -145,202 +133,61 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
             }
         });
 
-        bookDetailsPanel.setBackground(new java.awt.Color(88, 101, 113));
-
-        bookDetailsLabel.setFont(new java.awt.Font("Calibri", 2, 18)); // NOI18N
-        bookDetailsLabel.setForeground(new java.awt.Color(255, 255, 255));
-        bookDetailsLabel.setText("Book Details");
-
-        itemCodeLabel1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        itemCodeLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        itemCodeLabel1.setText("Item Code");
-
-        itemCodeField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        itemCodeField.addActionListener(new java.awt.event.ActionListener() {
+        addBooksButton.setBackground(new java.awt.Color(255, 255, 255));
+        addBooksButton.setFont(new java.awt.Font("Calibri", 2, 18)); // NOI18N
+        addBooksButton.setForeground(new java.awt.Color(255, 255, 255));
+        addBooksButton.setText("Click here to add books");
+        addBooksButton.setBorder(null);
+        addBooksButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addBooksButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemCodeFieldActionPerformed(evt);
+                addBooksButtonActionPerformed(evt);
             }
         });
-
-        quantityLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        quantityLabel.setForeground(new java.awt.Color(255, 255, 255));
-        quantityLabel.setText("Quantity");
-
-        quantityField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        quantityField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quantityFieldActionPerformed(evt);
-            }
-        });
-
-        discountPriceLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        discountPriceLabel.setForeground(new java.awt.Color(255, 255, 255));
-        discountPriceLabel.setText("Discounted Price");
-
-        discountedPriceField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        discountedPriceField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                discountedPriceFieldActionPerformed(evt);
-            }
-        });
-
-        srpLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        srpLabel.setForeground(new java.awt.Color(255, 255, 255));
-        srpLabel.setText("SRP");
-
-        srpField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        srpField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                srpFieldActionPerformed(evt);
-            }
-        });
-
-        titleLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        titleLabel.setForeground(new java.awt.Color(255, 255, 255));
-        titleLabel.setText("Title");
-
-        titleField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        titleField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                titleFieldActionPerformed(evt);
-            }
-        });
-
-        addAnotherBookButton.setBackground(new java.awt.Color(255, 255, 255));
-        addAnotherBookButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        addAnotherBookButton.setForeground(new java.awt.Color(255, 255, 255));
-        addAnotherBookButton.setText("+ Add another book");
-        addAnotherBookButton.setBorder(null);
-        addAnotherBookButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        addAnotherBookButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addAnotherBookButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout bookDetailsPanelLayout = new javax.swing.GroupLayout(bookDetailsPanel);
-        bookDetailsPanel.setLayout(bookDetailsPanelLayout);
-        bookDetailsPanelLayout.setHorizontalGroup(
-            bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                .addGap(245, 245, 245)
-                .addComponent(bookDetailsLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bookDetailsPanelLayout.createSequentialGroup()
-                .addContainerGap(430, Short.MAX_VALUE)
-                .addComponent(addAnotherBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-            .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                    .addGap(39, 39, 39)
-                    .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                            .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(itemCodeLabel1)
-                                .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(titleLabel)
-                                .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                            .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(quantityLabel)
-                                .addComponent(quantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(30, 30, 30)
-                            .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                                    .addGap(1, 1, 1)
-                                    .addComponent(discountPriceLabel))
-                                .addComponent(discountedPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(30, 30, 30)
-                            .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(srpLabel)
-                                .addComponent(srpField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(1, 1, 1)))
-                    .addGap(40, 40, 40)))
-        );
-        bookDetailsPanelLayout.setVerticalGroup(
-            bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(bookDetailsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(160, 160, 160)
-                .addComponent(addAnotherBookButton)
-                .addGap(15, 15, 15))
-            .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                    .addGap(55, 55, 55)
-                    .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                            .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                                    .addComponent(itemCodeLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(quantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(quantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(bookDetailsPanelLayout.createSequentialGroup()
-                                .addComponent(srpLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(bookDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(discountedPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(srpField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(discountPriceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap(63, Short.MAX_VALUE)))
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(104, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(addDeliveryReceiptLabel)
-                        .addGap(269, 269, 269))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(161, 161, 161))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(totalAmountLabel)
+                    .addComponent(deliveryReceiptNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(deliveryReceiptNumberLabel)
+                        .addGap(103, 103, 103)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(totalAmountLabel)
-                            .addComponent(totalAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(49, 49, 49)
+                            .addComponent(dateTodayLabel)
+                            .addComponent(dateTodayChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(totalAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(deliveryDateLabel)
-                            .addComponent(deliveryDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(bookDetailsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(deliveryReceiptNumberLabel)
-                                .addComponent(deliveryReceiptNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(49, 49, 49)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(dateTodayChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(dateTodayLabel))
-                            .addGap(86, 86, 86))))
-                .addContainerGap(57, Short.MAX_VALUE))
+                            .addComponent(deliveryDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(deliveryDateLabel))))
+                .addContainerGap(104, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(263, 263, 263)
+                .addComponent(addDeliveryReceiptLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addBooksButton)
+                .addGap(252, 252, 252))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(157, 157, 157))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(addDeliveryReceiptLabel)
-                .addGap(39, 39, 39)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dateTodayLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deliveryReceiptNumberLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -348,20 +195,20 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(dateTodayChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deliveryReceiptNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addComponent(bookDetailsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(30, 30, 30)
+                .addComponent(addBooksButton)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(deliveryDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(totalAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(totalAmountLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(deliveryDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deliveryDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(totalAmountField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(44, 44, 44)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -387,29 +234,9 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void itemCodeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCodeFieldActionPerformed
+    private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_itemCodeFieldActionPerformed
-
-    private void quantityFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quantityFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_quantityFieldActionPerformed
-
-    private void discountedPriceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountedPriceFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_discountedPriceFieldActionPerformed
-
-    private void srpFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_srpFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_srpFieldActionPerformed
-
-    private void titleFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_titleFieldActionPerformed
-
-    private void addAnotherBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAnotherBookButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addAnotherBookButtonActionPerformed
+    }//GEN-LAST:event_addBooksButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -447,11 +274,9 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addAnotherBookButton;
+    private javax.swing.JButton addBooksButton;
     private javax.swing.JButton addButton;
     private javax.swing.JLabel addDeliveryReceiptLabel;
-    private javax.swing.JLabel bookDetailsLabel;
-    private javax.swing.JPanel bookDetailsPanel;
     private javax.swing.JButton cancelButton;
     private com.toedter.calendar.JDateChooser dateTodayChooser;
     private javax.swing.JLabel dateTodayLabel;
@@ -459,16 +284,6 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     private javax.swing.JLabel deliveryDateLabel;
     private javax.swing.JTextField deliveryReceiptNumberField;
     private javax.swing.JLabel deliveryReceiptNumberLabel;
-    private javax.swing.JLabel discountPriceLabel;
-    private javax.swing.JTextField discountedPriceField;
-    private javax.swing.JTextField itemCodeField;
-    private javax.swing.JLabel itemCodeLabel1;
-    private javax.swing.JTextField quantityField;
-    private javax.swing.JLabel quantityLabel;
-    private javax.swing.JTextField srpField;
-    private javax.swing.JLabel srpLabel;
-    private javax.swing.JTextField titleField;
-    private javax.swing.JLabel titleLabel;
     private javax.swing.JTextField totalAmountField;
     private javax.swing.JLabel totalAmountLabel;
     // End of variables declaration//GEN-END:variables

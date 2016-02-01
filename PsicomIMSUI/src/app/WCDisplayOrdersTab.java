@@ -82,6 +82,8 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         ordersTable = new javax.swing.JTable();
         navbarPanel = new javax.swing.JPanel();
         homeButton = new javax.swing.JButton();
+        incompleteButton = new javax.swing.JButton();
+        completeButton = new javax.swing.JButton();
         greetingLabel = new javax.swing.JLabel();
         signOutButton = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
@@ -163,7 +165,7 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(titleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,19 +193,62 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
             }
         });
 
+        incompleteButton.setBackground(new java.awt.Color(255, 255, 255));
+        incompleteButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        incompleteButton.setForeground(new java.awt.Color(255, 255, 255));
+        incompleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_incomplete.png"))); // NOI18N
+        incompleteButton.setAlignmentY(0.0F);
+        incompleteButton.setBorder(null);
+        incompleteButton.setBorderPainted(false);
+        incompleteButton.setContentAreaFilled(false);
+        incompleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        incompleteButton.setIconTextGap(0);
+        incompleteButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        incompleteButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_incomplete2.png"))); // NOI18N
+        incompleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                incompleteButtonActionPerformed(evt);
+            }
+        });
+
+        completeButton.setBackground(new java.awt.Color(255, 255, 255));
+        completeButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        completeButton.setForeground(new java.awt.Color(255, 255, 255));
+        completeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_complete.png"))); // NOI18N
+        completeButton.setAlignmentY(0.0F);
+        completeButton.setBorder(null);
+        completeButton.setBorderPainted(false);
+        completeButton.setContentAreaFilled(false);
+        completeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        completeButton.setIconTextGap(0);
+        completeButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        completeButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_complete2.png"))); // NOI18N
+        completeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                completeButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
         navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
             navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbarPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(homeButton)
+                .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(homeButton)
+                    .addComponent(incompleteButton)
+                    .addComponent(completeButton))
                 .addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
             navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addContainerGap(429, Short.MAX_VALUE)
+                .addGap(85, 85, 85)
+                .addComponent(completeButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(incompleteButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
@@ -317,6 +362,14 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchButtonActionPerformed
 
+    private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_completeButtonActionPerformed
+
+    private void incompleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incompleteButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_incompleteButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -353,9 +406,11 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton completeButton;
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JLabel greetingLabel;
     private javax.swing.JButton homeButton;
+    private javax.swing.JButton incompleteButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JPanel navbarPanel;

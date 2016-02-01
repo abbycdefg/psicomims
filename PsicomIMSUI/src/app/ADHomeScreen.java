@@ -441,7 +441,9 @@ public class ADHomeScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_usersButtonActionPerformed
 
     private void outletButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outletButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADOutletsTab a = new ADOutletsTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_outletButtonActionPerformed
 
     private void contactButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactButtonActionPerformed
