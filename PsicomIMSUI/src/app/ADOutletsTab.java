@@ -160,36 +160,13 @@ public class ADOutletsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         outletsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         outletsTable.setForeground(new java.awt.Color(255, 255, 255));
-        outletsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "OUTLET ID", "OUTLETS", "DATE CREATED"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+       
+        this.displayAll();
+        
         outletsTable.setToolTipText("");
         outletsTable.setCellSelectionEnabled(true);
         outletsTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -384,7 +361,9 @@ public class ADOutletsTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADLogInScreen a = new ADLogInScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -392,7 +371,56 @@ public class ADOutletsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+    	if (searchField.getText() == null || searchField.getText() == " "){
+    		this.displayAll();
+    	}
+    	else{
+	    	String[] columnNames = {"OUTLET ID", "OUTLETS", "DATE CREATED"};
+	
+	        DefaultTableModel model = new DefaultTableModel();
+	        model.setColumnIdentifiers(columnNames);
+	        
+	    	PreparedStatement pst;
+	        Connection con;
+	        
+	        String outletId = "";
+	        String outletName = "";
+	        String dateCreated = "";
+	        
+	        try {
+	        	Class.forName("com.mysql.jdbc.Driver");
+	        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+	            pst = con.prepareStatement("SELECT * FROM psicomims.outlet");
+	            ResultSet rs = pst.executeQuery();
+	            int i = 0;
+	            while (rs.next()) {
+	                outletId = rs.getString("outlet_id");
+	                outletName = rs.getString("outlet_name");
+	                dateCreated = rs.getString("date_created");
+	                model.addRow(new Object[]{outletId, outletName, dateCreated});
+	                i++;
+	            }
+	            
+	            if (i < 1) {
+	                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	            
+	            if (i == 1) {
+	                System.out.println(i + " Record Found");
+	            } 
+	            
+	            else {
+	                System.out.println(i + " Records Found");
+	            }
+	
+	                  
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        
+	        outletsTable.setModel(model);
+	        outletsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    	}
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void addOutletButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addOutletButtonMouseEntered
@@ -401,19 +429,39 @@ public class ADOutletsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_addOutletButtonMouseEntered
 
     private void addOutletButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOutletButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADAddOutletScreen a = new ADAddOutletScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_addOutletButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
+    	if (outletsTable.getSelectedRowCount() == 1 && outletsTable.getSelectedColumn() == 0){
+	    	this.getFirstColumnData();
+	    	this.dispose();
+	    	ADEditOutletScreen a = new ADEditOutletScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+    	if (outletsTable.getSelectedRowCount() == 1 && outletsTable.getSelectedColumn() == 0){
+	    	this.getFirstColumnData();
+	    	this.dispose();
+	    	ADDeleteOutletScreen a = new ADDeleteOutletScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADHomeScreen a = new ADHomeScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     /**
@@ -468,17 +516,33 @@ public class ADOutletsTab extends javax.swing.JFrame {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-    
- //ABBY FIX DIS   
-    public static String getData(){
+
+    public static String getFirstColumnData(){ 
     	int selectedRowIndex = outletsTable.getSelectedRow();
     	int selectedColumnIndex = outletsTable.getSelectedColumn();
     	String selectedCell = (String) outletsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
     	return selectedCell;
+    	
+    }
+    
+    public static String getSecondColumnData(){ 
+    	int selectedRowIndex = outletsTable.getSelectedRow();
+    	int selectedColumnIndex = outletsTable.getSelectedColumn() + 1;
+    	String selectedCell = (String) outletsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    	
+    }
+    
+    public static String getThirdColumnData(){ 
+    	int selectedRowIndex = outletsTable.getSelectedRow();
+    	int selectedColumnIndex = outletsTable.getSelectedColumn() + 2;
+    	String selectedCell = (String) outletsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    	
     }
     
     public void displayAll(){
-    	String[] columnNames = {"USERNAME", "PASSWORD", "DATE CREATED"};
+    	String[] columnNames = {"OUTLET ID", "OUTLETS", "DATE CREATED"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
@@ -486,20 +550,21 @@ public class ADOutletsTab extends javax.swing.JFrame {
         PreparedStatement pst;
         Connection con;
         
-        String username = "";
-        String password = "";
+        String outletId = "";
+        String outletName = "";
         String dateCreated = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.outlets");
+            pst = con.prepareStatement("SELECT * FROM psicomims.outlet");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
-                username = rs.getString("username");
-                password = rs.getString("password");
-                model.addRow(new Object[]{username, password, dateCreated});
+                outletId = rs.getString("outlet_id");
+                outletName = rs.getString("outlet_name");
+                dateCreated = rs.getString("date_created");
+                model.addRow(new Object[]{outletId, outletName, dateCreated});
                 i++;
             }
             

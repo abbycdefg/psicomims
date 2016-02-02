@@ -1,5 +1,13 @@
 package app;
 import java.awt.Color;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toedter.calendar.JTextFieldDateEditor;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,6 +35,14 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        String outletId = ADOutletsTab.getFirstColumnData();
+    	String outletName = ADOutletsTab.getSecondColumnData();     
+        
+        outletIDField.setText(outletId);
+        outletNameField.setText(outletName);        
+        dateCreatedChooser.setEnabled(false);
+        
     }
 
     /**
@@ -161,11 +177,29 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
+    	HashMap map;
+    	
+        try{
+        	String outletId = outletIDField.getText();
+            String outletName = outletNameField.getText();         
+
+            try{
+                map = doCommand("editOutlet", outletId, outletName);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADOutletsTab a = new ADOutletsTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void outletNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outletNameFieldActionPerformed
@@ -222,4 +256,46 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
     private javax.swing.JTextField outletNameField;
     private javax.swing.JLabel outletNameLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String outletId, String outletName) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("outletId", outletId);
+        map.put("outletName", outletName);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
+    }
 }

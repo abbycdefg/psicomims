@@ -1,5 +1,11 @@
 package app;
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -169,11 +175,34 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_outletNameFieldActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+    	HashMap map;
+
+        try{
+            String outletId = outletIDField.getText();
+            String outletName = outletNameField.getText();
+            
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            Date dc = dateCreatedChooser.getDate();
+            String dateCreated = df.format(dc);
+            
+
+            try{
+                map = doCommand("addOutlet", outletId, outletName, dateCreated);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADOutletsTab a = new ADOutletsTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -223,4 +252,48 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
     private javax.swing.JTextField outletNameField;
     private javax.swing.JLabel outletNameLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String outletId, String outletName, String dateCreated) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("outletId", outletId);
+        map.put("outletName", outletName);
+        map.put("dateCreated", dateCreated);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
+    }
+
 }

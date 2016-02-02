@@ -82,14 +82,12 @@ class URLHandler extends AbstractHandler {
 
 					
 					if(!ad.checkUser(username) && password.equals(password2)){
-						System.out.println(ad.checkUser(username));
-							ad.addUser(username, password);
-							response.getWriter().println("You have succesfully registered " + username + ".");
-							JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+						ad.addUser(username, password);
+						response.getWriter().println("You have succesfully registered " + username + ".");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
 					}
 					else{
 						response.getWriter().println("Invalid request.");
-						System.out.println(ad.checkUser(username));
 					}
 				}
 				else if (target.equalsIgnoreCase("/updatePassword")) {
@@ -110,6 +108,41 @@ class URLHandler extends AbstractHandler {
 
 						response.getWriter().println("Invalid request.");
 					}	
+		
+				}
+				else if (target.equalsIgnoreCase("/addOutlet")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String outletId = map.get("outletId");
+					String outletName = map.get("outletName");
+					String dateCreated = map.get("dateCreated");
+
+					
+					if(!ad.checkOutlet(outletId)){
+						ad.addOutlet(outletId, outletName, dateCreated);
+						response.getWriter().println("You have succesfully registered " + outletName + ".");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+					}
+				}
+				else if (target.equalsIgnoreCase("/editOutlet")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String outletId = map.get("outletId");
+					String outletName = map.get("outletName");
+					
+					//fix
+					if(ad.checkOutlet(outletId)){
+						ad.editOutlet(outletId, outletName);
+						response.getWriter().println("You have succesfully updated the information of " + outletName + ".");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+					}
+	
 		
 				}
 				else if (target.equalsIgnoreCase("/addBook")) {
