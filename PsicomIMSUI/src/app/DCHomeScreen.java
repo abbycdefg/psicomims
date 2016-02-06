@@ -323,25 +323,35 @@ public class DCHomeScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchButtonActionPerformed
 
-    private void booksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_booksButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_booksButtonActionPerformed
+    private void booksButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCBooksTab a = new DCBooksTab();
+        a.setVisible(true);
+    }
 
-    private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_poButtonActionPerformed
+    private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+        a.setVisible(true);
+    }
 
-    private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_joButtonActionPerformed
+    private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCJobOrdersTab a = new DCJobOrdersTab();
+        a.setVisible(true);
+    }
 
-    private void drButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_drButtonActionPerformed
+    private void drButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab();
+        a.setVisible(true);
+    }
 
-    private void dsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dsButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dsButtonActionPerformed
+    private void dsButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+        a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments

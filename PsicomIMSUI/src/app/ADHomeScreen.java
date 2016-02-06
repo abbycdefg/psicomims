@@ -24,7 +24,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
     public ADHomeScreen() {
         initComponents();
         
-                Color x = new Color(32, 55, 73);
+        Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
         signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -88,6 +88,8 @@ public class ADHomeScreen extends javax.swing.JFrame {
         dsButton = new javax.swing.JButton();
         histButton = new javax.swing.JButton();
         usersButton = new javax.swing.JButton();
+        outletButton = new javax.swing.JButton();
+        contactButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home");
@@ -268,6 +270,40 @@ public class ADHomeScreen extends javax.swing.JFrame {
             }
         });
 
+        outletButton.setBackground(new java.awt.Color(255, 255, 255));
+        outletButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        outletButton.setForeground(new java.awt.Color(255, 255, 255));
+        outletButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_outlets.png"))); // NOI18N
+        outletButton.setToolTipText("Books");
+        outletButton.setAlignmentY(0.0F);
+        outletButton.setBorder(null);
+        outletButton.setBorderPainted(false);
+        outletButton.setContentAreaFilled(false);
+        outletButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        outletButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_outlets2.png"))); // NOI18N
+        outletButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outletButtonActionPerformed(evt);
+            }
+        });
+
+        contactButton.setBackground(new java.awt.Color(255, 255, 255));
+        contactButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        contactButton.setForeground(new java.awt.Color(255, 255, 255));
+        contactButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_contacts.png"))); // NOI18N
+        contactButton.setToolTipText("Books");
+        contactButton.setAlignmentY(0.0F);
+        contactButton.setBorder(null);
+        contactButton.setBorderPainted(false);
+        contactButton.setContentAreaFilled(false);
+        contactButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        contactButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_contacts2.png"))); // NOI18N
+        contactButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contactButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -287,14 +323,17 @@ public class ADHomeScreen extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(drButton)
                         .addGap(18, 18, 18)
-                        .addComponent(dsButton)))
-                .addContainerGap(126, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(histButton)
-                .addGap(28, 28, 28)
-                .addComponent(usersButton)
-                .addGap(333, 333, 333))
+                        .addComponent(dsButton))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(179, 179, 179)
+                        .addComponent(histButton)
+                        .addGap(30, 30, 30)
+                        .addComponent(usersButton)
+                        .addGap(30, 30, 30)
+                        .addComponent(outletButton)
+                        .addGap(30, 30, 30)
+                        .addComponent(contactButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,7 +348,9 @@ public class ADHomeScreen extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(histButton)
-                    .addComponent(usersButton))
+                    .addComponent(usersButton)
+                    .addComponent(outletButton)
+                    .addComponent(contactButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                 .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7))
@@ -397,7 +438,15 @@ public class ADHomeScreen extends javax.swing.JFrame {
     	this.dispose();
     	ADUsersTab a = new ADUsersTab();
     	a.setVisible(true);
-    }
+    }//GEN-LAST:event_usersButtonActionPerformed
+
+    private void outletButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outletButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_outletButtonActionPerformed
+
+    private void contactButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_contactButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -436,6 +485,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton booksButton;
+    private javax.swing.JButton contactButton;
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JButton drButton;
     private javax.swing.JButton dsButton;
@@ -444,6 +494,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
     private javax.swing.JButton joButton;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JButton outletButton;
     private javax.swing.JButton poButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;

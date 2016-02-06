@@ -428,7 +428,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     		String itemCode = booksTable.getValueAt(row, 1).toString();
     		
     		this.dispose();
-    		DCDeleteBookScreen a = new DCDeleteBookScreen(itemCode);
+    		DCViewBookScreen a = new DCViewBookScreen(itemCode);
 	    	a.setVisible(true); 
     		}
     }
@@ -463,9 +463,11 @@ public class DCBooksTab extends javax.swing.JFrame {
     		}
     }
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeButtonActionPerformed
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCHomeScreen a = new DCHomeScreen();
+        a.setVisible(true);
+    }
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
