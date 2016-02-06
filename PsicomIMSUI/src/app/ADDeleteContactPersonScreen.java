@@ -1,6 +1,9 @@
 package app;
 
 import java.awt.Color;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -116,11 +119,28 @@ public class ADDeleteContactPersonScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void yesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesButtonActionPerformed
-        // TODO add your handling code here:
+    	HashMap map;
+    	
+        try{
+        	String contactPersonId = ADContactPersonsTab.getFirstColumnData();         
+
+            try{
+                map = doCommand("deleteContactPerson", contactPersonId);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_yesButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADContactPersonsTab a = new ADContactPersonsTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -164,4 +184,45 @@ public class ADDeleteContactPersonScreen extends javax.swing.JFrame {
     private javax.swing.JLabel deleteLabel;
     private javax.swing.JButton yesButton;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String contactPersonId) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("contactPersonId", contactPersonId);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
+    }
 }

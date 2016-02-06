@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -23,9 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import app.components.Admin;
+import app.components.DocumentationClerk;
 import app.components.Inventory;
 import app.entity.Book;
 import app.entity.User;
+import app.repositories.OutletRepository;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -40,6 +43,10 @@ class URLHandler extends AbstractHandler {
 	
 	@Autowired
 	private Inventory in;
+	
+	@Autowired
+	private DocumentationClerk dc;
+
 	
 
 	
@@ -145,6 +152,69 @@ class URLHandler extends AbstractHandler {
 	
 		
 				}
+				else if (target.equalsIgnoreCase("/deleteOutlet")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String outletId = map.get("outletId");
+					
+					if(ad.checkOutlet(outletId)){
+						ad.deleteOutlet(outletId);
+						response.getWriter().println("Success!");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+					}	
+		
+				}
+				else if (target.equalsIgnoreCase("/addContactPerson")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String contactPersonId = map.get("contactPersonId");
+					String contactPersonName = map.get("contactPersonName");
+					String dateCreated = map.get("dateCreated");
+
+					
+					if(!ad.checkContactPerson(contactPersonId)){
+						ad.addContactPerson(contactPersonId, contactPersonName, dateCreated);
+						response.getWriter().println("You have succesfully registered " + contactPersonName + ".");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+					}
+				}
+				else if (target.equalsIgnoreCase("/editContactPerson")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String contactPersonId = map.get("contactPersonId");
+					String contactPersonName = map.get("contactPersonName");
+					
+					//fix
+					if(ad.checkContactPerson(contactPersonId)){
+						ad.editContactPerson(contactPersonId, contactPersonName);
+						response.getWriter().println("You have succesfully updated the information of " + contactPersonName + ".");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+					}
+				}
+				else if (target.equalsIgnoreCase("/deleteContactPerson")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String contactPersonId = map.get("contactPersonId");
+					
+					if(ad.checkContactPerson(contactPersonId)){
+						ad.deleteContactPerson(contactPersonId);
+						response.getWriter().println("Success!");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+					}	
+		
+				}
 				else if (target.equalsIgnoreCase("/addBook")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
@@ -159,7 +229,7 @@ class URLHandler extends AbstractHandler {
 					if(!in.checkItemCode(itemCode)){
 							in.addBook(title, itemCode, priceDb, author, releaseDate);
 							response.getWriter().println("You have succesfully added " + title + ".");
-}
+					}
 					else{
 						response.getWriter().println("Invalid request.");
 					}
@@ -198,7 +268,41 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("Invalid.");
 					}
 
-			}
+				}
+				else if (target.equalsIgnoreCase("/addPurchaseOrder")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String purchaseOrderNumber = map.get("purchaseOrderNumber");
+					String dateToday = map.get("dateToday");
+					String contactPerson = map.get("contactPerson");
+					String outlet = map.get("outlet");
+
+					
+					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
+							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet);
+							response.getWriter().println("You have succesfully added Purchase Order" + purchaseOrderNumber + ".");
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+					}
+		
+				}
+				
+				//abby will fix
+				else if (target.equalsIgnoreCase("/addBooksToPO")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					List<Object> booksList = map.get("booksList");
+					
+					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
+							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet);
+							response.getWriter().println("You have succesfully added Purchase Order" + purchaseOrderNumber + ".");
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+					}
+		
+				}
 				
 				else {
 					// Invalid request

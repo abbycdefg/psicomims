@@ -400,7 +400,9 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonMouseEntered
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
@@ -416,7 +418,9 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	DCHomeScreen a = new DCHomeScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed

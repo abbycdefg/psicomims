@@ -67,11 +67,5 @@ public class Outlet implements Serializable
     public boolean checkOutletId(String outletId) {
         return outletId.equals( this.outletId );
     }
-    
-    //fix
-    public boolean checkId(Long id) {
-        return id.equals( this.id );
-    }
-
-	
+    	
 }

@@ -3,7 +3,13 @@ package app;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -232,11 +238,35 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_contactPersonFieldActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+    	HashMap map;
+
+        try{
+            String purchaseOrderNumber = purchaseOrderNumberField.getText();
+            String contactPerson = contactPersonField.getText();
+            String outlet = outletField.getText();
+            
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            Date dc = jDateChooser1.getDate();
+            String dateToday = df.format(dc);
+            
+
+            try{
+                map = doCommand("addPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+     	this.dispose();
+    	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void outletFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outletFieldActionPerformed
@@ -244,7 +274,9 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_outletFieldActionPerformed
 
     private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	DCAddBookToPOScreen a = new DCAddBookToPOScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_addBooksButtonActionPerformed
 
     /**
@@ -296,4 +328,48 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     private javax.swing.JTextField purchaseOrderNumberField;
     private javax.swing.JLabel purchaseOrderNumberLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String purchaseOrderNumber, String dateToday, String contactPerson, String outlet) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("purchaseOrderNumber", purchaseOrderNumber);
+        map.put("dateToday", dateToday);
+        map.put("contactPerson", contactPerson);
+        map.put("outlet", outlet);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
+    }
 }

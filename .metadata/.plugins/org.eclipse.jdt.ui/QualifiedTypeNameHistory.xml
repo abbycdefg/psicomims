@@ -17,4 +17,14 @@
 <fullyQualifiedTypeName name="java.util.Vector"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
+<fullyQualifiedTypeName name="java.text.DateFormat"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="com.toedter.calendar.JTextFieldDateEditor"/>
+<fullyQualifiedTypeName name="app.entity.Outlet"/>
+<fullyQualifiedTypeName name="app.repositories.OutletRepository"/>
+<fullyQualifiedTypeName name="app.entity.ContactPerson"/>
+<fullyQualifiedTypeName name="app.repositories.ContactPersonRepository"/>
+<fullyQualifiedTypeName name="app.components.DocumentationClerk"/>
+<fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

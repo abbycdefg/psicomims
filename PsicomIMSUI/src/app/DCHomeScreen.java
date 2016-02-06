@@ -330,11 +330,14 @@ public class DCHomeScreen extends javax.swing.JFrame {
         a.setVisible(true);
     }
 
+
     private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
         DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
         a.setVisible(true);
     }
+
+
 
     private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();

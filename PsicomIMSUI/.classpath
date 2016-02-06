@@ -2,8 +2,7 @@
 <classpath>
 	<classpathentry excluding="src/app/|config/|src/images/|src/" kind="src" path=""/>
 	<classpathentry kind="src" path="config"/>
-	<classpathentry kind="src" path="src/images"/>
-	<classpathentry excluding="images/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WebDependencies"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.9.jar"/>

@@ -391,7 +391,7 @@ public class ADOutletsTab extends javax.swing.JFrame {
 	        try {
 	        	Class.forName("com.mysql.jdbc.Driver");
 	        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-	            pst = con.prepareStatement("SELECT * FROM psicomims.outlet");
+	            pst = con.prepareStatement("SELECT * FROM psicomims.outlet WHERE outlet_id LIKE '%" + searchField.getText() + "%' OR outlet_name LIKE '%" + searchField.getText() + "%' OR date_created LIKE '%" + searchField.getText() + "%'");
 	            ResultSet rs = pst.executeQuery();
 	            int i = 0;
 	            while (rs.next()) {
@@ -533,14 +533,7 @@ public class ADOutletsTab extends javax.swing.JFrame {
     	return selectedCell;
     	
     }
-    
-    public static String getThirdColumnData(){ 
-    	int selectedRowIndex = outletsTable.getSelectedRow();
-    	int selectedColumnIndex = outletsTable.getSelectedColumn() + 2;
-    	String selectedCell = (String) outletsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-    	return selectedCell;
-    	
-    }
+
     
     public void displayAll(){
     	String[] columnNames = {"OUTLET ID", "OUTLETS", "DATE CREATED"};

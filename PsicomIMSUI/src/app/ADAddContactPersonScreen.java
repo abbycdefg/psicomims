@@ -1,6 +1,12 @@
 package app;
 
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -169,11 +175,35 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_contactPersonNameFieldActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+    	HashMap map;
+
+        try{
+            String contactPersonId = contactPersonIDField.getText();
+            String contactPersonName = contactPersonNameField.getText();
+            
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            Date dc = dateCreatedChooser.getDate();
+            String dateCreated = df.format(dc);
+            
+
+            try{
+                map = doCommand("addContactPerson", contactPersonId, contactPersonName, dateCreated);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADContactPersonsTab a = new ADContactPersonsTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -222,4 +252,47 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dateCreatedChooser;
     private javax.swing.JLabel dateCreatedLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String contactPersonId, String contactPersonName, String dateCreated) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("contactPersonId", contactPersonId);
+        map.put("contactPersonName", contactPersonName);
+        map.put("dateCreated", dateCreated);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
+    }
 }
