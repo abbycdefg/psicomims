@@ -1,0 +1,48 @@
+package app.components;
+
+import java.io.*;
+
+import javax.annotation.PostConstruct;
+import javax.swing.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import app.entity.Stall;
+
+import java.util.*;
+
+@Component
+public class DocumentationClerk 
+{
+	
+	public boolean checkStall(String sName)
+    {
+        try
+        {
+            Stall s = stallDao.findByStallName(sName);
+            return s.checkStaName(sName);
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+    
+    /**
+     * Creates a new stall.
+     */
+    public boolean createStall(String name)
+    {
+    	Stall s = new Stall();
+    	s.setStallName(name);
+    	s.setProfit(0.0);
+    	    	
+    	s = stallDao.save(s);
+    	
+    	return s.getId()!= null;
+    	
+    }
+}

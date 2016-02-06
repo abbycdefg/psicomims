@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import app.entity.ContactPerson;
 import app.entity.Outlet;
 import app.entity.User;
+import app.repositories.ContactPersonRepository;
 import app.repositories.OutletRepository;
 import app.repositories.UserRepository;
 
@@ -25,6 +27,9 @@ public class Admin
 	
 	@Autowired
 	private OutletRepository outletDao;
+	
+	@Autowired
+	private ContactPersonRepository contactPersonDao;
 	
     public boolean checkUser(String username)
     {
@@ -74,8 +79,8 @@ public class Admin
     {
         try
         {
-            Outlet o = outletDao.findById(outletDao.findByOutletId(outletId).getId());
-            return o.checkId(outletDao.findByOutletId(outletId).getId());
+            Outlet o = outletDao.findByOutletId(outletId);
+            return o.checkOutletId(outletId);
         }
         catch(Exception e)
         {
@@ -103,9 +108,72 @@ public class Admin
     	return o.getId()!= null;    	
     }
     
+    public boolean deleteOutlet(String outletId) {
+    	try{
+	    	Outlet o = outletDao.findByOutletId(outletId);
+	    	outletDao.delete(o);    	    	
+	    	return true;  
+	    }
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+    }
+    
     public String getOutletId(String outletId){
     	Outlet o = outletDao.findByOutletId(outletId);
     	return o.getOutletId();
+    }
+    
+  //fix
+    public boolean checkContactPerson(String contactPersonId)
+    {
+        try
+        {
+        	ContactPerson c = contactPersonDao.findByContactPersonId(contactPersonId);
+            return c.checkContactPersonId(contactPersonId);
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+    
+    public boolean addContactPerson(String contactPersonId, String contactPersonName, String dateCreated) {
+    	ContactPerson c = new ContactPerson();
+    	c.setContactPersonId(contactPersonId);
+    	c.setContactPersonName(contactPersonName);
+    	c.setDateCreated(dateCreated);
+    	c = contactPersonDao.save(c);
+    	
+    	return c.getId()!= null;    	
+    }
+    
+    public boolean editContactPerson(String contactPersonId, String contactPersonName) {
+    	ContactPerson c = contactPersonDao.findByContactPersonId(contactPersonId);
+    	c.setContactPersonId(contactPersonId);
+    	c.setContactPersonName(contactPersonName);
+    	c = contactPersonDao.save(c);
+    	
+    	return c.getId()!= null;    	
+    }
+    
+    public boolean deleteContactPerson(String contactPersonId) {
+    	try{
+    		ContactPerson c = contactPersonDao.findByContactPersonId(contactPersonId);
+    		contactPersonDao.delete(c);    	    	
+	    	return true;  
+	    }
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+    }
+    
+    public String getContactPersonId(String contactPersonId){
+    	ContactPerson c = contactPersonDao.findByContactPersonId(contactPersonId);
+    	return c.getContactPersonId();
     }
    
 }

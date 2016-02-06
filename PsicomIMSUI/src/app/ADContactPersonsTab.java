@@ -4,7 +4,15 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -106,36 +114,13 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         contactPersonsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         contactPersonsTable.setForeground(new java.awt.Color(255, 255, 255));
-        contactPersonsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "CONTACT PERSONS ID", "CONTACT PERSONS", "DATE CREATED"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        
+        this.displayAll();
+        
         contactPersonsTable.setToolTipText("");
         contactPersonsTable.setCellSelectionEnabled(true);
         contactPersonsTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -380,19 +365,39 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_addContactPersonButtonMouseEntered
 
     private void addContactPersonButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addContactPersonButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADAddContactPersonScreen a = new ADAddContactPersonScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_addContactPersonButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
+    	if (contactPersonsTable.getSelectedRowCount() == 1 && contactPersonsTable.getSelectedColumn() == 0){
+	    	this.getFirstColumnData();
+	    	this.dispose();
+	    	ADEditContactPersonScreen a = new ADEditContactPersonScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+    	if (contactPersonsTable.getSelectedRowCount() == 1 && contactPersonsTable.getSelectedColumn() == 0){
+	    	this.getFirstColumnData();
+	    	this.dispose();
+	    	ADDeleteContactPersonScreen a = new ADDeleteContactPersonScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADHomeScreen a = new ADHomeScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -400,11 +405,62 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+    	if (searchField.getText() == null || searchField.getText() == " "){
+    		this.displayAll();
+    	}
+    	else{
+        	String[] columnNames = {"CONTACT PERSON ID", "CONTACT PERSONS", "DATE CREATED"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String contactPersonId = "";
+            String contactPersonName = "";
+            String dateCreated = "";
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM psicomims.contact_person WHERE contact_person_id LIKE '%" + searchField.getText() + "%' OR contact_person_name LIKE '%" + searchField.getText() + "%' OR date_created LIKE '%" + searchField.getText() + "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                	contactPersonId = rs.getString("contact_person_id");
+                	contactPersonName = rs.getString("contact_person_name");
+                    dateCreated = rs.getString("date_created");
+                    model.addRow(new Object[]{contactPersonId, contactPersonName, dateCreated});
+                    i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            contactPersonsTable.setModel(model);
+            contactPersonsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADLogInScreen a = new ADLogInScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     /**
@@ -444,7 +500,7 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addContactPersonButton;
-    private javax.swing.JTable contactPersonsTable;
+    private static javax.swing.JTable contactPersonsTable;
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton editButton;
@@ -459,4 +515,70 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    
+    public static String getFirstColumnData(){ 
+    	int selectedRowIndex = contactPersonsTable.getSelectedRow();
+    	int selectedColumnIndex = contactPersonsTable.getSelectedColumn();
+    	String selectedCell = (String) contactPersonsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    	
+    }
+    
+    public static String getSecondColumnData(){ 
+    	int selectedRowIndex = contactPersonsTable.getSelectedRow();
+    	int selectedColumnIndex = contactPersonsTable.getSelectedColumn() + 1;
+    	String selectedCell = (String) contactPersonsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    	
+    }
+
+    
+    public void displayAll(){
+    	String[] columnNames = {"CONTACT PERSON ID", "CONTACT PERSONS", "DATE CREATED"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String contactPersonId = "";
+        String contactPersonName = "";
+        String dateCreated = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM psicomims.contact_person");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+            	contactPersonId = rs.getString("contact_person_id");
+            	contactPersonName = rs.getString("contact_person_name");
+                dateCreated = rs.getString("date_created");
+                model.addRow(new Object[]{contactPersonId, contactPersonName, dateCreated});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        contactPersonsTable = new JTable(model);
+        contactPersonsTable.setModel(model);
+        contactPersonsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }

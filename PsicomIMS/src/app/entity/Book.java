@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Book implements Serializable{
@@ -30,6 +33,10 @@ public class Book implements Serializable{
 	
 	@Column
 	private String releaseDate;
+	
+	@JoinColumn(name="purchase_order_number")
+	@ManyToOne(fetch=FetchType.LAZY)
+	private PurchaseOrder po;
 	
 	public Long getId() {
 		return id;
@@ -67,10 +74,19 @@ public class Book implements Serializable{
 	public void setReleaseDate(String releaseDate) {
 		this.releaseDate = releaseDate;
 	}
+	
+	public PurchaseOrder getPoNumber() {
+		return po;
+	}
+	public void setPoNumber(PurchaseOrder po) {
+		this.po = po;
+	}
     public boolean checkItemCode(String itemCode) {
         return itemCode.equals( this.itemCode );
     }
 
-	
+	public void setPurchaseOrder(PurchaseOrder po) {
+		this.po = po;
+	}
 	
 }

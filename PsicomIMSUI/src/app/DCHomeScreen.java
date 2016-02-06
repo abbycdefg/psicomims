@@ -328,7 +328,9 @@ public class DCHomeScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_booksButtonActionPerformed
 
     private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_poButtonActionPerformed
 
     private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joButtonActionPerformed

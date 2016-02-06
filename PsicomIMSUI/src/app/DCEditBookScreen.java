@@ -31,7 +31,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
-
+    
     public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDate) {
         initComponents();
         
@@ -51,7 +51,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         authorField.setText(author);
         releaseDateChooser.setDateFormatString(releaseDate);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,9 +73,9 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         itemCodeField = new javax.swing.JTextField();
         priceField = new javax.swing.JTextField();
         locationLabel = new javax.swing.JLabel();
-        locationField = new javax.swing.JTextField();
         releaseDateLabel = new javax.swing.JLabel();
         releaseDateChooser = new com.toedter.calendar.JDateChooser();
+        locationComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Edit Book");
@@ -157,16 +157,18 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         locationLabel.setForeground(new java.awt.Color(255, 255, 255));
         locationLabel.setText("Location");
 
-        locationField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        locationField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                locationFieldActionPerformed(evt);
-            }
-        });
-
         releaseDateLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         releaseDateLabel.setForeground(new java.awt.Color(255, 255, 255));
         releaseDateLabel.setText("Release Date");
+
+        locationComboBox.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        locationComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50" }));
+        locationComboBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        locationComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                locationComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,7 +189,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(locationLabel)
-                                    .addComponent(locationField, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(locationComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(titleLabel)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -206,7 +208,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
                                     .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(66, 66, 66))))
+                        .addGap(67, 67, 67))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,13 +239,14 @@ public class DCEditBookScreen extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(locationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(7, 7, 7)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(locationField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(releaseDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(releaseDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(locationComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
@@ -255,35 +258,35 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_titleFieldActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-    	this.dispose();
+        this.dispose();
         DCBooksTab a = new DCBooksTab();
         a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-    	HashMap map;
-        
-        try{
-            String title = titleField.getText();
-            String itemCode = itemCodeField.getText();
-            String price = priceField.getText();
-            String author = authorField.getText();
-            String releaseDate = releaseDateChooser.getDateFormatString();           
+    	 HashMap map;
+         
+         try{
+             String title = titleField.getText();
+             String itemCode = itemCodeField.getText();
+             String price = priceField.getText();
+             String author = authorField.getText();
+             String releaseDate = releaseDateChooser.getDateFormatString();           
 
-            try{
-                map = doCommand("editBook", title, itemCode, price, author, releaseDate);
-                this.dispose();
-                DCBooksTab a = new DCBooksTab();
-                a.setVisible(true);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+             try{
+                 map = doCommand("editBook", title, itemCode, price, author, releaseDate);
+                 this.dispose();
+                 DCBooksTab a = new DCBooksTab();
+                 a.setVisible(true);
+                 
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+             }
+         }
+         catch (Exception e){
+             e.printStackTrace();
+         }
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void authorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorFieldActionPerformed
@@ -298,9 +301,9 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_priceFieldActionPerformed
 
-    private void locationFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_locationFieldActionPerformed
+    private void locationComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_locationComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_locationFieldActionPerformed
+    }//GEN-LAST:event_locationComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,7 +348,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     private javax.swing.JButton editButton;
     private javax.swing.JTextField itemCodeField;
     private javax.swing.JLabel itemCodeLabel;
-    private javax.swing.JTextField locationField;
+    private javax.swing.JComboBox locationComboBox;
     private javax.swing.JLabel locationLabel;
     private javax.swing.JTextField priceField;
     private javax.swing.JLabel priceLabel;

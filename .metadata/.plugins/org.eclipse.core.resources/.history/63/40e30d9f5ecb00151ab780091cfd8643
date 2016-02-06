@@ -1,0 +1,93 @@
+package app.components;
+
+import java.io.*;
+
+import javax.annotation.PostConstruct;
+import javax.swing.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import app.entity.Book;
+import app.entity.PurchaseOrder;
+import app.repositories.BookRepository;
+import app.repositories.PurchaseOrderRepository;
+
+import java.util.*;
+
+@Component
+public class DocumentationClerk 
+{
+	@Autowired
+	PurchaseOrderRepository poDao;
+	
+	@Autowired
+	BookRepository bookDao;
+	
+	public boolean checkPurchaseOrder(String poNumber)
+    {
+        try
+        {
+            PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
+            return p.checkPONumber(poNumber);
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+    
+    public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet)
+    {
+    	PurchaseOrder p = new PurchaseOrder();
+    	p.setPurchaseOrderNumber(poNumber);
+    	p.setDateToday(dateToday);
+    	p.setContactPerson(contactPerson);
+    	p.setOutlet(outlet);
+    	    	
+    	p = poDao.save(p);
+    	
+    	return p.getId()!= null;
+    	
+    }
+    
+    public boolean checkBook(String itemCode)
+    {
+        try
+        {
+            Book b = bookDao.findByItemCode(itemCode);
+            return b.checkItemCode(itemCode);
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
+    
+
+    /**
+     * Register Owner.
+     */
+    @Transactional
+    public boolean regOwner(String name, String cp, String stall)
+    {
+    	Owner o = new Owner();
+    	o.setOwnerName(name);
+    	o.setOwnerNumber(cp);
+    	o.setStallName(stall);
+    	
+    	ownerDao.save(o);
+    	
+    	Stall s = stallDao.findByStallName(stall);
+    	s.addOwner(o);
+    	s = stallDao.save(s);
+    	
+    	
+    	
+    	return o.getId()!= null;
+    	
+    }
+}
