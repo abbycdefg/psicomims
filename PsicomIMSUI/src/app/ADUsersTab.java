@@ -1,4 +1,5 @@
 package app;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -400,7 +401,7 @@ public class ADUsersTab extends javax.swing.JFrame {
 	        try {
 	        	Class.forName("com.mysql.jdbc.Driver");
 	        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-	            pst = con.prepareStatement("SELECT * FROM user WHERE username LIKE '%" + searchField.getText() + "%' OR password LIKE '%" + searchField.getText() + "%'");
+	            pst = con.prepareStatement("SELECT * FROM psicomims.user WHERE username LIKE '%" + searchField.getText() + "%' OR password LIKE '%" + searchField.getText() + "%'");
 	            ResultSet rs = pst.executeQuery();
 	            int i = 0;
 	            while (rs.next()) {
@@ -509,7 +510,7 @@ public class ADUsersTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM user");
+            pst = con.prepareStatement("SELECT * FROM psicomims.user");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {

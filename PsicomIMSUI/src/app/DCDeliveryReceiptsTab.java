@@ -1,4 +1,5 @@
 package app;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -94,6 +95,7 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
+        exportButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
         signOutButton = new javax.swing.JButton();
         greetingLabel = new javax.swing.JLabel();
@@ -121,20 +123,20 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
         deliveryReceiptsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "DR NUMBER", "DATE", "ITEM CODE", "TITLE", "QUANTITY", "DELIVERY DATE", "DISCOUNTED PRICE", "SRP", "TOTAL AMOUNT"
+                "DR NUMBER", "DATE", "ITEM CODE", "OUTLET", "TITLE", "QUANTITY", "DELIVERY DATE", "DISCOUNTED PRICE", "SRP", "TOTAL AMOUNT"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -154,6 +156,7 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable.setRowHeight(18);
         deliveryReceiptsTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(deliveryReceiptsTable);
+        deliveryReceiptsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanel.setLayout(tablePanelLayout);
@@ -176,7 +179,7 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(titleLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,6 +284,24 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
             }
         });
 
+        exportButton.setBackground(new java.awt.Color(255, 255, 255));
+        exportButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        exportButton.setForeground(new java.awt.Color(255, 255, 255));
+        exportButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_export.png"))); // NOI18N
+        exportButton.setAlignmentY(0.0F);
+        exportButton.setBorder(null);
+        exportButton.setBorderPainted(false);
+        exportButton.setContentAreaFilled(false);
+        exportButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exportButton.setIconTextGap(0);
+        exportButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        exportButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_export2.png"))); // NOI18N
+        exportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
         navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
@@ -288,11 +309,13 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
             .addGroup(navbarPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(editButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(viewButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(deleteButton)
-                    .addComponent(homeButton)
-                    .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(editButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(viewButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(deleteButton)
+                        .addComponent(homeButton)
+                        .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(exportButton))
                 .addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
@@ -306,7 +329,9 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
                 .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
@@ -442,6 +467,10 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchFieldActionPerformed
 
+    private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exportButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -483,6 +512,7 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JButton deleteButton;
     private static javax.swing.JTable deliveryReceiptsTable;
     private javax.swing.JButton editButton;
+    private javax.swing.JButton exportButton;
     private javax.swing.JLabel greetingLabel;
     private javax.swing.JButton homeButton;
     private javax.swing.JScrollPane jScrollPane1;
