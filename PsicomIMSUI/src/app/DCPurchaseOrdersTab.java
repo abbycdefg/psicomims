@@ -5,7 +5,15 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -112,32 +120,9 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
 
         purchaseOrdersTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         purchaseOrdersTable.setForeground(new java.awt.Color(255, 255, 255));
-        purchaseOrdersTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "ITEM CODE", "TITLE", "STOCK ON HAND", "ORDER", "DELIVERY DATE", "STATUS"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+       
+        this.displayAll();
+        
         purchaseOrdersTable.setToolTipText("");
         purchaseOrdersTable.setCellSelectionEnabled(true);
         purchaseOrdersTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -480,7 +465,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JPanel navbarPanel;
-    private javax.swing.JTable purchaseOrdersTable;
+    private static javax.swing.JTable purchaseOrdersTable;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JButton signOutButton;
@@ -488,4 +473,62 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+    
+    public static String getData(){
+    	int selectedRowIndex = purchaseOrdersTable.getSelectedRow();
+    	int selectedColumnIndex = purchaseOrdersTable.getSelectedColumn();
+    	String selectedCell = (String) purchaseOrdersTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    }
+    
+    public void displayAll(){
+    	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "ITEM CODE", "TITLE", "STOCK ON HAND", "ORDER", "DELIVERY DATE", "STATUS"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String poNumber = "";
+        String date = "";
+        String contactPerson = "";
+        String outlet = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                poNumber = rs.getString("purchase_order_number");
+                date = rs.getString("date_Today");
+                contactPerson = rs.getString("contact_person");
+                outlet = rs.getString("outlet");
+                model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        purchaseOrdersTable = new JTable(model);
+        purchaseOrdersTable.setModel(model);
+        purchaseOrdersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }

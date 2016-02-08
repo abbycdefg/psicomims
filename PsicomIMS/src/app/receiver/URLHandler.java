@@ -24,13 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
-
-
-
-
-
-
-
 import app.components.Admin;
 import app.components.DocumentationClerk;
 import app.components.Inventory;
@@ -288,7 +281,7 @@ class URLHandler extends AbstractHandler {
 					
 					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
 							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet);
-							response.getWriter().println("You have succesfully added Purchase Order" + purchaseOrderNumber + ".");
+							response.getWriter().println("You have succesfully added Purchase Order " + purchaseOrderNumber + ".");
 					}
 					else{
 						response.getWriter().println("Invalid request.");
@@ -312,15 +305,25 @@ class URLHandler extends AbstractHandler {
 				//abby will fix
 				/**else if (target.equalsIgnoreCase("/addBooksToPO")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
+					List<String> booksList = new ArrayList<String>();
 
-					List<Object> booksList = map.get("booksList");
+			    	for(int i=0; i<map.size(); i++) {     
+			    		String book = map.get("booksList");
+						booksList.add(book);
+						System.out.println("tae " + book);
+			    	}
+									
+					String poNumber = map.get("purchaseOrderNumber");
 					
-					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
-							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet);
-							response.getWriter().println("You have succesfully added Purchase Order" + purchaseOrderNumber + ".");
-					}
-					else{
-						response.getWriter().println("Invalid request.");
+					for(int i=0; i<booksList.size(); i++) { 
+						System.out.println("poo " + booksList.get(i));
+						if(dc.checkBook(booksList.get(i))){
+								dc.addBookToPO(booksList.get(i), poNumber);
+								response.getWriter().println("You have succesfully added " + booksList.get(i) + ".");
+						}
+						else{
+							response.getWriter().println("Invalid request.");
+						}
 					}
 		
 				} **/

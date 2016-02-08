@@ -274,8 +274,9 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_outletFieldActionPerformed
 
     private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksButtonActionPerformed
-    	this.dispose();
-    	DCAddBookToPOScreen a = new DCAddBookToPOScreen();
+    	String purchaseOrderNumber = purchaseOrderNumberField.getText();
+    	
+    	DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber);
     	a.setVisible(true);
     }//GEN-LAST:event_addBooksButtonActionPerformed
 

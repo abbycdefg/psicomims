@@ -21,11 +21,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Abby
  */
 public class DCAddBookToPOScreen extends javax.swing.JFrame {
-
+	
+	static String purchaseOrderNumber;
+	
     /**
      * Creates new form DCAddBookToPOScreen
      */
-    public DCAddBookToPOScreen() {
+    public DCAddBookToPOScreen(String poNumber) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -36,6 +38,8 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        purchaseOrderNumber = poNumber;
     }
 
     /**
@@ -158,19 +162,13 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
     	
         try{
         	int rowCount = booksTable.getRowCount();
-        	int columnCount = booksTable.getColumnCount();
-        	for(int i=0; i<rowCount; i++) {
-        	  for(int j=0; j<columnCount; j++) {
-        	    Object cellValue = booksTable.getValueAt(i,j);
-        	    
-        	    if (columnCount == 2){
-        	    	booksList.add(cellValue);
-        	    }
-          	  }
+        	for(int i=0; i<rowCount; i++) {     
+        	    	String selectedCell = (String) booksTable.getModel().getValueAt(i, 1);
+        	    	booksList.add(selectedCell);
         	}
 
             try{
-                map = doCommand("addBooksToPO", booksList);
+                map = doCommand("addBooksToPO", purchaseOrderNumber, booksList);
                 
             }
             catch (Exception e){
@@ -184,8 +182,6 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
      	this.dispose();
-    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen();
-    	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -218,7 +214,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddBookToPOScreen().setVisible(true);
+                new DCAddBookToPOScreen(purchaseOrderNumber).setVisible(true);
             }
         });
     }
@@ -231,15 +227,20 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables.
     
-    private HashMap doCommand(String command, List<Object> booksList) throws Exception
+    private HashMap doCommand(String command, String poNumber, List<Object> booksList) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
         HashMap<String, Object> map = new HashMap<String, Object>();
-
-        map.put("booksList", booksList);
-
         
+        map.put("purchaseOrderNumber", poNumber);
+        
+    	for(int i=0; i<booksList.size(); i++) {     
+    		map.put("booksList", booksList.get(i));
+        	System.out.println(booksList.get(i));
+    	}
+
+               
         // CONVERT JAVA DATA TO JSON
         ObjectMapper mapper = new ObjectMapper();
         String json1 = mapper.writeValueAsString(map);
