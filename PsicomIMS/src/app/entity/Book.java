@@ -34,7 +34,6 @@ public class Book implements Serializable{
 	@Column
 	private String releaseDate;
 	
-<<<<<<< HEAD
 	@Column
 	private String location;
 	
@@ -45,12 +44,12 @@ public class Book implements Serializable{
 	public void setLocation(String location) {
 		this.location = location;
 	}
-=======
+
 	@JoinColumn(name="purchase_order_number")
 	@ManyToOne(fetch=FetchType.LAZY)
 	private PurchaseOrder po;
 	
->>>>>>> 75f906eb242831d6f26554718bd9d2097cd6aec6
+
 	public Long getId() {
 		return id;
 	}

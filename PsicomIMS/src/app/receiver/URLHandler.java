@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +21,12 @@ import org.mortbay.jetty.handler.AbstractHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+
+
+
+
+
 
 
 
@@ -288,8 +296,21 @@ class URLHandler extends AbstractHandler {
 		
 				}
 				
+				else if (target.equalsIgnoreCase("/addDeliveryReceipt")) {
+					HashMap<String, Object> map = convertJsonToCommand2(request);
+
+					String drNumber = (String) map.get("drNumber");
+					String dateToday = (String) map.get("dateToday");
+					String totalAmt = (String) map.get("totalAmt");
+					String dateDelivery = (String) map.get("dateDelivery");
+					
+					ArrayList list = (ArrayList)map.get("booksList");
+
+					response.getWriter().println(drNumber + dateToday + totalAmt + dateDelivery + list);
+		
+				}
 				//abby will fix
-				else if (target.equalsIgnoreCase("/addBooksToPO")) {
+				/**else if (target.equalsIgnoreCase("/addBooksToPO")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
 					List<Object> booksList = map.get("booksList");
@@ -302,7 +323,7 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("Invalid request.");
 					}
 		
-				}
+				} **/
 				
 				else {
 					// Invalid request
@@ -352,11 +373,30 @@ class URLHandler extends AbstractHandler {
 			
 			return requestData;
 		} 
+		
+
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
+	private HashMap<String, Object> convertJsonToCommand2(HttpServletRequest request) {
+		try {
+			String rawJson = null;
 
+			// extract any sent data
+			rawJson = readStreamAsString(request.getInputStream());
+			System.out.println("RAW COMMAND JSON: " + rawJson);
+
+			ObjectMapper mapper = new ObjectMapper();
+			//mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+			HashMap<String, Object> requestData = (HashMap) mapper.readValue(rawJson, HashMap.class);
+			
+			return requestData;
+		} 
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
 

@@ -429,10 +429,9 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_createButtonMouseEntered
-
+    private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {
+       
+    }
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
     	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen();

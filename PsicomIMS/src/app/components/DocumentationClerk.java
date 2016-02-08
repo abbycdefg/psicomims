@@ -3,6 +3,7 @@ package app.components;
 import java.io.*;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.metamodel.ListAttribute;
 import javax.swing.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import app.entity.Book;
+import app.entity.DeliveryReceipt;
 import app.entity.PurchaseOrder;
 import app.repositories.BookRepository;
+import app.repositories.DeliveryReceiptRepository;
 import app.repositories.PurchaseOrderRepository;
 
 import java.util.*;
@@ -24,6 +27,9 @@ public class DocumentationClerk
 	
 	@Autowired
 	BookRepository bookDao;
+	
+	/**@Autowired
+	DeliveryReceiptRepository drDao;**/
 	
 	public boolean checkPurchaseOrder(String poNumber)
     {
@@ -85,4 +91,20 @@ public class DocumentationClerk
     	return b.getId()!= null;
     	
     }
+    
+    /** @Transactional
+    public boolean createDeliveryReceipt(String drNumber, String dateToday, String totalAmt, String dateDelivery, List<Book> booksList)
+    {
+    	DeliveryReceipt d = new DeliveryReceipt();
+    	d.setDeliveryReceiptNumber(drNumber);
+    	d.setDateToday(dateToday);
+    	d.setTotalAmount(totalAmt);
+    	d.setDateDelivery(dateDelivery);
+    	d.setBookTitles(booksList);
+    	    	
+    	d = drDao.save(d);
+    	
+    	return d.getId()!= null;
+    	
+    }**/
 }
