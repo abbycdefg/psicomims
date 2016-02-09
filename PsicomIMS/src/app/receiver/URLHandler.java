@@ -290,16 +290,18 @@ class URLHandler extends AbstractHandler {
 				}
 				
 				else if (target.equalsIgnoreCase("/addDeliveryReceipt")) {
-					HashMap<String, Object> map = convertJsonToCommand2(request);
+					HashMap<String, String> map = convertJsonToCommand(request);
 
 					String drNumber = (String) map.get("drNumber");
 					String dateToday = (String) map.get("dateToday");
 					String totalAmt = (String) map.get("totalAmt");
 					String dateDelivery = (String) map.get("dateDelivery");
 					
-					ArrayList list = (ArrayList)map.get("booksList");
-
-					response.getWriter().println(drNumber + dateToday + totalAmt + dateDelivery + list);
+					String books = map.get("booksList");  	
+					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
+					
+					dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList);
+					response.getWriter().println(books);
 		
 				}
 				//abby will fix
@@ -381,25 +383,6 @@ class URLHandler extends AbstractHandler {
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-	
-	private HashMap<String, Object> convertJsonToCommand2(HttpServletRequest request) {
-		try {
-			String rawJson = null;
-
-			// extract any sent data
-			rawJson = readStreamAsString(request.getInputStream());
-			System.out.println("RAW COMMAND JSON: " + rawJson);
-
-			ObjectMapper mapper = new ObjectMapper();
-			//mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-			HashMap<String, Object> requestData = (HashMap) mapper.readValue(rawJson, HashMap.class);
-			
-			return requestData;
-		} 
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+	}	
 }
 

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -209,25 +211,27 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	List<Object> booksList = new ArrayList<Object>();
+    	List<String> booksList = new ArrayList<String>();
     	
         try{
         	int rowCount = booksTable.getRowCount();
-        	int columnCount = booksTable.getColumnCount();
-        	for(int i=0; i<rowCount; i++) {
-        	  for(int j=0; j<columnCount; j++) {
-        	    Object cellValue = booksTable.getValueAt(i,j);
-        	    
-        	    if (columnCount == 2){
-        	    	booksList.add(cellValue);
-        	    }
-          	  }
+        	System.out.println(rowCount);
+        	for(int i=0; i<rowCount; i++) {	  
+        	    String cellValue = (String) booksTable.getValueAt(i,1);
+   
+        	    	booksList.add(cellValue);    
         	}
+        	for(int i=0; i<rowCount; i++) {	  
+    			System.out.println(booksList.get(i));
+    	    
+    	}
+        	
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        
+
+
     	this.dispose();
     	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList);
     	a.setVisible(true);

@@ -6,6 +6,7 @@ import java.awt.font.TextAttribute;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCAddDeliveryReceiptScreen
      */
-	private List<Object> booksList;
+	private List<String> booksList;
     public DCAddDeliveryReceiptScreen() {
         initComponents();
         
@@ -59,7 +60,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<Object> booksList) {
+    public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -96,15 +97,16 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 			java.util.Date dateToday = df.parse(dateTodayStr);
 			dateTodayChooser.setDate(dateToday);
 			
+
 			java.util.Date deliveryDate = df.parse(deliveryDateStr);
-			dateTodayChooser.setDate(deliveryDate);
+			deliveryDateChooser.setDate(deliveryDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
         totalAmountField.setText(totalAmt);
-        booksList = this.booksList;
+        booksList = booksList1;
         
     }
 
@@ -301,13 +303,15 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
              String totalAmt = totalAmountField.getText();
              
              java.util.Date deliveryDate = deliveryDateChooser.getDate();
-             String deliveryDateStr = df.format(dateToday);
+             String deliveryDateStr = df.format(deliveryDate);
              
+             String[] strarray = booksList.toArray(new String[0]);
+             String listString = Arrays.toString(strarray);
              try{
 
-                map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, booksList);
+                map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString);
              	this.dispose();
-             	DCBooksTab a = new DCBooksTab();
+             	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab();
              	a.setVisible(true);
                  
              }
@@ -393,7 +397,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     private javax.swing.JLabel totalAmountLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String drNumber, String dateToday, String totalAmt, String dateDelivery, List<Object> booksList) throws Exception
+    private HashMap doCommand(String command, String drNumber, String dateToday, String totalAmt, String dateDelivery, String booksList) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -405,7 +409,6 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         map.put("dateDelivery", dateDelivery);
         map.put("booksList", booksList);
 
-        
         // CONVERT JAVA DATA TO JSON
         ObjectMapper mapper = new ObjectMapper();
         String json1 = mapper.writeValueAsString(map);
