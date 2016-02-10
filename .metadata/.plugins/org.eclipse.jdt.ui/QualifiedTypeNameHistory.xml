@@ -26,5 +26,9 @@
 <fullyQualifiedTypeName name="app.entity.ContactPerson"/>
 <fullyQualifiedTypeName name="app.repositories.ContactPersonRepository"/>
 <fullyQualifiedTypeName name="app.components.DocumentationClerk"/>
+<fullyQualifiedTypeName name="javax.persistence.ManyToMany"/>
+<fullyQualifiedTypeName name="javax.persistence.JoinTable"/>
+<fullyQualifiedTypeName name="javax.persistence.Table"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

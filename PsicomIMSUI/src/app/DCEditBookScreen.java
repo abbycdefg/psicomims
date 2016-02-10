@@ -1,5 +1,9 @@
 package app;
+
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,8 +35,11 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
+
+
+
     
-    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDate) {
+    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDateStr) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -49,7 +56,15 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         itemCodeField.setEditable(false);
         priceField.setText(price);
         authorField.setText(author);
-        releaseDateChooser.setDateFormatString(releaseDate);
+        
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date releaseDate = df.parse(releaseDateStr);
+			releaseDateChooser.setDate(releaseDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -264,29 +279,35 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-    	 HashMap map;
-         
-         try{
-             String title = titleField.getText();
-             String itemCode = itemCodeField.getText();
-             String price = priceField.getText();
-             String author = authorField.getText();
-             String releaseDate = releaseDateChooser.getDateFormatString();           
 
-             try{
-                 map = doCommand("editBook", title, itemCode, price, author, releaseDate);
-                 this.dispose();
-                 DCBooksTab a = new DCBooksTab();
-                 a.setVisible(true);
-                 
-             }
-             catch (Exception e){
-                 e.printStackTrace();
-             }
-         }
-         catch (Exception e){
-             e.printStackTrace();
-         }
+    	HashMap map;
+        
+        try{
+            String title = titleField.getText();
+            String itemCode = itemCodeField.getText();
+            String price = priceField.getText();
+            String author = authorField.getText();
+            
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            java.util.Date releaseDate = releaseDateChooser.getDate();
+            String releaseDateStr = df.format(releaseDate);
+
+            try{
+                map = doCommand("editBook", title, itemCode, price, author, releaseDateStr);
+                this.dispose();
+                DCBooksTab a = new DCBooksTab();
+                a.setVisible(true);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void authorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorFieldActionPerformed

@@ -34,10 +34,22 @@ public class Book implements Serializable{
 	@Column
 	private String releaseDate;
 	
+	@Column
+	private String location;
+	
+	
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
 	@JoinColumn(name="purchase_order_number")
 	@ManyToOne(fetch=FetchType.LAZY)
 	private PurchaseOrder po;
 	
+
 	public Long getId() {
 		return id;
 	}

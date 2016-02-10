@@ -1,4 +1,5 @@
 package app;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -424,14 +425,13 @@ public class DCBooksTab extends javax.swing.JFrame {
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
-	    	this.getData();
-	    	this.dispose();
-	    	DCViewBookScreen a = new DCViewBookScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-    	}
+    		int row = booksTable.getSelectedRow();
+    		String itemCode = booksTable.getValueAt(row, 1).toString();
+    		
+    		this.dispose();
+    		DCViewBookScreen a = new DCViewBookScreen(itemCode);
+	    	a.setVisible(true); 
+    		}
     }
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -464,9 +464,11 @@ public class DCBooksTab extends javax.swing.JFrame {
     		}
     }
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeButtonActionPerformed
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCHomeScreen a = new DCHomeScreen();
+        a.setVisible(true);
+    }
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:

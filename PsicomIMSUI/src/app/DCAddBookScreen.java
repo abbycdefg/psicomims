@@ -1,5 +1,9 @@
 package app;
+
 import java.awt.Color;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -246,19 +250,23 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         HashMap map;
         
         try{
+        	
             String title = titleField.getText();
             String itemCode = itemCodeField.getText();
             String price = priceField.getText();
             String author = authorField.getText();
-            String releaseDate = releaseDateChooser.getDateFormatString();
-          
+            
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            java.util.Date releaseDate = releaseDateChooser.getDate();
+            String releaseDateStr = df.format(releaseDate);
             
 
             try{
-                map = doCommand("addBook", title, itemCode, price, author, releaseDate);
-                this.dispose();
-                DCBooksTab a = new DCBooksTab();
-                a.setVisible(true);
+
+                map = doCommand("addBook", title, itemCode, price, author, releaseDateStr);
+            	this.dispose();
+            	DCBooksTab a = new DCBooksTab();
+            	a.setVisible(true);
                 
             }
             catch (Exception e){
@@ -378,8 +386,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
             //System.out.println(reply);
             HashMap replyMap = new HashMap();
             replyMap.put("message", reply);
-            return replyMap;
-            
+            return replyMap; 
         }
     }
 }

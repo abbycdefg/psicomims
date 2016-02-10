@@ -1,5 +1,8 @@
 package app;
+
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,6 +19,11 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCAddBookToDRScreen
      */
+	private String drNumber;
+	private String dateToday;
+	private String totalAmt;
+	private String dateDelivery;
+	
     public DCAddBookToDRScreen() {
         initComponents();
         
@@ -27,6 +35,24 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+    }
+    
+    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        addButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        drNumber = drNumber1;
+        dateToday = dateToday1;
+        totalAmt = totalAmt1;
+        dateDelivery = dateDelivery1;
     }
 
     /**
@@ -182,9 +208,30 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addButtonActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	List<Object> booksList = new ArrayList<Object>();
+    	
+        try{
+        	int rowCount = booksTable.getRowCount();
+        	int columnCount = booksTable.getColumnCount();
+        	for(int i=0; i<rowCount; i++) {
+        	  for(int j=0; j<columnCount; j++) {
+        	    Object cellValue = booksTable.getValueAt(i,j);
+        	    
+        	    if (columnCount == 2){
+        	    	booksList.add(cellValue);
+        	    }
+          	  }
+        	}
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        
+    	this.dispose();
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList);
+    	a.setVisible(true);
+    }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:

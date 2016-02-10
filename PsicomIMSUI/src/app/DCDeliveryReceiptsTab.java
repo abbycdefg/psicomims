@@ -1,10 +1,19 @@
 package app;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -137,7 +146,9 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
+            
         });
+        
         deliveryReceiptsTable.setToolTipText("");
         deliveryReceiptsTable.setCellSelectionEnabled(true);
         deliveryReceiptsTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -418,13 +429,14 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_createButtonMouseEntered
-
-    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_createButtonActionPerformed
+    private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {
+       
+    }
+    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen();
+    	a.setVisible(true);
+    }
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // TODO add your handling code here:
@@ -497,7 +509,7 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteButton;
-    private javax.swing.JTable deliveryReceiptsTable;
+    private static javax.swing.JTable deliveryReceiptsTable;
     private javax.swing.JButton editButton;
     private javax.swing.JButton exportButton;
     private javax.swing.JLabel greetingLabel;
@@ -512,4 +524,5 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+    
 }
