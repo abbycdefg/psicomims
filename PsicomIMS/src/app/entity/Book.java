@@ -37,6 +37,10 @@ public class Book implements Serializable{
 	@Column
 	private String location;
 	
+	private int quantity;
+	private double discountedPrice;
+	private double srp;
+	
 	
 	public String getLocation() {
 		return location;

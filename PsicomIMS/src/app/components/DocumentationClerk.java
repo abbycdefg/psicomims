@@ -28,8 +28,8 @@ public class DocumentationClerk
 	@Autowired
 	BookRepository bookDao;
 	
-	/**@Autowired
-	DeliveryReceiptRepository drDao;**/
+	@Autowired
+	DeliveryReceiptRepository drDao;
 	
 	public boolean checkPurchaseOrder(String poNumber)
     {
@@ -92,19 +92,33 @@ public class DocumentationClerk
     	
     }
     
-    /** @Transactional
-    public boolean createDeliveryReceipt(String drNumber, String dateToday, String totalAmt, String dateDelivery, List<Book> booksList)
+    @Transactional
+    public boolean createDeliveryReceipt(String drNumber, String dateToday, String totalAmt, String dateDelivery, List<String> booksList)
     {
     	DeliveryReceipt d = new DeliveryReceipt();
+    	Set<Book> listOfBooks= new HashSet<Book>();
+    	
     	d.setDeliveryReceiptNumber(drNumber);
     	d.setDateToday(dateToday);
     	d.setTotalAmount(totalAmt);
     	d.setDateDelivery(dateDelivery);
-    	d.setBookTitles(booksList);
-    	    	
-    	d = drDao.save(d);
+    	for(int i = 0; i<booksList.size(); i++)
+    	{
+    		Book b = bookDao.findByItemCode(booksList.get(i)); 
+    		if(b!=null)
+    		{
+    		listOfBooks.add(b);
+    		}
+    		
+    	}
     	
+
+    	System.out.println(listOfBooks);
+
+    	d.setBooks(listOfBooks);
+    	d = drDao.save(d);
+   
     	return d.getId()!= null;
     	
-    }**/
+    }
 }

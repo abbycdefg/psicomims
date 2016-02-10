@@ -1,15 +1,23 @@
 package app.entity;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+@Entity
 public class DeliveryReceipt {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
@@ -27,7 +35,17 @@ public class DeliveryReceipt {
 	@Column
 	private String dateDelivery;
 	
-    private List<Book> bookTitles;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "specific_dr", joinColumns = {@JoinColumn(name = "dr_id")}, inverseJoinColumns = {@JoinColumn(name = "book_id")} )
+	public Set<Book> books;
+
+	public Set<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(Set<Book> books) {
+		this.books = books;
+	}
 
 	public Long getId() {
 		return id;
@@ -67,14 +85,6 @@ public class DeliveryReceipt {
 
 	public void setDateDelivery(String dateDelivery) {
 		this.dateDelivery = dateDelivery;
-	}
-
-	public List<Book> getBookTitles() {
-		return bookTitles;
-	}
-
-	public void setBookTitles(List<Book> bookTitles) {
-		this.bookTitles = bookTitles;
 	}
 
 	
