@@ -278,9 +278,11 @@ class URLHandler extends AbstractHandler {
 					String contactPerson = map.get("contactPerson");
 					String outlet = map.get("outlet");
 
+					String books = map.get("booksList");  	
+					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					
 					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
-							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet);
+							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList);
 							response.getWriter().println("You have succesfully added Purchase Order " + purchaseOrderNumber + ".");
 					}
 					else{

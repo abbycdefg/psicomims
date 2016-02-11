@@ -45,17 +45,32 @@ public class DocumentationClerk
         
     }
     
-    public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet)
+    public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList)
     {
     	PurchaseOrder p = new PurchaseOrder();
+    	Set<Book> listOfBooks= new HashSet<Book>();
     	p.setPurchaseOrderNumber(poNumber);
     	p.setDateToday(dateToday);
     	p.setContactPerson(contactPerson);
     	p.setOutlet(outlet);
-    	    	
-    	p = poDao.save(p);
+   	
+    	for(int i = 0; i<booksList.size(); i++)
+    	{
+    		Book b = bookDao.findByItemCode(booksList.get(i)); 
+    		if(b!=null)
+    		{
+    		listOfBooks.add(b);
+    		}
+    		
+    	}
     	
-    	return p.getId()!= null;
+
+    	System.out.println(listOfBooks);
+
+    	p.setBooks(listOfBooks);
+    	p = poDao.save(p);
+   
+      	return p.getId()!= null;
     	
     }
     
@@ -73,25 +88,7 @@ public class DocumentationClerk
         
     }
     
-    @Transactional
-    public boolean addBookToPO(String itemCode, String poNumber)
-    {
-    	
-    	List<Object> booksList = new ArrayList<Object>();
-    	
-    	Book b = bookDao.findByItemCode(itemCode);
-    	booksList.add(b);
-    	
-    	bookDao.save(b);
-    	
-    	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
-    	p.addBooks(b);
-    	p = poDao.save(p);
-    	    	
-    	return b.getId()!= null;
-    	
-    }
-    
+   
     @Transactional
     public boolean createDeliveryReceipt(String drNumber, String dateToday, String totalAmt, String dateDelivery, List<String> booksList)
     {

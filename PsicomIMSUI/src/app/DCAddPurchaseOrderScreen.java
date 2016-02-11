@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +26,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
 
+	
+	private List<String> booksList;	
+	
     /**
      * Creates new form DCAddPurchaseOrderScreen
      */
@@ -55,6 +61,50 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         });
     }
 
+    public DCAddPurchaseOrderScreen(String purchaseOrderNumber1,  String dateToday1, String contactPerson1, String outlet1, List<String> booksList1) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        addButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        addBooksButton.setOpaque(false);
+        addBooksButton.setContentAreaFilled(false);
+        addBooksButton.setBorderPainted(false);
+        addBooksButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = addBooksButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                addBooksButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addBooksButton.setFont(originalFont);
+            }
+        });
+        
+        purchaseOrderNumberField.setText(purchaseOrderNumber1);
+        contactPersonField.setText(contactPerson1);
+        outletField.setText(outlet1);
+        booksList = booksList1;
+        
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateToday = df.parse(dateToday1);
+			jDateChooser1.setDate(dateToday);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -238,7 +288,6 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_contactPersonFieldActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-    	/**
     	HashMap map;
 
         try{
@@ -250,10 +299,14 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
             Date dc = jDateChooser1.getDate();
             String dateToday = df.format(dc);
             
+            String[] strarray = booksList.toArray(new String[0]);
+            String listString = Arrays.toString(strarray);
 
             try{
-                map = doCommand("addPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet);
-                
+                map = doCommand("addPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString);
+                this.dispose();
+             	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+             	a.setVisible(true);
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -261,7 +314,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         }
         catch (Exception e){
             e.printStackTrace();
-        }*/
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -275,33 +328,17 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_outletFieldActionPerformed
 
     private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksButtonActionPerformed
-    	HashMap map;
-
-        try{
-            String purchaseOrderNumber = purchaseOrderNumberField.getText();
-            String contactPerson = contactPersonField.getText();
-            String outlet = outletField.getText();
+        String purchaseOrderNumber = purchaseOrderNumberField.getText();
+        String contactPerson = contactPersonField.getText();
+        String outlet = outletField.getText();
+        
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        Date dc = jDateChooser1.getDate();
+        String dateToday = df.format(dc);
             
-            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-            Date dc = jDateChooser1.getDate();
-            String dateToday = df.format(dc);
-            
-
-            try{
-                map = doCommand("addPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-            
-            DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber);
-        	a.setVisible(true);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    	
+        this.dispose();    
+        DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber, contactPerson, outlet, dateToday);
+    	a.setVisible(true);
     	
     }//GEN-LAST:event_addBooksButtonActionPerformed
 
@@ -355,7 +392,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     private javax.swing.JLabel purchaseOrderNumberLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String purchaseOrderNumber, String dateToday, String contactPerson, String outlet) throws Exception
+    private HashMap doCommand(String command, String purchaseOrderNumber, String dateToday, String contactPerson, String outlet, String booksList) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -365,6 +402,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         map.put("dateToday", dateToday);
         map.put("contactPerson", contactPerson);
         map.put("outlet", outlet);
+        map.put("booksList", booksList);
 
         
         // CONVERT JAVA DATA TO JSON

@@ -22,12 +22,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCAddBookToPOScreen extends javax.swing.JFrame {
 	
-	static String purchaseOrderNumber;
+	private static String purchaseOrderNumber;
+	private static String contactPerson;
+	private static String outlet;
+	private static String dateToday;
 	
     /**
      * Creates new form DCAddBookToPOScreen
      */
-    public DCAddBookToPOScreen(String poNumber) {
+    public DCAddBookToPOScreen(String purchaseOrderNumber1, String contactPerson1, String outlet1, String dateToday1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -39,7 +42,10 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
         
-        purchaseOrderNumber = poNumber;
+        purchaseOrderNumber = purchaseOrderNumber1;
+        contactPerson = contactPerson1;
+        outlet = outlet1;
+        dateToday = dateToday1;
     }
 
     /**
@@ -157,8 +163,8 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
 
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-    	HashMap map;
-    	List<Object> booksList = new ArrayList<Object>();
+
+    	List<String> booksList = new ArrayList<String>();
     	
         try{
         	int rowCount = booksTable.getRowCount();
@@ -166,18 +172,21 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         	    	String selectedCell = (String) booksTable.getModel().getValueAt(i, 1);
         	    	booksList.add(selectedCell);
         	}
+        	
+        	for(int i=0; i<rowCount; i++) {	  
+    			System.out.println(booksList.get(i));
+    	    
+        	}
 
-            try{
-                map = doCommand("addBooksToPO", purchaseOrderNumber, booksList);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
         }
         catch (Exception e){
             e.printStackTrace();
         }
+        
+        this.dispose();
+    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList);
+    	a.setVisible(true);
+        
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -214,7 +223,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddBookToPOScreen(purchaseOrderNumber).setVisible(true);
+                new DCAddBookToPOScreen(purchaseOrderNumber, contactPerson, outlet, dateToday).setVisible(true);
             }
         });
     }
