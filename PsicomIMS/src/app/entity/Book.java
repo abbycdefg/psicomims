@@ -101,8 +101,5 @@ public class Book implements Serializable{
         return itemCode.equals( this.itemCode );
     }
 
-	public void setPurchaseOrder(PurchaseOrder po) {
-		this.po = po;
-	}
 	
 }

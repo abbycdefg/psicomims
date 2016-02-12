@@ -30,7 +30,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCAddBookToPOScreen
      */
-    public DCAddBookToPOScreen(String purchaseOrderNumber1, String contactPerson1, String outlet1, String dateToday1) {
+    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -223,7 +223,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddBookToPOScreen(purchaseOrderNumber, contactPerson, outlet, dateToday).setVisible(true);
+                new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet).setVisible(true);
             }
         });
     }

@@ -337,7 +337,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         String dateToday = df.format(dc);
             
         this.dispose();    
-        DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber, contactPerson, outlet, dateToday);
+        DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet);
     	a.setVisible(true);
     	
     }//GEN-LAST:event_addBooksButtonActionPerformed
