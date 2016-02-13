@@ -12,9 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import app.entity.Book;
 import app.entity.DeliveryReceipt;
+import app.entity.JobOrder;
 import app.entity.PurchaseOrder;
 import app.repositories.BookRepository;
 import app.repositories.DeliveryReceiptRepository;
+import app.repositories.JobOrderRepository;
 import app.repositories.PurchaseOrderRepository;
 
 import java.util.*;
@@ -30,6 +32,9 @@ public class DocumentationClerk
 	
 	@Autowired
 	DeliveryReceiptRepository drDao;
+	
+	@Autowired
+	JobOrderRepository joDao;
 	
 	public boolean checkPurchaseOrder(String poNumber)
     {
@@ -102,9 +107,12 @@ public class DocumentationClerk
     	d.setDateToday(dateToday);
     	d.setTotalAmount(totalAmt);
     	d.setDateDelivery(dateDelivery);
-    	for(int i = 0; i<booksList.size(); i++)
+    	for(String i : booksList)
     	{
-    		Book b = bookDao.findByItemCode(booksList.get(i)); 
+    		Book b = bookDao.findByItemCode(i);
+        	System.out.println(i);
+        	System.out.println(b);
+    		
     		if(b!=null)
     		{
     		listOfBooks.add(b);
@@ -120,5 +128,39 @@ public class DocumentationClerk
    
     	return d.getId()!= null;
     	
+    }
+    
+    @Transactional
+    public boolean createJobOrder(String joNumber, String dateToday, String itemCode, String title, String quantity)
+    {
+    	JobOrder j = new JobOrder();
+    	
+    	j.setJoNumber(joNumber);
+    	j.setDate(dateToday);
+    	j.setItemCode(itemCode);
+    	j.setTitle(title);
+    	j.setQuantity(quantity);
+    	
+    	j = joDao.save(j);
+   
+    	return j.getId()!= null;
+    	
+    }
+    public boolean editJobOrder(String joNumber, String dateToday, String itemCode, String title, String quantity) {
+    	JobOrder j = joDao.findByJoNumber(joNumber);
+    	j.setJoNumber(joNumber);
+    	j.setDate(dateToday);
+    	j.setItemCode(itemCode);
+    	j.setTitle(title);
+    	j.setQuantity(quantity);
+    	
+    	j = joDao.save(j);
+    	return j.getId()!= null;    	
+    }
+    
+    public boolean deleteJobOrder(String joNumber) {
+    	JobOrder j = joDao.findByJoNumber(joNumber);
+    	joDao.delete(j);;
+    	return j.getId()!= null;    	
     }
 }

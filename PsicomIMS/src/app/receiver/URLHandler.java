@@ -304,6 +304,50 @@ class URLHandler extends AbstractHandler {
 					response.getWriter().println(books);
 		
 				}
+				else if (target.equalsIgnoreCase("/addJobOrder")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String joNumber =  map.get("joNumber");
+					String dateToday =  map.get("dateToday");
+					String itemCode = map.get("itemCode");
+					String title = map.get("title");
+					String quantity = map.get("quantity");
+									
+					dc.createJobOrder(joNumber, dateToday, itemCode, title, quantity);
+					response.getWriter().println(joNumber);
+		
+				}
+				
+				else if (target.equalsIgnoreCase("/editJobOrder")) {
+					
+					try {
+						HashMap<String, String> map = convertJsonToCommand(request);
+
+						String joNumber =  map.get("joNumber");
+						String dateToday =  map.get("dateToday");
+						String itemCode = map.get("itemCode");
+						String title = map.get("title");
+						String quantity = map.get("quantity");
+
+						dc.editJobOrder(joNumber, dateToday, itemCode, title, quantity);
+						response.getWriter().println("You have succesfully edited " + joNumber + ".");
+					} catch (Exception e) {
+						response.getWriter().println("Invalid.");
+					}
+			}
+				else if (target.equalsIgnoreCase("/deleteJobOrder")) {
+					
+					try {
+						HashMap<String, String> map = convertJsonToCommand(request);
+
+						String joNumber =  map.get("joNumber");
+
+						dc.deleteJobOrder(joNumber);
+						response.getWriter().println("You have succesfully deleted " + joNumber + ".");
+					} catch (Exception e) {
+						response.getWriter().println("Invalid.");
+					}
+			}
 				//abby will fix
 				/**else if (target.equalsIgnoreCase("/addBooksToPO")) {
 					HashMap<String, String> map = convertJsonToCommand(request);

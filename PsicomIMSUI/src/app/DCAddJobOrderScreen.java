@@ -1,6 +1,18 @@
 package app;
 
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+
+import antlr.debug.Event;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -230,13 +242,46 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_quantityFieldActionPerformed
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addButtonActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        HashMap map;
+        
+        try{
+        	
+            String joNumber = jobOrderNumberField.getText();
+            String itemCode = itemCodeField.getText();
+            
+            itemCodeField.addKeyListener(new keyClass());
+            
+            String title = titleField.getText();
+            String quantity = quantityField.getText();
+            
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            java.util.Date dateToday = dateChooser.getDate();
+            String dateTodayStr = df.format(dateToday);
+            
+
+            try{
+
+                map = doCommand("addJobOrder", joNumber, dateTodayStr, itemCode, title, quantity);
+            	this.dispose();
+            	DCJobOrdersTab a = new DCJobOrdersTab();
+            	a.setVisible(true);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+        this.dispose();
+        DCJobOrdersTab a = new DCJobOrdersTab();
+        a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -288,4 +333,42 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String joNumber, String dateToday, String itemCode, String title, String quantity ) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("joNumber", joNumber);
+        map.put("dateToday", dateToday);
+        map.put("itemCode", itemCode);
+        map.put("title", title);
+        map.put("quantity", quantity);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap; 
+        }
+    }
 }

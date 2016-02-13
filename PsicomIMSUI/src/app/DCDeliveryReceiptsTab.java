@@ -149,6 +149,8 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
             
         });
         
+        this.displayAll();
+        
         deliveryReceiptsTable.setToolTipText("");
         deliveryReceiptsTable.setCellSelectionEnabled(true);
         deliveryReceiptsTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -525,4 +527,56 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
     
+    public void displayAll(){
+    	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String drNumber = "";
+        String dateToday = "";
+        String outlet = "";
+        String quantity = "";
+        String deliveryDate = "";
+        String totalAmount = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM delivery_receipt");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+            	drNumber = rs.getString("delivery_receipt_number");
+            	dateToday = rs.getString("date_today");
+                deliveryDate = rs.getString("date_delivery");
+                totalAmount = rs.getString("total_amount");
+                model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        deliveryReceiptsTable = new JTable(model);
+        deliveryReceiptsTable.setModel(model);
+        deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }

@@ -1,6 +1,12 @@
 package app;
 
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +23,7 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCEditJobOrderScreen
      */
+
     public DCEditJobOrderScreen() {
         initComponents();
         
@@ -28,6 +35,32 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+    }
+    
+    public DCEditJobOrderScreen(String joNumber1, String date1, String itemCode1, String title1, String quantity1) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        jobOrderNumberField.setText(joNumber1);
+        itemCodeField.setText(itemCode1);
+        titleField.setText(title1);
+        quantityField.setText(quantity1);
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateToday = df.parse(date1);
+			dateChooser.setDate(dateToday);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -214,7 +247,7 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jobOrderNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jobOrderNumberFieldActionPerformed
+    private void jobOrderNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }//GEN-LAST:event_jobOrderNumberFieldActionPerformed
 
@@ -230,13 +263,43 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_quantityFieldActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	  HashMap map;
+          
+          try{
+          	
+              String joNumber = jobOrderNumberField.getText();
+              String itemCode = itemCodeField.getText();
+              String title = titleField.getText();
+              String quantity = quantityField.getText();
+              
+              DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+              java.util.Date dateToday = dateChooser.getDate();
+              String dateTodayStr = df.format(dateToday);
+              
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+              try{
+
+                  map = doCommand("editJobOrder", joNumber, dateTodayStr, itemCode, title, quantity);
+              	this.dispose();
+              	DCJobOrdersTab a = new DCJobOrdersTab();
+              	a.setVisible(true);
+                  
+              }
+              catch (Exception e){
+                  e.printStackTrace();
+              }
+          }
+          catch (Exception e){
+              e.printStackTrace();
+          }
+    }
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCJobOrdersTab a = new DCJobOrdersTab();
+        a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -288,4 +351,42 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String joNumber, String dateToday, String itemCode, String title, String quantity ) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("joNumber", joNumber);
+        map.put("dateToday", dateToday);
+        map.put("itemCode", itemCode);
+        map.put("title", title);
+        map.put("quantity", quantity);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap; 
+        }
+    }
 }

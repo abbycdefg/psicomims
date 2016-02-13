@@ -5,7 +5,18 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -139,6 +150,8 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        
+        this.displayAll();
         jobOrdersTable.setToolTipText("");
         jobOrdersTable.setCellSelectionEnabled(true);
         jobOrdersTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -426,20 +439,40 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonMouseEntered
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_createButtonActionPerformed
+        this.dispose();
+        DCAddJobOrderScreen a = new DCAddJobOrderScreen();
+        a.setVisible(true);
+    }
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_viewButtonActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (jobOrdersTable.getSelectedRowCount() == 1 && jobOrdersTable.getSelectedColumn() == 0){
+    		int row = jobOrdersTable.getSelectedRow();
+    		String joNumber = jobOrdersTable.getValueAt(row, 0).toString();
+    		String date = jobOrdersTable.getValueAt(row, 1).toString();
+    		String itemCode = jobOrdersTable.getValueAt(row, 2).toString();
+    		String title = jobOrdersTable.getValueAt(row, 3).toString();
+    		String quantity = jobOrdersTable.getValueAt(row, 5).toString();
+    		
+	    	this.dispose();
+	    	DCEditJobOrderScreen a = new DCEditJobOrderScreen(joNumber, date, itemCode, title, quantity);
+	    	a.setVisible(true); 
+    		}   
+    }
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (jobOrdersTable.getSelectedRowCount() == 1 && jobOrdersTable.getSelectedColumn() == 0){
+    		int row = jobOrdersTable.getSelectedRow();
+    		String joNumber = jobOrdersTable.getValueAt(row, 0).toString();
+    		
+            this.dispose();
+            DCDeleteJobOrderScreen a = new DCDeleteJobOrderScreen(joNumber);
+            a.setVisible(true);
+    		} 
+    }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
@@ -515,4 +548,98 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+    
+    public void displayAll(){
+    	String[] columnNames = {"JO NUMBER", "DATE", "ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String joNumber = "";
+        String date = "";
+        String itemCode = "";
+        String title = "";
+        String stocksOnHand = "";
+        String order = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM job_order");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+            	joNumber = rs.getString("jo_number");
+            	date = rs.getString("date");
+            	itemCode = rs.getString("item_code");
+            	title = rs.getString("title");
+            	//stocksOnHand = rs.getString("stocks_on_hand");
+            	order = rs.getString("quantity");
+                model.addRow(new Object[]{joNumber, date, itemCode, title, stocksOnHand, order});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        jobOrdersTable = new JTable(model);
+        jobOrdersTable.setModel(model);
+        jobOrdersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    
+    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate ) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("title", title);
+        map.put("itemCode", itemCode);
+        map.put("price", price);
+        map.put("author", author);
+        map.put("releaseDate", releaseDate);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap; 
+        }
+    }
+    
 }
