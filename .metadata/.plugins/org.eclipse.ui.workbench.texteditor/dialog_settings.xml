@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Resizable" key="selection"/>
+		<item value="AddPurchase" key="selection"/>
 		<list key="findhistory">
+			<item value="addPurchase"/>
+			<item value="add"/>
+			<item value="booksList"/>
 			<item value="resizable"/>
 			<item value="resizeable"/>
 			<item value="search"/>
 			<item value="userName"/>
 			<item value="useName"/>
-			<item value="dateCreatedChooser"/>
-			<item value="plain_message"/>
-			<item value="images"/>
 		</list>
 		<list key="replacehistory">
 		</list>

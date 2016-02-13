@@ -1,0 +1,12 @@
+.metadata
+.recommenders
+PsicomIMS/bin
+PsicomIMSUI/bin
+PsicomIMS/lib
+PsicomIMSUI/lib
+PsicomIMS/.settings
+PsicomIMSUI/.settings
+PsicomIMS/.project
+PsicomIMSUI/.project
+PsicomIMS/.classpath
+PsicomIMSUI/.classpath

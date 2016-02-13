@@ -278,9 +278,11 @@ class URLHandler extends AbstractHandler {
 					String contactPerson = map.get("contactPerson");
 					String outlet = map.get("outlet");
 
+					String books = map.get("booksList");  	
+					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					
 					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
-							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet);
+							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList);
 							response.getWriter().println("You have succesfully added Purchase Order " + purchaseOrderNumber + ".");
 					}
 					else{
@@ -304,6 +306,7 @@ class URLHandler extends AbstractHandler {
 					response.getWriter().println(books);
 		
 				}
+				
 				else if (target.equalsIgnoreCase("/addJobOrder")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
@@ -373,6 +376,7 @@ class URLHandler extends AbstractHandler {
 					}
 		
 				} **/
+
 				
 				else {
 					// Invalid request
