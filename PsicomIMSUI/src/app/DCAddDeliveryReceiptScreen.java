@@ -340,7 +340,12 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
          
          java.util.Date deliveryDate = deliveryDateChooser.getDate();
          String deliveryDateStr = df.format(deliveryDate);
-    	
+    	 try {
+			doCommand("getAllPurchaseOrders");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
          this.dispose();
          DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr);
          b.setVisible(true);
@@ -416,6 +421,38 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         
         // SEND TO SERVICE
         String reply = NetUtil.postJsonDataToUrl(url1, json1);
+
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap; 
+        }
+    }
+    
+    private HashMap doCommand(String command) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.getURL(url1);
         System.out.println("REPLY = "+reply);
         
         

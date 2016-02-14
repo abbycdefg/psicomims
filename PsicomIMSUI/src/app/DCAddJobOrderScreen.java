@@ -250,7 +250,6 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
             String joNumber = jobOrderNumberField.getText();
             String itemCode = itemCodeField.getText();
             
-            itemCodeField.addKeyListener(new keyClass());
             
             String title = titleField.getText();
             String quantity = quantityField.getText();

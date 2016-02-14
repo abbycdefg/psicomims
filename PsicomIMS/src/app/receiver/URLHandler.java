@@ -24,16 +24,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
+
 import app.components.Admin;
 import app.components.DocumentationClerk;
 import app.components.Inventory;
 import app.entity.Book;
+import app.entity.PurchaseOrder;
 import app.entity.User;
 import app.repositories.OutletRepository;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 
 @Component
 class URLHandler extends AbstractHandler {
@@ -351,6 +356,24 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("Invalid.");
 					}
 			}
+				else if (target.equalsIgnoreCase("/getAllPurchaseOrders")) {
+					
+
+					try {
+						HashMap<String, String> map = convertJsonToCommand(request);
+						List<PurchaseOrder> poList = dc.getAllPurchaseOrders();
+						  ObjectMapper mapper = new ObjectMapper();
+					      String json1 = mapper.writeValueAsString(poList);
+					      
+						response.getWriter().println(json1);
+					} catch (Exception e) {
+						response.getWriter().println("Invalid.");
+					}
+					List<PurchaseOrder> poList = dc.getAllPurchaseOrders();
+						response.getWriter().println("Invalid request.");
+				}
+				
+				
 				//abby will fix
 				/**else if (target.equalsIgnoreCase("/addBooksToPO")) {
 					HashMap<String, String> map = convertJsonToCommand(request);

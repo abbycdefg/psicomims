@@ -4,7 +4,21 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JComboBox;
+
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseListener;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +39,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
 	private String dateToday;
 	private String totalAmt;
 	private String dateDelivery;
+	private JComboBox poNumberComboBox = new JComboBox();
 	
     public DCAddBookToDRScreen() {
         initComponents();
@@ -104,6 +119,24 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        
+    //auto complete    
+        Object[] elements = new Object[] {"Cat", "Dog", "Lion", "Mouse"};
+        AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(elements));
+        
+        poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    public int getWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public synchronized void addMouseListener(MouseListener l) {
+                    }
+                };
+            }
+        });
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -169,47 +202,57 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
                     .addComponent(poNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
+        
+      
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(197, 197, 197)
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
-                        .addComponent(addBookToDRLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(poNumberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(36, 36, 36))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(197)
+        					.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(261)
+        					.addComponent(addBookToDRLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(36)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
+        						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 675, GroupLayout.PREFERRED_SIZE))))
+        			.addGap(36))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(addBookToDRLabel)
-                .addGap(12, 12, 12)
-                .addComponent(poNumberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(addBookToDRLabel)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(12)
+        					.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(26)
+        					.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(18)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	List<String> booksList = new ArrayList<String>();
     	
@@ -241,9 +284,9 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void poNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poNumberFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_poNumberFieldActionPerformed
+    private void poNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {
+
+    }
 
     /**
      * @param args the command line arguments
@@ -291,5 +334,4 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     private javax.swing.JTextField poNumberField;
     private javax.swing.JLabel poNumberLabel;
     private javax.swing.JPanel poNumberPanel;
-    // End of variables declaration//GEN-END:variables
 }

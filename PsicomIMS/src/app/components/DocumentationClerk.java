@@ -49,7 +49,12 @@ public class DocumentationClerk
         }
         
     }
-    
+	public List<PurchaseOrder> getAllPurchaseOrders()
+    {
+
+        	List <PurchaseOrder> poList = poDao.findAll();
+        	return poList;     
+    }
     public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList)
     {
     	PurchaseOrder p = new PurchaseOrder();
