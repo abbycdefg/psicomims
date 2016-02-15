@@ -2,6 +2,7 @@ package app;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JTextField;
@@ -10,8 +11,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
@@ -121,7 +125,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         });
         
     //auto complete    
-        Object[] elements = new Object[] {"Cat", "Dog", "Lion", "Mouse"};
+        Object[] elements = new Object[] {"Cat", "Dog", "Lion", "Mouse"};      
         AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(elements));
         
         poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
@@ -334,4 +338,5 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     private javax.swing.JTextField poNumberField;
     private javax.swing.JLabel poNumberLabel;
     private javax.swing.JPanel poNumberPanel;
+
 }

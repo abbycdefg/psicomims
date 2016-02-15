@@ -213,9 +213,7 @@ public class ADLogInScreen extends javax.swing.JFrame {
         }
         catch (Exception e){
             e.printStackTrace();
-        }
-        
-        
+        }            
     	
     }
 

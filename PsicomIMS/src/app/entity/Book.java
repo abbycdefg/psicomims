@@ -41,19 +41,6 @@ public class Book implements Serializable{
 	private double discountedPrice;
 	private double srp;
 	
-	
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	@JoinColumn(name="purchase_order_number")
-	@ManyToOne(fetch=FetchType.LAZY)
-	private PurchaseOrder po;
-	
-
 	public Long getId() {
 		return id;
 	}
@@ -91,12 +78,14 @@ public class Book implements Serializable{
 		this.releaseDate = releaseDate;
 	}
 	
-	public PurchaseOrder getPoNumber() {
-		return po;
+	public String getLocation() {
+		return location;
 	}
-	public void setPoNumber(PurchaseOrder po) {
-		this.po = po;
+	public void setLocation(String location) {
+		this.location = location;
 	}
+
+
     public boolean checkItemCode(String itemCode) {
         return itemCode.equals( this.itemCode );
     }

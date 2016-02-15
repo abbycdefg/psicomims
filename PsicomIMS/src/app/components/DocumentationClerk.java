@@ -55,6 +55,7 @@ public class DocumentationClerk
         	List <PurchaseOrder> poList = poDao.findAll();
         	return poList;     
     }
+ 
     public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList)
     {
     	PurchaseOrder p = new PurchaseOrder();
@@ -69,14 +70,11 @@ public class DocumentationClerk
     		Book b = bookDao.findByItemCode(booksList.get(i)); 
     		if(b!=null)
     		{
-    		listOfBooks.add(b);
+    			listOfBooks.add(b);
     		}
     		
     	}
     	
-
-    	System.out.println(listOfBooks);
-
     	p.setBooks(listOfBooks);
     	p = poDao.save(p);
    
