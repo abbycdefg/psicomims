@@ -5,7 +5,15 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -105,36 +113,13 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         stocksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         stocksTable.setForeground(new java.awt.Color(255, 255, 255));
-        stocksTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "DATE", "ITEM CODE", "TITLE", "QUANTITY"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        
+        this.displayAll();
+        
         stocksTable.setToolTipText("");
         stocksTable.setCellSelectionEnabled(true);
         stocksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -333,15 +318,27 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
     }//GEN-LAST:event_updateButtonMouseEntered
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+    	if (stocksTable.getSelectedRowCount() == 1 && stocksTable.getSelectedColumn() == 0){
+	    	this.dispose();
+	        WCUpdateStockLevelScreen a = new WCUpdateStockLevelScreen();
+	        a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}   	
+
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCHomeScreen a = new WCHomeScreen();
+        a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCLogInScreen a = new WCLogInScreen();
+        a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -397,9 +394,82 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JButton signOutButton;
-    private javax.swing.JTable stocksTable;
+    private static javax.swing.JTable stocksTable;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
+
+    private static int selectedRowIndex;
+	private static int selectedColumnIndex;
+	
+    public static String getFirstColumnData(){ 
+    	selectedRowIndex = stocksTable.getSelectedRow();
+    	selectedColumnIndex = stocksTable.getSelectedColumn();
+    	String selectedCell = (String) stocksTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    	
+    }
+    
+    public static String getSecondColumnData(){ 
+    	String selectedCell = (String) stocksTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex + 1);
+    	return selectedCell;
+    }
+    
+    public static String getThirdColumnData(){ 
+    	String selectedCell = (String) stocksTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex + 2);
+    	return selectedCell;
+    }
+
+    
+    public void displayAll(){
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "DATE MODIFIED"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String date = "";
+        String itemCode = "";
+        String title = "";
+        String quantity = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM psicomims.book");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                itemCode = rs.getString("item_code");
+                title = rs.getString("title");
+                quantity = rs.getString("quantity");
+                date = rs.getString("release_date");
+                model.addRow(new Object[]{itemCode, title, quantity, date});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        stocksTable = new JTable(model);
+        stocksTable.setModel(model);
+        stocksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }

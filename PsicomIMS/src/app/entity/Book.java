@@ -37,7 +37,9 @@ public class Book implements Serializable{
 	@Column
 	private String location;
 	
+	@Column
 	private int quantity;
+
 	private double discountedPrice;
 	private double srp;
 	
@@ -85,6 +87,14 @@ public class Book implements Serializable{
 		this.location = location;
 	}
 
+	
+	public int getQuantity() {
+		return quantity;
+	}
+	
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
     public boolean checkItemCode(String itemCode) {
         return itemCode.equals( this.itemCode );

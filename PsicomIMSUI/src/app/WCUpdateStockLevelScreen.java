@@ -1,6 +1,9 @@
 package app;
 
 import java.awt.Color;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,6 +31,10 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        itemCodeField.setText(WCUpdateStocksTab.getFirstColumnData());
+        titleField.setText(WCUpdateStocksTab.getSecondColumnData());
+        quantityField.setText(WCUpdateStocksTab.getThirdColumnData());
     }
 
     /**
@@ -213,11 +220,31 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_newQuantityFieldActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+    	HashMap map;
+        
+        try{
+        	String itemCode = itemCodeField.getText();
+        	String newQuantity = newQuantityField.getText();
+            
+
+            try{
+                map = doCommand("updateStocks", itemCode, newQuantity);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCUpdateStocksTab a = new WCUpdateStocksTab();
+        a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -268,4 +295,45 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
     private javax.swing.JButton updateButton;
     private javax.swing.JLabel updateStockLevelLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String itemCode, String newQuantity ) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("itemCode", itemCode);
+        map.put("newQuantity", newQuantity);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
+    }
 }

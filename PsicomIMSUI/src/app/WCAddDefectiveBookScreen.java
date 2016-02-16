@@ -1,6 +1,9 @@
 package app;
 
 import java.awt.Color;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -182,11 +185,31 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_quantityFieldActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+    	HashMap map;
+
+        try{
+            String itemCode = itemCodeField.getText();
+            String title = titleField.getText();
+            String quantity = quantityField.getText();
+            
+
+            try{
+                map = doCommand("addDefectiveBook", itemCode, title, quantity);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	WCDefectiveBookRecordTab a = new WCDefectiveBookRecordTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -235,4 +258,47 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String itemCode, String title, String quantity) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("itemCode", itemCode);
+        map.put("title", title);
+        map.put("quantity", quantity);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
+    }
 }
