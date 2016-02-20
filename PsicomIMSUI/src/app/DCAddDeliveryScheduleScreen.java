@@ -271,7 +271,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
 
                  map = doCommand("addDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
              	this.dispose();
-             	DCBooksTab a = new DCBooksTab();
+             	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
              	a.setVisible(true);
                  
              }

@@ -13,10 +13,13 @@ public class DeliverySchedule {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
-	private Long scheduleCode;
+	private Long id;
 	
 	@Column	
 	private String date;
+	
+	@Column	
+	private String scheduleCode;
 	
 	@Column
 	private String outlet;
@@ -25,10 +28,16 @@ public class DeliverySchedule {
 	private String deliveryReceiptCode;
 	
 	
-	public Long getScheduleCode() {
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getScheduleCode() {
 		return scheduleCode;
 	}
-	public void setScheduleCode(Long scheduleCode) {
+	public void setScheduleCode(String scheduleCode) {
 		this.scheduleCode = scheduleCode;
 	}
 	public String getDate() {

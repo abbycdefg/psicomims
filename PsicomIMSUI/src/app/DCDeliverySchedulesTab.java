@@ -5,7 +5,15 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -148,6 +156,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        this.displayAll();
         deliverySchedulesTable.setToolTipText("");
         deliverySchedulesTable.setCellSelectionEnabled(true);
         deliverySchedulesTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -527,17 +536,34 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_createButtonMouseEntered
 
-    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_createButtonActionPerformed
+    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
+        a.setVisible(true);
+    }
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_viewButtonActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (deliverySchedulesTable.getSelectedRowCount() == 1 && deliverySchedulesTable.getSelectedColumn() == 0){
+    		int row = deliverySchedulesTable.getSelectedRow();
+    		String  date = deliverySchedulesTable.getValueAt(row, 0).toString();
+    		String scheduleCode = deliverySchedulesTable.getValueAt(row, 1).toString();
+    		String outlet = deliverySchedulesTable.getValueAt(row, 2).toString();
+    		String deliveryReciptCode = deliverySchedulesTable.getValueAt(row, 3).toString();
+    		
+	    	this.dispose();
+	    	DCEditDeliveryScheduleScreen a = new DCEditDeliveryScheduleScreen(date, scheduleCode, outlet, deliveryReciptCode);
+	    	a.setVisible(true); 
+    		}
+
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+
+    }
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
@@ -640,4 +666,54 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+    public void displayAll(){
+    	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String date = "";
+        String scheduleCode = "";
+        String outlet = "";
+        String deliveryReceiptCode = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM delivery_schedule");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+            	date = rs.getString("date");
+            	scheduleCode = rs.getString("delivery_receipt_code");
+            	outlet = rs.getString("outlet");
+            	deliveryReceiptCode = rs.getString("schedule_code");
+                model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        deliverySchedulesTable = new JTable(model);
+        deliverySchedulesTable.setModel(model);
+        deliverySchedulesTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }

@@ -217,11 +217,30 @@ public class DocumentationClerk
     
     public boolean addDeliverySchedule(String scheduleCode, String date, String outlet, String drCode) {
     	DeliverySchedule d = new DeliverySchedule();
+    	d.setScheduleCode(scheduleCode);
     	d.setDate(date);
     	d.setOutlet(outlet);
     	d.setDeliveryReceiptCode(drCode);
     	
     	d = dsDao.save(d);
+    	
+    	return d.getScheduleCode()!= null;
+    	
+    }
+    public boolean editDeliverySchedule(String scheduleCode, String date, String outlet, String drCode) {
+    	DeliverySchedule d = dsDao.findByScheduleCode(scheduleCode);
+    	d.setDate(date);
+    	d.setOutlet(outlet);
+    	d.setDeliveryReceiptCode(drCode);
+    	
+    	d = dsDao.save(d);
+    	
+    	return d.getScheduleCode()!= null;
+    	
+    }
+    public boolean deleteDeliverySchedule(String scheduleCode) {
+    	DeliverySchedule d = dsDao.findByScheduleCode(scheduleCode);
+    	dsDao.delete(d);
     	
     	return d.getScheduleCode()!= null;
     	

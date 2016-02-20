@@ -407,14 +407,52 @@ class URLHandler extends AbstractHandler {
 					try {
 						HashMap<String, String> map = convertJsonToCommand(request);
 
-						String joNumber =  map.get("joNumber");
-						response.getWriter().println("You have succesfully deleted " + joNumber + ".");
+			
+						String date = map.get("date");
+						String scheduleCode =  map.get("scheduleCode");
+						String outlet = map.get("outlets");
+						String deliveryReceiptCode = map.get("deliveryReceiptCode");
+						
+						dc.addDeliverySchedule(scheduleCode, date, outlet, deliveryReceiptCode);
+						response.getWriter().println("You have succesfully added " + scheduleCode + ".");
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
 					}
 			}
 
-				
+				else if (target.equalsIgnoreCase("/editDeliverySchedule")) {
+					
+					try {
+						HashMap<String, String> map = convertJsonToCommand(request);
+
+			
+						String date = map.get("date");
+						String scheduleCode =  map.get("scheduleCode");
+						String outlet = map.get("outlets");
+						String deliveryReceiptCode = map.get("deliveryReceiptCode");
+						
+						dc.editDeliverySchedule(scheduleCode, date, outlet, deliveryReceiptCode);
+						response.getWriter().println("You have succesfully edited " + scheduleCode + ".");
+					} catch (Exception e) {
+						response.getWriter().println("Invalid.");
+					}
+			}
+else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
+					
+					try {
+						HashMap<String, String> map = convertJsonToCommand(request);
+
+			
+						String scheduleCode =  map.get("scheduleCode");
+
+						dc.deleteDeliverySchedule(scheduleCode);
+						response.getWriter().println("You have succesfully added " + scheduleCode + ".");
+					} catch (Exception e) {
+						response.getWriter().println("Invalid.");
+					}
+			}
+
+
 				
 				//abby will fix
 				/**else if (target.equalsIgnoreCase("/addBooksToPO")) {
