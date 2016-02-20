@@ -5,7 +5,15 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -110,32 +118,9 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
 
         ordersTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         ordersTable.setForeground(new java.awt.Color(255, 255, 255));
-        ordersTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "STATUS"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        this.displayAll();
+        
         ordersTable.setToolTipText("");
         ordersTable.setCellSelectionEnabled(true);
         ordersTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -348,11 +333,15 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	WCHomeScreen a = new WCHomeScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	WCLogInScreen a = new WCLogInScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -422,4 +411,63 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    
+    public void displayAll(){
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "STATUS"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        PreparedStatement pst2;
+        PreparedStatement pst3;
+        Connection con;
+        
+        String itemCode = "";
+        String title = "";
+        String quantity = "";
+        String location = "";
+        String date = "";
+        String status = "Incomplete";
+        
+        //wait for jenelle
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM psicomims.book");
+            pst2 = con.prepareStatement("SELECT * FROM psicomims.specific_po");
+            pst3 = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt");
+            ResultSet rs = pst.executeQuery();
+            ResultSet rs2 = pst2.executeQuery();
+            ResultSet rs3 = pst3.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                itemCode = rs2.getString("book_id");
+                title = rs.getString("title");
+                quantity = rs3.getString("defects_quantity");
+                model.addRow(new Object[]{itemCode, title, quantity, location, date, status});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        ordersTable = new JTable(model);
+        ordersTable.setModel(model);
+        ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }

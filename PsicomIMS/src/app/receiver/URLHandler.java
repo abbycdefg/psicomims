@@ -115,7 +115,7 @@ class URLHandler extends AbstractHandler {
 					String oldPassword = map.get("oldPassword");
 					String newPassword = map.get("newPassword");
 					String newPassword2 = map.get("newPassword2");
-					
+
 					if(ad.checkUser(ad.getUsername(username)) && oldPassword.equals(ad.getPassword(username)) && newPassword.equals(newPassword2)){
 						ad.updatePassword(ad.getUsername(username), newPassword);
 						response.getWriter().println("You have succesfully updated the password to " + newPassword + ".");
@@ -226,6 +226,23 @@ class URLHandler extends AbstractHandler {
 					}	
 		
 				}
+				
+				else if (target.equalsIgnoreCase("/dcLogin")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String username = map.get("username");
+					String password = map.get("password");
+
+					
+					if(wc.checkUser(wc.getUsername(username)) && password.equals(wc.getPassword(username))){
+						response.getWriter().println("Success!");
+					}
+					else{
+
+						response.getWriter().println("Invalid request.");
+					}	
+				}
+				
 				else if (target.equalsIgnoreCase("/addBook")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 

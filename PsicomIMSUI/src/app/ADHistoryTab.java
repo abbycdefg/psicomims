@@ -303,11 +303,15 @@ public class ADHistoryTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADHomeScreen a = new ADHomeScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADLogInScreen a = new ADLogInScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed

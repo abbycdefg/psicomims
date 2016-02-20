@@ -3,7 +3,12 @@ package app;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+
+import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -186,24 +191,35 @@ public class ADAddUserScreen extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
-
-        try{
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-            String password2 = reenterPasswordField.getText();
-            
-
-            try{
-                map = doCommand("addUser", username, password, password2);
+        if(!usernameField.getText().equals("") && !passwordField.getText().equals("") && !reenterPasswordField.getText().equals(""))
+        {
+    		try{
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+                String password2 = reenterPasswordField.getText();
                 
+
+                try{
+                    map = doCommand("addUser", username, password, password2);
+                    
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                
+                cancelButton.setEnabled(false);
+                
+            	this.dispose();
+            	ADUsersTab a = new ADUsersTab();
+            	a.setVisible(true);
             }
             catch (Exception e){
                 e.printStackTrace();
             }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+    	  }
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed

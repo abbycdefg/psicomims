@@ -5,7 +5,15 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -105,36 +113,13 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         defectiveBooksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         defectiveBooksTable.setForeground(new java.awt.Color(255, 255, 255));
-        defectiveBooksTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "ITEM CODE", "TITLE", "QUANTITY"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        this.displayAll();
+        
         defectiveBooksTable.setToolTipText("");
         defectiveBooksTable.setCellSelectionEnabled(true);
         defectiveBooksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -330,7 +315,9 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCLogInScreen a = new WCLogInScreen();
+        a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -338,7 +325,56 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+        if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String itemCode = "";
+            String title = "";
+            String quantity = "";
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM psicomims.defective_book WHERE item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%" + searchField.getText() +  "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                    itemCode = rs.getString("item_code");
+                    title = rs.getString("title");
+                    quantity = rs.getString("defects_quantity");
+                    model.addRow(new Object[]{itemCode, title, quantity});
+                    i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            defectiveBooksTable.setModel(model);
+            defectiveBooksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void addButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseEntered
@@ -346,11 +382,15 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
     }//GEN-LAST:event_addButtonMouseEntered
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCAddDefectiveBookScreen a = new WCAddDefectiveBookScreen();
+        a.setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCLogInScreen a = new WCLogInScreen();
+        a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     /**
@@ -403,4 +443,53 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+    
+    public void displayAll(){
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String itemCode = "";
+        String title = "";
+        String quantity = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM psicomims.defective_book");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                itemCode = rs.getString("item_code");
+                title = rs.getString("title");
+                quantity = rs.getString("defects_quantity");
+                model.addRow(new Object[]{itemCode, title, quantity});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        defectiveBooksTable = new JTable(model);
+        defectiveBooksTable.setModel(model);
+        defectiveBooksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }

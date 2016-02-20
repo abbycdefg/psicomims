@@ -186,26 +186,36 @@ public class ADUpdatePasswordScreen extends javax.swing.JFrame {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
     	HashMap map;
-        
-        try{
-        	String username = ADUsersTab.getData();
-            String oldPassword = oldPasswordField.getText();
-            String newPassword = newPasswordField.getText();
-            String newPassword2 = reenterPasswordField.getText();
-            
-
-            try{
-                map = doCommand("updatePassword", username, oldPassword, newPassword, newPassword2);
+        if(!oldPasswordField.getText().equals("") && !newPasswordField.getText().equals("") && !reenterPasswordField.getText().equals(""))
+        {
+        	try{
+            	String username = ADUsersTab.getData();
+                String oldPassword = oldPasswordField.getText();
+                String newPassword = newPasswordField.getText();
+                String newPassword2 = reenterPasswordField.getText();
                 
+
+                try{
+                    map = doCommand("updatePassword", username, oldPassword, newPassword, newPassword2);
+                    
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                
+                cancelButton.setEnabled(false);
+                
+            	this.dispose();
+            	ADUsersTab a = new ADUsersTab();
+            	a.setVisible(true);
             }
             catch (Exception e){
                 e.printStackTrace();
             }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        
+    	  }
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}     
         
     }
 

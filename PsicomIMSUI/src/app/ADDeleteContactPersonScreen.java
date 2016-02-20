@@ -131,6 +131,12 @@ public class ADDeleteContactPersonScreen extends javax.swing.JFrame {
             catch (Exception e){
                 e.printStackTrace();
             }
+            
+            cancelButton.setEnabled(false);
+            
+        	this.dispose();
+        	ADContactPersonsTab a = new ADContactPersonsTab();
+        	a.setVisible(true);
         }
         catch (Exception e){
             e.printStackTrace();
