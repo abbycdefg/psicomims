@@ -34,6 +34,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
     }
 
     /**

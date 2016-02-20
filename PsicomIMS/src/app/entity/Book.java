@@ -1,7 +1,9 @@
 package app.entity;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,18 +12,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Book implements Serializable{
 	
-	@Id
+
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
 	private Long id;
 
 	@Column
 	private String title;
-
+	
+	@Id
 	@Column	
 	private String itemCode;
 	
@@ -37,11 +41,21 @@ public class Book implements Serializable{
 	@Column
 	private String location;
 	
+	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "bookId")
+	private Set<SpecificPo> specPo;
+	
+	
 	private int quantity;
 	private double discountedPrice;
 	private double srp;
 	
 	
+	public Set<SpecificPo> getSpecPo() {
+		return specPo;
+	}
+	public void setSpecPo(Set<SpecificPo> specPo) {
+		this.specPo = specPo;
+	}
 	public String getLocation() {
 		return location;
 	}

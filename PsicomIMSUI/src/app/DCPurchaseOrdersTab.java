@@ -9,7 +9,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -30,6 +35,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     /**
      * Creates new form DCPurchaseOrdersTab
      */
+		
     public DCPurchaseOrdersTab() {
         initComponents();
         
@@ -395,12 +401,36 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    	
+    	if (purchaseOrdersTable.getSelectedRowCount() == 1 && purchaseOrdersTable.getSelectedColumn() == 0){
+    		int row = purchaseOrdersTable.getSelectedRow();
+    		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
+    		String date = purchaseOrdersTable.getValueAt(row, 1).toString();
+    		String contactPers = purchaseOrdersTable.getValueAt(row, 2).toString();
+    		String outlet = purchaseOrdersTable.getValueAt(row, 3).toString();
+    		
+	    	this.dispose();
+	    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(poNumber, date, contactPers, outlet);
+	    	a.setVisible(true);
+    		}
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (purchaseOrdersTable.getSelectedRowCount() == 1 && purchaseOrdersTable.getSelectedColumn() == 0){
+    		int row = purchaseOrdersTable.getSelectedRow();
+    		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
+    		System.out.println(poNumber);
+    	this.dispose();
+    	DCDeletePurchaseOrderScreen a = new DCDeletePurchaseOrderScreen(poNumber);
+    	a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
     	this.dispose();
@@ -482,7 +512,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     }
     
     public void displayAll(){
-    	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "ITEM CODE", "TITLE", "STOCK ON HAND", "ORDER", "DELIVERY DATE", "STATUS"};
+    	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "DELIVERY DATE", "STATUS"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);

@@ -2,8 +2,36 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,10 +44,20 @@ import java.util.Map;
  * @author Abby
  */
 public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
+	
+	private JComboBox contactComboBox = new JComboBox();   
+	private JComboBox outletComboBox = new JComboBox();
+	private String []co;
+	private String []ou;	
+	private List<String> booksList;	
+	private List<String> quantityList;
+	private List<String> contactList  = new ArrayList<String>();
+	private List<String> outletsList  = new ArrayList<String>();
 
     /**
      * Creates new form DCEditPurchaseOrderScreen
      */
+	
     public DCEditPurchaseOrderScreen() {
         initComponents();
         
@@ -49,6 +87,108 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         });
     }
 
+    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1, String contactPerson1, String outlet1) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        editBooksButton.setOpaque(false);
+        editBooksButton.setContentAreaFilled(false);
+        editBooksButton.setBorderPainted(false);
+        editBooksButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = editBooksButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                editBooksButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                editBooksButton.setFont(originalFont);
+            }
+        });
+        
+        getContactPersonList();
+        getOutletList();
+        purchaseOrderNumberField.setEditable(false);
+        co = new String[contactList.size()];
+        contactList.toArray(co);
+        AutoCompleteSupport.install(contactComboBox, GlazedLists.eventListOf(co));
+        
+        ou = new String[outletsList.size()];
+        outletsList.toArray(ou);
+        AutoCompleteSupport.install(outletComboBox, GlazedLists.eventListOf(ou));
+        
+        
+       purchaseOrderNumberField.setText(poNumber1);
+       contactComboBox.setSelectedItem(contactPerson1);
+       outletComboBox.setSelectedItem(outlet1);
+        
+        
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateToday = df.parse(dateToday1);
+			dateTodayChooser.setDate(dateToday);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+    }
+    
+    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1 ) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        editBooksButton.setOpaque(false);
+        editBooksButton.setContentAreaFilled(false);
+        editBooksButton.setBorderPainted(false);
+        editBooksButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = editBooksButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                editBooksButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                editBooksButton.setFont(originalFont);
+            }
+        });
+        purchaseOrderNumberField.setEditable(false);
+        purchaseOrderNumberField.setText(poNumber1);
+        
+        booksList = booksList1;
+        quantityList = quantityList1;
+        
+        getContactPersonList();
+        getOutletList();
+        
+        co = new String[contactList.size()];
+        contactList.toArray(co);
+        AutoCompleteSupport.install(contactComboBox, GlazedLists.eventListOf(co));
+        
+        ou = new String[outletsList.size()];
+        outletsList.toArray(ou);
+        AutoCompleteSupport.install(outletComboBox, GlazedLists.eventListOf(ou));
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,8 +203,6 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         dateTodayLabel = new javax.swing.JLabel();
         purchaseOrderNumberField = new javax.swing.JTextField();
         dateTodayChooser = new com.toedter.calendar.JDateChooser();
-        outletField = new javax.swing.JTextField();
-        contactPersonField = new javax.swing.JTextField();
         contactPersonLabel = new javax.swing.JLabel();
         outletLabel = new javax.swing.JLabel();
         editButton = new javax.swing.JButton();
@@ -91,20 +229,6 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         purchaseOrderNumberField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 purchaseOrderNumberFieldActionPerformed(evt);
-            }
-        });
-
-        outletField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        outletField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                outletFieldActionPerformed(evt);
-            }
-        });
-
-        contactPersonField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        contactPersonField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contactPersonFieldActionPerformed(evt);
             }
         });
 
@@ -151,75 +275,105 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
                 editBooksButtonActionPerformed(evt);
             }
         });
+        contactComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    public int getWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public synchronized void addMouseListener(MouseListener l) {
+                    }
+                };
+            }
+        });
+        outletComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    public int getWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public synchronized void addMouseListener(MouseListener l) {
+                    }
+                };
+            }
+        });
+        
+;
+
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(purchaseOrderNumberLabel)
-                                    .addComponent(purchaseOrderNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(54, 54, 54)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dateTodayChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dateTodayLabel)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(contactPersonField, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(contactPersonLabel))
-                                .addGap(52, 52, 52)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(outletLabel)
-                                    .addComponent(outletField, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(235, 235, 235)
-                        .addComponent(editPurchaseOrderLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(230, 230, 230)
-                        .addComponent(editBooksButton)))
-                .addContainerGap(66, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(235)
+        					.addComponent(editPurchaseOrderLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(135)
+        					.addComponent(editButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(62)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(purchaseOrderNumberLabel)
+        								.addComponent(purchaseOrderNumberField, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE))
+        							.addGap(54)
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(dateTodayChooser, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+        								.addComponent(dateTodayLabel)))
+        						.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(contactPersonLabel)
+        								.addComponent(contactComboBox, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE))
+        							.addPreferredGap(ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(outletLabel)
+        								.addComponent(outletComboBox, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE))))))
+        			.addContainerGap(66, Short.MAX_VALUE))
+        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        			.addContainerGap(249, Short.MAX_VALUE)
+        			.addComponent(editBooksButton)
+        			.addGap(211))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(editPurchaseOrderLabel)
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(purchaseOrderNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateTodayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(purchaseOrderNumberField, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(dateTodayChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(contactPersonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(outletLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactPersonField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(outletField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addComponent(editBooksButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(editPurchaseOrderLabel)
+        			.addGap(28)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(purchaseOrderNumberLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(dateTodayLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(purchaseOrderNumberField, GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        				.addComponent(dateTodayChooser, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(contactPersonLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(outletLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(outletComboBox, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(contactComboBox, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(28)
+        			.addComponent(editBooksButton)
+        			.addPreferredGap(ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(editButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
-
+        getContentPane().setLayout(layout);
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -227,25 +381,57 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_purchaseOrderNumberFieldActionPerformed
 
-    private void outletFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outletFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_outletFieldActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	HashMap map;
 
-    private void contactPersonFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactPersonFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_contactPersonFieldActionPerformed
-
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+        try{
+            String purchaseOrderNumber = purchaseOrderNumberField.getText();
+            String contactPerson = contactComboBox.getSelectedItem().toString();
+            String outlet = outletComboBox.getSelectedItem().toString();
+            
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            Date dc = dateTodayChooser.getDate();
+            String dateToday = df.format(dc);
+            String listString = "";
+            String quantityListStr = "";
+            
+            if (booksList != null)
+            {
+            String[] strarray = booksList.toArray(new String[0]);
+            listString = Arrays.toString(strarray);
+            }
+            
+            else if (quantityList != null)
+            {
+            String[] quantityArr = quantityList.toArray(new String[0]);
+            quantityListStr = Arrays.toString(quantityArr);
+            }
+            
+            	
+            try{
+                map = doCommand("editPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityListStr);
+                this.dispose();
+             	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+             	a.setVisible(true);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void editBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBooksButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editBooksButtonActionPerformed
+    private void editBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+    	DCEditBookToPOScreen a = new DCEditBookToPOScreen();
+    	a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -284,16 +470,114 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.swing.JTextField contactPersonField;
     private javax.swing.JLabel contactPersonLabel;
     private com.toedter.calendar.JDateChooser dateTodayChooser;
     private javax.swing.JLabel dateTodayLabel;
     private javax.swing.JButton editBooksButton;
     private javax.swing.JButton editButton;
     private javax.swing.JLabel editPurchaseOrderLabel;
-    private javax.swing.JTextField outletField;
     private javax.swing.JLabel outletLabel;
     private javax.swing.JTextField purchaseOrderNumberField;
     private javax.swing.JLabel purchaseOrderNumberLabel;
     // End of variables declaration//GEN-END:variables
+    
+    public void getContactPersonList()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM contact_person");
+    			ResultSet rs = pst.executeQuery();
+    		    Set<String> contactPersonSet = new HashSet();
+    		    int i = 0;
+    			while (rs.next()) {
+    				if(!rs.getString("contact_person_name").equals(null))
+    				{
+    					contactPersonSet.add(rs.getString("contact_person_name"));
+    				}
+    				i++;
+    			}
+    			contactList.addAll(contactPersonSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+
+    	
+    }    
+
+    public void getOutletList()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM outlet");
+    			ResultSet rs = pst.executeQuery();
+    		    Set<String> outletSet = new HashSet();
+    			while (rs.next()) {
+    				if(!rs.getString("outlet_name").equals(null))
+    				{
+    					outletSet.add(rs.getString("outlet_name"));
+    				}
+    			}
+    			outletsList.addAll(outletSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    }
+    
+    private HashMap doCommand(String command, String purchaseOrderNumber, String dateToday, String contactPerson, String outlet, String booksList, String quantityList) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("purchaseOrderNumber", purchaseOrderNumber);
+        map.put("dateToday", dateToday);
+        map.put("contactPerson", contactPerson);
+        map.put("outlet", outlet);
+        map.put("booksList", booksList);
+        map.put("quantityList", quantityList);
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
 }

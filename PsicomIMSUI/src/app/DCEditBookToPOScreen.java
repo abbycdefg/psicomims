@@ -1,6 +1,8 @@
 package app;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +19,12 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCEditBookToPO
      */
+	private static String purchaseOrderNumber;
+	private static String contactPerson;
+	private static String outlet;
+	private static String dateToday;
+	private static List<String> booksList;
+	
     public DCEditBookToPOScreen() {
         initComponents();
         
@@ -28,6 +36,24 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+    }
+    public DCEditBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        purchaseOrderNumber = purchaseOrderNumber1;
+        contactPerson = contactPerson1;
+        outlet = outlet1;
+        dateToday = dateToday1;
+        booksList = booksList1;
     }
 
     /**
@@ -143,13 +169,39 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	List<String> booksList = new ArrayList<String>();
+    	List<String> quantityList = new ArrayList<String>();
+        try{
+        	int rowCount = booksTable.getRowCount();
+        	for(int i=0; i<rowCount; i++) {     
+        	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
+        	    	booksList.add(selectedBook);
+
+        	    	String selectedQt = booksTable.getModel().getValueAt(i, 3).toString();
+        	    	quantityList.add(selectedQt);
+        	}
+        	
+        	for(int i=0; i<rowCount; i++) {	  
+    			System.out.println(booksList.get(i));
+    	    
+        	}
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        
+        this.dispose();
+    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
+    	a.setVisible(true);
+    }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    	this.dispose();
+    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet);
+    	a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments

@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 import app.components.Admin;
 import app.components.DocumentationClerk;
 import app.components.Inventory;
@@ -282,17 +284,61 @@ class URLHandler extends AbstractHandler {
 					String dateToday = map.get("dateToday");
 					String contactPerson = map.get("contactPerson");
 					String outlet = map.get("outlet");
-
-					String books = map.get("booksList");  	
+					
+					
+					String books = map.get("booksList");
+					books = books.substring(1, books.length()-1);					
+					System.out.println(books);
 					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					
+					
+					String quantity = map.get("quantityList");  
+					quantity = quantity.substring(1, quantity.length()-1);
+					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
+					System.out.println(quantity);
 					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
-							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList);
+							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
 							response.getWriter().println("You have succesfully added Purchase Order " + purchaseOrderNumber + ".");
 					}
-					else{
-						response.getWriter().println("Invalid request.");
+
+		
+				}
+				
+				else if (target.equalsIgnoreCase("/editPurchaseOrder")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String purchaseOrderNumber = map.get("purchaseOrderNumber");
+					String dateToday = map.get("dateToday");
+					String contactPerson = map.get("contactPerson");
+					String outlet = map.get("outlet");
+					
+					
+					String books = map.get("booksList");
+					books = books.substring(1, books.length()-1);					
+					System.out.println(books);
+					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
+					System.out.println(books);
+					
+					String quantity = map.get("quantityList");  
+					quantity = quantity.substring(1, quantity.length()-1);
+					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
+					System.out.println(quantityList);
+					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
+							dc.editPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
+							response.getWriter().println("You have succesfully edited Purchase Order " + purchaseOrderNumber + ".");
 					}
+
+		
+				}
+				else if (target.equalsIgnoreCase("/deletePurchaseOrder")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String purchaseOrderNumber = map.get("purchaseOrderNumber");
+					
+						System.out.println("pasok");
+							dc.deletePurchaseOrder(purchaseOrderNumber);
+							response.getWriter().println("You have succesfully deleted Purchase Order " + purchaseOrderNumber + ".");
+
 		
 				}
 				
@@ -356,22 +402,18 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("Invalid.");
 					}
 			}
-				else if (target.equalsIgnoreCase("/getAllPurchaseOrders")) {
+				else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
 					
-
 					try {
 						HashMap<String, String> map = convertJsonToCommand(request);
-						List<PurchaseOrder> poList = dc.getAllPurchaseOrders();
-						  ObjectMapper mapper = new ObjectMapper();
-					      String json1 = mapper.writeValueAsString(poList);
-					      
-						response.getWriter().println(json1);
+
+						String joNumber =  map.get("joNumber");
+						response.getWriter().println("You have succesfully deleted " + joNumber + ".");
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
 					}
-					List<PurchaseOrder> poList = dc.getAllPurchaseOrders();
-						response.getWriter().println("Invalid request.");
-				}
+			}
+
 				
 				
 				//abby will fix

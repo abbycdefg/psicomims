@@ -1,7 +1,11 @@
 package app;
 
 import java.awt.Color;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JTextField;
@@ -10,6 +14,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 
@@ -19,6 +25,11 @@ import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.ImageIcon;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -40,6 +51,8 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
 	private String totalAmt;
 	private String dateDelivery;
 	private JComboBox poNumberComboBox = new JComboBox();
+	private String poNumber;
+	private String []po;
 	
     public DCAddBookToDRScreen() {
         initComponents();
@@ -54,7 +67,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1) {
+    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1, List<String> poList1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -70,6 +83,9 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         dateToday = dateToday1;
         totalAmt = totalAmt1;
         dateDelivery = dateDelivery1;
+        po = new String[poList1.size()];
+        poList1.toArray(po);
+        AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(po));
     }
 
     /**
@@ -120,9 +136,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
             }
         });
         
-    //auto complete    
-        Object[] elements = new Object[] {"Cat", "Dog", "Lion", "Mouse"};
-        AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(elements));
         
         poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
             protected JButton createArrowButton() {
@@ -203,6 +216,10 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         
+        JButton poSearchButton = new JButton("");
+
+        poSearchButton.setIcon(new ImageIcon(DCAddBookToDRScreen.class.getResource("/images/button_search.png")));
+        
       
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -223,7 +240,9 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         						.addGroup(layout.createSequentialGroup()
         							.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         							.addPreferredGap(ComponentPlacement.UNRELATED)
-        							.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
+        							.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(poSearchButton))
         						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 675, GroupLayout.PREFERRED_SIZE))))
         			.addGap(36))
         );
@@ -238,7 +257,9 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         					.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         				.addGroup(layout.createSequentialGroup()
         					.addGap(26)
-        					.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(poSearchButton)
+        						.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))))
         			.addGap(18)
         			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
@@ -250,19 +271,28 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    // </editor-fold>//GEN-END:initComponents
     
+    poSearchButton.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    		poNumber = poNumberComboBox.getSelectedItem().toString();
+    	}
+    });
     
+    }
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	List<String> booksList = new ArrayList<String>();
+    	List<String> quantityList = new ArrayList<String>();
     	
         try{
         	int rowCount = booksTable.getRowCount();
         	System.out.println(rowCount);
         	for(int i=0; i<rowCount; i++) {	  
-        	    String cellValue = (String) booksTable.getValueAt(i,1);
+        	    String cellValueBook = (String) booksTable.getValueAt(i,1);
+        	    String cellValueQuantity = (String) booksTable.getValueAt(i,2);
    
-        	    	booksList.add(cellValue);    
+        	    	booksList.add(cellValueBook);   
+        	    	quantityList.add(cellValueQuantity);
         	}
         	for(int i=0; i<rowCount; i++) {	  
     			System.out.println(booksList.get(i));
@@ -334,4 +364,74 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     private javax.swing.JTextField poNumberField;
     private javax.swing.JLabel poNumberLabel;
     private javax.swing.JPanel poNumberPanel;
+    //END
+    public void displayAll(){
+    	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String title = "";
+        String itemCode = "";
+        String price = "";
+        String author = "";
+        String releaseDate = "";
+        List<String> bookList = new ArrayList<String>();
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                if(rs.getString("po_id") == poNumber)
+                {
+                	bookList.add(rs.getString("book_id"));
+                }
+                i++;
+            }
+            
+            pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+            ResultSet rs1 = pst.executeQuery();
+            
+            int j = 0;
+            while (rs.next()) {
+            	for(int k = 0; k <= bookList.size(); k++ )
+            	{
+            		if(rs1.getString("item_code") == bookList.get(k))
+            		{
+            			itemCode = rs1.getString("item_code");
+            			title = rs1.getString("title");
+            			price = rs1.getString("price");
+            		}
+            	}
+            	model.addRow(new Object[]{title, itemCode, price});
+                j++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        booksTable = new JTable(model);
+        booksTable.setModel(model);
+        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }
