@@ -41,14 +41,20 @@ public class Book implements Serializable{
 	@Column
 	private String location;
 	
+<<<<<<< HEAD
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "bookId")
 	private Set<SpecificPo> specPo;
 	
 	
+=======
+	@Column
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 	private int quantity;
+
 	private double discountedPrice;
 	private double srp;
 	
+<<<<<<< HEAD
 	
 	public Set<SpecificPo> getSpecPo() {
 		return specPo;
@@ -68,6 +74,8 @@ public class Book implements Serializable{
 	private PurchaseOrder po;
 	
 
+=======
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 	public Long getId() {
 		return id;
 	}
@@ -105,12 +113,22 @@ public class Book implements Serializable{
 		this.releaseDate = releaseDate;
 	}
 	
-	public PurchaseOrder getPoNumber() {
-		return po;
+	public String getLocation() {
+		return location;
 	}
-	public void setPoNumber(PurchaseOrder po) {
-		this.po = po;
+	public void setLocation(String location) {
+		this.location = location;
 	}
+
+	
+	public int getQuantity() {
+		return quantity;
+	}
+	
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
     public boolean checkItemCode(String itemCode) {
         return itemCode.equals( this.itemCode );
     }

@@ -65,7 +65,12 @@ public class DocumentationClerk
         	List <PurchaseOrder> poList = poDao.findAll();
         	return poList;     
     }
+<<<<<<< HEAD
     public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList, List<String> quantityList)
+=======
+ 
+    public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList)
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
     {
     	PurchaseOrder p = new PurchaseOrder();
 
@@ -84,7 +89,11 @@ public class DocumentationClerk
     		System.out.println(b + "check book");
     		if(b!=null)
     		{
+<<<<<<< HEAD
     		sp.setBookId(b);
+=======
+    			listOfBooks.add(b);
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
     		}
     		
     		PurchaseOrder po = poDao.findByPurchaseOrderNumber(poNumber);
@@ -104,6 +113,7 @@ public class DocumentationClerk
     		spoDao.save(sp);    		
     	}
     	
+<<<<<<< HEAD
 
     	System.out.println(listOfBooks);   
       	return p.getId()!= null;
@@ -117,6 +127,9 @@ public class DocumentationClerk
     	p.setDateToday(dateToday);
     	p.setContactPerson(contactPerson);
     	p.setOutlet(outlet);
+=======
+    	p.setBooks(listOfBooks);
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
     	p = poDao.save(p);
     	
 

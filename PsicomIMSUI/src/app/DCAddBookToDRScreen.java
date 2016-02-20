@@ -5,7 +5,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Arrays;
+=======
+import java.util.HashMap;
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 import java.util.List;
 
 import javax.swing.JTextField;
@@ -15,9 +19,14 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+<<<<<<< HEAD
 import javax.swing.JTable;
+=======
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
@@ -136,6 +145,12 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
             }
         });
         
+<<<<<<< HEAD
+=======
+    //auto complete    
+        Object[] elements = new Object[] {"Cat", "Dog", "Lion", "Mouse"};      
+        AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(elements));
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
         
         poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
             protected JButton createArrowButton() {
@@ -364,6 +379,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     private javax.swing.JTextField poNumberField;
     private javax.swing.JLabel poNumberLabel;
     private javax.swing.JPanel poNumberPanel;
+<<<<<<< HEAD
     //END
     public void displayAll(){
     	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};
@@ -434,4 +450,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
+=======
+
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 }

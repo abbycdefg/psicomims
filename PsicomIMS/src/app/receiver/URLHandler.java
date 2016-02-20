@@ -28,10 +28,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 import app.components.Admin;
 import app.components.DocumentationClerk;
 import app.components.Inventory;
+import app.components.WarehouseClerk;
 import app.entity.Book;
 import app.entity.PurchaseOrder;
 import app.entity.User;
@@ -54,6 +58,9 @@ class URLHandler extends AbstractHandler {
 	
 	@Autowired
 	private DocumentationClerk dc;
+	
+	@Autowired
+	private WarehouseClerk wc;
 
 	
 
@@ -388,7 +395,7 @@ class URLHandler extends AbstractHandler {
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
 					}
-			}
+				}
 				else if (target.equalsIgnoreCase("/deleteJobOrder")) {
 					
 					try {
@@ -401,8 +408,13 @@ class URLHandler extends AbstractHandler {
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
 					}
+<<<<<<< HEAD
 			}
 				else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
+=======
+				}
+				else if (target.equalsIgnoreCase("/getAllPurchaseOrders")) {
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 					
 					try {
 						HashMap<String, String> map = convertJsonToCommand(request);
@@ -436,6 +448,7 @@ class URLHandler extends AbstractHandler {
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
 					}
+<<<<<<< HEAD
 			}
 else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
 					
@@ -453,34 +466,63 @@ else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
 			}
 
 
+=======
+					List<PurchaseOrder> poList = dc.getAllPurchaseOrders();
+						response.getWriter().println("Invalid request.");
+				}
 				
-				//abby will fix
-				/**else if (target.equalsIgnoreCase("/addBooksToPO")) {
+				else if (target.equalsIgnoreCase("/wcLogin")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
-					List<String> booksList = new ArrayList<String>();
 
-			    	for(int i=0; i<map.size(); i++) {     
-			    		String book = map.get("booksList");
-						booksList.add(book);
-						System.out.println("tae " + book);
-			    	}
-									
-					String poNumber = map.get("purchaseOrderNumber");
+					String username = map.get("username");
+					String password = map.get("password");
+
 					
-					for(int i=0; i<booksList.size(); i++) { 
-						System.out.println("poo " + booksList.get(i));
-						if(dc.checkBook(booksList.get(i))){
-								dc.addBookToPO(booksList.get(i), poNumber);
-								response.getWriter().println("You have succesfully added " + booksList.get(i) + ".");
-						}
-						else{
-							response.getWriter().println("Invalid request.");
-						}
+					if(wc.checkUser(wc.getUsername(username)) && password.equals(wc.getPassword(username))){
+						response.getWriter().println("Success!");
 					}
-		
-				} **/
+					else{
 
+						response.getWriter().println("Invalid request.");
+					}	
+				}
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 				
+				else if (target.equalsIgnoreCase("/updateStocks")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String itemCode = map.get("itemCode");
+					int newQuantity = Integer.parseInt(map.get("newQuantity"));
+					
+					if(wc.checkBook(itemCode)){
+						wc.updateStock(itemCode, newQuantity);
+						response.getWriter().println("You have succesfully updated the stocks to " + newQuantity + ".");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+
+					}
+					else{
+
+						response.getWriter().println("Invalid request.");
+					}
+				}
+				
+				else if (target.equalsIgnoreCase("/addDefectiveBook")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String itemCode = map.get("itemCode");
+					int quantity = Integer.parseInt(map.get("quantity"));
+					
+					if(wc.checkBook(itemCode)){
+						wc.addDefectiveBook(itemCode, quantity);
+						response.getWriter().println("You have succesfully added " + wc.getBookTitle(itemCode) + ".");
+						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+
+					}
+					else{
+
+						response.getWriter().println("Invalid request.");
+					}
+				}
 				else {
 					// Invalid request
 					response.getWriter().println("Unsupported POST request: " + target);

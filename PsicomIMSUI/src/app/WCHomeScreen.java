@@ -98,7 +98,7 @@ public class WCHomeScreen extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         updateButton.setBackground(new java.awt.Color(255, 255, 255));
         updateButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -271,15 +271,21 @@ public class WCHomeScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCUpdateStocksTab a = new WCUpdateStocksTab();
+        a.setVisible(true);
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void defButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCDefectiveBookRecordTab a = new WCDefectiveBookRecordTab();
+        a.setVisible(true);
     }//GEN-LAST:event_defButtonActionPerformed
 
     private void dispButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dispButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCDisplayOrdersTab a = new WCDisplayOrdersTab();
+        a.setVisible(true);
     }//GEN-LAST:event_dispButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -287,7 +293,9 @@ public class WCHomeScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        WCLogInScreen a = new WCLogInScreen();
+        a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
