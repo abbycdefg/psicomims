@@ -18,11 +18,12 @@ import javax.persistence.OneToMany;
 @Entity
 public class PurchaseOrder implements Serializable{
 	
-	@Id
+	
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
 	private Long id;
-
+	
+	@Id
 	@Column
 	private String purchaseOrderNumber;
 
@@ -35,10 +36,21 @@ public class PurchaseOrder implements Serializable{
 	@Column
 	private String outlet;
 	
-	@ManyToMany(cascade={CascadeType.MERGE})
+	/**@ManyToMany(cascade={CascadeType.MERGE})
 	@JoinTable(name = "specific_po", joinColumns = {@JoinColumn(name = "po_id")}, inverseJoinColumns = {@JoinColumn(name = "book_id")} )
-    private Set<Book> books;
+    private Set<Book> books;**/
 	
+	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "poId")
+	private Set<SpecificPo> specPo;
+	
+	
+	
+	public Set<SpecificPo> getSpecPo() {
+		return specPo;
+	}
+	public void setSpecPo(Set<SpecificPo> specPo) {
+		this.specPo = specPo;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -69,12 +81,12 @@ public class PurchaseOrder implements Serializable{
 	public void setOutlet(String outlet) {
 		this.outlet = outlet;
 	}
-	public Set<Book> getBooks() {
+	/**public Set<Book> getBooks() {
 		return books;
 	}
 	public void setBooks(Set<Book> books) {
 		this.books = books;
-	}
+	}	/**/
 	
 	public boolean checkPONumber(String purchaseOrderNumber){
 		return purchaseOrderNumber.equals(this.purchaseOrderNumber);

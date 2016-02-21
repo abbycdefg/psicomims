@@ -1,12 +1,22 @@
 package app;
 
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,14 +33,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class DCAddBookToPOScreen extends javax.swing.JFrame {
 	
 	private static String purchaseOrderNumber;
-	private static String contactPerson;
-	private static String outlet;
+	private static int contactPerson;
+	private static int outlet;
 	private static String dateToday;
+	private static List<String> booksList;
 	
     /**
      * Creates new form DCAddBookToPOScreen
      */
-    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1) {
+    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, int contactPerson1, int outlet1, List<String> booksList1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -46,6 +57,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         contactPerson = contactPerson1;
         outlet = outlet1;
         dateToday = dateToday1;
+        booksList = booksList1;
     }
 
     /**
@@ -116,6 +128,8 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        
+
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -165,26 +179,31 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
 
     	List<String> booksList = new ArrayList<String>();
-    	
+    	List<String> quantityList = new ArrayList<String>();
         try{
         	int rowCount = booksTable.getRowCount();
-        	for(int i=0; i<rowCount; i++) {     
-        	    	String selectedCell = (String) booksTable.getModel().getValueAt(i, 1);
-        	    	booksList.add(selectedCell);
+        	for(int i=0; i<rowCount; i++) {
+        	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
+        	    	if(selectedBook != null)
+        	    	{
+        	    	booksList.add(selectedBook);
+        	    	}
+        	    	
+        	    	if(booksTable.getModel().getValueAt(i, 3) != null)
+        	    	{
+        	    	String selectedQt = booksTable.getModel().getValueAt(i, 3).toString();
+        	    	
+        	    		quantityList.add(selectedQt);
+        	    	}
         	}
         	
-        	for(int i=0; i<rowCount; i++) {	  
-    			System.out.println(booksList.get(i));
-    	    
-        	}
-
         }
         catch (Exception e){
             e.printStackTrace();
         }
         
         this.dispose();
-    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList);
+    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
     	a.setVisible(true);
         
     }//GEN-LAST:event_addButtonActionPerformed
@@ -223,7 +242,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet).setVisible(true);
+                new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList).setVisible(true);
             }
         });
     }
@@ -240,5 +259,57 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
     private static void printMessage(HashMap map)
     {
         System.out.println(map.get("message"));
+    }
+    public void displayAll(String itmCode){
+    	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER", "DELIVERY DATE"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String title = "";
+        String itemCode = "";
+        String stocksOnHand = "";
+        String quantity = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM psicomims.book");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+            	if (itmCode.equals(rs.getString("item_code")))
+            	{
+                title = rs.getString("title");
+                itemCode = rs.getString("item_code");
+                stocksOnHand = "";
+                model.addRow(new Object[]{title, itemCode, stocksOnHand});
+                i++;
+            	}
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        booksTable = new JTable(model);
+        booksTable.setModel(model);
+        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
 }

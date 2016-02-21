@@ -3,17 +3,27 @@ package app;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,6 +41,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
      * Creates new form DCAddDeliveryReceiptScreen
      */
 	private List<String> booksList;
+	private List<String> poList = new ArrayList<String>();
     public DCAddDeliveryReceiptScreen() {
         initComponents();
         
@@ -279,7 +290,10 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         );
 
         pack();
+        
+        
     }// </editor-fold>//GEN-END:initComponents
+
 
     private void deliveryReceiptNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveryReceiptNumberFieldActionPerformed
         // TODO add your handling code here:
@@ -307,6 +321,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
              
              String[] strarray = booksList.toArray(new String[0]);
              String listString = Arrays.toString(strarray);
+
              try{
 
                 map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString);
@@ -340,14 +355,9 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
          
          java.util.Date deliveryDate = deliveryDateChooser.getDate();
          String deliveryDateStr = df.format(deliveryDate);
-    	 try {
-			doCommand("getAllPurchaseOrders");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+         getPoList();
          this.dispose();
-         DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr);
+         DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poList);
          b.setVisible(true);
 
     }
@@ -440,34 +450,37 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         }
     }
     
-    private HashMap doCommand(String command) throws Exception
+public void getPoList()
     {
-        String url1 = "http://localhost:8080/"+command;
-        
-        HashMap<String, Object> map = new HashMap<String, Object>();
+			PreparedStatement pst;
+			Connection con;
+			
+			try {
 
-        // CONVERT JAVA DATA TO JSON
-        ObjectMapper mapper = new ObjectMapper();
-        String json1 = mapper.writeValueAsString(map);
-        
-        
-        // SEND TO SERVICE
-        String reply = NetUtil.getURL(url1);
-        System.out.println("REPLY = "+reply);
-        
-        
-        try
-        {
-            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
-            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
-            return replyMap;
-        }
-        catch(Exception e)
-        {
-            //System.out.println(reply);
-            HashMap replyMap = new HashMap();
-            replyMap.put("message", reply);
-            return replyMap; 
-        }
+				Class.forName("com.mysql.jdbc.Driver");
+				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+				ResultSet rs = pst.executeQuery();
+				int i = 0;
+			    Set<String> poSetList = new HashSet();
+				while (rs.next()) {
+					if(!rs.getString("po_id").equals(null))
+					{
+						poSetList.add(rs.getString("po_id"));
+					}
+					i++;
+				}
+				poList.addAll(poSetList);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		
     }
+
 }
+

@@ -12,12 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import app.entity.Book;
 import app.entity.DeliveryReceipt;
+import app.entity.DeliverySchedule;
 import app.entity.JobOrder;
 import app.entity.PurchaseOrder;
+import app.entity.SpecificPo;
 import app.repositories.BookRepository;
 import app.repositories.DeliveryReceiptRepository;
+import app.repositories.DeliveryScheduleRepository;
 import app.repositories.JobOrderRepository;
 import app.repositories.PurchaseOrderRepository;
+import app.repositories.SpecificPoRepository;
 
 import java.util.*;
 
@@ -35,6 +39,12 @@ public class DocumentationClerk
 	
 	@Autowired
 	JobOrderRepository joDao;
+	
+	@Autowired
+	SpecificPoRepository spoDao;
+	
+	@Autowired
+	DeliveryScheduleRepository dsDao;
 	
 	public boolean checkPurchaseOrder(String poNumber)
     {
@@ -55,31 +65,85 @@ public class DocumentationClerk
         	List <PurchaseOrder> poList = poDao.findAll();
         	return poList;     
     }
+<<<<<<< HEAD
+    public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList, List<String> quantityList)
+=======
  
     public boolean createPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList)
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
     {
     	PurchaseOrder p = new PurchaseOrder();
+
     	Set<Book> listOfBooks= new HashSet<Book>();
     	p.setPurchaseOrderNumber(poNumber);
     	p.setDateToday(dateToday);
     	p.setContactPerson(contactPerson);
     	p.setOutlet(outlet);
-   	
+    	p = poDao.save(p);
+    	
+    	SpecificPo sp = new SpecificPo();
+    	
     	for(int i = 0; i<booksList.size(); i++)
     	{
     		Book b = bookDao.findByItemCode(booksList.get(i)); 
+    		System.out.println(b + "check book");
     		if(b!=null)
     		{
+<<<<<<< HEAD
+    		sp.setBookId(b);
+=======
     			listOfBooks.add(b);
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
     		}
     		
+    		PurchaseOrder po = poDao.findByPurchaseOrderNumber(poNumber);
+    		sp.setPoId(po);
+    		
+    		if(quantityList.get(i) != null)
+    		{
+    			String quantity = quantityList.get(i);
+    			System.out.println(quantity);
+    			if (quantity != "")
+    			{
+    			int qty = Integer.parseInt(quantity);
+    			sp.setQuantity(qty);
+    			}
+    		}
+    		
+    		spoDao.save(sp);    		
     	}
     	
-    	p.setBooks(listOfBooks);
-    	p = poDao.save(p);
-   
+<<<<<<< HEAD
+
+    	System.out.println(listOfBooks);   
       	return p.getId()!= null;
     	
+    }
+    public boolean editPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList, List<String> quantityList)
+    {
+    	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
+
+    	Set<Book> listOfBooks= new HashSet<Book>();
+    	p.setDateToday(dateToday);
+    	p.setContactPerson(contactPerson);
+    	p.setOutlet(outlet);
+=======
+    	p.setBooks(listOfBooks);
+>>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
+    	p = poDao.save(p);
+    	
+
+    	System.out.println(listOfBooks);   
+      	return p.getId()!= null;
+    	
+    }
+    public boolean deletePurchaseOrder(String poNumber)
+    {
+    	
+    	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
+    	System.out.println(p);
+    	poDao.delete(p);
+      	return p.getId()!= null;
     }
     
     public boolean checkBook(String itemCode)
@@ -162,5 +226,36 @@ public class DocumentationClerk
     	JobOrder j = joDao.findByJoNumber(joNumber);
     	joDao.delete(j);;
     	return j.getId()!= null;    	
+    }
+    
+    public boolean addDeliverySchedule(String scheduleCode, String date, String outlet, String drCode) {
+    	DeliverySchedule d = new DeliverySchedule();
+    	d.setScheduleCode(scheduleCode);
+    	d.setDate(date);
+    	d.setOutlet(outlet);
+    	d.setDeliveryReceiptCode(drCode);
+    	
+    	d = dsDao.save(d);
+    	
+    	return d.getScheduleCode()!= null;
+    	
+    }
+    public boolean editDeliverySchedule(String scheduleCode, String date, String outlet, String drCode) {
+    	DeliverySchedule d = dsDao.findByScheduleCode(scheduleCode);
+    	d.setDate(date);
+    	d.setOutlet(outlet);
+    	d.setDeliveryReceiptCode(drCode);
+    	
+    	d = dsDao.save(d);
+    	
+    	return d.getScheduleCode()!= null;
+    	
+    }
+    public boolean deleteDeliverySchedule(String scheduleCode) {
+    	DeliverySchedule d = dsDao.findByScheduleCode(scheduleCode);
+    	dsDao.delete(d);
+    	
+    	return d.getScheduleCode()!= null;
+    	
     }
 }

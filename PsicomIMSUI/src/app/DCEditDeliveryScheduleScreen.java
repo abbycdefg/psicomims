@@ -3,7 +3,28 @@ package app;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +41,12 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCEditDeliveryScheduleScreen
      */
+	private List<String> outletsList  = new ArrayList<String>();
+	private JComboBox outletComboBox = new JComboBox();
+
+	private String []ou;
+	private JTextField scheduleCodeField;
+	private JTextField deliveryReceiptCodeField;
     public DCEditDeliveryScheduleScreen() {
         initComponents();
         
@@ -48,7 +75,54 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
-
+    
+    public DCEditDeliveryScheduleScreen(String date1, String scheduleCode1, String outlet1, String deliveryReciptCode1) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        addMoreOutletsButton.setOpaque(false);
+        addMoreOutletsButton.setContentAreaFilled(false);
+        addMoreOutletsButton.setBorderPainted(false);
+        addMoreOutletsButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = addMoreOutletsButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                addMoreOutletsButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addMoreOutletsButton.setFont(originalFont);
+            }
+        });
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        getOutletList();
+        
+        ou = new String[outletsList.size()];
+        outletsList.toArray(ou);
+        AutoCompleteSupport.install(outletComboBox, GlazedLists.eventListOf(ou));
+        
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateDel = df.parse(date1);
+			dateChooser.setDate(dateDel);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        
+        scheduleCodeField.setText(scheduleCode1);
+        outletComboBox.setSelectedItem(outlet1);
+        deliveryReceiptCodeField.setText(deliveryReciptCode1);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -241,9 +315,36 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_deliveryReceiptCodeFieldActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+ HashMap map;
+         
+         try{
+         	
+        	 String scheduleCode = scheduleCodeField.getText();
+             String outlet = outletComboBox.getSelectedItem().toString();
+             String deliveryReceiptCode = deliveryReceiptCodeField.getText();
+             
+             DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+             java.util.Date deliveryDate = dateChooser.getDate();
+             String dateTodayStr = df.format(deliveryDate);
+             
+
+             try{
+
+                 map = doCommand("editDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
+             	this.dispose();
+             	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+             	a.setVisible(true);
+                 
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+             }
+         }
+         catch (Exception e){
+             e.printStackTrace();
+         } 
+    }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
@@ -295,4 +396,67 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
     private javax.swing.JLabel outletsLabel;
     private javax.swing.JLabel scheduleCodeLabel;
     // End of variables declaration//GEN-END:variables
+    public void getOutletList()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM outlet");
+    			ResultSet rs = pst.executeQuery();
+    		    Set<String> outletSet = new HashSet();
+    			while (rs.next()) {
+    				if(!rs.getString("outlet_name").equals(null))
+    				{
+    					outletSet.add(rs.getString("outlet_name"));
+    				}
+    			}
+    			outletsList.addAll(outletSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    } 
+    private HashMap doCommand(String command, String date, String scheduleCode, String outlets, String deliveryReceiptCode ) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("date", date);
+        map.put("scheduleCode", scheduleCode);
+        map.put("outlets", outlets);
+        map.put("deliveryReceiptCode", deliveryReceiptCode);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap; 
+        }
+    }
 }
