@@ -337,7 +337,7 @@ class URLHandler extends AbstractHandler {
 					else{
 						response.getWriter().println("Invalid request.");
 						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-
+					}
 		
 				}
 				
