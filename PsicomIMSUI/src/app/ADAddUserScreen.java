@@ -193,29 +193,35 @@ public class ADAddUserScreen extends javax.swing.JFrame {
     	HashMap map;
         if(!usernameField.getText().equals("") && !passwordField.getText().equals("") && !reenterPasswordField.getText().equals(""))
         {
-    		try{
-                String username = usernameField.getText();
-                String password = passwordField.getText();
-                String password2 = reenterPasswordField.getText();
-                
-
-                try{
-                    map = doCommand("addUser", username, password, password2);
-                    
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-                
-                cancelButton.setEnabled(false);
-                
-            	this.dispose();
-            	ADUsersTab a = new ADUsersTab();
-            	a.setVisible(true);
+        	if(passwordField.getText().length() >= 8)
+            {
+	    		try{
+	                String username = usernameField.getText();
+	                String password = passwordField.getText();
+	                String password2 = reenterPasswordField.getText();
+	                
+	
+	                try{
+	                    map = doCommand("addUser", username, password, password2);
+	                    
+	                }
+	                catch (Exception e){
+	                    e.printStackTrace();
+	                }
+	                
+	                cancelButton.setEnabled(false);
+	                
+	            	this.dispose();
+	            	ADUsersTab a = new ADUsersTab();
+	            	a.setVisible(true);
+	            }
+	            catch (Exception e){
+	                e.printStackTrace();
+	            }
             }
-            catch (Exception e){
-                e.printStackTrace();
-            }
+        	else{
+        		JOptionPane.showMessageDialog(null, "Password should be at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
     	  }
         else{
     		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);

@@ -89,6 +89,8 @@ class URLHandler extends AbstractHandler {
 					else{
 
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+						
 					}	
 				}
 				else if (target.equalsIgnoreCase("/addUser")) {
@@ -106,6 +108,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else if (target.equalsIgnoreCase("/updatePassword")) {
@@ -125,6 +128,7 @@ class URLHandler extends AbstractHandler {
 					else{
 
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}	
 		
 				}
@@ -143,6 +147,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else if (target.equalsIgnoreCase("/editOutlet")) {
@@ -151,7 +156,6 @@ class URLHandler extends AbstractHandler {
 					String outletId = map.get("outletId");
 					String outletName = map.get("outletName");
 					
-					//fix
 					if(ad.checkOutlet(outletId)){
 						ad.editOutlet(outletId, outletName);
 						response.getWriter().println("You have succesfully updated the information of " + outletName + ".");
@@ -159,6 +163,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 	
 		
@@ -175,6 +180,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}	
 		
 				}
@@ -193,6 +199,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else if (target.equalsIgnoreCase("/editContactPerson")) {
@@ -209,6 +216,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else if (target.equalsIgnoreCase("/deleteContactPerson")) {
@@ -223,6 +231,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}	
 		
 				}
@@ -240,6 +249,7 @@ class URLHandler extends AbstractHandler {
 					else{
 
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}	
 				}
 				
@@ -260,6 +270,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 		
 				}
@@ -279,6 +290,7 @@ class URLHandler extends AbstractHandler {
 							response.getWriter().println("You have succesfully edited " + title + ".");
 						} catch (Exception e) {
 							response.getWriter().println("Invalid.");
+							JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 						}
 
 				}
@@ -294,6 +306,7 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("You have succesfully deleted a book.");
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 
 				}
@@ -314,6 +327,7 @@ class URLHandler extends AbstractHandler {
 					}
 					else{
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 		
 				}
@@ -363,6 +377,7 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("You have succesfully edited " + joNumber + ".");
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else if (target.equalsIgnoreCase("/deleteJobOrder")) {
@@ -376,6 +391,7 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("You have succesfully deleted " + joNumber + ".");
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else if (target.equalsIgnoreCase("/getAllPurchaseOrders")) {
@@ -390,9 +406,11 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println(json1);
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					List<PurchaseOrder> poList = dc.getAllPurchaseOrders();
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				else if (target.equalsIgnoreCase("/wcLogin")) {
@@ -408,6 +426,7 @@ class URLHandler extends AbstractHandler {
 					else{
 
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}	
 				}
 				
@@ -426,6 +445,7 @@ class URLHandler extends AbstractHandler {
 					else{
 
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				
@@ -444,11 +464,13 @@ class URLHandler extends AbstractHandler {
 					else{
 
 						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				else {
 					// Invalid request
 					response.getWriter().println("Unsupported POST request: " + target);
+					JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			} 
@@ -459,7 +481,8 @@ class URLHandler extends AbstractHandler {
 		else
 		{
 		    // Invalid request
-			response.getWriter().println("Unsupported GET request: " + target);			
+			response.getWriter().println("Unsupported GET request: " + target);
+			JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);			
 		}
 		((Request) request).setHandled(true);
 	}
