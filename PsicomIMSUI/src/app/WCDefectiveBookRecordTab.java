@@ -344,7 +344,7 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM psicomims.defective_book WHERE item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%" + searchField.getText() +  "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.defective_book WHERE item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%" + searchField.getText() +  "%' OR defects_quantity LIKE '%" + searchField.getText() +  "%'");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {

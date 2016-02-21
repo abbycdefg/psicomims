@@ -26,9 +26,17 @@ public class SpecificPo implements Serializable{
 	@ManyToOne(fetch=FetchType.LAZY)
 	private PurchaseOrder poId;
 	
-	
 	private int quantity;
 	
+	@Column
+	private String status;
+
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	
 	public Book getBookId() {
 		return bookId;
@@ -48,7 +56,5 @@ public class SpecificPo implements Serializable{
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
-	
 
 }

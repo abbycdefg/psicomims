@@ -39,6 +39,7 @@ public class DeliveryReceipt {
 	@JoinTable(name = "specific_dr", joinColumns = {@JoinColumn(name = "dr_id")}, inverseJoinColumns = {@JoinColumn(name = "book_id")} )
 	public Set<Book> books;
 
+	
 	public Set<Book> getBooks() {
 		return books;
 	}

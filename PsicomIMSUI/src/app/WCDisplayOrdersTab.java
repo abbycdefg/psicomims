@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -26,7 +27,6 @@ import javax.swing.table.DefaultTableModel;
  * @author Abby
  */
 public class WCDisplayOrdersTab extends javax.swing.JFrame {
-
     /**
      * Creates new form WCDisplayOrdersTab
      */
@@ -97,6 +97,7 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         signOutButton = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
+        searchButton.setSelectedIcon(new ImageIcon(WCDisplayOrdersTab.class.getResource("/images/button_search2.png")));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Display Orders");
@@ -353,11 +354,18 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
-        // TODO add your handling code here:
+    	if (ordersTable.getSelectedColumn() == 0){
+    			status = "COMPLETE";
+	    		this.displayAll(status);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}   
+    	
     }//GEN-LAST:event_completeButtonActionPerformed
 
     private void incompleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incompleteButtonActionPerformed
-        // TODO add your handling code here:
+    	
     }//GEN-LAST:event_incompleteButtonActionPerformed
 
     /**
@@ -404,7 +412,7 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JPanel navbarPanel;
-    private javax.swing.JTable ordersTable;
+    private static javax.swing.JTable ordersTable;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JButton signOutButton;
@@ -412,6 +420,13 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
     
+    public static String getColumnData(int n){ 
+    	int selectedRowIndex = ordersTable.getSelectedRow();
+    	int selectedColumnIndex = ordersTable.getSelectedColumn() + n;
+    	String selectedCell = (String) ordersTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    	
+    }
     public void displayAll(){
     	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "STATUS"};
 
@@ -419,8 +434,6 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
-        PreparedStatement pst2;
-        PreparedStatement pst3;
         Connection con;
         
         String itemCode = "";
@@ -428,23 +441,22 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         String quantity = "";
         String location = "";
         String date = "";
-        String status = "Incomplete";
+        String status = "";
         
         //wait for jenelle
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.book");
-            pst2 = con.prepareStatement("SELECT * FROM psicomims.specific_po");
-            pst3 = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt");
+            pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, b.title, b.location, d.date_delivery FROM psicomims.book b, psicomims.specific_po p, psicomims.delivery_receipt d WHERE b.item_code=p.book_id ");
             ResultSet rs = pst.executeQuery();
-            ResultSet rs2 = pst2.executeQuery();
-            ResultSet rs3 = pst3.executeQuery();
             int i = 0;
             while (rs.next()) {
-                itemCode = rs2.getString("book_id");
                 title = rs.getString("title");
-                quantity = rs3.getString("defects_quantity");
+                location = rs.getString("location");
+                itemCode = rs.getString("book_id");
+                quantity = rs.getString("quantity");
+                date = rs.getString("date_delivery");
+                status = rs.getString("status");
                 model.addRow(new Object[]{itemCode, title, quantity, location, date, status});
                 i++;
             }

@@ -37,4 +37,8 @@
 <fullyQualifiedTypeName name="app.entity.DefectiveBook"/>
 <fullyQualifiedTypeName name="app.repositories.DefectiveBookRepository"/>
 <fullyQualifiedTypeName name="javax.validation.constraints.NotNull"/>
+<fullyQualifiedTypeName name="app.repositories.PurchaseOrderRepository"/>
+<fullyQualifiedTypeName name="app.repositories.OrderRepository"/>
+<fullyQualifiedTypeName name="app.repositories.DeliveryReceiptRepository"/>
+<fullyQualifiedTypeName name="app.entity.Order"/>
 </qualifiedTypeNameHistroy>

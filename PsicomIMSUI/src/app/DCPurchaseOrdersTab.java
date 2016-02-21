@@ -447,7 +447,58 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+        if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "DELIVERY DATE", "STATUS"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String poNumber = "";
+            String date = "";
+            String contactPerson = "";
+            String outlet = "";
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                    poNumber = rs.getString("purchase_order_number");
+                    date = rs.getString("date_Today");
+                    contactPerson = rs.getString("contact_person");
+                    outlet = rs.getString("outlet");
+                    model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
+                    i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            purchaseOrdersTable.setModel(model);
+            purchaseOrdersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     /**

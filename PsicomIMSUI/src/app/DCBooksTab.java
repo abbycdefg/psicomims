@@ -471,7 +471,61 @@ public class DCBooksTab extends javax.swing.JFrame {
     }
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+        if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "AUTHOR", "RELEASE DATE"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String title = "";
+            String itemCode = "";
+            String price = "";
+            String author = "";
+            String releaseDate = "";
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM book WHERE title LIKE '%" + searchField.getText() + "%' OR item_code LIKE '%" + searchField.getText() + "%' OR author LIKE '%" + searchField.getText() + "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                    title = rs.getString("title");
+                    itemCode = rs.getString("item_code");
+                    price = rs.getString("price");
+                    author = rs.getString("author");
+                    releaseDate = rs.getString("release_date");
+                    model.addRow(new Object[]{title, itemCode, price, author, releaseDate});
+                    i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            booksTable.setModel(model);
+            booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
+        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed

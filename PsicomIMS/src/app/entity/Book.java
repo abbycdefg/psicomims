@@ -106,14 +106,6 @@ public class Book implements Serializable{
 		this.releaseDate = releaseDate;
 	}
 	
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	
 	public int getQuantity() {
 		return quantity;
 	}
