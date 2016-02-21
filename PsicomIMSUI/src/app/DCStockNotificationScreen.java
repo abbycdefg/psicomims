@@ -1,5 +1,4 @@
 package app;
-
 import java.awt.Color;
 
 /*
@@ -17,7 +16,7 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCStockNotification
      */
-    public DCStockNotificationScreen() {
+    public DCStockNotificationScreen(String title) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -25,6 +24,8 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
 
         Color z = new Color(102, 102, 102);
         okayButton.setBackground(z);
+        
+        titleLabel.setText(title);
     }
 
     /**
@@ -48,7 +49,6 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
 
         titleLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
-        titleLabel.setText("adfsdgsdg title po");
 
         confirmationLabel.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         confirmationLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -69,8 +69,6 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
                 okayButtonActionPerformed(evt);
             }
         });
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Abby\\Desktop\\Psicom IMS\\Notice.png")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,21 +99,23 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(titleLabel)
-                        .addGap(5, 5, 5)
+                        .addGap(18, 18, 18)
                         .addComponent(confirmationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(confirmationLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1))
                 .addGap(27, 27, 27)
                 .addComponent(okayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void okayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okayButtonActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        DCJobOrdersTab j = new DCJobOrdersTab();
+        j.setVisible(true);
     }//GEN-LAST:event_okayButtonActionPerformed
 
     /**
@@ -149,7 +149,7 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCStockNotificationScreen().setVisible(true);
+                new DCStockNotificationScreen("").setVisible(true);
             }
         });
     }

@@ -32,7 +32,7 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
      */
     public WCUpdateStocksTab() {
         initComponents();
-        
+                
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         

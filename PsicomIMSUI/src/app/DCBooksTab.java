@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowListener;
 import java.awt.font.TextAttribute;
 import java.awt.print.Book;
 import java.sql.Connection;
@@ -79,8 +80,8 @@ public class DCBooksTab extends javax.swing.JFrame {
                 searchField.setText("");
             }
         });
-    }
-
+    }    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,33 +137,6 @@ public class DCBooksTab extends javax.swing.JFrame {
 
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(255, 255, 255));
-        booksTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "ITEM CODE", "TITLE", "RELEASE DATE", "PRICE", "QUANTITY"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        
         this.displayAll();
         
         booksTable.setToolTipText("");
@@ -644,6 +618,7 @@ public class DCBooksTab extends javax.swing.JFrame {
         String price = "";
         String author = "";
         String releaseDate = "";
+        String quantity = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -659,6 +634,17 @@ public class DCBooksTab extends javax.swing.JFrame {
                 releaseDate = rs.getString("release_date");
                 model.addRow(new Object[]{title, itemCode, price, author, releaseDate});
                 i++;
+                
+                quantity = rs.getString("quantity");
+                if (Integer.parseInt(quantity) < 13){
+                	String titleNew = title;
+                	if (title.length() > 11){
+                		titleNew = title.substring(0, 13) + "...";
+                	}
+                	DCStockNotificationScreen d = new DCStockNotificationScreen(titleNew);
+                	d.setVisible(true);
+                }
+                
             }
             
             if (i < 1) {
@@ -682,6 +668,8 @@ public class DCBooksTab extends javax.swing.JFrame {
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
+    
 
+ 
 }
 
