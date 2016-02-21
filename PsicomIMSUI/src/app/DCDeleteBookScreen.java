@@ -139,7 +139,7 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
             try{
                 map = doCommand("deleteBook", itemCode);
             	this.dispose();
-            	DCBooksTab a = new DCBooksTab();
+            	DCBooksTab a = new DCBooksTab("");
             	a.setVisible(true);
                 
             }
@@ -150,7 +150,7 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
-    	DCBooksTab a = new DCBooksTab();
+    	DCBooksTab a = new DCBooksTab("");
     	a.setVisible(true);
     }
 

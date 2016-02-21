@@ -34,12 +34,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCBooksTab extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form BookTabDC
      */
-    public DCBooksTab() {
+    public DCBooksTab(String page) {
         
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -388,7 +392,16 @@ public class DCBooksTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADLogInScreen a = new ADLogInScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCLogInScreen a = new DCLogInScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -439,9 +452,16 @@ public class DCBooksTab extends javax.swing.JFrame {
     }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        this.dispose();
-        DCHomeScreen a = new DCHomeScreen();
-        a.setVisible(true);
+        if(prevPage.equals("ad")){
+        	this.dispose();
+            ADHomeScreen a = new ADHomeScreen();
+            a.setVisible(true);
+        }
+        else{
+	    	this.dispose();
+	        DCHomeScreen a = new DCHomeScreen();
+	        a.setVisible(true);
+        }
     }
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
@@ -572,7 +592,7 @@ public class DCBooksTab extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCBooksTab().setVisible(true);
+                new DCBooksTab("").setVisible(true);
             }
         });
     }

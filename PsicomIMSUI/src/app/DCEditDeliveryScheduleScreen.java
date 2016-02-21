@@ -333,7 +333,7 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
 
                  map = doCommand("editDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
              	this.dispose();
-             	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+             	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
              	a.setVisible(true);
                  
              }

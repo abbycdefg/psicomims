@@ -243,7 +243,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
-        DCBooksTab a = new DCBooksTab();
+        DCBooksTab a = new DCBooksTab("");
         a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -266,7 +266,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
 
                 map = doCommand("addBook", title, itemCode, price, author, releaseDateStr);
             	this.dispose();
-            	DCBooksTab a = new DCBooksTab();
+            	DCBooksTab a = new DCBooksTab("");
             	a.setVisible(true);
                 
             }

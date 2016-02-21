@@ -413,28 +413,40 @@ public class ADHomeScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchButtonActionPerformed
 
-    private void booksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_booksButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_booksButtonActionPerformed
+    private void booksButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCBooksTab a = new DCBooksTab("ad");
+        a.setVisible(true);
+    }
 
-    private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_poButtonActionPerformed
+    private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("ad");
+        a.setVisible(true);
+    }
 
-    private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_joButtonActionPerformed
+    private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCJobOrdersTab a = new DCJobOrdersTab("ad");
+        a.setVisible(true);
+    }
 
-    private void drButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_drButtonActionPerformed
+    private void drButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("ad");
+        a.setVisible(true);
+    }
 
-    private void dsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dsButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dsButtonActionPerformed
+    private void dsButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+        DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("ad");
+        a.setVisible(true);
+    }
 
     private void histButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADHistoryTab a = new ADHistoryTab();
+    	a.setVisible(true);
     }//GEN-LAST:event_histButtonActionPerformed
 
     private void usersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usersButtonActionPerformed

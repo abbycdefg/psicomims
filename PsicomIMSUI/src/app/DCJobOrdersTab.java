@@ -30,11 +30,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCJobOrdersTab extends javax.swing.JFrame {
 
+	String prevPage;
     /**
      * Creates new form DCJobOrdersTab
      */
-    public DCJobOrdersTab() {
+    public DCJobOrdersTab(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -450,11 +453,29 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
     }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADHomeScreen a = new ADHomeScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCHomeScreen a = new DCHomeScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADLogInScreen a = new ADLogInScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCLogInScreen a = new DCLogInScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -554,7 +575,7 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCJobOrdersTab().setVisible(true);
+                new DCJobOrdersTab("").setVisible(true);
             }
         });
     }

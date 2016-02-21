@@ -326,7 +326,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 
                 map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString);
              	this.dispose();
-             	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab();
+             	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
              	a.setVisible(true);
                  
              }

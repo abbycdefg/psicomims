@@ -313,7 +313,9 @@ public class DCHomeScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADLogInScreen a = new ADLogInScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -326,34 +328,32 @@ public class DCHomeScreen extends javax.swing.JFrame {
 
     private void booksButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCBooksTab a = new DCBooksTab();
+        DCBooksTab a = new DCBooksTab("");
         a.setVisible(true);
     }
-
 
     private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
         a.setVisible(true);
     }
-
 
 
     private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCJobOrdersTab a = new DCJobOrdersTab();
+        DCJobOrdersTab a = new DCJobOrdersTab("");
         a.setVisible(true);
     }
 
     private void drButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab();
+        DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
         a.setVisible(true);
     }
 
     private void dsButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+        DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
         a.setVisible(true);
     }
 

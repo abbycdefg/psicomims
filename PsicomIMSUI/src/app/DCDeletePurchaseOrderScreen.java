@@ -139,7 +139,7 @@ public class DCDeletePurchaseOrderScreen extends javax.swing.JFrame {
     	try{
             map = doCommand("deletePurchaseOrder", poNumber);
             this.dispose();
-         	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+         	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
          	a.setVisible(true);
         }
         catch (Exception e){
@@ -149,7 +149,7 @@ public class DCDeletePurchaseOrderScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	 this.dispose();
-      	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+      	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
       	a.setVisible(true);
     }
 

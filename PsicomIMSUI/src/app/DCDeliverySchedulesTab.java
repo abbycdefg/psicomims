@@ -27,11 +27,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DCDeliverySchedulesTab extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCDeliverySchedulesTab
      */
-    public DCDeliverySchedulesTab() {
+    public DCDeliverySchedulesTab(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -570,7 +574,16 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADHomeScreen a = new ADHomeScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCHomeScreen a = new DCHomeScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
@@ -674,7 +687,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeliverySchedulesTab().setVisible(true);
+                new DCDeliverySchedulesTab("").setVisible(true);
             }
         });
     }
