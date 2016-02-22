@@ -18,11 +18,12 @@ import javax.persistence.OneToMany;
 @Entity
 public class DeliveryReceipt {
 	
-	@Id
+
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
 	private Long id;
-
+	
+	@Id
 	@Column
 	private String deliveryReceiptNumber;
 
@@ -35,17 +36,9 @@ public class DeliveryReceipt {
 	@Column
 	private String dateDelivery;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "specific_dr", joinColumns = {@JoinColumn(name = "dr_id")}, inverseJoinColumns = {@JoinColumn(name = "book_id")} )
-	public Set<Book> books;
+	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "drId")
+	private Set<SpecificDr> specDr;
 
-	public Set<Book> getBooks() {
-		return books;
-	}
-
-	public void setBooks(Set<Book> books) {
-		this.books = books;
-	}
 
 	public Long getId() {
 		return id;

@@ -36,10 +36,6 @@ public class PurchaseOrder implements Serializable{
 	@Column
 	private String outlet;
 	
-	/**@ManyToMany(cascade={CascadeType.MERGE})
-	@JoinTable(name = "specific_po", joinColumns = {@JoinColumn(name = "po_id")}, inverseJoinColumns = {@JoinColumn(name = "book_id")} )
-    private Set<Book> books;**/
-	
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "poId")
 	private Set<SpecificPo> specPo;
 	

@@ -565,13 +565,28 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
 
     }
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (deliverySchedulesTable.getSelectedRowCount() == 1 && deliverySchedulesTable.getSelectedColumn() == 0){
+    		int row = deliverySchedulesTable.getSelectedRow();
+    		String scheduleCode = deliverySchedulesTable.getValueAt(row, 1).toString();
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeButtonActionPerformed
+    		
+	    	this.dispose();
+	    	DCDeleteScheduleScreen a = new DCDeleteScheduleScreen(scheduleCode);
+	    	a.setVisible(true); 
+    		}
+
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+
+    }
+
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+    	DCHomeScreen a = new DCHomeScreen();
+    	a.setVisible(true);
+    }
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
         // TODO add your handling code here:
@@ -687,10 +702,10 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
-            	date = rs.getString("date");
-            	scheduleCode = rs.getString("delivery_receipt_code");
+            	date = rs.getString("date");       	
+            	scheduleCode = rs.getString("schedule_code");
             	outlet = rs.getString("outlet");
-            	deliveryReceiptCode = rs.getString("schedule_code");
+            	deliveryReceiptCode = rs.getString("delivery_receipt_code");
                 model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
                 i++;
             }

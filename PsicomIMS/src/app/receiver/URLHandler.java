@@ -23,15 +23,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
-
-
-
-
-<<<<<<< HEAD
-
-=======
->>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 import app.components.Admin;
 import app.components.DocumentationClerk;
 import app.components.Inventory;
@@ -321,13 +312,19 @@ class URLHandler extends AbstractHandler {
 					
 					
 					String books = map.get("booksList");
-					books = books.substring(1, books.length()-1);					
+					if(!books.equals(""))
+					{
+					books = books.substring(1, books.length()-1);	
+					}
 					System.out.println(books);
 					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					System.out.println(books);
 					
 					String quantity = map.get("quantityList");  
+					if(!quantity.equals(""))
+					{
 					quantity = quantity.substring(1, quantity.length()-1);
+					}
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
 					System.out.println(quantityList);
 					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
@@ -357,10 +354,18 @@ class URLHandler extends AbstractHandler {
 					String totalAmt = (String) map.get("totalAmt");
 					String dateDelivery = (String) map.get("dateDelivery");
 					
-					String books = map.get("booksList");  	
+					String books = map.get("booksList");
+					books = books.substring(1, books.length()-1);					
+					System.out.println(books);
 					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					
-					dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList);
+					
+					String quantity = map.get("quantityList");  
+					System.out.println(quantity);
+					quantity = quantity.substring(1, quantity.length()-1);
+					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
+					
+					dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
 					response.getWriter().println(books);
 		
 				}
@@ -408,33 +413,26 @@ class URLHandler extends AbstractHandler {
 					} catch (Exception e) {
 						response.getWriter().println("Invalid.");
 					}
-<<<<<<< HEAD
-			}
-				else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
-=======
 				}
-				else if (target.equalsIgnoreCase("/getAllPurchaseOrders")) {
->>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
+				
+				else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
 					
-					try {
-						HashMap<String, String> map = convertJsonToCommand(request);
+					HashMap<String, String> map = convertJsonToCommand(request);
 
-			
-						String date = map.get("date");
-						String scheduleCode =  map.get("scheduleCode");
-						String outlet = map.get("outlets");
-						String deliveryReceiptCode = map.get("deliveryReceiptCode");
-						
-						dc.addDeliverySchedule(scheduleCode, date, outlet, deliveryReceiptCode);
-						response.getWriter().println("You have succesfully added " + scheduleCode + ".");
-					} catch (Exception e) {
-						response.getWriter().println("Invalid.");
-					}
-			}
+		
+					String date = map.get("date");
+					String scheduleCode =  map.get("scheduleCode");
+					String outlet = map.get("outlets");
+					String deliveryReceiptCode = map.get("deliveryReceiptCode");
+					
+					dc.addDeliverySchedule(scheduleCode, date, outlet, deliveryReceiptCode);
+					response.getWriter().println("You have succesfully edited " + scheduleCode + ".");
+		}
 
+					
+				
 				else if (target.equalsIgnoreCase("/editDeliverySchedule")) {
 					
-					try {
 						HashMap<String, String> map = convertJsonToCommand(request);
 
 			
@@ -445,14 +443,10 @@ class URLHandler extends AbstractHandler {
 						
 						dc.editDeliverySchedule(scheduleCode, date, outlet, deliveryReceiptCode);
 						response.getWriter().println("You have succesfully edited " + scheduleCode + ".");
-					} catch (Exception e) {
-						response.getWriter().println("Invalid.");
-					}
-<<<<<<< HEAD
 			}
-else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
+				
+				else if (target.equalsIgnoreCase("/deleteDeliverySchedule")) {
 					
-					try {
 						HashMap<String, String> map = convertJsonToCommand(request);
 
 			
@@ -460,16 +454,8 @@ else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
 
 						dc.deleteDeliverySchedule(scheduleCode);
 						response.getWriter().println("You have succesfully added " + scheduleCode + ".");
-					} catch (Exception e) {
-						response.getWriter().println("Invalid.");
-					}
 			}
 
-
-=======
-					List<PurchaseOrder> poList = dc.getAllPurchaseOrders();
-						response.getWriter().println("Invalid request.");
-				}
 				
 				else if (target.equalsIgnoreCase("/wcLogin")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
@@ -486,7 +472,6 @@ else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
 						response.getWriter().println("Invalid request.");
 					}	
 				}
->>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 				
 				else if (target.equalsIgnoreCase("/updateStocks")) {
 					HashMap<String, String> map = convertJsonToCommand(request);

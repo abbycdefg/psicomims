@@ -49,11 +49,12 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
      * Creates new form DCAddDeliverySchedule
      */
 	private List<String> outletsList  = new ArrayList<String>();
+	private List<String> drList  = new ArrayList<String>();
 	private JComboBox outletComboBox = new JComboBox();
-
+	private JComboBox drCodeComboBox = new JComboBox();
+	private String []dr;
 	private String []ou;
 	private JTextField scheduleCodeField;
-	private JTextField deliveryReceiptCodeField;
 	
     public DCAddDeliveryScheduleScreen() {
         initComponents();
@@ -68,10 +69,15 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
         
         getOutletList();
+        getDeliveryReceipts();
         
         ou = new String[outletsList.size()];
         outletsList.toArray(ou);
         AutoCompleteSupport.install(outletComboBox, GlazedLists.eventListOf(ou));
+        
+        dr = new String[drList.size()];
+        drList.toArray(dr);
+        AutoCompleteSupport.install(drCodeComboBox, GlazedLists.eventListOf(dr));
         
         Date now = new Date();
         dateChooser.setDate(now);
@@ -94,7 +100,6 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         scheduleCodeField = new javax.swing.JTextField();
         outletsLabel = new javax.swing.JLabel();
         deliveryReceiptCodeLabel = new javax.swing.JLabel();
-        deliveryReceiptCodeField = new javax.swing.JTextField();
         addButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
 
@@ -128,13 +133,6 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         deliveryReceiptCodeLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         deliveryReceiptCodeLabel.setForeground(new java.awt.Color(255, 255, 255));
         deliveryReceiptCodeLabel.setText("Delivery Receipt Code");
-
-        deliveryReceiptCodeField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        deliveryReceiptCodeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deliveryReceiptCodeFieldActionPerformed(evt);
-            }
-        });
 
         addButton.setBackground(new java.awt.Color(205, 0, 69));
         addButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -174,6 +172,21 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
                 };
             }
         });
+        drCodeComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    public int getWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public synchronized void addMouseListener(MouseListener l) {
+                    }
+                };
+            }
+        });
+        
+       
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -195,10 +208,14 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         							.addGroup(layout.createParallelGroup(Alignment.LEADING)
         								.addComponent(outletsLabel)
         								.addComponent(outletComboBox, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE))
-        							.addGap(31)
         							.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        								.addComponent(deliveryReceiptCodeLabel)
-        								.addComponent(deliveryReceiptCodeField, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)))))
+        								.addGroup(layout.createSequentialGroup()
+        									.addGap(31)
+        									.addComponent(deliveryReceiptCodeLabel))
+        								.addGroup(layout.createSequentialGroup()
+        									.addPreferredGap(ComponentPlacement.RELATED)
+        									.addComponent(drCodeComboBox, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE)))))
+        					.addGap(29))
         				.addGroup(layout.createSequentialGroup()
         					.addGap(145)
         					.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
@@ -232,8 +249,9 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         					.addComponent(outletComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
         				.addGroup(layout.createSequentialGroup()
         					.addComponent(deliveryReceiptCodeLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(deliveryReceiptCodeField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(drCodeComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)))
         			.addGap(54)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
@@ -249,10 +267,6 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_scheduleCodeFieldActionPerformed
 
-    private void deliveryReceiptCodeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveryReceiptCodeFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deliveryReceiptCodeFieldActionPerformed
-
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	 HashMap map;
          
@@ -260,7 +274,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
          	
         	 String scheduleCode = scheduleCodeField.getText();
              String outlet = outletComboBox.getSelectedItem().toString();
-             String deliveryReceiptCode = deliveryReceiptCodeField.getText();
+             String deliveryReceiptCode = drCodeComboBox.getSelectedItem().toString();
              
              DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
              java.util.Date deliveryDate = dateChooser.getDate();
@@ -284,9 +298,11 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
          } 
     }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+   	 this.dispose();
+     DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+     a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -391,6 +407,33 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
     				}
     			}
     			outletsList.addAll(outletSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    } 
+    public void getDeliveryReceipts()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM delivery_receipt");
+    			ResultSet rs = pst.executeQuery();
+    		    Set<String> drSet = new HashSet();
+    			while (rs.next()) {
+    				if(!rs.getString("delivery_receipt_number").equals(null))
+    				{
+    					drSet.add(rs.getString("delivery_receipt_number"));
+    				}
+    			}
+    			drList.addAll(drSet);
     		} catch (ClassNotFoundException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();

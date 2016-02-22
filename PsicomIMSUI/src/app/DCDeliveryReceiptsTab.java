@@ -452,9 +452,11 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_homeButtonActionPerformed
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+    	DCHomeScreen a = new DCHomeScreen();
+    	a.setVisible(true);
+    }
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:

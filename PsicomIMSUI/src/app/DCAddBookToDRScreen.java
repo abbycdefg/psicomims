@@ -5,11 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.Arrays;
-=======
 import java.util.HashMap;
->>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 import java.util.List;
 
 import javax.swing.JTextField;
@@ -19,10 +16,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-<<<<<<< HEAD
 import javax.swing.JTable;
-=======
->>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 
@@ -62,6 +56,8 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
 	private JComboBox poNumberComboBox = new JComboBox();
 	private String poNumber;
 	private String []po;
+	private static List<String> booksList = new ArrayList<String>();
+	private static List<String> quantityList = new ArrayList<String>();
 	
     public DCAddBookToDRScreen() {
         initComponents();
@@ -145,12 +141,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
             }
         });
         
-<<<<<<< HEAD
-=======
-    //auto complete    
-        Object[] elements = new Object[] {"Cat", "Dog", "Lion", "Mouse"};      
-        AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(elements));
->>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
         
         poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
             protected JButton createArrowButton() {
@@ -296,38 +286,41 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     
     }
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	List<String> booksList = new ArrayList<String>();
-    	List<String> quantityList = new ArrayList<String>();
     	
         try{
+        	booksList = new ArrayList<String>();
+        	quantityList = new ArrayList<String>();
         	int rowCount = booksTable.getRowCount();
-        	System.out.println(rowCount);
         	for(int i=0; i<rowCount; i++) {	  
         	    String cellValueBook = (String) booksTable.getValueAt(i,1);
-        	    String cellValueQuantity = (String) booksTable.getValueAt(i,2);
-   
-        	    	booksList.add(cellValueBook);   
-        	    	quantityList.add(cellValueQuantity);
+        	    
+        	    if(cellValueBook != null)
+    	    	{
+        	    	booksList.add(cellValueBook); ;
+    	    	}
+    	    	if (booksTable.getModel().getValueAt(i,2) != null)
+    	    	{
+    	    		System.out.println("pasok");
+    	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 2).toString();
+    	    		quantityList.add(quantitySelected);
+    	    		
+    	    	}
         	}
-        	for(int i=0; i<rowCount; i++) {	  
-    			System.out.println(booksList.get(i));
-    	    
-    	}
         	
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
-
     	this.dispose();
-    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList);
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
     	a.setVisible(true);
     }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
+    	a.setVisible(true);
+    }
 
     private void poNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -379,7 +372,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     private javax.swing.JTextField poNumberField;
     private javax.swing.JLabel poNumberLabel;
     private javax.swing.JPanel poNumberPanel;
-<<<<<<< HEAD
     //END
     public void displayAll(){
     	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};
@@ -450,7 +442,4 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
-=======
-
->>>>>>> bb791bb21ff21383c8a5f2b3235a04558d28d89c
 }
