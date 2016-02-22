@@ -10,6 +10,6 @@ import app.entity.DeliverySchedule;
 @Repository
 public interface DeliveryScheduleRepository extends JpaRepository<DeliverySchedule, Long> {
 
-		public DeliverySchedule findByScheduleCode(String schCode);
+		public DeliverySchedule findByScheduleCode(String scheduleCode);
 }
 

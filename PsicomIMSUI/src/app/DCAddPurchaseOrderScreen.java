@@ -20,14 +20,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.matchers.Matcher;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -347,25 +350,57 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     	HashMap map;
 
         try{
-            String purchaseOrderNumber = purchaseOrderNumberField.getText();
-            String contactPerson = contactsComboBox.getSelectedItem().toString();
-            String outlet = outletComboBox.getSelectedItem().toString();
+        	String contactPerson = "";
+        	String outlet = "";
+        	String quantityListStr = "";
+        	String listString = "";
+        	String purchaseOrderNumber = "";
+        	boolean error = false;
+
+            
+            
+            if(contactsComboBox.getSelectedIndex() != -1 && outletComboBox.getSelectedIndex() != -1 && !purchaseOrderNumberField.getText().equals("")){
+              if(checkString(contactsComboBox.getSelectedItem().toString()) == false && checkString(outletComboBox.getSelectedItem().toString()) == false && checkString(purchaseOrderNumberField.getText().toString())== false)
+             {contactPerson = contactsComboBox.getSelectedItem().toString();
+             outlet = outletComboBox.getSelectedItem().toString();
+             purchaseOrderNumber = purchaseOrderNumberField.getText();
+             }
+              
+              else{
+              	JOptionPane.showMessageDialog(null, "Invalid characters.", "Error", JOptionPane.ERROR_MESSAGE);
+                error = true;
+              }
+            }
+            else 
+            {
+            	JOptionPane.showMessageDialog(null, "All fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
+                error = true;
+            }
+                       
+
             
             DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             Date dc = jDateChooser1.getDate();
             String dateToday = df.format(dc);
             
+            if (booksList != null || quantityList != null)
+            {
             String[] strarray = booksList.toArray(new String[0]);
-            String listString = Arrays.toString(strarray);
+            listString = Arrays.toString(strarray);
             
             String[] quantityArr = quantityList.toArray(new String[0]);
-            String quantityList = Arrays.toString(quantityArr);
+            quantityListStr = Arrays.toString(quantityArr);
+            }
+
 
             try{
-                map = doCommand("addPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityList);
+            	if(error == false)
+            	{
+                map = doCommand("addPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityListStr);
                 this.dispose();
              	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
              	a.setVisible(true);
+            	}
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -400,7 +435,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         	purchaseOrderNumber.equals("");
         }
         this.dispose();    
-        DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList);
+        DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
     	a.setVisible(true);
     	
     	
@@ -556,5 +591,12 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}		
-    } 
+    }
+    private boolean checkString(String string)
+    {
+    	Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+    	java.util.regex.Matcher m = p.matcher(string);
+    	boolean b = m.find();
+    	return b;
+    }
 }

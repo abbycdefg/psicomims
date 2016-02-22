@@ -1,6 +1,9 @@
 package app;
 
 import java.awt.Color;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -17,6 +20,7 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCDeleteScheduleScreen
      */
+	private String scheduleCode;
     public DCDeleteScheduleScreen() {
         initComponents();
         
@@ -28,6 +32,19 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+    }
+    public DCDeleteScheduleScreen(String scheduleCode1) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+    
+        Color y = new Color(205, 0, 69);
+        yesButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        scheduleCode = scheduleCode1;
     }
 
     /**
@@ -117,13 +134,27 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void yesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_yesButtonActionPerformed
+    private void yesButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	HashMap map;
+         
+             try{
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+                map = doCommand("deleteDeliverySchedule", scheduleCode);
+             	this.dispose();
+             	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+             	a.setVisible(true);
+                 
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+             }
+    }
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	 this.dispose();
+         DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+         a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -166,4 +197,38 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
     private javax.swing.JLabel deleteLabel;
     private javax.swing.JButton yesButton;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String scheduleCode) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("scheduleCode", scheduleCode);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap; 
+        }
+    }
 }

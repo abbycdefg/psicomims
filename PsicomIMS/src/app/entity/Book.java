@@ -44,13 +44,15 @@ public class Book implements Serializable{
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "bookId")
 	private Set<SpecificPo> specPo;
 	
+	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "bookId")
+	private Set<SpecificDr> specDr;	
+
 	@Column
 	private int quantity;
 
 	private double discountedPrice;
 	private double srp;
 	
-
 	
 	public Set<SpecificPo> getSpecPo() {
 		return specPo;
@@ -58,16 +60,13 @@ public class Book implements Serializable{
 	public void setSpecPo(Set<SpecificPo> specPo) {
 		this.specPo = specPo;
 	}
+	
 	public String getLocation() {
 		return location;
 	}
 	public void setLocation(String location) {
 		this.location = location;
 	}
-
-	@JoinColumn(name="purchase_order_number")
-	@ManyToOne(fetch=FetchType.LAZY)
-	private PurchaseOrder po;
 
 	public Long getId() {
 		return id;

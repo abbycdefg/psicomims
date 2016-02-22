@@ -20,12 +20,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -144,7 +146,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         
     }
     
-    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1 ) {
+    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1,  int contactPerson1, int outlet1, List<String> booksList1, List<String> quantityList1 ) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -385,34 +387,57 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
     	HashMap map;
 
         try{
-            String purchaseOrderNumber = purchaseOrderNumberField.getText();
-            String contactPerson = contactComboBox.getSelectedItem().toString();
-            String outlet = outletComboBox.getSelectedItem().toString();
+        	String contactPerson = "";
+        	String outlet = "";
+        	String quantityListStr = "";
+        	String listString = "";
+        	String purchaseOrderNumber = "";
+        	boolean error = false;
+
+            
+            
+            if(contactComboBox.getSelectedIndex() != -1 && outletComboBox.getSelectedIndex() != -1 && ! purchaseOrderNumberField.getText().equals("")){
+              if(checkString(contactComboBox.getSelectedItem().toString()) == false && checkString(outletComboBox.getSelectedItem().toString()) == false && checkString(purchaseOrderNumberField.getText().toString())== false)
+             {contactPerson = contactComboBox.getSelectedItem().toString();
+             outlet = outletComboBox.getSelectedItem().toString();
+             purchaseOrderNumber = purchaseOrderNumberField.getText();
+             }
+              
+              else{
+              	JOptionPane.showMessageDialog(null, "Invalid characters.", "Error", JOptionPane.ERROR_MESSAGE);
+                error = true;
+              }
+            }
+            else 
+            {
+            	JOptionPane.showMessageDialog(null, "All fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
+                error = true;
+            }
+                       
+
             
             DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             Date dc = dateTodayChooser.getDate();
             String dateToday = df.format(dc);
-            String listString = "";
-            String quantityListStr = "";
             
-            if (booksList != null)
+            if (booksList != null || quantityList != null)
             {
             String[] strarray = booksList.toArray(new String[0]);
             listString = Arrays.toString(strarray);
-            }
             
-            else if (quantityList != null)
-            {
             String[] quantityArr = quantityList.toArray(new String[0]);
             quantityListStr = Arrays.toString(quantityArr);
             }
-            
-            	
+
+
             try{
+            	if(error == false)
+            	{
                 map = doCommand("editPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityListStr);
                 this.dispose();
              	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
              	a.setVisible(true);
+            	}
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -428,8 +453,23 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void editBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	this.dispose();
-    	DCEditBookToPOScreen a = new DCEditBookToPOScreen();
+    	String purchaseOrderNumber = purchaseOrderNumberField.getText();
+        int contactPerson = contactComboBox.getSelectedIndex();
+        int outlet = outletComboBox.getSelectedIndex();
+        
+        
+        
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        Date dc = dateTodayChooser.getDate();
+        String dateToday = df.format(dc);
+        
+        
+        if(purchaseOrderNumber.equals(null))
+        {
+        	purchaseOrderNumber.equals("");
+        }
+        this.dispose();    
+        DCEditBookToPOScreen a = new DCEditBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
     	a.setVisible(true);
     }
 
@@ -578,6 +618,14 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
             return replyMap;
             
         }
+
+    }
+    private boolean checkString(String string)
+    {
+    	Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+    	java.util.regex.Matcher m = p.matcher(string);
+    	boolean b = m.find();
+    	return b;
     }
 
 }

@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
      * Creates new form DCAddDeliveryReceiptScreen
      */
 	private List<String> booksList;
+	private List<String> quantityList;
 	private List<String> poList = new ArrayList<String>();
     public DCAddDeliveryReceiptScreen() {
         initComponents();
@@ -69,9 +71,12 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        Date now = new Date();
+        dateTodayChooser.setDate(now);
+        deliveryDateChooser.setDate(now);
     }
     
-    public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1) {
+    public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -101,7 +106,6 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         
 
         deliveryReceiptNumberField.setText(drNumber);
- 
         
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -118,6 +122,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         
         totalAmountField.setText(totalAmt);
         booksList = booksList1;
+        quantityList = quantityList1;
         
     }
 
@@ -307,8 +312,11 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     	 HashMap map;
          
          try{
-         	
-             String drNumber = deliveryReceiptNumberField.getText();
+        	 String drNumber = "";
+         	String quantityListStr = "";
+         	String listString = "";
+        	 
+             drNumber = deliveryReceiptNumberField.getText();
              
              DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
              java.util.Date dateToday = dateTodayChooser.getDate();
@@ -319,12 +327,19 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
              java.util.Date deliveryDate = deliveryDateChooser.getDate();
              String deliveryDateStr = df.format(deliveryDate);
              
+             if (booksList != null || quantityList != null)
+             {
              String[] strarray = booksList.toArray(new String[0]);
-             String listString = Arrays.toString(strarray);
+             listString = Arrays.toString(strarray);
+             
+             String[] quantityArr = quantityList.toArray(new String[0]);
+             quantityListStr = Arrays.toString(quantityArr);
+             }
+
 
              try{
 
-                map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString);
+                map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString, quantityListStr);
              	this.dispose();
              	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
              	a.setVisible(true);
@@ -340,9 +355,11 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
        
     }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+     	this.dispose();
+     	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab();
+     	a.setVisible(true);
+    }
 
     private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	 String drNumber = deliveryReceiptNumberField.getText();
@@ -352,7 +369,11 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
          String dateTodayStr = df.format(dateToday);
          
          String totalAmt = totalAmountField.getText();
-         
+         if(drNumber.equals(null) ||drNumber.equals(totalAmt))
+         {
+        	 drNumber.equals("");
+        	 totalAmt.equals("");
+         }
          java.util.Date deliveryDate = deliveryDateChooser.getDate();
          String deliveryDateStr = df.format(deliveryDate);
          getPoList();
@@ -412,7 +433,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     private javax.swing.JLabel totalAmountLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String drNumber, String dateToday, String totalAmt, String dateDelivery, String booksList) throws Exception
+    private HashMap doCommand(String command, String drNumber, String dateToday, String totalAmt, String dateDelivery, String booksList, String quantityList) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -423,6 +444,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         map.put("totalAmt", totalAmt);
         map.put("dateDelivery", dateDelivery);
         map.put("booksList", booksList);
+        map.put("quantityList", quantityList);
 
         // CONVERT JAVA DATA TO JSON
         ObjectMapper mapper = new ObjectMapper();

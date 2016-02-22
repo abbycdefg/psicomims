@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class DeliverySchedule {
 	
 	
-	@Id
+	
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
 	private Long id;
@@ -18,6 +18,7 @@ public class DeliverySchedule {
 	@Column	
 	private String date;
 	
+	@Id
 	@Column	
 	private String scheduleCode;
 	

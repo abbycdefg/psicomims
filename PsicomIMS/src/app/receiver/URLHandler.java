@@ -23,11 +23,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
-
-
-
-
 import app.components.Admin;
 import app.components.DocumentationClerk;
 import app.components.Inventory;
@@ -351,13 +346,19 @@ class URLHandler extends AbstractHandler {
 					
 					
 					String books = map.get("booksList");
-					books = books.substring(1, books.length()-1);					
+					if(!books.equals(""))
+					{
+					books = books.substring(1, books.length()-1);	
+					}
 					System.out.println(books);
 					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					System.out.println(books);
 					
 					String quantity = map.get("quantityList");  
+					if(!quantity.equals(""))
+					{
 					quantity = quantity.substring(1, quantity.length()-1);
+					}
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
 					System.out.println(quantityList);
 					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
@@ -388,10 +389,18 @@ class URLHandler extends AbstractHandler {
 					String totalAmt = (String) map.get("totalAmt");
 					String dateDelivery = (String) map.get("dateDelivery");
 					
-					String books = map.get("booksList");  	
+					String books = map.get("booksList");
+					books = books.substring(1, books.length()-1);					
+					System.out.println(books);
 					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					
-					dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList);
+					
+					String quantity = map.get("quantityList");  
+					System.out.println(quantity);
+					quantity = quantity.substring(1, quantity.length()-1);
+					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
+					
+					dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
 					response.getWriter().println(books);
 		
 				}
@@ -441,33 +450,25 @@ class URLHandler extends AbstractHandler {
 						response.getWriter().println("Invalid.");
 						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-
-			}
+				}
+				
 				else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
 
-				}
-				else if (target.equalsIgnoreCase("/getAllPurchaseOrders")) {
+	
+					HashMap<String, String> map = convertJsonToCommand(request);
 
+		
+					String date = map.get("date");
+					String scheduleCode =  map.get("scheduleCode");
+					String outlet = map.get("outlets");
+					String deliveryReceiptCode = map.get("deliveryReceiptCode");
 					
-					try {
-						HashMap<String, String> map = convertJsonToCommand(request);
-
-			
-						String date = map.get("date");
-						String scheduleCode =  map.get("scheduleCode");
-						String outlet = map.get("outlets");
-						String deliveryReceiptCode = map.get("deliveryReceiptCode");
-						
-						dc.addDeliverySchedule(scheduleCode, date, outlet, deliveryReceiptCode);
-						response.getWriter().println("You have succesfully added " + scheduleCode + ".");
-					} catch (Exception e) {
-						response.getWriter().println("Invalid.");
-					}
-			}
-
+					dc.addDeliverySchedule(scheduleCode, date, outlet, deliveryReceiptCode);
+					response.getWriter().println("You have succesfully edited " + scheduleCode + ".");
+		}				
+				
 				else if (target.equalsIgnoreCase("/editDeliverySchedule")) {
 					
-					try {
 						HashMap<String, String> map = convertJsonToCommand(request);
 
 			
@@ -478,33 +479,20 @@ class URLHandler extends AbstractHandler {
 						
 						dc.editDeliverySchedule(scheduleCode, date, outlet, deliveryReceiptCode);
 						response.getWriter().println("You have succesfully edited " + scheduleCode + ".");
-					} catch (Exception e) {
-						response.getWriter().println("Invalid.");
-					}
-
 			}
-				else if (target.equalsIgnoreCase("/addDeliverySchedule")) {
-					
-					try {
+				
+
+				else if (target.equalsIgnoreCase("/deleteDeliverySchedule")) {
+
 						HashMap<String, String> map = convertJsonToCommand(request);
 
 			
 						String scheduleCode =  map.get("scheduleCode");
 
 						dc.deleteDeliverySchedule(scheduleCode);
-						response.getWriter().println("You have succesfully added " + scheduleCode + ".");
-					} catch (Exception e) {
-						response.getWriter().println("Invalid.");
-						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-			
+						response.getWriter().println("You have succesfully deleted " + scheduleCode + ".");
+			     }
 
-
-
-					List<PurchaseOrder> poList = dc.getAllPurchaseOrders();
-						response.getWriter().println("Invalid request.");
-						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-				}
 				
 				
 				else if (target.equalsIgnoreCase("/wcLogin")) {
@@ -523,7 +511,6 @@ class URLHandler extends AbstractHandler {
 						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}	
 				}
-
 				
 				else if (target.equalsIgnoreCase("/updateStocks")) {
 					HashMap<String, String> map = convertJsonToCommand(request);

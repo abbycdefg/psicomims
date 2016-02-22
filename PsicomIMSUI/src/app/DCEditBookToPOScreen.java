@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -20,10 +24,11 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
      * Creates new form DCEditBookToPO
      */
 	private static String purchaseOrderNumber;
-	private static String contactPerson;
-	private static String outlet;
+	private static int contactPerson;
+	private static int outlet;
 	private static String dateToday;
 	private static List<String> booksList;
+	private static List<String> quantityList = new ArrayList<String>();
 	
     public DCEditBookToPOScreen() {
         initComponents();
@@ -37,7 +42,7 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
-    public DCEditBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1) {
+    public DCEditBookToPOScreen(String purchaseOrderNumber1, String dateToday1,  int contactPerson1, int outlet1, List<String> booksList1,List<String> quantityList1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -54,6 +59,11 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         outlet = outlet1;
         dateToday = dateToday1;
         booksList = booksList1;
+        quantityList = quantityList1;
+        if(booksList != null)
+        {
+        	displayTable2(booksList, quantityList);
+        }
     }
 
     /**
@@ -170,36 +180,42 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	List<String> booksList = new ArrayList<String>();
-    	List<String> quantityList = new ArrayList<String>();
-        try{
-        	int rowCount = booksTable.getRowCount();
-        	for(int i=0; i<rowCount; i++) {     
-        	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
-        	    	booksList.add(selectedBook);
+    	 try{
+         	booksList = new ArrayList<String>();
+         	quantityList = new ArrayList<String>();
+         	int rowCount = booksTable.getRowCount();
+         	for(int i=0; i<rowCount; i++) {
+         	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
+         	    	if(selectedBook != null)
+         	    	{
+         	    	booksList.add(selectedBook);
+         	    	}
+         	    	 
+         	    	if (booksTable.getModel().getValueAt(i,3) != null)
+         	    	{
+         	    		System.out.println("pasok");
+         	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 3).toString();
+         	    		quantityList.add(quantitySelected);
+         	    		
+         	    	}
 
-        	    	String selectedQt = booksTable.getModel().getValueAt(i, 3).toString();
-        	    	quantityList.add(selectedQt);
-        	}
-        	
-        	for(int i=0; i<rowCount; i++) {	  
-    			System.out.println(booksList.get(i));
-    	    
-        	}
-
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        
-        this.dispose();
-    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
-    	a.setVisible(true);
+         	}
+         	
+         }
+         catch (Exception e){
+             e.printStackTrace();
+         }
+         System.out.println(quantityList);
+         this.dispose();
+     	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
+     	a.setVisible(true);
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+    	String contactPersonStr = Integer.toString(contactPerson);
+    	String outletStr = Integer.toString(outlet);
     	this.dispose();
-    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet);
+    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPersonStr, outletStr);
     	a.setVisible(true);
     }
 
@@ -246,4 +262,46 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
     private javax.swing.JButton editButton;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+    public void displayTable2(List<String> booksList, List<String> quantityList){
+    	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+
+        
+        String itemCode = "";
+        String quantity = "";
+        
+        try {
+            int i = 0;
+            for(int j = 0; j<booksList.size(); j++)
+            {
+                itemCode = booksList.get(i).toString();               
+                quantity = quantityList.get(i).toString();
+                model.addRow(new Object[]{null, itemCode, null, quantity});
+                i++;
+
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+            
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        booksTable = new JTable(model);
+        booksTable.setModel(model);
+        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
 }

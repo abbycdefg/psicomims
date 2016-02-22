@@ -36,12 +36,13 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
 	private static int contactPerson;
 	private static int outlet;
 	private static String dateToday;
-	private static List<String> booksList;
+	private static List<String> booksList = new ArrayList<String>();
+	private static List<String> quantityList = new ArrayList<String>();
 	
     /**
      * Creates new form DCAddBookToPOScreen
      */
-    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, int contactPerson1, int outlet1, List<String> booksList1) {
+    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, int contactPerson1, int outlet1, List<String> booksList1, List<String> quantityList1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -58,6 +59,13 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         outlet = outlet1;
         dateToday = dateToday1;
         booksList = booksList1;
+        quantityList = quantityList1;
+        
+        if(booksList != null)
+        {
+        	displayTable2(booksList, quantityList);
+        }
+ 
     }
 
     /**
@@ -177,10 +185,9 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
 
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-
-    	List<String> booksList = new ArrayList<String>();
-    	List<String> quantityList = new ArrayList<String>();
         try{
+        	booksList = new ArrayList<String>();
+        	quantityList = new ArrayList<String>();
         	int rowCount = booksTable.getRowCount();
         	for(int i=0; i<rowCount; i++) {
         	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
@@ -188,20 +195,22 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         	    	{
         	    	booksList.add(selectedBook);
         	    	}
-        	    	
-        	    	if(booksTable.getModel().getValueAt(i, 3) != null)
+        	    	 
+        	    	if (booksTable.getModel().getValueAt(i,3) != null)
         	    	{
-        	    	String selectedQt = booksTable.getModel().getValueAt(i, 3).toString();
-        	    	
-        	    		quantityList.add(selectedQt);
+        	    		System.out.println("pasok");
+        	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 3).toString();
+        	    		quantityList.add(quantitySelected);
+        	    		
         	    	}
+
         	}
         	
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        
+        System.out.println(quantityList);
         this.dispose();
     	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
     	a.setVisible(true);
@@ -210,6 +219,8 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
      	this.dispose();
+     	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
+     	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -242,7 +253,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList).setVisible(true);
+                new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList).setVisible(true);
             }
         });
     }
@@ -260,8 +271,21 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
     {
         System.out.println(map.get("message"));
     }
-    public void displayAll(String itmCode){
-    	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER", "DELIVERY DATE"};
+    public static boolean checkNumber(String stringNumber)  
+    {  
+      try  
+      {  
+        double d = Double.parseDouble(stringNumber);  
+      }  
+      catch(NumberFormatException nfe)  
+      {  
+        return false;  
+      }  
+      return true;  
+    }
+
+    public void displayTable(List<String> booksList, List<String> quantityList){
+    	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
@@ -269,10 +293,10 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         PreparedStatement pst;
         Connection con;
         
+
         String title = "";
         String itemCode = "";
         String stocksOnHand = "";
-        String quantity = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -280,8 +304,10 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
             pst = con.prepareStatement("SELECT * FROM psicomims.book");
             ResultSet rs = pst.executeQuery();
             int i = 0;
+            for(int j = 0; j<=booksList.size(); j++)
+            {
             while (rs.next()) {
-            	if (itmCode.equals(rs.getString("item_code")))
+            	if (booksList.get(j).equals(rs.getString("item_code")))
             	{
                 title = rs.getString("title");
                 itemCode = rs.getString("item_code");
@@ -289,6 +315,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
                 model.addRow(new Object[]{title, itemCode, stocksOnHand});
                 i++;
             	}
+            }
             }
             
             if (i < 1) {
@@ -302,7 +329,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
             else {
                 System.out.println(i + " Records Found");
             }
-
+            
                   
         } catch (Exception e) {
             e.printStackTrace();
@@ -311,5 +338,53 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable = new JTable(model);
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    
+    public void displayTable2(List<String> booksList, List<String> quantityList){
+    	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+
+        
+        String itemCode = "";
+        String quantity = "";
+        
+        try {
+            int i = 0;
+            for(int j = 0; j<booksList.size(); j++)
+            {
+                itemCode = booksList.get(i).toString();               
+                quantity = quantityList.get(i).toString();
+                model.addRow(new Object[]{null, itemCode, null, quantity});
+                i++;
+
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+            
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        booksTable = new JTable(model);
+        booksTable.setModel(model);
+        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    public static void deleteAllRows(DefaultTableModel model) {
+        for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
+            model.removeRow(i);
+        }
     }
 }
