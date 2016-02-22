@@ -317,7 +317,7 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
    	 this.dispose();
-     DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+     DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
      a.setVisible(true);
     }
 

@@ -141,7 +141,7 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
 
                 map = doCommand("deleteDeliverySchedule", scheduleCode);
              	this.dispose();
-             	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+             	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
              	a.setVisible(true);
                  
              }
@@ -152,7 +152,7 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	 this.dispose();
-         DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+         DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
          a.setVisible(true);
     }
 

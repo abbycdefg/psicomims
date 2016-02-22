@@ -357,7 +357,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
      	this.dispose();
-     	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab();
+     	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
      	a.setVisible(true);
     }
 
