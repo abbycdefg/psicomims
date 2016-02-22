@@ -41,4 +41,5 @@
 <fullyQualifiedTypeName name="app.repositories.OrderRepository"/>
 <fullyQualifiedTypeName name="app.repositories.DeliveryReceiptRepository"/>
 <fullyQualifiedTypeName name="app.entity.Order"/>
+<fullyQualifiedTypeName name="java.awt.event.WindowListener"/>
 </qualifiedTypeNameHistroy>
