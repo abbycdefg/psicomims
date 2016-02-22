@@ -27,11 +27,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCDeliveryReceiptsTab
      */
-    public DCDeliveryReceiptsTab() {
+    public DCDeliveryReceiptsTab(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -452,18 +456,87 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	this.dispose();
-    	DCHomeScreen a = new DCHomeScreen();
-    	a.setVisible(true);
-    }
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADHomeScreen a = new ADHomeScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCHomeScreen a = new DCHomeScreen();
+	    	a.setVisible(true);
+    	}
+    }//GEN-LAST:event_homeButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+        if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String drNumber = "";
+            String dateToday = "";
+            String outlet = "";
+            String quantity = "";
+            String deliveryDate = "";
+            String totalAmount = "";
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM delivery_receipt WHERE delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                	drNumber = rs.getString("delivery_receipt_number");
+                	dateToday = rs.getString("date_today");
+                    deliveryDate = rs.getString("date_delivery");
+                    totalAmount = rs.getString("total_amount");
+                    model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
+                    i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            deliveryReceiptsTable.setModel(model);
+            deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADLogInScreen a = new ADLogInScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCLogInScreen a = new DCLogInScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -504,7 +577,7 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeliveryReceiptsTab().setVisible(true);
+                new DCDeliveryReceiptsTab("").setVisible(true);
             }
         });
     }

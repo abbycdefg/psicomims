@@ -133,6 +133,12 @@ public class ADDeleteOutletScreen extends javax.swing.JFrame {
             catch (Exception e){
                 e.printStackTrace();
             }
+            
+            cancelButton.setEnabled(false);
+            
+        	this.dispose();
+        	ADOutletsTab a = new ADOutletsTab();
+        	a.setVisible(true);
         }
         catch (Exception e){
             e.printStackTrace();

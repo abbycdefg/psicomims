@@ -39,7 +39,7 @@ public class DeliveryReceipt {
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "drId")
 	private Set<SpecificDr> specDr;
 
-
+	
 	public Long getId() {
 		return id;
 	}

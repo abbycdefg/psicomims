@@ -1,7 +1,12 @@
 package app;
 
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+
+import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -181,21 +186,41 @@ public class ADEditContactPersonScreen extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
     	HashMap map;
     	
-        try{
-        	String contactPersonId = contactPersonIDField.getText();
-            String contactPersonName = contactPersonNameField.getText();         
+        if(!contactPersonIDField.getText().equals("") && !contactPersonNameField.getText().equals(""))
+        {
+        	if(this.isAlpha(contactPersonNameField.getText()) && this.isNumeric(contactPersonIDField.getText())){
+        		try{
+                	String contactPersonId = contactPersonIDField.getText();
+                    String contactPersonName = contactPersonNameField.getText();         
 
-            try{
-                map = doCommand("editContactPerson", contactPersonId, contactPersonName);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+                    try{
+                        map = doCommand("editContactPerson", contactPersonId, contactPersonName);
+                        
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    
+                    cancelButton.setEnabled(false);
+                    
+                	this.dispose();
+                	ADContactPersonsTab a = new ADContactPersonsTab();
+                	a.setVisible(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+	    	  }
+        	else
+        	{
+        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    	
+    	
         
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -292,5 +317,14 @@ public class ADEditContactPersonScreen extends javax.swing.JFrame {
     private static void printMessage(HashMap map)
     {
         System.out.println(map.get("message"));
+    }
+    
+    public boolean isAlpha(String s) {
+        return s.matches("[a-zA-Z]+");
+    }
+    
+    public static boolean isNumeric(String s)
+    {
+      return s.matches("-?\\d+(\\.\\d+)?");
     }
 }

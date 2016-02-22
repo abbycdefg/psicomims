@@ -40,13 +40,13 @@ public class Book implements Serializable{
 	
 	@Column
 	private String location;
-	
+
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "bookId")
 	private Set<SpecificPo> specPo;
 	
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "bookId")
-	private Set<SpecificDr> specDr;
-	
+	private Set<SpecificDr> specDr;	
+
 	@Column
 	private int quantity;
 
@@ -61,6 +61,13 @@ public class Book implements Serializable{
 		this.specPo = specPo;
 	}
 	
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -97,14 +104,6 @@ public class Book implements Serializable{
 	public void setReleaseDate(String releaseDate) {
 		this.releaseDate = releaseDate;
 	}
-	
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
 	
 	public int getQuantity() {
 		return quantity;

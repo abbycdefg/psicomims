@@ -1,6 +1,15 @@
 package app;
-
 import java.awt.Color;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JComboBox;
+import java.awt.Font;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import java.awt.Cursor;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -40,9 +49,6 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         editBookToDRLabel = new javax.swing.JLabel();
-        poNumberPanel = new javax.swing.JPanel();
-        poNumberLabel = new javax.swing.JLabel();
-        poNumberField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         booksTable = new javax.swing.JTable();
         editButton = new javax.swing.JButton();
@@ -55,39 +61,6 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         editBookToDRLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         editBookToDRLabel.setForeground(new java.awt.Color(255, 255, 255));
         editBookToDRLabel.setText("EDIT BOOK TO DELIVERY RECEIPT");
-
-        poNumberPanel.setBackground(new java.awt.Color(58, 80, 98));
-
-        poNumberLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        poNumberLabel.setForeground(new java.awt.Color(255, 255, 255));
-        poNumberLabel.setText("PO Number:");
-
-        poNumberField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                poNumberFieldActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout poNumberPanelLayout = new javax.swing.GroupLayout(poNumberPanel);
-        poNumberPanel.setLayout(poNumberPanelLayout);
-        poNumberPanelLayout.setHorizontalGroup(
-            poNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(poNumberPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(poNumberLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(poNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        poNumberPanelLayout.setVerticalGroup(
-            poNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(poNumberPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(poNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(poNumberLabel)
-                    .addComponent(poNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(51, 51, 51));
@@ -141,50 +114,89 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
+        
+        JPanel poNumberPanel = new JPanel();
+        poNumberPanel.setBackground(new Color(58, 80, 98));
+        
+        JLabel poNumberLabel = new JLabel();
+        poNumberLabel.setText("PO Number:");
+        poNumberLabel.setForeground(Color.WHITE);
+        poNumberLabel.setFont(new Font("Calibri", Font.PLAIN, 14));
+        
+        JComboBox poNumberComboBox = new JComboBox();
+        poNumberComboBox.setFont(new Font("Calibri", Font.PLAIN, 12));
+        
+        JButton poSearchButton = new JButton("");
+        poSearchButton.setIcon(new ImageIcon(DCEditBookToDRScreen.class.getResource("/images/button_search.png")));
+        poSearchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        poSearchButton.setSelectedIcon(new ImageIcon(DCEditBookToDRScreen.class.getResource("/images/button_search2.png")));
+        poSearchButton.setContentAreaFilled(false);
+        poSearchButton.setBorderPainted(false);
+        poSearchButton.setBorder(null);
+        GroupLayout gl_poNumberPanel = new GroupLayout(poNumberPanel);
+        gl_poNumberPanel.setHorizontalGroup(
+        	gl_poNumberPanel.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_poNumberPanel.createSequentialGroup()
+        			.addGap(20)
+        			.addComponent(poNumberLabel)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(poSearchButton, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(14, Short.MAX_VALUE))
+        );
+        gl_poNumberPanel.setVerticalGroup(
+        	gl_poNumberPanel.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, gl_poNumberPanel.createSequentialGroup()
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addGroup(gl_poNumberPanel.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(poSearchButton, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(gl_poNumberPanel.createParallelGroup(Alignment.BASELINE)
+        					.addComponent(poNumberLabel)
+        					.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)))
+        			.addContainerGap())
+        );
+        poNumberPanel.setLayout(gl_poNumberPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(197, 197, 197)
-                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
-                        .addComponent(editBookToDRLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(poNumberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(36, 36, 36))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(197)
+        					.addComponent(editButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(261)
+        					.addComponent(editBookToDRLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(36)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, 292, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 675, GroupLayout.PREFERRED_SIZE))))
+        			.addGap(36))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(editBookToDRLabel)
-                .addGap(12, 12, 12)
-                .addComponent(poNumberPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(editBookToDRLabel)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+        			.addGap(15)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(editButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void poNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poNumberFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_poNumberFieldActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
@@ -235,8 +247,4 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
     private javax.swing.JLabel editBookToDRLabel;
     private javax.swing.JButton editButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField poNumberField;
-    private javax.swing.JLabel poNumberLabel;
-    private javax.swing.JPanel poNumberPanel;
-    // End of variables declaration//GEN-END:variables
 }

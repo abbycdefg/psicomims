@@ -24,7 +24,7 @@ public class DCHomeScreen extends javax.swing.JFrame {
      */
     public DCHomeScreen() {
         initComponents();
-        
+               
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -65,7 +65,6 @@ public class DCHomeScreen extends javax.swing.JFrame {
             }
         });
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -98,7 +97,7 @@ public class DCHomeScreen extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         booksButton.setBackground(new java.awt.Color(255, 255, 255));
         booksButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -309,11 +308,14 @@ public class DCHomeScreen extends javax.swing.JFrame {
                 .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pack();
+        pack();        
+        
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	ADLogInScreen a = new ADLogInScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -326,34 +328,32 @@ public class DCHomeScreen extends javax.swing.JFrame {
 
     private void booksButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCBooksTab a = new DCBooksTab();
+        DCBooksTab a = new DCBooksTab("");
         a.setVisible(true);
     }
-
 
     private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
         a.setVisible(true);
     }
-
 
 
     private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCJobOrdersTab a = new DCJobOrdersTab();
+        DCJobOrdersTab a = new DCJobOrdersTab("");
         a.setVisible(true);
     }
 
     private void drButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab();
+        DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
         a.setVisible(true);
     }
 
     private void dsButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCDeliverySchedulesTab a = new DCDeliverySchedulesTab();
+        DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
         a.setVisible(true);
     }
 
@@ -408,4 +408,6 @@ public class DCHomeScreen extends javax.swing.JFrame {
     private javax.swing.JTextField searchField;
     private javax.swing.JButton signOutButton;
     // End of variables declaration//GEN-END:variables
+    
+
 }

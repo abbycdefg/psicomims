@@ -33,6 +33,8 @@ import javax.swing.ImageIcon;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+import java.awt.Cursor;
+import java.awt.Font;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -109,7 +111,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         poNumberPanel = new javax.swing.JPanel();
         poNumberLabel = new javax.swing.JLabel();
-        poNumberField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Book to Delivery Receipt");
@@ -155,6 +156,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
                 };
             }
         });
+
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -193,37 +195,61 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         poNumberLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         poNumberLabel.setForeground(new java.awt.Color(255, 255, 255));
         poNumberLabel.setText("PO Number:");
+        poNumberComboBox.setFont(new Font("Calibri", Font.PLAIN, 12));
+        
+        poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    public int getWidth() {
+                        return 0;
+                    }
 
-        poNumberField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                poNumberFieldActionPerformed(evt);
+                    @Override
+                    public synchronized void addMouseListener(MouseListener l) {
+                    }
+                };
             }
         });
-
-        javax.swing.GroupLayout poNumberPanelLayout = new javax.swing.GroupLayout(poNumberPanel);
-        poNumberPanel.setLayout(poNumberPanelLayout);
-        poNumberPanelLayout.setHorizontalGroup(
-            poNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(poNumberPanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(poNumberLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(poNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        poNumberPanelLayout.setVerticalGroup(
-            poNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(poNumberPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(poNumberPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(poNumberLabel)
-                    .addComponent(poNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
         
         JButton poSearchButton = new JButton("");
+        poSearchButton.setSelectedIcon(new ImageIcon(DCAddBookToDRScreen.class.getResource("/images/button_search2.png")));
+        poSearchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        poSearchButton.setContentAreaFilled(false);
+        poSearchButton.setBorder(null);
+        poSearchButton.setBorderPainted(false);
+        
+                poSearchButton.setIcon(new ImageIcon(DCAddBookToDRScreen.class.getResource("/images/button_search.png")));
+                // </editor-fold>//GEN-END:initComponents
+                
+                poSearchButton.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent e) {
+                		poNumber = poNumberComboBox.getSelectedItem().toString();
+                	}
+                });
 
-        poSearchButton.setIcon(new ImageIcon(DCAddBookToDRScreen.class.getResource("/images/button_search.png")));
+        javax.swing.GroupLayout poNumberPanelLayout = new javax.swing.GroupLayout(poNumberPanel);
+        poNumberPanelLayout.setHorizontalGroup(
+        	poNumberPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(poNumberPanelLayout.createSequentialGroup()
+        			.addGap(20)
+        			.addComponent(poNumberLabel)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(poSearchButton)
+        			.addContainerGap(14, Short.MAX_VALUE))
+        );
+        poNumberPanelLayout.setVerticalGroup(
+        	poNumberPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(poNumberPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(poNumberPanelLayout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(poNumberLabel)
+        				.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(poSearchButton))
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        poNumberPanel.setLayout(poNumberPanelLayout);
         
       
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -242,12 +268,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         				.addGroup(layout.createSequentialGroup()
         					.addGap(36)
         					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addGroup(layout.createSequentialGroup()
-        							.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        							.addPreferredGap(ComponentPlacement.UNRELATED)
-        							.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
-        							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(poSearchButton))
+        						.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, 292, GroupLayout.PREFERRED_SIZE)
         						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 675, GroupLayout.PREFERRED_SIZE))))
         			.addGap(36))
         );
@@ -256,15 +277,8 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         		.addGroup(layout.createSequentialGroup()
         			.addGap(40)
         			.addComponent(addBookToDRLabel)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(12)
-        					.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(26)
-        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(poSearchButton)
-        						.addComponent(poNumberComboBox, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))))
+        			.addGap(12)
+        			.addComponent(poNumberPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(18)
         			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
@@ -276,13 +290,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
 
         pack();
-    // </editor-fold>//GEN-END:initComponents
-    
-    poSearchButton.addActionListener(new ActionListener() {
-    	public void actionPerformed(ActionEvent e) {
-    		poNumber = poNumberComboBox.getSelectedItem().toString();
-    	}
-    });
     
     }
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,10 +327,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     	this.dispose();
     	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
     	a.setVisible(true);
-    }
-
-    private void poNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {
-
     }
 
     /**
@@ -369,9 +372,9 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField poNumberField;
     private javax.swing.JLabel poNumberLabel;
     private javax.swing.JPanel poNumberPanel;
+
     //END
     public void displayAll(){
     	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};

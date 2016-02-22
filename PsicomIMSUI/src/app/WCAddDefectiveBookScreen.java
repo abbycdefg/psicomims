@@ -1,7 +1,12 @@
 package app;
 
 import java.awt.Color;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+
+import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -186,24 +191,42 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
+        if(!itemCodeField.getText().equals("") && !quantityField.getText().equals(""))
+        {
+        	if(this.isNumeric(itemCodeField.getText()) && this.isNumeric(quantityField.getText())){
+        		try{
+                    String itemCode = itemCodeField.getText();
+                    String title = titleField.getText();
+                    String quantity = quantityField.getText();
+                    
 
-        try{
-            String itemCode = itemCodeField.getText();
-            String title = titleField.getText();
-            String quantity = quantityField.getText();
-            
-
-            try{
-                map = doCommand("addDefectiveBook", itemCode, title, quantity);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+                    try{
+                        map = doCommand("addDefectiveBook", itemCode, title, quantity);
+                        
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    
+                    cancelButton.setEnabled(false);
+                    
+                	this.dispose();
+                	WCDefectiveBookRecordTab a = new WCDefectiveBookRecordTab();
+                	a.setVisible(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+	    	  }
+        	else
+        	{
+        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+        
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -300,5 +323,14 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
     private static void printMessage(HashMap map)
     {
         System.out.println(map.get("message"));
+    }
+    
+    public boolean isAlpha(String s) {
+        return s.matches("[a-zA-Z]+");
+    }
+    
+    public static boolean isNumeric(String s)
+    {
+      return s.matches("-?\\d+(\\.\\d+)?");
     }
 }

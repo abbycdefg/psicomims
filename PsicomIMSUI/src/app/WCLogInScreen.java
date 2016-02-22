@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.swing.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 public class WCLogInScreen extends javax.swing.JFrame {
 
     /**
@@ -27,6 +29,8 @@ public class WCLogInScreen extends javax.swing.JFrame {
         Color y = new Color(205, 0, 69);
         loginButton.setBackground(y);
         
+
+        
         forgotPasswordButton.setOpaque(false);
         forgotPasswordButton.setContentAreaFilled(false);
         forgotPasswordButton.setBorderPainted(false);
@@ -40,17 +44,6 @@ public class WCLogInScreen extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 forgotPasswordButton.setFont(originalFont);
-            }
-        });
-        
-        passwordField.addFocusListener(new FocusListener(){            
-            @Override
-            public void focusLost(FocusEvent arg0) {
-            }
-
-            @Override
-            public void focusGained(FocusEvent arg0) {
-                passwordField.setText("");
             }
         });
        
@@ -76,7 +69,6 @@ public class WCLogInScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         usernameField = new javax.swing.JTextField();
-        passwordField = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
         forgotPasswordButton = new javax.swing.JButton();
         copyrightLabel = new javax.swing.JLabel();
@@ -95,17 +87,6 @@ public class WCLogInScreen extends javax.swing.JFrame {
         usernameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameFieldActionPerformed(evt);
-            }
-        });
-
-        passwordField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        passwordField.setForeground(new java.awt.Color(102, 102, 102));
-        passwordField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        passwordField.setText("    Password");
-        passwordField.setToolTipText("Password");
-        passwordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordFieldActionPerformed(evt);
             }
         });
 
@@ -134,86 +115,93 @@ public class WCLogInScreen extends javax.swing.JFrame {
 
         copyrightLabel.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel.setForeground(new java.awt.Color(255, 255, 255));
-        copyrightLabel.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/VS1.1.png"))); // NOI18N
+        
+        passwordField = new JPasswordField();
+        passwordField.setEchoChar('*');
+        passwordField.setForeground(new Color(0, 0, 0));
+        passwordField.setToolTipText("Password");
+        passwordField.setFont(new Font("Calibri", Font.PLAIN, 12));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logoLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(copyrightLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(64, 64, 64)
-                                .addComponent(forgotPasswordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(35, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(logoLabel)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(68)
+        					.addComponent(copyrightLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(78)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+        							.addComponent(usernameField, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+        							.addComponent(loginButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+        							.addComponent(passwordField))
+        						.addGroup(layout.createSequentialGroup()
+        							.addGap(64)
+        							.addComponent(forgotPasswordButton, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)))))
+        			.addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(logoLabel)
-                .addGap(55, 55, 55)
-                .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(forgotPasswordButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
-                .addComponent(copyrightLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(88)
+        			.addComponent(logoLabel)
+        			.addGap(55)
+        			.addComponent(usernameField, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        			.addGap(27)
+        			.addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(forgotPasswordButton)
+        			.addPreferredGap(ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
+        			.addComponent(copyrightLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap())
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-
-    }
-
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
     	HashMap map;
-    	
-        try{
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-            
-
-            try{
-                map = doCommand("wcLogin", username, password);
-                String msg = (String) map.get("message");
+        if(!usernameField.getText().equals("") && passwordField.getPassword() != null)
+        {
+        	try{
+                String username = usernameField.getText();
+                String password = passwordField.getText();
                 
-                if(msg.trim().equals("Success!")){
-                	this.dispose();
-        	        WCHomeScreen a = new WCHomeScreen();
-        	        a.setVisible(true);
+
+                try{
+                    map = doCommand("wcLogin", username, password);
+                    String msg = (String) map.get("message");
+                    
+                    if(msg.trim().equals("Success!")){
+                    	this.dispose();
+            	        WCHomeScreen a = new WCHomeScreen();
+            	        a.setVisible(true);
+                    }
+                    else{
+                    	JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-                else{
-                	JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+                catch (Exception e){
+                    e.printStackTrace();
                 }
+                
             }
             catch (Exception e){
                 e.printStackTrace();
-            }
-            
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        } 
+            } 
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
     }
 
     private void forgotPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotPasswordButtonActionPerformed
@@ -268,8 +256,8 @@ public class WCLogInScreen extends javax.swing.JFrame {
     private javax.swing.JButton forgotPasswordButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel logoLabel;
-    private javax.swing.JTextField passwordField;
     private javax.swing.JTextField usernameField;
+    private JPasswordField passwordField;
     // End of variables declaration//GEN-END:variables
     
     private HashMap doCommand(String command, String username, String password) throws Exception

@@ -516,7 +516,14 @@ public class ADUsersTab extends javax.swing.JFrame {
             while (rs.next()) {
                 username = rs.getString("username");
                 password = rs.getString("password");
-                model.addRow(new Object[]{username, password, dateCreated});
+                
+                StringBuffer password2 = new StringBuffer("");
+            
+                for (int j = 0; j < password.length(); j++){
+                    password2.append("*");
+                    System.out.println(password2);  
+                }
+                model.addRow(new Object[]{username, password2, dateCreated});
                 i++;
             }
             

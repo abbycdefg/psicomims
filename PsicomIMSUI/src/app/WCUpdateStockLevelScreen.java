@@ -3,6 +3,8 @@ package app;
 import java.awt.Color;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
@@ -35,6 +37,7 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
         itemCodeField.setText(WCUpdateStocksTab.getFirstColumnData());
         titleField.setText(WCUpdateStocksTab.getSecondColumnData());
         quantityField.setText(WCUpdateStocksTab.getThirdColumnData());
+        quantityField.setEnabled(false);
     }
 
     /**
@@ -221,23 +224,41 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
     	HashMap map;
-        
-        try{
-        	String itemCode = itemCodeField.getText();
-        	String newQuantity = newQuantityField.getText();
-            
+        if(!itemCodeField.getText().equals("") && !quantityField.getText().equals("") && !newQuantityField.getText().equals(""))
+        {
+        	if(this.isNumeric(itemCodeField.getText()) && this.isNumeric(quantityField.getText()) && this.isNumeric(newQuantityField.getText())){
+        		try{
+                	String itemCode = itemCodeField.getText();
+                	String newQuantity = newQuantityField.getText();
+                    
 
-            try{
-                map = doCommand("updateStocks", itemCode, newQuantity);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+                    try{
+                        map = doCommand("updateStocks", itemCode, newQuantity);
+                        
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    cancelButton.setEnabled(false);
+                    
+                	this.dispose();
+                	WCUpdateStocksTab a = new WCUpdateStocksTab();
+                	a.setVisible(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+	    	  }
+        	else
+        	{
+        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+        
+        
         
     }//GEN-LAST:event_updateButtonActionPerformed
 
@@ -335,5 +356,14 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
     private static void printMessage(HashMap map)
     {
         System.out.println(map.get("message"));
+    }
+    
+    public boolean isAlpha(String s) {
+        return s.matches("[a-zA-Z]+");
+    }
+    
+    public static boolean isNumeric(String s)
+    {
+      return s.matches("-?\\d+(\\.\\d+)?");
     }
 }

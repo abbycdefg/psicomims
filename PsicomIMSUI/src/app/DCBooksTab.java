@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowListener;
 import java.awt.font.TextAttribute;
 import java.awt.print.Book;
 import java.sql.Connection;
@@ -33,12 +34,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCBooksTab extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form BookTabDC
      */
-    public DCBooksTab() {
+    public DCBooksTab(String page) {
         
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -79,8 +84,8 @@ public class DCBooksTab extends javax.swing.JFrame {
                 searchField.setText("");
             }
         });
-    }
-
+    }    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,33 +141,6 @@ public class DCBooksTab extends javax.swing.JFrame {
 
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(255, 255, 255));
-        booksTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "ITEM CODE", "TITLE", "RELEASE DATE", "PRICE", "QUANTITY"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        
         this.displayAll();
         
         booksTable.setToolTipText("");
@@ -414,7 +392,16 @@ public class DCBooksTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADLogInScreen a = new ADLogInScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCLogInScreen a = new DCLogInScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -465,13 +452,74 @@ public class DCBooksTab extends javax.swing.JFrame {
     }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        this.dispose();
-        DCHomeScreen a = new DCHomeScreen();
-        a.setVisible(true);
+        if(prevPage.equals("ad")){
+        	this.dispose();
+            ADHomeScreen a = new ADHomeScreen();
+            a.setVisible(true);
+        }
+        else{
+	    	this.dispose();
+	        DCHomeScreen a = new DCHomeScreen();
+	        a.setVisible(true);
+        }
     }
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+        if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "AUTHOR", "RELEASE DATE"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String title = "";
+            String itemCode = "";
+            String price = "";
+            String author = "";
+            String releaseDate = "";
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM book WHERE title LIKE '%" + searchField.getText() + "%' OR item_code LIKE '%" + searchField.getText() + "%' OR author LIKE '%" + searchField.getText() + "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                    title = rs.getString("title");
+                    itemCode = rs.getString("item_code");
+                    price = rs.getString("price");
+                    author = rs.getString("author");
+                    releaseDate = rs.getString("release_date");
+                    model.addRow(new Object[]{title, itemCode, price, author, releaseDate});
+                    i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            booksTable.setModel(model);
+            booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
+        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -544,7 +592,7 @@ public class DCBooksTab extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCBooksTab().setVisible(true);
+                new DCBooksTab("").setVisible(true);
             }
         });
     }
@@ -590,6 +638,7 @@ public class DCBooksTab extends javax.swing.JFrame {
         String price = "";
         String author = "";
         String releaseDate = "";
+        String quantity = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -605,6 +654,17 @@ public class DCBooksTab extends javax.swing.JFrame {
                 releaseDate = rs.getString("release_date");
                 model.addRow(new Object[]{title, itemCode, price, author, releaseDate});
                 i++;
+                
+                quantity = rs.getString("quantity");
+                if (Integer.parseInt(quantity) < 13){
+                	String titleNew = title;
+                	if (title.length() > 11){
+                		titleNew = title.substring(0, 13) + "...";
+                	}
+                	DCStockNotificationScreen d = new DCStockNotificationScreen(titleNew);
+                	d.setVisible(true);
+                }
+                
             }
             
             if (i < 1) {
@@ -628,6 +688,8 @@ public class DCBooksTab extends javax.swing.JFrame {
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
+    
 
+ 
 }
 

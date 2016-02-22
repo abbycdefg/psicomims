@@ -32,7 +32,7 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
      */
     public WCUpdateStocksTab() {
         initComponents();
-        
+                
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -346,8 +346,61 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchButtonActionPerformed
+        if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "DATE MODIFIED"};
+	
+	        DefaultTableModel model = new DefaultTableModel();
+	        model.setColumnIdentifiers(columnNames);
+	        
+	        PreparedStatement pst;
+	        Connection con;
+	        
+	        String date = "";
+	        String itemCode = "";
+	        String title = "";
+	        String quantity = "";
+	        
+	        try {
+	        	Class.forName("com.mysql.jdbc.Driver");
+	        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+	            pst = con.prepareStatement("SELECT * FROM psicomims.book WHERE item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%"  + searchField.getText() + "%' OR quantity LIKE '%"  + searchField.getText() + "%' OR release_date LIKE '%"  + searchField.getText() + "%'");
+	            ResultSet rs = pst.executeQuery();
+	            int i = 0;
+	            while (rs.next()) {
+	                itemCode = rs.getString("item_code");
+	                title = rs.getString("title");
+	                quantity = rs.getString("quantity");
+	                date = rs.getString("release_date");
+	                model.addRow(new Object[]{itemCode, title, quantity, date});
+	                i++;
+	            }
+	            
+	            if (i < 1) {
+	                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	            
+	            if (i == 1) {
+	                System.out.println(i + " Record Found");
+	            } 
+	            
+	            else {
+	                System.out.println(i + " Records Found");
+	            }
+	
+	                  
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        
+
+	        stocksTable.setModel(model);
+	        stocksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	    }
+	}
+    //GEN-LAST:event_searchButtonActionPerformed
 
     /**
      * @param args the command line arguments

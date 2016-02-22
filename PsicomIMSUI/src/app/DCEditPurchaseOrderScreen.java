@@ -435,7 +435,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
             	{
                 map = doCommand("editPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityListStr);
                 this.dispose();
-             	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab();
+             	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
              	a.setVisible(true);
             	}
             }

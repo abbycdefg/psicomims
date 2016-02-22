@@ -7,12 +7,18 @@ package app;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 public class ADLogInScreen extends javax.swing.JFrame {
 
     /**
@@ -42,17 +48,6 @@ public class ADLogInScreen extends javax.swing.JFrame {
                 forgotPasswordButton.setFont(originalFont);
             }
         });
-        
-        passwordField.addFocusListener(new FocusListener(){            
-            @Override
-            public void focusLost(FocusEvent arg0) {
-            }
-
-            @Override
-            public void focusGained(FocusEvent arg0) {
-                passwordField.setText("");
-            }
-        });
        
         usernameField.addFocusListener(new FocusListener(){            
             @Override
@@ -76,7 +71,6 @@ public class ADLogInScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         usernameField = new javax.swing.JTextField();
-        passwordField = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
         forgotPasswordButton = new javax.swing.JButton();
         copyrightLabel = new javax.swing.JLabel();
@@ -95,17 +89,6 @@ public class ADLogInScreen extends javax.swing.JFrame {
         usernameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameFieldActionPerformed(evt);
-            }
-        });
-
-        passwordField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        passwordField.setForeground(new java.awt.Color(102, 102, 102));
-        passwordField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        passwordField.setText("    Password");
-        passwordField.setToolTipText("Password");
-        passwordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordFieldActionPerformed(evt);
             }
         });
 
@@ -137,83 +120,90 @@ public class ADLogInScreen extends javax.swing.JFrame {
         copyrightLabel.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/VS1.1.png"))); // NOI18N
+        
+        passwordField = new JPasswordField();
+        passwordField.setToolTipText("Password");
+        passwordField.setForeground(Color.BLACK);
+        passwordField.setFont(new Font("Calibri", Font.PLAIN, 12));
+        passwordField.setEchoChar('*');
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logoLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(copyrightLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(64, 64, 64)
-                                .addComponent(forgotPasswordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(35, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(logoLabel)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(68)
+        					.addComponent(copyrightLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(78)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        							.addComponent(usernameField, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
+        							.addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
+        							.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(layout.createSequentialGroup()
+        							.addGap(64)
+        							.addComponent(forgotPasswordButton, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)))))
+        			.addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(logoLabel)
-                .addGap(55, 55, 55)
-                .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(forgotPasswordButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
-                .addComponent(copyrightLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(88)
+        			.addComponent(logoLabel)
+        			.addGap(55)
+        			.addComponent(usernameField, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        			.addGap(27)
+        			.addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(forgotPasswordButton)
+        			.addPreferredGap(ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+        			.addComponent(copyrightLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap())
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-
-    }
-
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
     	HashMap map;
-    	
-        try{
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-            
-
-            try{
-                map = doCommand("adminLogin", username, password);
-                String msg = (String) map.get("message");
+        if(!usernameField.getText().equals("") && passwordField.getPassword() != null)
+        {
+    		try{
+                String username = usernameField.getText();
+                String password = passwordField.getText();
                 
-                if(msg.trim().equals("Success!")){
-                	this.dispose();
-        	        ADHomeScreen a = new ADHomeScreen();
-        	        a.setVisible(true);
+
+                try{
+                    map = doCommand("adminLogin", username, password);
+                    String msg = (String) map.get("message");
+                    
+                    if(msg.trim().equals("Success!")){
+                    	this.dispose();
+            	        ADHomeScreen a = new ADHomeScreen();
+            	        a.setVisible(true);
+                    }
+                    else{
+                    	JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
-                else{
-                	JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+                catch (Exception e){
+                    e.printStackTrace();
                 }
+                
             }
             catch (Exception e){
                 e.printStackTrace();
-            }
-            
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }            
+            }      
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	} 
     	
     }
 
@@ -269,8 +259,8 @@ public class ADLogInScreen extends javax.swing.JFrame {
     private javax.swing.JButton forgotPasswordButton;
     private javax.swing.JButton loginButton;
     private javax.swing.JLabel logoLabel;
-    private javax.swing.JTextField passwordField;
     private javax.swing.JTextField usernameField;
+    private JPasswordField passwordField;
     // End of variables declaration//GEN-END:variables
     
     private HashMap doCommand(String command, String username, String password) throws Exception

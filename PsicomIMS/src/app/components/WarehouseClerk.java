@@ -13,11 +13,15 @@ import app.entity.Book;
 import app.entity.ContactPerson;
 import app.entity.DefectiveBook;
 import app.entity.Outlet;
+import app.entity.PurchaseOrder;
+import app.entity.SpecificPo;
 import app.entity.User;
 import app.repositories.BookRepository;
 import app.repositories.ContactPersonRepository;
 import app.repositories.DefectiveBookRepository;
+import app.repositories.DeliveryReceiptRepository;
 import app.repositories.OutletRepository;
+import app.repositories.PurchaseOrderRepository;
 import app.repositories.UserRepository;
 
 import java.util.*;
@@ -34,6 +38,12 @@ public class WarehouseClerk
 	
 	@Autowired
 	private DefectiveBookRepository defectiveBookDao;
+	
+	@Autowired
+	private PurchaseOrderRepository poDao;
+	
+	@Autowired
+	private DeliveryReceiptRepository drDao;
 	
     public boolean checkUser(String username)
     {
@@ -110,4 +120,6 @@ public class WarehouseClerk
         }
         
     } 
+
+ 
 }

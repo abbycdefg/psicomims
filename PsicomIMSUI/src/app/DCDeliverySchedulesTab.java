@@ -27,11 +27,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DCDeliverySchedulesTab extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCDeliverySchedulesTab
      */
-    public DCDeliverySchedulesTab() {
+    public DCDeliverySchedulesTab(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -569,7 +573,6 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     	if (deliverySchedulesTable.getSelectedRowCount() == 1 && deliverySchedulesTable.getSelectedColumn() == 0){
     		int row = deliverySchedulesTable.getSelectedRow();
     		String scheduleCode = deliverySchedulesTable.getValueAt(row, 1).toString();
-
     		
 	    	this.dispose();
 	    	DCDeleteScheduleScreen a = new DCDeleteScheduleScreen(scheduleCode);
@@ -582,11 +585,19 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
 
     }
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	this.dispose();
-    	DCHomeScreen a = new DCHomeScreen();
-    	a.setVisible(true);
-    }
+
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADHomeScreen a = new ADHomeScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCHomeScreen a = new DCHomeScreen();
+	    	a.setVisible(true);
+    	}
+    }//GEN-LAST:event_homeButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
         // TODO add your handling code here:
@@ -597,7 +608,58 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+        if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String date = "";
+            String scheduleCode = "";
+            String outlet = "";
+            String deliveryReceiptCode = "";
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM delivery_schedule WHERE date LIKE '%" + searchField.getText() + "%' OR delivery_receipt_code LIKE '%" + searchField.getText() + "%' OR schedule_code LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                	date = rs.getString("date");
+                	scheduleCode = rs.getString("delivery_receipt_code");
+                	outlet = rs.getString("outlet");
+                	deliveryReceiptCode = rs.getString("schedule_code");
+                    model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+                    i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            deliverySchedulesTable.setModel(model);
+            deliverySchedulesTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void advSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advSearchButtonActionPerformed
@@ -638,7 +700,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeliverySchedulesTab().setVisible(true);
+                new DCDeliverySchedulesTab("").setVisible(true);
             }
         });
     }

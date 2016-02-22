@@ -229,7 +229,7 @@ public class DCViewBookScreen extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
-    	DCBooksTab a = new DCBooksTab();
+    	DCBooksTab a = new DCBooksTab("");
     	a.setVisible(true);
     }
 

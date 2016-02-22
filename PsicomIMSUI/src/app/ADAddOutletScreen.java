@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
@@ -177,27 +179,45 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
+        if(!outletIDField.getText().equals("") && !outletNameField.getText().equals("") && dateCreatedChooser.getDate() != null)
+        {
+        	if(this.isAlpha(outletNameField.getText()) && this.isNumeric(outletIDField.getText())){
+        		try{
+                    String outletId = outletIDField.getText();
+                    String outletName = outletNameField.getText();
+                    
+                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                    Date dc = dateCreatedChooser.getDate();
+                    String dateCreated = df.format(dc);
+                    
 
-        try{
-            String outletId = outletIDField.getText();
-            String outletName = outletNameField.getText();
-            
-            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-            Date dc = dateCreatedChooser.getDate();
-            String dateCreated = df.format(dc);
-            
-
-            try{
-                map = doCommand("addOutlet", outletId, outletName, dateCreated);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+                    try{
+                        map = doCommand("addOutlet", outletId, outletName, dateCreated);
+                        
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    
+                    cancelButton.setEnabled(false);
+                    
+                	this.dispose();
+                	ADOutletsTab a = new ADOutletsTab();
+                	a.setVisible(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+	    	  }
+        	else
+        	{
+        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -296,5 +316,13 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
     {
         System.out.println(map.get("message"));
     }
-
+    
+    public boolean isAlpha(String s) {
+        return s.matches("[a-zA-Z]+");
+    }
+    
+    public static boolean isNumeric(String s)
+    {
+      return s.matches("-?\\d+(\\.\\d+)?");
+    }
 }

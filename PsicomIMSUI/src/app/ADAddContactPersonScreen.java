@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
@@ -176,29 +178,44 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
-
-        try{
-            String contactPersonId = contactPersonIDField.getText();
-            String contactPersonName = contactPersonNameField.getText();
-            
-            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-            Date dc = dateCreatedChooser.getDate();
-            String dateCreated = df.format(dc);
-            
-
-            try{
-                map = doCommand("addContactPerson", contactPersonId, contactPersonName, dateCreated);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        
-    }//GEN-LAST:event_addButtonActionPerformed
+        if(!contactPersonIDField.getText().equals("") && !contactPersonNameField.getText().equals("") && dateCreatedChooser.getDate() != null)
+        {
+        	if(this.isAlpha(contactPersonNameField.getText()) && this.isNumeric(contactPersonIDField.getText())){
+	    	  try{
+		            String contactPersonId = contactPersonIDField.getText();
+		            String contactPersonName = contactPersonNameField.getText();
+		            
+		            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		            Date dc = dateCreatedChooser.getDate();
+		            String dateCreated = df.format(dc);
+		            
+		            try{
+		                map = doCommand("addContactPerson", contactPersonId, contactPersonName, dateCreated);
+		                
+		            }
+		            catch (Exception e){
+		                e.printStackTrace();
+		            }
+		            
+		            cancelButton.setEnabled(false);
+		            
+		        	this.dispose();
+		        	ADContactPersonsTab a = new ADContactPersonsTab();
+		        	a.setVisible(true);
+		        }
+		        catch (Exception e){
+		            e.printStackTrace();
+		        }
+	    	  }
+        	else
+        	{
+        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
     	this.dispose();
@@ -294,5 +311,14 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
     private static void printMessage(HashMap map)
     {
         System.out.println(map.get("message"));
+    }
+    
+    public boolean isAlpha(String s) {
+        return s.matches("[a-zA-Z]+");
+    }
+    
+    public static boolean isNumeric(String s)
+    {
+      return s.matches("-?\\d+(\\.\\d+)?");
     }
 }

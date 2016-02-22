@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toedter.calendar.JTextFieldDateEditor;
 
@@ -180,21 +182,40 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
     	HashMap map;
     	
-        try{
-        	String outletId = outletIDField.getText();
-            String outletName = outletNameField.getText();         
+        if(!outletIDField.getText().equals("") && !outletNameField.getText().equals(""))
+        {
+        	if(this.isAlpha(outletNameField.getText()) && this.isNumeric(outletIDField.getText())){
+                try{
+                	String outletId = outletIDField.getText();
+                    String outletName = outletNameField.getText();         
 
-            try{
-                map = doCommand("editOutlet", outletId, outletName);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+                    try{
+                        map = doCommand("editOutlet", outletId, outletName);
+                        
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    
+                    cancelButton.setEnabled(false);
+                    
+                	this.dispose();
+                	ADOutletsTab a = new ADOutletsTab();
+                	a.setVisible(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+	    	  }
+        	else
+        	{
+        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    	
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -298,5 +319,14 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
     private static void printMessage(HashMap map)
     {
         System.out.println(map.get("message"));
+    }
+    
+    public boolean isAlpha(String s) {
+        return s.matches("[a-zA-Z]+");
+    }
+    
+    public static boolean isNumeric(String s)
+    {
+      return s.matches("-?\\d+(\\.\\d+)?");
     }
 }
