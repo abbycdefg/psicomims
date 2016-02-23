@@ -32,6 +32,8 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
     /**
      * Creates new form DCDeliveryReceiptsTab
      */
+	private String quantityCount;
+	private String poNumber;
     public DCDeliveryReceiptsTab(String page) {
         initComponents();
         
@@ -77,7 +79,54 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
             }
         });
     }
+    public DCDeliveryReceiptsTab(String page, String poNumber1) {
+        initComponents();
+        
+        prevPage = page;
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = signOutButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                signOutButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                signOutButton.setFont(originalFont);
+            }
+        });
+        
+             searchField.addFocusListener(new FocusListener(){            
+            @Override
+            public void focusLost(FocusEvent arg0) {
+            }
 
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                searchField.setText("");
+            }
+        }); 
+             
+        
+        
+        searchField.addFocusListener(new FocusListener(){            
+            @Override
+            public void focusLost(FocusEvent arg0) {
+            }
+
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                searchField.setText("");
+            }
+        });
+        
+        poNumber = poNumber1;
+        System.out.println(poNumber);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -452,9 +501,19 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_editButtonActionPerformed
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteButtonActionPerformed
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
+    		int row = deliveryReceiptsTable.getSelectedRow();
+    		String drNumber = deliveryReceiptsTable.getValueAt(row, 0).toString();
+	    	this.dispose();
+	    	DCDeleteDeliveryReceiptScreen a = new DCDeleteDeliveryReceiptScreen(drNumber);
+	    	a.setVisible(true); 
+    		}
+
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
     	if(prevPage.equals("ad")){
@@ -544,7 +603,36 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
-        // TODO add your handling code here:
+        /**Workbook wb = new HSSFWorkbook();
+Sheet personSheet = wb.createSheet("PersonList");
+Row headerRow = personSheet.createRow(0);
+Cell nameHeaderCell = headerRow.createCell(0);
+Cell addressHeaderCell = headerRow.createCell(1);
+
+String sql = "select name, address from person_table";
+PrepareStatement ps =  connection.prepareStatement(sql);
+ResultSet resultSet = ps.executeQuery();    
+
+int row = 1;
+while(resultSet.next()) {
+    String name = resultSet.getString("name");
+    String address = resultSet.getString("address");
+
+    Row dataRow = personSheet.createRow(row);
+
+    Cell dataNameCell = dataRow.createCell(0);
+    dataNameCell.setCellValue(name);
+
+    Cell dataAddressCell = dataRow.createCell(1);
+    dataAddressCell.setCellValue(address);
+
+    row = row + 1;
+}
+
+String outputDirPath = "D:/PersonList.xls";
+FileOutputStream fileOut = new FileOutputStream(outputDirPath);
+wb.write(fileOut);
+fileOut.close();**/
     }//GEN-LAST:event_exportButtonActionPerformed
 
     /**
@@ -609,6 +697,7 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
+        PreparedStatement pst2;
         Connection con;
         
         String drNumber = "";
@@ -623,6 +712,7 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
             pst = con.prepareStatement("SELECT * FROM delivery_receipt");
             ResultSet rs = pst.executeQuery();
+
             int i = 0;
             while (rs.next()) {
             	drNumber = rs.getString("delivery_receipt_number");

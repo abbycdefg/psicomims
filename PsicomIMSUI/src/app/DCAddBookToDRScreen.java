@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -33,8 +35,11 @@ import javax.swing.ImageIcon;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+
 import java.awt.Cursor;
 import java.awt.Font;
+
+import javax.swing.table.TableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -54,10 +59,14 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
 	private String drNumber;
 	private String dateToday;
 	private String totalAmt;
+	private Integer totalAmtInt;
+	private String quantityCount;
+	private Integer quantityCountInt;
 	private String dateDelivery;
 	private JComboBox poNumberComboBox = new JComboBox();
 	private String poNumber;
 	private String []po;
+	private List<String> poList = new ArrayList<String>();
 	private static List<String> booksList = new ArrayList<String>();
 	private static List<String> quantityList = new ArrayList<String>();
 	
@@ -74,7 +83,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1, List<String> poList1) {
+    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -88,11 +97,32 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         
         drNumber = drNumber1;
         dateToday = dateToday1;
-        totalAmt = totalAmt1;
         dateDelivery = dateDelivery1;
-        po = new String[poList1.size()];
-        poList1.toArray(po);
+        getPoList();
+        po = new String[poList.size()];
+        poList.toArray(po);
         AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(po));
+        totalAmt = totalAmt1;
+
+        if(!totalAmt.equals("")){
+        totalAmtInt = Integer.parseInt(totalAmt);
+        }
+        else {
+        totalAmtInt = 0;
+        }
+        
+    }
+    public DCAddBookToDRScreen(String poNumber1) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        addButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
     }
 
     /**
@@ -106,11 +136,11 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
 
         addBookToDRLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        booksTable = new javax.swing.JTable();
         addButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         poNumberPanel = new javax.swing.JPanel();
         poNumberLabel = new javax.swing.JLabel();
+        booksTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Book to Delivery Receipt");
@@ -119,28 +149,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         addBookToDRLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         addBookToDRLabel.setForeground(new java.awt.Color(255, 255, 255));
         addBookToDRLabel.setText("ADD BOOK TO DELIVERY RECEIPT");
-
-        booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
-        booksTable.setForeground(new java.awt.Color(51, 51, 51));
-        booksTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
         
         
         poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
@@ -156,15 +164,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
                 };
             }
         });
-
-        booksTable.setToolTipText("");
-        booksTable.setCellSelectionEnabled(true);
-        booksTable.setGridColor(new java.awt.Color(204, 204, 255));
-        booksTable.setRequestFocusEnabled(false);
-        booksTable.setRowHeight(18);
-        booksTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(booksTable);
-        booksTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         addButton.setBackground(new java.awt.Color(205, 0, 69));
         addButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -191,7 +190,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         });
 
         poNumberPanel.setBackground(new java.awt.Color(58, 80, 98));
-
+        
         poNumberLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         poNumberLabel.setForeground(new java.awt.Color(255, 255, 255));
         poNumberLabel.setText("PO Number:");
@@ -221,11 +220,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
                 poSearchButton.setIcon(new ImageIcon(DCAddBookToDRScreen.class.getResource("/images/button_search.png")));
                 // </editor-fold>//GEN-END:initComponents
                 
-                poSearchButton.addActionListener(new ActionListener() {
-                	public void actionPerformed(ActionEvent e) {
-                		poNumber = poNumberComboBox.getSelectedItem().toString();
-                	}
-                });
+
 
         javax.swing.GroupLayout poNumberPanelLayout = new javax.swing.GroupLayout(poNumberPanel);
         poNumberPanelLayout.setHorizontalGroup(
@@ -287,11 +282,19 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
         			.addGap(40))
         );
+        
         getContentPane().setLayout(layout);
-
+        
         pack();
+        poSearchButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		poNumber = poNumberComboBox.getSelectedItem().toString();
+        		displayAll(poNumber);
+        	}
+        });
     
     }
+
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	
         try{
@@ -309,23 +312,29 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     	    	{
     	    		System.out.println("pasok");
     	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 2).toString();
-    	    		quantityList.add(quantitySelected);
-    	    		
+    	    		quantityList.add(quantitySelected);     	    		
+    	    	}
+    	    	if(booksTable.getModel().getValueAt(i,4) != null)
+    	    	{
+    	    		Integer amountSelected = Integer.parseInt(booksTable.getModel().getValueAt(i,4).toString());
+    	    		totalAmtInt += amountSelected;
     	    	}
         	}
+        	
+        	totalAmt = totalAmtInt.toString();
         	
         }
         catch (Exception e){
             e.printStackTrace();
         }
     	this.dispose();
-    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, poNumber);
     	a.setVisible(true);
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
-    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, "");
     	a.setVisible(true);
     }
 
@@ -367,30 +376,32 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addBookToDRLabel;
     private javax.swing.JButton addButton;
-    private javax.swing.JTable booksTable;
     private javax.swing.JButton cancelButton;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel poNumberLabel;
     private javax.swing.JPanel poNumberPanel;
+    private JTable booksTable;
 
     //END
-    public void displayAll(){
+    public void displayAll(String poNumber){
     	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
+        PreparedStatement pst2;
         Connection con;
         
         String title = "";
         String itemCode = "";
-        String price = "";
-        String author = "";
-        String releaseDate = "";
-        List<String> bookList = new ArrayList<String>();
+        String discountedPrice = "";
+        String srp = "";
+        String quantity = "";
+        List<String> listBooks = new ArrayList<String>();
+        List<String> quantityList = new ArrayList<String>();
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -399,30 +410,35 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
-                if(rs.getString("po_id") == poNumber)
-                {
-                	bookList.add(rs.getString("book_id"));
-                }
-                i++;
-            }
-            
-            pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
-            ResultSet rs1 = pst.executeQuery();
-            
-            int j = 0;
-            while (rs.next()) {
-            	for(int k = 0; k <= bookList.size(); k++ )
+            	if(poNumber.equals(rs.getString("po_id")))
             	{
-            		if(rs1.getString("item_code") == bookList.get(k))
-            		{
-            			itemCode = rs1.getString("item_code");
-            			title = rs1.getString("title");
-            			price = rs1.getString("price");
-            		}
+            		System.out.println("adding inside");
+            		listBooks.add(rs.getString("book_id"));
+            		quantityList.add(rs.getString("quantity"));
             	}
-            	model.addRow(new Object[]{title, itemCode, price});
-                j++;
+                //model.addRow(new Object[]{title, itemCode, price, author, releaseDate});
+                i++;               
             }
+            
+            pst2 = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+            ResultSet rs2 = pst2.executeQuery();
+            while (rs2.next()) {
+                for(int k = 0; k < listBooks.size(); k++)
+                {
+                	
+                	if(listBooks.get(k).equals(rs2.getString("item_code")))
+                	{
+                		System.out.println(listBooks);
+                		title = rs2.getString("title");
+                        itemCode = rs2.getString("item_code");
+                        srp = rs2.getString("price");
+                        quantity = quantityList.get(k);
+                        break;
+                	}
+                }
+                model.addRow(new Object[]{title, itemCode, quantity, "", srp});            
+            }
+
             
             if (i < 1) {
                 JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
@@ -444,5 +460,46 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         booksTable = new JTable(model);
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        booksTable.setForeground(Color.BLACK);       
+        booksTable.setToolTipText("");
+        booksTable.setRowHeight(18);
+        booksTable.setRequestFocusEnabled(false);
+        booksTable.setGridColor(new Color(204, 204, 255));
+        booksTable.setCellSelectionEnabled(true);
+        booksTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setColumnHeaderView(booksTable);
+       
+    }
+    public void getPoList()
+    {
+			PreparedStatement pst;
+			Connection con;
+			
+			try {
+
+				Class.forName("com.mysql.jdbc.Driver");
+				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+				ResultSet rs = pst.executeQuery();
+				int i = 0;
+			    Set<String> poSetList = new HashSet();
+				while (rs.next()) {
+					if(!rs.getString("po_id").equals(null))
+					{
+						poSetList.add(rs.getString("po_id"));
+					}
+					i++;
+				}
+				poList.addAll(poSetList);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		
     }
 }

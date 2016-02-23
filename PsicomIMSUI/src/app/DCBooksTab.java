@@ -149,7 +149,7 @@ public class DCBooksTab extends javax.swing.JFrame {
         booksTable.setRequestFocusEnabled(false);
         booksTable.setRowHeight(18);
         booksTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(booksTable);
+        jScrollPane1.setColumnHeaderView(booksTable);
 
         titleLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(32, 55, 73));

@@ -374,7 +374,6 @@ class URLHandler extends AbstractHandler {
 
 					String purchaseOrderNumber = map.get("purchaseOrderNumber");
 					
-						System.out.println("pasok");
 							dc.deletePurchaseOrder(purchaseOrderNumber);
 							response.getWriter().println("You have succesfully deleted Purchase Order " + purchaseOrderNumber + ".");
 
@@ -400,8 +399,48 @@ class URLHandler extends AbstractHandler {
 					quantity = quantity.substring(1, quantity.length()-1);
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
 					
+					if(!dc.checkDeliveryReceipt(drNumber)){
+						dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
+						response.getWriter().println(books);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Delivery Receipt Number Already Exists", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+
+		
+				}
+				else if (target.equalsIgnoreCase("/editDeliveryReceipt")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String drNumber = (String) map.get("drNumber");
+					String dateToday = (String) map.get("dateToday");
+					String totalAmt = (String) map.get("totalAmt");
+					String dateDelivery = (String) map.get("dateDelivery");
+					
+					String books = map.get("booksList");
+					books = books.substring(1, books.length()-1);					
+					System.out.println(books);
+					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
+					
+					
+					String quantity = map.get("quantityList");  
+					System.out.println(quantity);
+					quantity = quantity.substring(1, quantity.length()-1);
+					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
+					
 					dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
 					response.getWriter().println(books);
+		
+				}
+				else if (target.equalsIgnoreCase("/deleteDeliveryReceipt")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String drNumber = (String) map.get("drNumber");
+
+					
+					dc.deleteDeliveryReceipt(drNumber);
+					response.getWriter().println(drNumber);
 		
 				}
 				

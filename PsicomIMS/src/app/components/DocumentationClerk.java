@@ -64,6 +64,19 @@ public class DocumentationClerk
         }
         
     }
+	public boolean checkDeliveryReceipt(String drNumber)
+    {
+        try
+        {
+            DeliveryReceipt d = drDao.findByDeliveryReceiptNumber(drNumber);
+            return d.checkDRNumber(drNumber);
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
 	public List<PurchaseOrder> getAllPurchaseOrders()
     {
 
@@ -82,10 +95,11 @@ public class DocumentationClerk
     	p.setOutlet(outlet);
     	p = poDao.save(p);
     	
-    	SpecificPo sp = new SpecificPo();
+    	
     	
     	for(int i = 0; i<booksList.size(); i++)
     	{
+    		SpecificPo sp = new SpecificPo();
     		Book b = bookDao.findByItemCode(booksList.get(i)); 
     		System.out.println(b + "check book");
     		if(b!=null)
@@ -135,7 +149,7 @@ public class DocumentationClerk
     }
     public boolean deletePurchaseOrder(String poNumber)
     {
-    	
+
     	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
     	System.out.println(p);
     	poDao.delete(p);
@@ -169,9 +183,10 @@ public class DocumentationClerk
     	d.setDateDelivery(dateDelivery);
     	d = drDao.save(d);
     	
-    	SpecificDr sd = new SpecificDr();
+    	
     	for(int i = 0; i<booksList.size(); i++)
     	{
+    		SpecificDr sd = new SpecificDr();
     		Book b = bookDao.findByItemCode(booksList.get(i)); 
     		System.out.println(b + "check book");
     		if(b!=null)
@@ -204,6 +219,14 @@ public class DocumentationClerk
    
     	return d.getId()!= null;
     	
+    }
+    public boolean deleteDeliveryReceipt(String drNumber)
+    {
+
+    	DeliveryReceipt d = drDao.findByDeliveryReceiptNumber(drNumber);
+    	System.out.println(d);
+    	drDao.delete(d);
+      	return d.getId()!= null;
     }
     
     @Transactional

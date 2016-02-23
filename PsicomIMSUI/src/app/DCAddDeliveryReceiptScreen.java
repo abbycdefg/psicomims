@@ -43,7 +43,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
      */
 	private List<String> booksList;
 	private List<String> quantityList;
-	private List<String> poList = new ArrayList<String>();
+	private String poNumber;
     public DCAddDeliveryReceiptScreen() {
         initComponents();
         
@@ -74,9 +74,10 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         Date now = new Date();
         dateTodayChooser.setDate(now);
         deliveryDateChooser.setDate(now);
+        totalAmountField.setEditable(false);
     }
     
-    public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1) {
+    public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1, String poNumber1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -119,10 +120,11 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
         totalAmountField.setText(totalAmt);
+        totalAmountField.setEditable(false);
         booksList = booksList1;
         quantityList = quantityList1;
+        poNumber = poNumber1;
         
     }
 
@@ -341,7 +343,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 
                 map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString, quantityListStr);
              	this.dispose();
-             	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
+             	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("", poNumber);
              	a.setVisible(true);
                  
              }
@@ -376,9 +378,8 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
          }
          java.util.Date deliveryDate = deliveryDateChooser.getDate();
          String deliveryDateStr = df.format(deliveryDate);
-         getPoList();
          this.dispose();
-         DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poList);
+         DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr);
          b.setVisible(true);
 
     }
@@ -472,37 +473,6 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         }
     }
     
-public void getPoList()
-    {
-			PreparedStatement pst;
-			Connection con;
-			
-			try {
-
-				Class.forName("com.mysql.jdbc.Driver");
-				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
-				ResultSet rs = pst.executeQuery();
-				int i = 0;
-			    Set<String> poSetList = new HashSet();
-				while (rs.next()) {
-					if(!rs.getString("po_id").equals(null))
-					{
-						poSetList.add(rs.getString("po_id"));
-					}
-					i++;
-				}
-				poList.addAll(poSetList);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		
-    }
 
 }
 
