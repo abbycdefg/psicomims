@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Deliver" key="selection"/>
+		<item value="Search" key="selection"/>
 		<list key="findhistory">
-			<item value="deliver"/>
-			<item value="specific"/>
 			<item value="search"/>
-			<item value="dclogin"/>
-			<item value="passwordField.setEchoChar"/>
-			<item value="setEchoChar"/>
-			<item value="echo"/>
-			<item value="table"/>
+			<item value="home"/>
+			<item value="close"/>
+			<item value="titleLabel"/>
+			<item value="DCStock"/>
+			<item value="DCSotck"/>
+			<item value="releaseDate"/>
+			<item value="date"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

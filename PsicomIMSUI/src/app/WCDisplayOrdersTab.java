@@ -9,12 +9,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -27,6 +33,7 @@ import javax.swing.ImageIcon;
  * @author Abby
  */
 public class WCDisplayOrdersTab extends javax.swing.JFrame {
+	
     /**
      * Creates new form WCDisplayOrdersTab
      */
@@ -354,18 +361,162 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
+    	HashMap map;    	
     	if (ordersTable.getSelectedColumn() == 0){
-    			status = "COMPLETE";
-	    		this.displayAll(status);
+    		try{
+    			
+    			String itemCode = this.getColumnData(0);
+                String status = "COMPLETE";
+                
+                try{
+                    map = doCommand("setOrderStatus", itemCode, status);
+                    
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+    		
+
     	}
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
     	}   
     	
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "STATUS"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String itemCode = "";
+        String title = "";
+        String quantity = "";
+        String location = "";
+        String date = "";
+        String status = "";
+
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, b.title, b.location, d.date_delivery FROM psicomims.book b, psicomims.specific_po p, psicomims.delivery_receipt d WHERE b.item_code=p.book_id ");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                title = rs.getString("title");
+                location = rs.getString("location");
+                itemCode = rs.getString("book_id");
+                quantity = rs.getString("quantity");
+                date = rs.getString("date_delivery");
+                status = rs.getString("status");
+                model.addRow(new Object[]{itemCode, title, quantity, location, date, status});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        ordersTable.setModel(model);
+        ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    	
     }//GEN-LAST:event_completeButtonActionPerformed
 
     private void incompleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incompleteButtonActionPerformed
+    	HashMap map;    	
+    	if (ordersTable.getSelectedColumn() == 0){
+    		try{
+    			
+    			String itemCode = this.getColumnData(0);
+                String status = "INCOMPLETE";
+                
+                try{
+                    map = doCommand("setOrderStatus", itemCode, status);
+                    
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+    		
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	} 
     	
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "STATUS"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String itemCode = "";
+        String title = "";
+        String quantity = "";
+        String location = "";
+        String date = "";
+        String status = "";
+
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, b.title, b.location, d.date_delivery FROM psicomims.book b, psicomims.specific_po p, psicomims.delivery_receipt d WHERE b.item_code=p.book_id ");
+            ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                title = rs.getString("title");
+                location = rs.getString("location");
+                itemCode = rs.getString("book_id");
+                quantity = rs.getString("quantity");
+                date = rs.getString("date_delivery");
+                status = rs.getString("status");
+                model.addRow(new Object[]{itemCode, title, quantity, location, date, status});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        ordersTable.setModel(model);
+        ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }//GEN-LAST:event_incompleteButtonActionPerformed
 
     /**
@@ -442,8 +593,7 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         String location = "";
         String date = "";
         String status = "";
-        
-        //wait for jenelle
+
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
@@ -481,5 +631,47 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         ordersTable = new JTable(model);
         ordersTable.setModel(model);
         ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    
+    private HashMap doCommand(String command, String itemCode, String status) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("itemCode", itemCode);
+        map.put("status", status);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
+    }
+
+
+    private static void printMessage(HashMap map)
+    {
+        System.out.println(map.get("message"));
     }
 }

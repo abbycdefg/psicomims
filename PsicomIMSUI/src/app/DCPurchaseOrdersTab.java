@@ -471,7 +471,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
             this.displayAll();
         }
         else{
-        	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "DELIVERY DATE", "STATUS"};
+        	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "DELIVERY DATE"};
 
             DefaultTableModel model = new DefaultTableModel();
             model.setColumnIdentifiers(columnNames);
@@ -583,7 +583,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     }
     
     public void displayAll(){
-    	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "DELIVERY DATE", "STATUS"};
+    	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "DELIVERY DATE"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);

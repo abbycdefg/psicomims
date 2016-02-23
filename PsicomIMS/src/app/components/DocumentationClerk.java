@@ -90,6 +90,7 @@ public class DocumentationClerk
     		System.out.println(b + "check book");
     		if(b!=null)
     		{
+    		sp.setStatus("INCOMPLETE");	
     		sp.setBookId(b);
 			listOfBooks.add(b);
     		}
@@ -270,5 +271,19 @@ public class DocumentationClerk
     	
     	return d.getScheduleCode()!= null;
     	
+    }
+    
+    @Transactional
+    public boolean setStatus(String itemCode, String status)
+    {
+    	Book b = bookDao.findByItemCode(itemCode);
+    	
+    	SpecificPo sp = spoDao.findByBookId(b);
+
+    	sp.setStatus(status);
+    	
+    	spoDao.save(sp);    	
+    	
+      	return sp.getId()!= null;
     }
 }

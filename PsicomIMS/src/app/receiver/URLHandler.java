@@ -549,6 +549,23 @@ class URLHandler extends AbstractHandler {
 						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
+				else if (target.equalsIgnoreCase("/setOrderStatus")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String itemCode = map.get("itemCode");
+					String status = map.get("status");
+					
+					if(dc.checkBook(itemCode)){
+						dc.setStatus(itemCode, status);
+						response.getWriter().println("You have succesfully updated the status of " + wc.getBookTitle(itemCode) + ".");
+
+					}
+					else{
+
+						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
 				else {
 					// Invalid request
 					response.getWriter().println("Unsupported POST request: " + target);
