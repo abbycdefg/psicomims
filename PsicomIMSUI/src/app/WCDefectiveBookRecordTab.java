@@ -389,7 +389,7 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
     	this.dispose();
-        WCLogInScreen a = new WCLogInScreen();
+        WCHomeScreen a = new WCHomeScreen();
         a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 

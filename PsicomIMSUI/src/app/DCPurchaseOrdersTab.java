@@ -403,7 +403,20 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
+    	if (purchaseOrdersTable.getSelectedColumn() == 0){
+    		
+    		String poNumber = DCPurchaseOrdersTab.getColumnData(0);
+			String contactPerson = DCPurchaseOrdersTab.getColumnData(2);
+			String outlet = DCPurchaseOrdersTab.getColumnData(3);
+			
+			this.dispose();
+	        DCViewPurchaseOrderScreen a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet);
+	        a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -429,9 +442,10 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     		int row = purchaseOrdersTable.getSelectedRow();
     		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
     		System.out.println(poNumber);
-    	this.dispose();
-    	DCDeletePurchaseOrderScreen a = new DCDeletePurchaseOrderScreen(poNumber);
-    	a.setVisible(true);
+    		
+	    	this.dispose();
+	    	DCDeletePurchaseOrderScreen a = new DCDeletePurchaseOrderScreen(poNumber);
+	    	a.setVisible(true);
     	}
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -580,6 +594,13 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     public static String getData(){
     	int selectedRowIndex = purchaseOrdersTable.getSelectedRow();
     	int selectedColumnIndex = purchaseOrdersTable.getSelectedColumn();
+    	String selectedCell = (String) purchaseOrdersTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    }
+    
+    public static String getColumnData(int n){
+    	int selectedRowIndex = purchaseOrdersTable.getSelectedRow();
+    	int selectedColumnIndex = purchaseOrdersTable.getSelectedColumn() + n;
     	String selectedCell = (String) purchaseOrdersTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
     	return selectedCell;
     }

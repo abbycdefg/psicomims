@@ -11,6 +11,7 @@ import app.entity.User;
 public interface SpecificPoRepository  extends JpaRepository<SpecificPo, Long> {
 	
 	public SpecificPo findByBookId(Book bookId);
+	public SpecificPo findById(Long id);
 	public SpecificPo findByPoId(PurchaseOrder poId);
 }
 

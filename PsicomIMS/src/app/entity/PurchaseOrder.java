@@ -39,8 +39,16 @@ public class PurchaseOrder implements Serializable{
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "poId")
 	private Set<SpecificPo> specPo;
 	
+	@Column
+	private String poStatus;	
 	
 	
+	public String getPoStatus() {
+		return poStatus;
+	}
+	public void setPoStatus(String poStatus) {
+		this.poStatus = poStatus;
+	}
 	public Set<SpecificPo> getSpecPo() {
 		return specPo;
 	}

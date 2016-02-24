@@ -36,6 +36,9 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        Date now = new Date();
+        dateCreatedChooser.setDate(now);
     }
 
     /**
@@ -318,7 +321,8 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
     }
     
     public boolean isAlpha(String s) {
-        return s.matches("[a-zA-Z]+");
+    	String s1 = s.replaceAll("\\s+","");
+        return s1.matches("[a-zA-Z]+");
     }
     
     public static boolean isNumeric(String s)

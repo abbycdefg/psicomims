@@ -355,16 +355,26 @@ public class DocumentationClerk
     }
     
     @Transactional
-    public boolean setStatus(String itemCode, String status)
-    {
-    	Book b = bookDao.findByItemCode(itemCode);
+    public boolean setStatus(String spoId, String itemCode, String poId, String status){
+    	//Book b = bookDao.findByItemCode(itemCode);
     	
-    	SpecificPo sp = spoDao.findByBookId(b);
+    	//System.out.println(b.getTitle());
+    	
+    	Long spoId2 = Long.parseLong(spoId);
+    	
+    	//PurchaseOrder p = poDao.findByPurchaseOrderNumber(poId);
+    	
+    	//System.out.println(p.getPurchaseOrderNumber());
+    	
+    	SpecificPo sp2 = spoDao.findById(spoId2);
+    	
+    	System.out.println(sp2.getId());
 
-    	sp.setStatus(status);
+    	sp2.setStatus(status);
     	
-    	spoDao.save(sp);    	
+    	spoDao.save(sp2);    	
     	
-      	return sp.getId()!= null;
+      	return sp2.getId()!= null;
     }
+
 }

@@ -593,11 +593,13 @@ class URLHandler extends AbstractHandler {
 				else if (target.equalsIgnoreCase("/setOrderStatus")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
+					String spoId = map.get("spoId");
 					String itemCode = map.get("itemCode");
+					String poId = map.get("poId");
 					String status = map.get("status");
 					
 					if(dc.checkBook(itemCode)){
-						dc.setStatus(itemCode, status);
+						dc.setStatus(spoId, itemCode, poId, status);
 						response.getWriter().println("You have succesfully updated the status of " + wc.getBookTitle(itemCode) + ".");
 
 					}
