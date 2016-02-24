@@ -1,9 +1,9 @@
 package app;
 
 import java.awt.Color;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +34,9 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        Date now = new Date();
+        releaseDateChooser.setDate(now);
         
     }
 

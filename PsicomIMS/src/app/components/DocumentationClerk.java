@@ -64,6 +64,19 @@ public class DocumentationClerk
         }
         
     }
+	public boolean checkDeliveryReceipt(String drNumber)
+    {
+        try
+        {
+            DeliveryReceipt d = drDao.findByDeliveryReceiptNumber(drNumber);
+            return d.checkDRNumber(drNumber);
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
 	public List<PurchaseOrder> getAllPurchaseOrders()
     {
 
@@ -136,7 +149,7 @@ public class DocumentationClerk
     }
     public boolean deletePurchaseOrder(String poNumber)
     {
-    	
+
     	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
     	System.out.println(p);
     	poDao.delete(p);
@@ -170,9 +183,10 @@ public class DocumentationClerk
     	d.setDateDelivery(dateDelivery);
     	d = drDao.save(d);
     	
-    	SpecificDr sd = new SpecificDr();
+    	
     	for(int i = 0; i<booksList.size(); i++)
     	{
+    		SpecificDr sd = new SpecificDr();
     		Book b = bookDao.findByItemCode(booksList.get(i)); 
     		System.out.println(b + "check book");
     		if(b!=null)
@@ -205,6 +219,14 @@ public class DocumentationClerk
    
     	return d.getId()!= null;
     	
+    }
+    public boolean deleteDeliveryReceipt(String drNumber)
+    {
+
+    	DeliveryReceipt d = drDao.findByDeliveryReceiptNumber(drNumber);
+    	System.out.println(d);
+    	drDao.delete(d);
+      	return d.getId()!= null;
     }
     
     @Transactional
@@ -275,14 +297,20 @@ public class DocumentationClerk
     }
     
     @Transactional
-    public boolean setStatus(String itemCode, String poId, String status)
-    {
-    	Book b = bookDao.findByItemCode(itemCode);
+    public boolean setStatus(String spoId, String itemCode, String poId, String status){
+    	//Book b = bookDao.findByItemCode(itemCode);
     	
-    	//SpecificPo sp = spoDao.findByBookId(b);    	
-    	Long poId2 = Long.parseLong(poId);
+    	//System.out.println(b.getTitle());
     	
-    	SpecificPo sp2 = spoDao.findById(poId2);
+    	Long spoId2 = Long.parseLong(spoId);
+    	
+    	//PurchaseOrder p = poDao.findByPurchaseOrderNumber(poId);
+    	
+    	//System.out.println(p.getPurchaseOrderNumber());
+    	
+    	SpecificPo sp2 = spoDao.findById(spoId2);
+    	
+    	System.out.println(sp2.getId());
 
     	sp2.setStatus(status);
     	
@@ -290,4 +318,5 @@ public class DocumentationClerk
     	
       	return sp2.getId()!= null;
     }
+
 }

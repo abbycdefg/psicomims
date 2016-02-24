@@ -79,6 +79,9 @@ public class DeliveryReceipt {
 	public void setDateDelivery(String dateDelivery) {
 		this.dateDelivery = dateDelivery;
 	}
+	public boolean checkDRNumber(String deliveryReceiptNumber){
+		return deliveryReceiptNumber.equals(this.deliveryReceiptNumber);
+	}
 
 	
 }
