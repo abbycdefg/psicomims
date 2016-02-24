@@ -494,7 +494,19 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
     }
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
+    	if (deliveryReceiptsTable.getSelectedColumn() == 0){
+    		
+    		String drNumber = DCDeliveryReceiptsTab.getColumnData(0);
+			String dateDelivery = DCDeliveryReceiptsTab.getColumnData(4);
+			String totalAmount = DCDeliveryReceiptsTab.getColumnData(5);
+			
+			this.dispose();
+	        DCViewDeliveryReceiptScreen a = new DCViewDeliveryReceiptScreen(drNumber, dateDelivery, totalAmount);
+	        a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -689,6 +701,13 @@ fileOut.close();**/
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+    
+    public static String getColumnData(int n){
+    	int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
+    	int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
+    	String selectedCell = (String) deliveryReceiptsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    }
     
     public void displayAll(){
     	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};

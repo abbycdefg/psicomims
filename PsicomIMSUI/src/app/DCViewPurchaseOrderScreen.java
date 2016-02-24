@@ -4,7 +4,18 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,6 +29,7 @@ import java.util.Map;
  */
 public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
 
+	
     /**
      * Creates new form DCViewPurchaseOrderScreen
      */
@@ -27,6 +39,19 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
 
+   }
+    
+    public DCViewPurchaseOrderScreen(String poNumber, String contactPerson, String outlet) {
+        initComponents();
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        outletValueLabel.setText(outlet);
+        poNumberValueLabel.setText(poNumber);
+        contactPersonValueLabel.setText(contactPerson);
+        
+        this.displayAll(poNumber);
    }
 
     /**
@@ -40,11 +65,10 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
 
         viewPoLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jobOrdersTable = new javax.swing.JTable();
+        purchaseOrdersTable = new javax.swing.JTable();
         poNumberLabel = new javax.swing.JLabel();
         contactPersonLabel = new javax.swing.JLabel();
         outletLabel = new javax.swing.JLabel();
-        itemCodeValueLabel = new javax.swing.JLabel();
         poNumberValueLabel = new javax.swing.JLabel();
         contactPersonValueLabel = new javax.swing.JLabel();
         outletValueLabel = new javax.swing.JLabel();
@@ -58,42 +82,10 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
         viewPoLabel.setForeground(new java.awt.Color(255, 255, 255));
         viewPoLabel.setText("VIEW PURCHASE ORDER");
 
-        jobOrdersTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
-        jobOrdersTable.setForeground(new java.awt.Color(255, 255, 255));
-        jobOrdersTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "ITEM CODE", "TITLE", "QUANTITY", "STATUS"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jobOrdersTable.setToolTipText("");
-        jobOrdersTable.setCellSelectionEnabled(true);
-        jobOrdersTable.setGridColor(new java.awt.Color(204, 204, 255));
-        jobOrdersTable.setRequestFocusEnabled(false);
-        jobOrdersTable.setRowHeight(18);
-        jobOrdersTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jobOrdersTable);
-        jobOrdersTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        purchaseOrdersTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        purchaseOrdersTable.setForeground(new java.awt.Color(255, 255, 255));
+        
+        
 
         poNumberLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         poNumberLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -107,21 +99,14 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
         outletLabel.setForeground(new java.awt.Color(255, 255, 255));
         outletLabel.setText("Outlet:");
 
-        itemCodeValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        itemCodeValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        itemCodeValueLabel.setText("AYUSIN");
-
         poNumberValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         poNumberValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        poNumberValueLabel.setText("<Value Here>");
 
         contactPersonValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         contactPersonValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        contactPersonValueLabel.setText("<Value Here>");
 
         outletValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         outletValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        outletValueLabel.setText("<Value Here>");
 
         backButton.setBackground(new java.awt.Color(205, 0, 69));
         backButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -136,77 +121,69 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(300, 300, 300)
-                        .addComponent(viewPoLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(outletLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(outletValueLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(contactPersonLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(contactPersonValueLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(poNumberLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(poNumberValueLabel)))))
-                .addContainerGap(25, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(357, 357, 357)
-                    .addComponent(itemCodeValueLabel)
-                    .addContainerGap(357, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(300)
+        					.addComponent(viewPoLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 710, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(43)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(outletLabel)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(outletValueLabel))
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(contactPersonLabel)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(contactPersonValueLabel))
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(poNumberLabel)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(poNumberValueLabel)))))
+        			.addContainerGap(25, Short.MAX_VALUE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(0, 613, Short.MAX_VALUE)
+        			.addComponent(backButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
+        			.addGap(47))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(viewPoLabel)
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(poNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(poNumberValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(contactPersonLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contactPersonValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(outletLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(outletValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(301, 301, 301)
-                    .addComponent(itemCodeValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(318, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(viewPoLabel)
+        			.addGap(21)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(poNumberLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(poNumberValueLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(contactPersonLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(contactPersonValueLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(outletLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(outletValueLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addGap(25)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(backButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
+        a.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
@@ -248,13 +225,72 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
     private javax.swing.JButton backButton;
     private javax.swing.JLabel contactPersonLabel;
     private javax.swing.JLabel contactPersonValueLabel;
-    private javax.swing.JLabel itemCodeValueLabel;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jobOrdersTable;
+    private javax.swing.JTable purchaseOrdersTable;
     private javax.swing.JLabel outletLabel;
     private javax.swing.JLabel outletValueLabel;
     private javax.swing.JLabel poNumberLabel;
     private javax.swing.JLabel poNumberValueLabel;
     private javax.swing.JLabel viewPoLabel;
     // End of variables declaration//GEN-END:variables
+    
+    public void displayAll(String poNumber){
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "STATUS"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String itemCode = "";
+        String title = "";
+        String quantity = "";
+        String status = "";
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+           	pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, b.title FROM psicomims.book b, psicomims.specific_po p WHERE b.item_code=p.book_id AND p.po_id=" + poNumber);
+           	
+        	ResultSet rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                title = rs.getString("title");
+                itemCode = rs.getString("book_id");
+                quantity = rs.getString("quantity");
+                status = rs.getString("status");
+                model.addRow(new Object[]{itemCode, title, quantity, status});
+                i++;
+            }
+            
+            if (i < 1){
+            
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        purchaseOrdersTable = new JTable(model);
+        purchaseOrdersTable.setModel(model);
+        purchaseOrdersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        purchaseOrdersTable.setToolTipText("");
+        purchaseOrdersTable.setCellSelectionEnabled(true);
+        purchaseOrdersTable.setGridColor(new java.awt.Color(204, 204, 255));
+        purchaseOrdersTable.setRequestFocusEnabled(false);
+        purchaseOrdersTable.setRowHeight(18);
+        purchaseOrdersTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(purchaseOrdersTable);
+        purchaseOrdersTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+    }
 }
