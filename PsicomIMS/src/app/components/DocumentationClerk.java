@@ -82,10 +82,11 @@ public class DocumentationClerk
     	p.setOutlet(outlet);
     	p = poDao.save(p);
     	
-    	SpecificPo sp = new SpecificPo();
+    	
     	
     	for(int i = 0; i<booksList.size(); i++)
     	{
+    		SpecificPo sp = new SpecificPo();
     		Book b = bookDao.findByItemCode(booksList.get(i)); 
     		System.out.println(b + "check book");
     		if(b!=null)
@@ -274,16 +275,19 @@ public class DocumentationClerk
     }
     
     @Transactional
-    public boolean setStatus(String itemCode, String status)
+    public boolean setStatus(String itemCode, String poId, String status)
     {
     	Book b = bookDao.findByItemCode(itemCode);
     	
-    	SpecificPo sp = spoDao.findByBookId(b);
+    	//SpecificPo sp = spoDao.findByBookId(b);    	
+    	Long poId2 = Long.parseLong(poId);
+    	
+    	SpecificPo sp2 = spoDao.findById(poId2);
 
-    	sp.setStatus(status);
+    	sp2.setStatus(status);
     	
-    	spoDao.save(sp);    	
+    	spoDao.save(sp2);    	
     	
-      	return sp.getId()!= null;
+      	return sp2.getId()!= null;
     }
 }

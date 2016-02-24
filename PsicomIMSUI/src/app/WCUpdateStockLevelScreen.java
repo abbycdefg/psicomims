@@ -37,6 +37,8 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
         itemCodeField.setText(WCUpdateStocksTab.getFirstColumnData());
         titleField.setText(WCUpdateStocksTab.getSecondColumnData());
         quantityField.setText(WCUpdateStocksTab.getThirdColumnData());
+        itemCodeField.setEnabled(false);
+        titleField.setEnabled(false);
         quantityField.setEnabled(false);
     }
 

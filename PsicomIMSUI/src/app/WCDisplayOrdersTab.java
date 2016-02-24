@@ -122,7 +122,7 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         ordersTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         ordersTable.setForeground(new java.awt.Color(255, 255, 255));
@@ -366,10 +366,11 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     		try{
     			
     			String itemCode = this.getColumnData(0);
+    			String poId = this.getColumnData(5);
                 String status = "COMPLETE";
                 
                 try{
-                    map = doCommand("setOrderStatus", itemCode, status);
+                    map = doCommand("setOrderStatus", itemCode, poId, status);
                     
                 }
                 catch (Exception e){
@@ -387,7 +388,7 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
     	}   
     	
-    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "STATUS"};
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "PO ID", "STATUS"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
@@ -400,12 +401,13 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         String quantity = "";
         String location = "";
         String date = "";
+        String poId = "";
         String status = "";
 
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, b.title, b.location, d.date_delivery FROM psicomims.book b, psicomims.specific_po p, psicomims.delivery_receipt d WHERE b.item_code=p.book_id ");
+            pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.po_id, p.status, b.title, b.location, d.date_delivery FROM psicomims.book b, psicomims.specific_po p, psicomims.delivery_receipt d WHERE b.item_code=p.book_id ");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
@@ -414,8 +416,9 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
                 itemCode = rs.getString("book_id");
                 quantity = rs.getString("quantity");
                 date = rs.getString("date_delivery");
+                poId = rs.getString("po_id");
                 status = rs.getString("status");
-                model.addRow(new Object[]{itemCode, title, quantity, location, date, status});
+                model.addRow(new Object[]{itemCode, title, quantity, location, date, poId, status});
                 i++;
             }
             
@@ -442,81 +445,7 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_completeButtonActionPerformed
 
     private void incompleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incompleteButtonActionPerformed
-    	HashMap map;    	
-    	if (ordersTable.getSelectedColumn() == 0){
-    		try{
-    			
-    			String itemCode = this.getColumnData(0);
-                String status = "INCOMPLETE";
-                
-                try{
-                    map = doCommand("setOrderStatus", itemCode, status);
-                    
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-    		
-    	}
-    	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-    	} 
     	
-    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "STATUS"};
-
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columnNames);
-        
-        PreparedStatement pst;
-        Connection con;
-        
-        String itemCode = "";
-        String title = "";
-        String quantity = "";
-        String location = "";
-        String date = "";
-        String status = "";
-
-        try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, b.title, b.location, d.date_delivery FROM psicomims.book b, psicomims.specific_po p, psicomims.delivery_receipt d WHERE b.item_code=p.book_id ");
-            ResultSet rs = pst.executeQuery();
-            int i = 0;
-            while (rs.next()) {
-                title = rs.getString("title");
-                location = rs.getString("location");
-                itemCode = rs.getString("book_id");
-                quantity = rs.getString("quantity");
-                date = rs.getString("date_delivery");
-                status = rs.getString("status");
-                model.addRow(new Object[]{itemCode, title, quantity, location, date, status});
-                i++;
-            }
-            
-            if (i < 1) {
-                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            
-            if (i == 1) {
-                System.out.println(i + " Record Found");
-            } 
-            
-            else {
-                System.out.println(i + " Records Found");
-            }
-
-                  
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        ordersTable.setModel(model);
-        ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }//GEN-LAST:event_incompleteButtonActionPerformed
 
     /**
@@ -577,9 +506,10 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     	String selectedCell = (String) ordersTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
     	return selectedCell;
     	
-    }
+    } 
+    
     public void displayAll(){
-    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "STATUS"};
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "DATE", "PO ID", "STATUS"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
@@ -592,12 +522,13 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         String quantity = "";
         String location = "";
         String date = "";
+        String poId = "";
         String status = "";
 
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, b.title, b.location, d.date_delivery FROM psicomims.book b, psicomims.specific_po p, psicomims.delivery_receipt d WHERE b.item_code=p.book_id ");
+            pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, p.po_id, b.title, b.location, d.date_delivery, dr.dr_id FROM psicomims.book b, psicomims.specific_po p, psicomims.specific_dr dr, psicomims.delivery_receipt d WHERE b.item_code=p.book_id AND dr.dr_id=d.delivery_receipt_number AND dr.book_id=p.book_id");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
@@ -606,8 +537,10 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
                 itemCode = rs.getString("book_id");
                 quantity = rs.getString("quantity");
                 date = rs.getString("date_delivery");
+                poId = rs.getString("po_id");
                 status = rs.getString("status");
-                model.addRow(new Object[]{itemCode, title, quantity, location, date, status});
+                System.out.println(status + i);
+                model.addRow(new Object[]{itemCode, title, quantity, location, date, poId, status});
                 i++;
             }
             
@@ -633,13 +566,14 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
     
-    private HashMap doCommand(String command, String itemCode, String status) throws Exception
+    private HashMap doCommand(String command, String itemCode, String poId, String status) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
         HashMap<String, Object> map = new HashMap<String, Object>();
 
         map.put("itemCode", itemCode);
+        map.put("poId", poId);
         map.put("status", status);
 
         

@@ -11,6 +11,8 @@ public interface SpecificPoRepository  extends JpaRepository<SpecificPo, Long> {
 	
 
 	public SpecificPo findByBookId(Book bookId);
+	public SpecificPo findById(Long id);
+	
 }
 
 

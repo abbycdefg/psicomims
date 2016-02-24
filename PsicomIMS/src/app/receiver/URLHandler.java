@@ -553,10 +553,11 @@ class URLHandler extends AbstractHandler {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
 					String itemCode = map.get("itemCode");
+					String poId = map.get("poId");
 					String status = map.get("status");
 					
 					if(dc.checkBook(itemCode)){
-						dc.setStatus(itemCode, status);
+						dc.setStatus(itemCode, poId, status);
 						response.getWriter().println("You have succesfully updated the status of " + wc.getBookTitle(itemCode) + ".");
 
 					}
