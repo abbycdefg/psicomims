@@ -370,4 +370,23 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
             return replyMap; 
         }
     }
+    private boolean checkNumber(String text) {
+    	try{
+    		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    private boolean checkCharacters(String text) {
+    	try{
+    		String thePattern = "[^A-Za-z0-9]+"; 
+    		Pattern.compile(thePattern).matcher(text).find();
+    	      return false;
+    	}
+    	catch (Exception e){
+    		return true;
+    	}
+    }
 }

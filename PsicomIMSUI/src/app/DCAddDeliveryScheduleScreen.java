@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
@@ -28,6 +29,7 @@ import javax.swing.AbstractButton;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -272,9 +274,28 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
          
          try{
          	
-        	 String scheduleCode = scheduleCodeField.getText();
-             String outlet = outletComboBox.getSelectedItem().toString();
-             String deliveryReceiptCode = drCodeComboBox.getSelectedItem().toString();
+        	 String scheduleCode = "";
+             String outlet = "";
+             String deliveryReceiptCode = "";
+             boolean go = true;
+             if(checkNumber(scheduleCodeField.getText()) == true && checkCharacters(scheduleCodeField.getText()) == false )
+             {
+             scheduleCode = scheduleCodeField.getText();
+             }
+             else {
+            	 go = false;
+            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+             }
+             if(drCodeComboBox.getSelectedIndex() != -1 && outletComboBox.getSelectedIndex() != -1)
+             {
+             outlet = outletComboBox.getSelectedItem().toString();
+
+             deliveryReceiptCode = drCodeComboBox.getSelectedItem().toString();
+             }
+             else {
+            	 go = false;
+            	 JOptionPane.showMessageDialog(null, "Invalid input..", "Error", JOptionPane.ERROR_MESSAGE);
+             }
              
              DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
              java.util.Date deliveryDate = dateChooser.getDate();
@@ -282,11 +303,12 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
              
 
              try{
-
+            	 if( go == true){
                  map = doCommand("addDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
              	this.dispose();
              	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
              	a.setVisible(true);
+            	 }
                  
              }
              catch (Exception e){
@@ -442,4 +464,23 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
     			e.printStackTrace();
     		}		
     } 
+    private boolean checkNumber(String text) {
+    	try{
+    		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    private boolean checkCharacters(String text) {
+    	try{
+    		String thePattern = "[^A-Za-z0-9]+"; 
+    		Pattern.compile(thePattern).matcher(text).find();
+    	      return false;
+    	}
+    	catch (Exception e){
+    		return true;
+    	}
+    }
 }

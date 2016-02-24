@@ -18,6 +18,8 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -586,6 +588,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET", "DELIVERY DATE"};
 
         DefaultTableModel model = new DefaultTableModel();
+        
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;

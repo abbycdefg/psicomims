@@ -220,6 +220,64 @@ public class DocumentationClerk
     	return d.getId()!= null;
     	
     }
+    @Transactional
+    public boolean editDeliveryReceipt(String drNumber, String dateToday, String totalAmt, String dateDelivery, List<String> booksList, List<String> quantityList)
+    {   
+    	Set<Book> listOfBooks= new HashSet<Book>();
+    	DeliveryReceipt d = drDao.findByDeliveryReceiptNumber(drNumber);
+    	
+    	d.setDeliveryReceiptNumber(drNumber);
+    	d.setDateToday(dateToday);
+    	d.setTotalAmount(totalAmt);
+    	d.setDateDelivery(dateDelivery);
+    	d = drDao.save(d);
+    	
+		List<SpecificDr> sdsList = sdrDao.findAll();
+		List<Book> bookList = new ArrayList();
+		for(int j = 0; j<sdsList.size(); j++)
+    	{
+			if(sdsList.get(j).getDrId().getDeliveryReceiptNumber().equals(drNumber))
+			{
+				bookList.add(sdsList.get(j).getBookId());
+			}
+    	}
+		
+    	for(int i = 0; i<bookList.size(); i++)
+    	{
+    		Book b = bookList.get(i);
+    		SpecificDr sd = sdrDao.findByDrIdAndBookId(d, b);
+    		System.out.println(sd + "findByDrIdAndBookId");
+    		if(b!=null)
+    		{
+    			
+    		sd.setBookId(b);
+			listOfBooks.add(b);
+    		}
+    		
+    		DeliveryReceipt dr = drDao.findByDeliveryReceiptNumber(drNumber);
+    		sd.setDrId(dr);
+    		
+    		if(quantityList.get(i) != null)
+    		{
+    			String quantity = quantityList.get(i);
+    			if (quantity != "")
+    			{
+    			int qty = Integer.parseInt(quantity);
+    			sd.setQuantity(qty);
+    			}
+    		}
+    		
+    		sdrDao.save(sd);    		
+    		System.out.println(sd + "    sdr");
+    	}   	
+
+    	System.out.println(listOfBooks);
+
+    	d = drDao.save(d);
+   
+    	return d.getId()!= null;
+    	
+    }
     public boolean deleteDeliveryReceipt(String drNumber)
     {
 

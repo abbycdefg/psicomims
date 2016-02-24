@@ -22,8 +22,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 /*
@@ -43,7 +45,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
      */
 	private List<String> booksList;
 	private List<String> quantityList;
-	private String poNumber;
+	private String poNumber = "";
     public DCAddDeliveryReceiptScreen() {
         initComponents();
         
@@ -314,12 +316,21 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     	 HashMap map;
          
          try{
-        	 String drNumber = "";
+        	String drNumber = "";
          	String quantityListStr = "";
          	String listString = "";
-        	 
-             drNumber = deliveryReceiptNumberField.getText();
+         	boolean go = true;
+         	
+              
              
+             if(checkNumber(deliveryReceiptNumberField.getText()) == true && checkCharacters(deliveryReceiptNumberField.getText()) == false )
+             {
+            	 drNumber = deliveryReceiptNumberField.getText();
+             }
+             else {
+            	 go = false;
+            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+             }
              DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
              java.util.Date dateToday = dateTodayChooser.getDate();
              String dateTodayStr = df.format(dateToday);
@@ -340,11 +351,14 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 
 
              try{
-
+            	 if (go == true)
+            	 {
                 map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString, quantityListStr);
              	this.dispose();
              	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("", poNumber);
              	a.setVisible(true);
+            	 }
+
                  
              }
              catch (Exception e){
@@ -362,7 +376,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
      	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
      	a.setVisible(true);
     }
-
+   
     private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	 String drNumber = deliveryReceiptNumberField.getText();
          
@@ -379,7 +393,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
          java.util.Date deliveryDate = deliveryDateChooser.getDate();
          String deliveryDateStr = df.format(deliveryDate);
          this.dispose();
-         DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr);
+         DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber);
          b.setVisible(true);
 
     }
@@ -473,6 +487,26 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         }
     }
     
+    private boolean checkNumber(String text) {
+    	try{
+    		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    
+    private boolean checkCharacters(String text) {
+    	try{
+    		String thePattern = "[^A-Za-z0-9]+"; 
+    		Pattern.compile(thePattern).matcher(text).find();
+    	      return false;
+    	}
+    	catch (Exception e){
+    		return true;
+    	}
+    }
 
 }
 

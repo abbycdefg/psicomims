@@ -3,7 +3,19 @@ package app;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +32,9 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCEditDeliveryReceiptScreen
      */
+	private List<String> booksList = new ArrayList<String>();
+	private List<String> quantityList= new ArrayList<String>();
+	private String poNumber = "";
     public DCEditDeliveryReceiptScreen() {
         initComponents();
         
@@ -48,7 +63,101 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
+    
+    public DCEditDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr) {
+        initComponents();
+        
+         Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        editBooksButton.setOpaque(false);
+        editBooksButton.setContentAreaFilled(false);
+        editBooksButton.setBorderPainted(false);
+        editBooksButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = editBooksButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                editBooksButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                editBooksButton.setFont(originalFont);
+            }
+        });
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        deliveryReceiptNumberField.setText(drNumber);
+        
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateToday = df.parse(dateTodayStr);
+			dateTodayChooser.setDate(dateToday);
+			
 
+			java.util.Date deliveryDate = df.parse(deliveryDateStr);
+			deliveryDateChooser.setDate(deliveryDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        
+        totalAmountField.setText(totalAmt);
+        totalAmountField.setEditable(false);
+    }
+
+    public DCEditDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1, String poNumber) {
+        initComponents();
+        
+         Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        editBooksButton.setOpaque(false);
+        editBooksButton.setContentAreaFilled(false);
+        editBooksButton.setBorderPainted(false);
+        editBooksButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = editBooksButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                editBooksButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                editBooksButton.setFont(originalFont);
+            }
+        });
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        deliveryReceiptNumberField.setText(drNumber);
+        
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateToday = df.parse(dateTodayStr);
+			dateTodayChooser.setDate(dateToday);
+			
+
+			java.util.Date deliveryDate = df.parse(deliveryDateStr);
+			deliveryDateChooser.setDate(deliveryDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+        
+        totalAmountField.setText(totalAmt);
+        totalAmountField.setEditable(false);
+
+        booksList = booksList1;
+        quantityList = quantityList1;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -226,21 +335,94 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_deliveryReceiptNumberFieldActionPerformed
 
-    private void editBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBooksButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editBooksButtonActionPerformed
+    private void editBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	String drNumber = deliveryReceiptNumberField.getText();
+         
+         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+         java.util.Date dateToday = dateTodayChooser.getDate();
+         String dateTodayStr = df.format(dateToday);
+         
+         String totalAmt = totalAmountField.getText();
+         if(drNumber.equals(null) ||drNumber.equals(totalAmt))
+         {
+        	 drNumber.equals("");
+        	 totalAmt.equals("");
+         }
+         java.util.Date deliveryDate = deliveryDateChooser.getDate();
+         String deliveryDateStr = df.format(deliveryDate);
+         this.dispose();
+         DCEditBookToDRScreen b = new DCEditBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber);
+         b.setVisible(true);
+    }
 
     private void totalAmountFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalAmountFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_totalAmountFieldActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	HashMap map;
+         
+         try{
+        	String drNumber = "";
+         	String quantityListStr = "";
+         	String listString = "";
+         	boolean go = true;
+         	
+              
+             
+             if(checkNumber(deliveryReceiptNumberField.getText()) == true && checkCharacters(deliveryReceiptNumberField.getText()) == false )
+             {
+            	 drNumber = deliveryReceiptNumberField.getText();
+             }
+             else {
+            	 go = false;
+            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+             }
+             DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+             java.util.Date dateToday = dateTodayChooser.getDate();
+             String dateTodayStr = df.format(dateToday);
+             
+             String totalAmt = totalAmountField.getText();
+             
+             java.util.Date deliveryDate = deliveryDateChooser.getDate();
+             String deliveryDateStr = df.format(deliveryDate);
+             
+             if (booksList != null || quantityList != null)
+             {
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+             String[] strarray = booksList.toArray(new String[0]);
+             listString = Arrays.toString(strarray);
+             
+             String[] quantityArr = quantityList.toArray(new String[0]);
+             quantityListStr = Arrays.toString(quantityArr);
+             }
+
+
+             try{
+            	 if (go == true)
+            	 {
+                map = doCommand("editDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString, quantityListStr);
+             	this.dispose();
+             	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("", poNumber);
+             	a.setVisible(true);
+            	 }
+
+                 
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+             }
+         }
+         catch (Exception e){
+             e.printStackTrace();
+         }      
+    }
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+     	this.dispose();
+     	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
+     	a.setVisible(true);   
+    }
 
     /**
      * @param args the command line arguments
@@ -291,4 +473,64 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
     private javax.swing.JTextField totalAmountField;
     private javax.swing.JLabel totalAmountLabel;
     // End of variables declaration//GEN-END:variables
+    
+    private HashMap doCommand(String command, String drNumber, String dateToday, String totalAmt, String dateDelivery, String booksList, String quantityList) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("drNumber", drNumber);
+        map.put("dateToday", dateToday);
+        map.put("totalAmt", totalAmt);
+        map.put("dateDelivery", dateDelivery);
+        map.put("booksList", booksList);
+        map.put("quantityList", quantityList);
+
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap; 
+        }
+    }
+    
+    private boolean checkNumber(String text) {
+    	try{
+    		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    
+    private boolean checkCharacters(String text) {
+    	try{
+    		String thePattern = "[^A-Za-z0-9]+"; 
+    		Pattern.compile(thePattern).matcher(text).find();
+    	      return false;
+    	}
+    	catch (Exception e){
+    		return true;
+    	}
+    }
 }

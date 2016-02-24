@@ -1,15 +1,39 @@
 package app;
 import java.awt.Color;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
+
 import java.awt.Font;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.JTable;
+
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -26,6 +50,20 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCEditBookToDRScreen
      */
+	private String drNumber;
+	private String dateToday;
+	private String totalAmt;
+	private Integer totalAmtInt;
+	private String quantityCount;
+	private Integer quantityCountInt;
+	private String dateDelivery;
+	private JComboBox poNumberComboBox = new JComboBox();
+	private String poNumber;
+	private String []po;
+	private List<String> poList = new ArrayList<String>();
+	private static List<String> booksList = new ArrayList<String>();
+	private static List<String> quantityList = new ArrayList<String>();
+	
     public DCEditBookToDRScreen() {
         initComponents();
         
@@ -38,6 +76,47 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
+    
+    public DCEditBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1, String poNumber1) {
+        initComponents();
+
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        editButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        drNumber = drNumber1;
+        dateToday = dateToday1;
+        dateDelivery = dateDelivery1;
+        totalAmt = totalAmt1;
+       
+        
+        getPoList();
+        po = new String[poList.size()];
+        poList.toArray(po);
+        AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(po));
+
+        getBookList();
+        displayAll("");
+        
+
+        if(!totalAmt.equals("")){
+        totalAmtInt = Integer.parseInt(totalAmt);
+        }
+        else {
+        totalAmtInt = 0;
+        }      
+        poNumber = poNumber1;
+        if(!poNumber.equals(""))
+        {
+        	displayAll(poNumber);
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -64,25 +143,12 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
 
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(51, 51, 51));
-        booksTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        booksTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        	}
+        ));
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -123,7 +189,22 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         poNumberLabel.setForeground(Color.WHITE);
         poNumberLabel.setFont(new Font("Calibri", Font.PLAIN, 14));
         
-        JComboBox poNumberComboBox = new JComboBox();
+        poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    public int getWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public synchronized void addMouseListener(MouseListener l) {
+                    }
+                };
+            }
+        });
+        poNumberComboBox.setEditable(true);
+        
+
         poNumberComboBox.setFont(new Font("Calibri", Font.PLAIN, 12));
         
         JButton poSearchButton = new JButton("");
@@ -196,15 +277,59 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
 
         pack();
+        
+        poSearchButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		poNumber = poNumberComboBox.getSelectedItem().toString();
+        		displayAll(poNumber);
+        		
+        	}
+        });
     }// </editor-fold>//GEN-END:initComponents
+    
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	 try{
+            totalAmt = "";
+            totalAmtInt = 0;
+         	booksList = new ArrayList<String>();
+         	quantityList = new ArrayList<String>();
+         	int rowCount = booksTable.getRowCount();
+         	for(int i=0; i<rowCount; i++) {	  
+         	    String cellValueBook = (String) booksTable.getValueAt(i,1);
+         	    
+         	    if(cellValueBook != null)
+     	    	{
+         	    	booksList.add(cellValueBook); ;
+     	    	}
+     	    	if (booksTable.getModel().getValueAt(i,2) != null)
+     	    	{
+     	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 2).toString();
+     	    		quantityList.add(quantitySelected);     	    		
+     	    	}
+     	    	if(booksTable.getModel().getValueAt(i,4) != null)
+     	    	{
+     	    		Integer amountSelected = Integer.parseInt(booksTable.getModel().getValueAt(i,4).toString());
+     	    		totalAmtInt += amountSelected;
+     	    	}
+         	}
+         	
+         	totalAmt = totalAmtInt.toString();
+         	
+         }
+         catch (Exception e){
+             e.printStackTrace();
+         }
+     	this.dispose();
+     	DCEditDeliveryReceiptScreen a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, poNumber);
+     	a.setVisible(true);
+    }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+     	DCEditDeliveryReceiptScreen a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, poNumber);
+     	a.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -247,4 +372,198 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
     private javax.swing.JLabel editBookToDRLabel;
     private javax.swing.JButton editButton;
     private javax.swing.JScrollPane jScrollPane1;
+    
+    public void getPoList()
+    {
+			PreparedStatement pst;
+			Connection con;
+			
+			try {
+
+				Class.forName("com.mysql.jdbc.Driver");
+				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+				ResultSet rs = pst.executeQuery();
+				int i = 0;
+			    Set<String> poSetList = new HashSet();
+				while (rs.next()) {
+					if(!rs.getString("po_id").equals(null))
+					{
+						poSetList.add(rs.getString("po_id"));
+					}
+					i++;
+				}
+				poList.addAll(poSetList);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    }
+    public void getBookList()
+    {
+			PreparedStatement pst;
+			Connection con;
+			
+			try {
+
+				Class.forName("com.mysql.jdbc.Driver");
+				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_dr");
+				ResultSet rs = pst.executeQuery();
+				int i = 0;
+			    Set<String> bookSetList = new HashSet();
+			    Set<String> quantitySetList = new HashSet();
+				while (rs.next()) {
+					if(rs.getString("dr_id").equals(drNumber))
+					{
+						bookSetList.add(rs.getString("book_id"));
+						quantitySetList.add(rs.getString("quantity"));
+					}
+					i++;
+				}
+				booksList = new ArrayList<String>();
+				quantityList = new ArrayList<String>();
+				
+				booksList.addAll(bookSetList);
+				quantityList.addAll(quantitySetList);
+				System.out.println(booksList + "bookList");
+				System.out.println(quantityList+ "quantityList");
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    }
+    public void displayAll(String poNumber){
+    	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};
+
+        DefaultTableModel model = new DefaultTableModel(){
+        	@Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        PreparedStatement pst2;
+        Connection con;
+        
+        String title = "";
+        String itemCode = "";
+        String discountedPrice = "";
+        String srp = "";
+        String quantity = "";
+        List<String> listBooks = new ArrayList<String>();
+        List<String> listQuantity = new ArrayList<String>();
+        int row = booksTable.getRowCount();
+        int column = booksTable.getColumnCount();
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+        	int i = 0;
+            if(!poNumber.equals(""))
+        	{
+        	
+            pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+            ResultSet rs = pst.executeQuery();
+            
+
+            while (rs.next()) {
+            	
+            		if(poNumber.equals(rs.getString("po_id")))
+            		{
+            		listBooks.add(rs.getString("book_id"));
+            		listQuantity.add(rs.getString("quantity"));
+            		}
+                i++;           	
+            	}
+        	
+            
+            pst2 = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+            ResultSet rs2 = pst2.executeQuery();
+            while (rs2.next()) {
+                for(int k = 0; k < listBooks.size(); k++)
+                {
+                	
+                	if(listBooks.get(k).equals(rs2.getString("item_code")))
+                	{
+                		System.out.println(listBooks);
+                		title = rs2.getString("title");
+                        itemCode = rs2.getString("item_code");
+                        srp = rs2.getString("price");
+                        quantity = listQuantity.get(k);
+                        model.addRow(new Object[]{title, itemCode, quantity, "", srp});
+                        break;
+                	}
+                }
+                           
+            	}
+        	}
+            
+            else {
+                pst2 = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+                ResultSet rs2 = pst2.executeQuery();
+                while (rs2.next()) {
+                	loop:
+                    for(int k = 0; k < booksList.size(); k++)
+                    {
+                    	
+                    	if(booksList.get(k).equals(rs2.getString("item_code")))
+                    	{
+                    		System.out.println(quantityList);
+                    		System.out.println(booksList);
+                    		title = rs2.getString("title");
+                            itemCode = rs2.getString("item_code");
+                            srp = rs2.getString("price");
+                            
+                            quantity = quantityList.get(k);
+                            System.out.println(quantityList.get(k));
+                            model.addRow(new Object[]{title, itemCode, quantity, "", srp});     
+                            break loop;
+                    	}
+                    }
+                           
+                	}	
+            	
+            	i++;
+            }
+
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        booksTable = new JTable(model);
+        booksTable.setModel(model);
+        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        booksTable.setForeground(Color.BLACK);       
+        booksTable.setToolTipText("");
+        booksTable.setRowHeight(18);
+        booksTable.setRequestFocusEnabled(false);
+        booksTable.setGridColor(new Color(204, 204, 255));
+        booksTable.setCellSelectionEnabled(true);
+        booksTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setColumnHeaderView(booksTable);
+       
+    }
 }

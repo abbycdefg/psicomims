@@ -273,6 +273,7 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         String quantity = "";
         
         try {
+        	
             int i = 0;
             for(int j = 0; j<booksList.size(); j++)
             {
@@ -293,6 +294,7 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
             
             else {
                 System.out.println(i + " Records Found");
+                model.addRow(new Object[]{null, null, null, null});
             }
             
                   

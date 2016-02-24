@@ -83,5 +83,13 @@ public class DeliveryReceipt {
 		return deliveryReceiptNumber.equals(this.deliveryReceiptNumber);
 	}
 
+	public Set<SpecificDr> getSpecDr() {
+		return specDr;
+	}
+
+	public void setSpecDr(Set<SpecificDr> specDr) {
+		this.specDr = specDr;
+	}
+
 	
 }

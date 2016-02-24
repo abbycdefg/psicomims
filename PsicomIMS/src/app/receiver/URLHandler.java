@@ -419,8 +419,8 @@ class URLHandler extends AbstractHandler {
 					String dateDelivery = (String) map.get("dateDelivery");
 					
 					String books = map.get("booksList");
-					books = books.substring(1, books.length()-1);					
 					System.out.println(books);
+					books = books.substring(1, books.length()-1);										
 					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					
 					
@@ -429,8 +429,10 @@ class URLHandler extends AbstractHandler {
 					quantity = quantity.substring(1, quantity.length()-1);
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
 					
-					dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
+					dc.editDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
 					response.getWriter().println(books);
+					
+					
 		
 				}
 				else if (target.equalsIgnoreCase("/deleteDeliveryReceipt")) {

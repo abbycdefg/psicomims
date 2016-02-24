@@ -103,7 +103,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         jDateChooser1.setDate(now);
     }
 
-    public DCAddPurchaseOrderScreen(String purchaseOrderNumber1,  String dateToday1, int contactPerson1, int outlet1, List<String> booksList1, List<String> quantityList1) {
+    public DCAddPurchaseOrderScreen(String purchaseOrderNumber1,  String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -143,8 +143,8 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         
         
        purchaseOrderNumberField.setText(purchaseOrderNumber1);
-       contactsComboBox.setSelectedIndex(contactPerson1);
-       outletComboBox.setSelectedIndex(outlet1);
+       contactsComboBox.setSelectedItem(contactPerson1);
+       outletComboBox.setSelectedItem(outlet1);
         
         booksList = booksList1;
         quantityList = quantityList1;
@@ -418,10 +418,15 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksButtonActionPerformed
-    	
-    	String purchaseOrderNumber = purchaseOrderNumberField.getText();
-        int contactPerson = contactsComboBox.getSelectedIndex();
-        int outlet = outletComboBox.getSelectedIndex();
+    	String purchaseOrderNumber = "";
+    	String contactPerson = "";
+    	String outlet ="";
+
+    	purchaseOrderNumber = purchaseOrderNumberField.getText();
+
+
+        contactPerson = contactsComboBox.getSelectedItem().toString();
+        outlet = outletComboBox.getSelectedItem().toString();
         
         
         
@@ -528,7 +533,26 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         }
     }
 
-
+    private boolean checkNumber(String text) {
+    	try{
+    		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    
+    private boolean checkCharacters(String text) {
+    	try{
+    		String thePattern = "[^A-Za-z0-9]+"; 
+    		Pattern.compile(thePattern).matcher(text).find();
+    	      return false;
+    	}
+    	catch (Exception e){
+    		return true;
+    	}
+    }
     private static void printMessage(HashMap map)
     {
         System.out.println(map.get("message"));

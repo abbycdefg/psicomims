@@ -83,9 +83,9 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1) {
+    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1, String poNumber1) {
         initComponents();
-        
+
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -109,21 +109,14 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         }
         else {
         totalAmtInt = 0;
+        }      
+        poNumber = poNumber1;
+        if(!poNumber.equals(""))
+        {
+        	displayAll(poNumber);
         }
-        
     }
-    public DCAddBookToDRScreen(String poNumber1) {
-        initComponents();
-        
-        Color x = new Color(32, 55, 73);
-        this.getContentPane().setBackground(x);
-        
-        Color y = new Color(205, 0, 69);
-        addButton.setBackground(y);
-        
-        Color z = new Color(102, 102, 102);
-        cancelButton.setBackground(z);
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -290,6 +283,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         	public void actionPerformed(ActionEvent e) {
         		poNumber = poNumberComboBox.getSelectedItem().toString();
         		displayAll(poNumber);
+        		
         	}
         });
     
@@ -298,6 +292,8 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	
         try{
+            totalAmt = "";
+            totalAmtInt = 0;
         	booksList = new ArrayList<String>();
         	quantityList = new ArrayList<String>();
         	int rowCount = booksTable.getRowCount();
@@ -388,7 +384,12 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     public void displayAll(String poNumber){
     	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};
 
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel(){
+        	@Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
@@ -402,6 +403,8 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         String quantity = "";
         List<String> listBooks = new ArrayList<String>();
         List<String> quantityList = new ArrayList<String>();
+        int row = booksTable.getRowCount();
+        int column = booksTable.getColumnCount();
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -409,6 +412,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
             pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
             ResultSet rs = pst.executeQuery();
             int i = 0;
+
             while (rs.next()) {
             	if(poNumber.equals(rs.getString("po_id")))
             	{
@@ -433,13 +437,14 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
                         itemCode = rs2.getString("item_code");
                         srp = rs2.getString("price");
                         quantity = quantityList.get(k);
+                        System.out.println(quantity);
+                        model.addRow(new Object[]{title, itemCode, quantity, "", srp}); 
                         break;
                 	}
                 }
-                model.addRow(new Object[]{title, itemCode, quantity, "", srp});            
+                          
             }
 
-            
             if (i < 1) {
                 JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
             }
