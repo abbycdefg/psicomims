@@ -36,6 +36,9 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        Date now = new Date();
+        dateCreatedChooser.setDate(now);
     }
 
     /**
