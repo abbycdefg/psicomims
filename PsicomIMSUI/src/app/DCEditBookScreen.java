@@ -5,6 +5,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -280,32 +283,58 @@ public class DCEditBookScreen extends javax.swing.JFrame {
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
 
-    	HashMap map;
-        
-        try{
-            String title = titleField.getText();
-            String itemCode = itemCodeField.getText();
-            String price = priceField.getText();
-            String author = authorField.getText();
-            
-            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-            java.util.Date releaseDate = releaseDateChooser.getDate();
-            String releaseDateStr = df.format(releaseDate);
+    	 HashMap map;
+         
+         try{
+         	
+         	String itemCode = "";
+             String price = "";
+             boolean go = true;
+              
+             String title = titleField.getText();
+             String author = authorField.getText();
+             if( title.equals("") || author.equals("") || itemCodeField.getText().equals("")|| priceField.getText().equals("")) {
+          	   go = false;
+               JOptionPane.showMessageDialog(null, "All fields must be filled", "Error", JOptionPane.ERROR_MESSAGE);
+             }
+             else {
+ 	            if(checkNumber(itemCodeField.getText()) == true && checkCharacters(itemCodeField.getText()) == false ) {
+ 	            	itemCode = itemCodeField.getText();
+ 	            }
+ 	            else {
+ 	            	 go = false;
+ 	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+ 	            }
+ 	           	if(checkPrice(priceField.getText()) == true && checkCharacters(priceField.getText()) == false ) {
+ 	           		price = priceField.getText();
+ 	           	}
+ 	            else {
+ 	           	 go = false;
+ 	           	 JOptionPane.showMessageDialog(null, "Please enter a numeric price value.", "Error", JOptionPane.ERROR_MESSAGE);
+ 	           }
+             }
+             
+             DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+             java.util.Date releaseDate = releaseDateChooser.getDate();
+             String releaseDateStr = df.format(releaseDate);
+             
 
-            try{
-                map = doCommand("editBook", title, itemCode, price, author, releaseDateStr);
-                this.dispose();
-                DCBooksTab a = new DCBooksTab("");
-                a.setVisible(true);
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+             try{
+             	if(go == true) {
+                 map = doCommand("editBook", title, itemCode, price, author, releaseDateStr);
+             	this.dispose();
+             	DCBooksTab a = new DCBooksTab("");
+             	a.setVisible(true);
+             	}
+                 
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+             }
+         }
+         catch (Exception e){
+             e.printStackTrace();
+         }
 
 
     }//GEN-LAST:event_editButtonActionPerformed
@@ -417,5 +446,35 @@ public class DCEditBookScreen extends javax.swing.JFrame {
             return replyMap;
             
         }
+    }
+    
+    private boolean checkNumber(String text) {
+    	try{
+    		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    private boolean checkPrice(String text) {
+    	try{
+    		 Double.parseDouble( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    
+    private boolean checkCharacters(String text) {
+    	try{
+    		String thePattern = "[^A-Za-z0-9]+"; 
+    		Pattern.compile(thePattern).matcher(text).find();
+    	      return false;
+    	}
+    	catch (Exception e){
+    		return true;
+    	}
     }
 }

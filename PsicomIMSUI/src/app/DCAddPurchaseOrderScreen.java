@@ -391,15 +391,22 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
             String[] quantityArr = quantityList.toArray(new String[0]);
             quantityListStr = Arrays.toString(quantityArr);
             }
+            else {
+            	listString = "";
+            	quantityListStr = "";
+            }
 
 
             try{
             	if(error == false)
             	{
                 map = doCommand("addPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityListStr);
-                this.dispose();
-             	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
-             	a.setVisible(true);
+                String output = (String) map.get("message"); 
+                
+
+                	this.dispose();
+                	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
+                	a.setVisible(true);
             	}
             }
             catch (Exception e){

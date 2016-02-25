@@ -1,8 +1,16 @@
 package app;
 
 import java.awt.Color;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.util.WeakReferenceMonitor.ReleaseListener;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,7 +27,12 @@ public class DCViewBookScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCViewBookScreen
      */
+	private static String title;
 	private static String itemCode;
+	private static String price;
+	private static String author;
+	private static String quantity;
+	private static String location;
     public DCViewBookScreen() {
         initComponents();
         
@@ -51,7 +64,19 @@ public class DCViewBookScreen extends javax.swing.JFrame {
         authorValueLabel.setText("");
         quantityValueLabel.setText("");
         locationValueLabel.setText("");
+        
         itemCode = itemCode1;
+        
+        findBook(itemCode);
+        
+        titleValueLabel.setText(title);
+        itemCodeValueLabel.setText(itemCode);
+        priceValueLabel.setText(price);
+        authorValueLabel.setText(author);
+        quantityValueLabel.setText(quantity);
+        locationValueLabel.setText(location);
+        
+        
     }
 
     /**
@@ -284,4 +309,41 @@ public class DCViewBookScreen extends javax.swing.JFrame {
     private javax.swing.JLabel titleValueLabel;
     private javax.swing.JLabel viewBookLabel;
     // End of variables declaration//GEN-END:variables
+    
+    public void findBook(String itemCode1)
+    {
+
+    	
+			PreparedStatement pst;
+			Connection con;
+			
+			try {
+
+				Class.forName("com.mysql.jdbc.Driver");
+				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+				ResultSet rs = pst.executeQuery();
+				int i = 0;
+			    
+				while (rs.next()) {
+					if(!rs.getString("item_code").equals(itemCode1))
+					{
+				    	 title = rs.getString("title");
+				    	 price = rs.getString("price");
+				    	 author = rs.getString("author");
+				    	 quantity = rs.getString("quantity");
+				    	 location = rs.getString("location");
+					}
+					i++;
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		
+    }
 }
