@@ -77,6 +77,19 @@ public class DocumentationClerk
         }
         
     }
+	public boolean checkJobOrder(String joNumber)
+    {
+        try
+        {
+            JobOrder j = joDao.findByJoNumber(joNumber);
+            return j.checkJobOrder(joNumber);
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+        
+    }
 	public List<PurchaseOrder> getAllPurchaseOrders()
     {
 

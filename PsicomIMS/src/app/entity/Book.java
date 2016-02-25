@@ -51,7 +51,6 @@ public class Book implements Serializable{
 	private int quantity;
 
 	private double discountedPrice;
-	private double srp;
 	
 	
 	public Set<SpecificPo> getSpecPo() {

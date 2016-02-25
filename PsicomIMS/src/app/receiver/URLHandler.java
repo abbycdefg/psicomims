@@ -457,9 +457,15 @@ class URLHandler extends AbstractHandler {
 					String itemCode = map.get("itemCode");
 					String title = map.get("title");
 					String quantity = map.get("quantity");
-									
-					dc.createJobOrder(joNumber, dateToday, itemCode, title, quantity);
-					response.getWriter().println(joNumber);
+					if(!dc.checkJobOrder(joNumber)){
+						dc.createJobOrder(joNumber, dateToday, itemCode, title, quantity);
+						response.getWriter().println(joNumber);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Job Order Number Already Exists", "Error", JOptionPane.ERROR_MESSAGE);
+					}				
+					
 		
 				}
 				
