@@ -28,6 +28,10 @@ import javax.swing.table.DefaultTableModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.awt.event.KeyAdapter;
+import javax.swing.JLabel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -71,9 +75,11 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         dateToday = dateToday1;
         booksList = booksList1;
         quantityList = quantityList1;
-        
+        System.out.println(booksList +"booksList");
+        System.out.println(quantityList + "quantityList");       
         if(booksList != null && quantityList !=null)
         {
+        	System.out.println("pasok dito");  
         	displayTable2(booksList, quantityList);
         }
  
@@ -145,7 +151,6 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable.setModel(new DefaultTableModel(
         	new Object[][] {
         		{null, null, null, null},
-        		{null, null, null, null},
         	},
         	new String[] {
         		"TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"
@@ -160,39 +165,47 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable.setRowHeight(18);
         booksTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(booksTable);
+        
+        JLabel lblFSee = new JLabel("F5 - See title and stocks on hand; Enter - Add more rows.");
+        lblFSee.setForeground(Color.WHITE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(197, 197, 197)
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
-                        .addComponent(addBookToPOLabel)))
-                .addGap(36, 36, 36))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(36)
+        					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 675, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(197)
+        					.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(261)
+        					.addComponent(addBookToPOLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(233)
+        					.addComponent(lblFSee)))
+        			.addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(addBookToPOLabel)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(addBookToPOLabel)
+        			.addGap(1)
+        			.addComponent(lblFSee)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 360, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18, 18, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -211,9 +224,6 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         	    	{
         	    	booksList.add(selectedBook);
         	    	}
-        	    	else {
-        	    		booksList = null;
-        	    	}
         	    	 
         	    	if (booksTable.getModel().getValueAt(i,3) != null )
         	    	{
@@ -221,20 +231,20 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 3).toString();
         	    		quantityList.add(quantitySelected); 
         	    	}
-        	    	else{
-        	    		quantityList = null;
-        	    	}
-        	    	
-        	    	
-
+    	    		    	       	    
         	}
+        	System.out.println(quantityList);
+	    	if(booksList != null && quantityList == null)
+	    	{
+	    		go = false;
+           	 JOptionPane.showMessageDialog(null, "Please enter quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}      
         	
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(booksList);
-        System.out.println(quantityList);
+;
         if(go == true)
         {
         this.dispose();
@@ -321,6 +331,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
     	    	booksList.add(selectedBook);
     	    	}
     	}
+    	System.out.println(booksList);
     	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
 
     	DefaultTableModel model = (DefaultTableModel)booksTable.getModel();
@@ -342,15 +353,20 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
             ResultSet rs = pst.executeQuery();
             int i = 0;
             
+            for(int h = booksList.size()-1; h>=0; h--){
+            	model.removeRow(h);
+            }
             for(int j = 0; j<booksList.size(); j++){
             	while (rs.next()) {
+            		System.out.println(booksList.get(j));
             		if (booksList.get(j).equals(rs.getString("item_code"))) {
+            			System.out.println("pasok2");
             			title = rs.getString("title");
             			itemCode = rs.getString("item_code");
             			stocksOnHand = rs.getString("quantity");
-            			model.addRow(new Object[]{title, itemCode, stocksOnHand});
-            			model.removeRow(j);
+            			model.addRow(new Object[]{title, itemCode, stocksOnHand});          			
             			i++;
+            			break;
             		}
             	}
             }
@@ -456,7 +472,8 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable.setGridColor(new Color(204, 204, 255));
         booksTable.setCellSelectionEnabled(true);
         booksTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.add(booksTable);
+        jScrollPane1.setColumnHeaderView(booksTable.getTableHeader());
+        jScrollPane1.getViewport().add (booksTable);
     }
 }
     

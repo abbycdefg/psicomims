@@ -565,7 +565,8 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         booksTable.setGridColor(new Color(204, 204, 255));
         booksTable.setCellSelectionEnabled(true);
         booksTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setColumnHeaderView(booksTable);
+        jScrollPane1.setColumnHeaderView(booksTable.getTableHeader());
+        jScrollPane1.getViewport().add(booksTable);
        
     }
 }
