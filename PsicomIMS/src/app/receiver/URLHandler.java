@@ -390,6 +390,9 @@ class URLHandler extends AbstractHandler {
 					String dateToday = (String) map.get("dateToday");
 					String totalAmt = (String) map.get("totalAmt");
 					String dateDelivery = (String) map.get("dateDelivery");
+					String poNumber = (String) map.get("poNumber");
+					String order = (String) map.get("order");
+					String outlet = (String) map.get("outlet");
 					
 					String books = map.get("booksList");
 					books = books.substring(1, books.length()-1);					
@@ -403,7 +406,7 @@ class URLHandler extends AbstractHandler {
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
 					
 					if(!dc.checkDeliveryReceipt(drNumber)){
-						dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
+						dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, poNumber, order, outlet, booksList, quantityList);
 						response.getWriter().println(books);
 					}
 					else{

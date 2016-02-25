@@ -1,22 +1,21 @@
 package app.entity;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-@Entity
-public class DeliveryReceipt {
+import org.hibernate.annotations.Entity;
+
+
+
+@javax.persistence.Entity
+public class DeliveryReceipt implements Serializable{
 	
 
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -33,6 +32,15 @@ public class DeliveryReceipt {
 	@Column	
 	private String totalAmount;
 	
+	@Column	
+	private String purchaseOrderNumber;
+	
+	@Column	
+	private int order;
+	
+	@Column	
+	private String outlet;
+	
 	@Column
 	private String dateDelivery;
 	
@@ -40,6 +48,30 @@ public class DeliveryReceipt {
 	private Set<SpecificDr> specDr;
 
 	
+	public String getPurchaseOrderNumber() {
+		return purchaseOrderNumber;
+	}
+
+	public void setPurchaseOrderNumber(String purchaseOrderNumber) {
+		this.purchaseOrderNumber = purchaseOrderNumber;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
+	public String getOutlet() {
+		return outlet;
+	}
+
+	public void setOutlet(String outlet) {
+		this.outlet = outlet;
+	}
+
 	public Long getId() {
 		return id;
 	}

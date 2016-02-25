@@ -185,7 +185,7 @@ public class DocumentationClerk
     
    
     @Transactional
-    public boolean createDeliveryReceipt(String drNumber, String dateToday, String totalAmt, String dateDelivery, List<String> booksList, List<String> quantityList)
+    public boolean createDeliveryReceipt(String drNumber, String dateToday, String totalAmt, String dateDelivery, String poNumber, String order, String outlet, List<String> booksList, List<String> quantityList)
     {     	
     	DeliveryReceipt d = new DeliveryReceipt();
     	Set<Book> listOfBooks= new HashSet<Book>();
@@ -194,6 +194,9 @@ public class DocumentationClerk
     	d.setDateToday(dateToday);
     	d.setTotalAmount(totalAmt);
     	d.setDateDelivery(dateDelivery);
+    	d.setPurchaseOrderNumber(poNumber);
+    	d.setOutlet(outlet);
+    	d.setOrder(Integer.parseInt(order));
     	d = drDao.save(d);
     	
     	

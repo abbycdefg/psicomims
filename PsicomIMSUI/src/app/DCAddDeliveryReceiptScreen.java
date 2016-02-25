@@ -46,6 +46,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 	private List<String> booksList;
 	private List<String> quantityList;
 	private String poNumber = "";
+	private String outlet = "";
     public DCAddDeliveryReceiptScreen() {
         initComponents();
         
@@ -127,6 +128,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         booksList = booksList1;
         quantityList = quantityList1;
         poNumber = poNumber1;
+        getOutlet(poNumber);
         
     }
 
@@ -319,6 +321,8 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         	String drNumber = "";
          	String quantityListStr = "";
          	String listString = "";
+         	String order = "";
+         	int orderInt = 0;
          	boolean go = true;
          	
               
@@ -347,13 +351,19 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
              
              String[] quantityArr = quantityList.toArray(new String[0]);
              quantityListStr = Arrays.toString(quantityArr);
+             for(int i = 0 ; i < quantityList.size(); i++) {
+            	 int quant = Integer.parseInt(quantityList.get(i).toString());
+            	 orderInt += quant;
+             	}
+             
+             order = Integer.toString(orderInt);
              }
 
 
              try{
             	 if (go == true)
             	 {
-                map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString, quantityListStr);
+                map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, order, outlet, listString, quantityListStr);
              	this.dispose();
              	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("", poNumber);
              	a.setVisible(true);
@@ -448,7 +458,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     private javax.swing.JLabel totalAmountLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String drNumber, String dateToday, String totalAmt, String dateDelivery, String booksList, String quantityList) throws Exception
+    private HashMap doCommand(String command, String drNumber, String dateToday, String totalAmt, String dateDelivery, String poNumber, String order, String outlet, String booksList, String quantityList) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -460,6 +470,9 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         map.put("dateDelivery", dateDelivery);
         map.put("booksList", booksList);
         map.put("quantityList", quantityList);
+        map.put("poNumber", poNumber);
+        map.put("order", order);
+        map.put("outlet", outlet);
 
         // CONVERT JAVA DATA TO JSON
         ObjectMapper mapper = new ObjectMapper();
@@ -506,6 +519,32 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     	catch (Exception e){
     		return true;
     	}
+    }
+    public void getOutlet(String poNumber1)
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM purchase_order");
+    			ResultSet rs = pst.executeQuery();
+    			while (rs.next()) {
+    				if(poNumber1.equals(rs.getString("purchase_order_number")))
+    				{
+    					outlet = rs.getString("outlet");
+    				}
+    			}
+    			
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
     }
 
 }
