@@ -35,6 +35,7 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
 	private List<String> booksList = new ArrayList<String>();
 	private List<String> quantityList= new ArrayList<String>();
 	private String poNumber = "";
+	private String outlet = "";
     public DCEditDeliveryReceiptScreen() {
         initComponents();
         
@@ -93,6 +94,7 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
         
         deliveryReceiptNumberField.setText(drNumber);
+        deliveryReceiptNumberField.setEditable(false);
         
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -139,6 +141,7 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
         
         deliveryReceiptNumberField.setText(drNumber);
+        deliveryReceiptNumberField.setEditable(false);
         
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");

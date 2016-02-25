@@ -302,16 +302,18 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
      	    	{
          	    	booksList.add(cellValueBook); ;
      	    	}
-     	    	if (booksTable.getModel().getValueAt(i,2) != null)
-     	    	{
-     	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 2).toString();
-     	    		quantityList.add(quantitySelected);     	    		
-     	    	}
-     	    	if(booksTable.getModel().getValueAt(i,4) != null)
-     	    	{
-     	    		Integer amountSelected = Integer.parseInt(booksTable.getModel().getValueAt(i,4).toString());
-     	    		totalAmtInt += amountSelected;
-     	    	}
+         	   if (booksTable.getModel().getValueAt(i,2) != null)
+   	    	{
+   	    		System.out.println("pasok");
+   	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 2).toString();
+   	    		int quantInt = Integer.parseInt(quantitySelected);
+   	    		quantityList.add(quantitySelected);     
+       	    	if(booksTable.getModel().getValueAt(i,4) != null)
+       	    	{
+       	    		Integer amountSelected = Integer.parseInt(booksTable.getModel().getValueAt(i,4).toString());
+       	    		totalAmtInt += amountSelected*quantInt;
+       	    	}
+   	    	}
          	}
          	
          	totalAmt = totalAmtInt.toString();

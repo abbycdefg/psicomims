@@ -308,13 +308,15 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     	    	{
     	    		System.out.println("pasok");
     	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 2).toString();
-    	    		quantityList.add(quantitySelected);     	    		
+    	    		int quantInt = Integer.parseInt(quantitySelected);
+    	    		quantityList.add(quantitySelected);     
+        	    	if(booksTable.getModel().getValueAt(i,4) != null)
+        	    	{
+        	    		Integer amountSelected = Integer.parseInt(booksTable.getModel().getValueAt(i,4).toString());
+        	    		totalAmtInt += amountSelected*quantInt;
+        	    	}
     	    	}
-    	    	if(booksTable.getModel().getValueAt(i,4) != null)
-    	    	{
-    	    		Integer amountSelected = Integer.parseInt(booksTable.getModel().getValueAt(i,4).toString());
-    	    		totalAmtInt += amountSelected;
-    	    	}
+
         	}
         	
         	totalAmt = totalAmtInt.toString();

@@ -588,6 +588,8 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
                 	dateToday = rs.getString("date_today");
                     deliveryDate = rs.getString("date_delivery");
                     totalAmount = rs.getString("total_amount");
+                    outlet = rs.getString("outlet");
+                    quantity = rs.getString("orders");
                     model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
                     i++;
                 }
@@ -755,6 +757,8 @@ fileOut.close();**/
             	dateToday = rs.getString("date_today");
                 deliveryDate = rs.getString("date_delivery");
                 totalAmount = rs.getString("total_amount");
+                outlet = rs.getString("outlet");
+                quantity = rs.getString("orders");
                 model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
                 i++;
             }

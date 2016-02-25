@@ -189,14 +189,14 @@ public class DocumentationClerk
     {     	
     	DeliveryReceipt d = new DeliveryReceipt();
     	Set<Book> listOfBooks= new HashSet<Book>();
-    	
+    	System.out.println(order);
     	d.setDeliveryReceiptNumber(drNumber);
     	d.setDateToday(dateToday);
     	d.setTotalAmount(totalAmt);
     	d.setDateDelivery(dateDelivery);
     	d.setPurchaseOrderNumber(poNumber);
     	d.setOutlet(outlet);
-    	d.setOrder(Integer.parseInt(order));
+    	d.setOrders(order);
     	d = drDao.save(d);
     	
     	

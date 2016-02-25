@@ -1,21 +1,22 @@
 package app.entity;
 
-import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Entity;
-
-
-
-@javax.persistence.Entity
-public class DeliveryReceipt implements Serializable{
+@Entity
+public class DeliveryReceipt {
 	
 
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -32,18 +33,27 @@ public class DeliveryReceipt implements Serializable{
 	@Column	
 	private String totalAmount;
 	
-	@Column	
-	private String purchaseOrderNumber;
-	
-	@Column	
-	private int order;
-	
-	@Column	
-	private String outlet;
-	
 	@Column
 	private String dateDelivery;
 	
+	@Column
+	private String purchaseOrderNumber;
+	
+	@Column
+	private String orders;
+	
+	@Column
+	private String outlet;
+	
+	
+	public String getOrders() {
+		return orders;
+	}
+
+	public void setOrders(String orders) {
+		this.orders = orders;
+	}
+
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "drId")
 	private Set<SpecificDr> specDr;
 
@@ -52,16 +62,8 @@ public class DeliveryReceipt implements Serializable{
 		return purchaseOrderNumber;
 	}
 
-	public void setPurchaseOrderNumber(String purchaseOrderNumber) {
-		this.purchaseOrderNumber = purchaseOrderNumber;
-	}
-
-	public int getOrder() {
-		return order;
-	}
-
-	public void setOrder(int order) {
-		this.order = order;
+	public void setPurchaseOrderNumber(String poNumber) {
+		this.purchaseOrderNumber = poNumber;
 	}
 
 	public String getOutlet() {
