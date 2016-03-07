@@ -18,6 +18,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -97,7 +101,6 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
         jobOrdersTable = new javax.swing.JTable();
         navbarPanel = new javax.swing.JPanel();
         createButton = new javax.swing.JButton();
-        viewButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
@@ -192,22 +195,6 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
             }
         });
 
-        viewButton.setBackground(new java.awt.Color(255, 255, 255));
-        viewButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        viewButton.setForeground(new java.awt.Color(255, 255, 255));
-        viewButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_view.png"))); // NOI18N
-        viewButton.setAlignmentY(0.0F);
-        viewButton.setBorder(null);
-        viewButton.setBorderPainted(false);
-        viewButton.setContentAreaFilled(false);
-        viewButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        viewButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_view2.png"))); // NOI18N
-        viewButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewButtonActionPerformed(evt);
-            }
-        });
-
         editButton.setBackground(new java.awt.Color(255, 255, 255));
         editButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         editButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -286,38 +273,35 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
-        navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
-            navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(editButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(viewButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(deleteButton)
-                        .addComponent(homeButton)
-                        .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(printButton))
-                .addContainerGap())
+        	navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(navbarPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        					.addComponent(editButton, Alignment.TRAILING)
+        					.addComponent(deleteButton)
+        					.addComponent(homeButton)
+        					.addComponent(createButton, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(printButton))
+        			.addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
-            navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(createButton)
-                .addGap(109, 109, 109)
-                .addComponent(viewButton)
-                .addGap(18, 18, 18)
-                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+        	navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(navbarPanelLayout.createSequentialGroup()
+        			.addGap(35)
+        			.addComponent(createButton)
+        			.addGap(156)
+        			.addComponent(editButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(deleteButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(printButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+        			.addComponent(homeButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addGap(60))
         );
+        navbarPanel.setLayout(navbarPanelLayout);
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -421,10 +405,6 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
         DCAddJobOrderScreen a = new DCAddJobOrderScreen();
         a.setVisible(true);
     }
-
-    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_viewButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	if (jobOrdersTable.getSelectedRowCount() == 1 && jobOrdersTable.getSelectedColumn() == 0){
@@ -597,7 +577,6 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
     private javax.swing.JButton signOutButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel1;
-    private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
     
     public void displayAll(){
@@ -607,6 +586,7 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
+        PreparedStatement pst2;
         Connection con;
         
         String joNumber = "";
@@ -621,13 +601,24 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
             pst = con.prepareStatement("SELECT * FROM job_order");
             ResultSet rs = pst.executeQuery();
+            
+            pst2 = con.prepareStatement("SELECT * FROM book");
+            ResultSet rs2 = pst2.executeQuery();
+            
             int i = 0;
             while (rs.next()) {
             	joNumber = rs.getString("jo_number");
             	date = rs.getString("date");
             	itemCode = rs.getString("item_code");
             	title = rs.getString("title");
-            	//stocksOnHand = rs.getString("stocks_on_hand");
+            	 while (rs2.next()) {
+            		 if(itemCode.equals(rs2.getString("item_code")))
+            		 {
+            			 stocksOnHand = rs2.getString("quantity");
+            			 System.out.println(stocksOnHand);
+            			 break;
+            		 }
+            	 }
             	order = rs.getString("quantity");
                 model.addRow(new Object[]{joNumber, date, itemCode, title, stocksOnHand, order});
                 i++;

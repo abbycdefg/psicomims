@@ -67,7 +67,9 @@ public class JobOrder implements Serializable{
 		this.quantity = quantity;
 	}
 	
-	
+	public boolean checkJobOrder(String joNumber){
+		return joNumber.equals(this.joNumber);
+	}
 	
 
 }

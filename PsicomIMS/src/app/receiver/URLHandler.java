@@ -306,6 +306,8 @@ class URLHandler extends AbstractHandler {
 
 				}
 				else if (target.equalsIgnoreCase("/addPurchaseOrder")) {
+					List<String> booksList = new ArrayList<String>();
+					List<String> quantityList = new ArrayList<String>();
 					HashMap<String, String> map = convertJsonToCommand(request);
 
 					String purchaseOrderNumber = map.get("purchaseOrderNumber");
@@ -315,14 +317,15 @@ class URLHandler extends AbstractHandler {
 					
 					
 					String books = map.get("booksList");
-					books = books.substring(1, books.length()-1);					
-					System.out.println(books);
-					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
-					
-					
+					if(!books.equals("")) {
+						books = books.substring(1, books.length()-1);			
+						booksList = Arrays.asList(books.split("\\s*,\\s*"));
+					}
 					String quantity = map.get("quantityList");  
-					quantity = quantity.substring(1, quantity.length()-1);
-					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
+					if(!quantity.equals("")) {
+						quantity = quantity.substring(1, quantity.length()-1);
+						quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
+					}
 					System.out.println(quantity);
 					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
 							dc.createPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
@@ -330,7 +333,7 @@ class URLHandler extends AbstractHandler {
 					}
 
 					else{
-						response.getWriter().println("Invalid request.");
+						response.getWriter().println("1");
 						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 		
@@ -387,6 +390,9 @@ class URLHandler extends AbstractHandler {
 					String dateToday = (String) map.get("dateToday");
 					String totalAmt = (String) map.get("totalAmt");
 					String dateDelivery = (String) map.get("dateDelivery");
+					String poNumber = (String) map.get("poNumber");
+					String order = (String) map.get("order");
+					String outlet = (String) map.get("outlet");
 					
 					String books = map.get("booksList");
 					books = books.substring(1, books.length()-1);					
@@ -400,7 +406,7 @@ class URLHandler extends AbstractHandler {
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
 					
 					if(!dc.checkDeliveryReceipt(drNumber)){
-						dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
+						dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, poNumber, order, outlet, booksList, quantityList);
 						response.getWriter().println(books);
 					}
 					else{
@@ -419,8 +425,8 @@ class URLHandler extends AbstractHandler {
 					String dateDelivery = (String) map.get("dateDelivery");
 					
 					String books = map.get("booksList");
-					books = books.substring(1, books.length()-1);					
 					System.out.println(books);
+					books = books.substring(1, books.length()-1);										
 					List<String> booksList = Arrays.asList(books.split("\\s*,\\s*"));
 					
 					
@@ -429,8 +435,10 @@ class URLHandler extends AbstractHandler {
 					quantity = quantity.substring(1, quantity.length()-1);
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
 					
-					dc.createDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
+					dc.editDeliveryReceipt(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList);
 					response.getWriter().println(books);
+					
+					
 		
 				}
 				else if (target.equalsIgnoreCase("/deleteDeliveryReceipt")) {
@@ -452,9 +460,15 @@ class URLHandler extends AbstractHandler {
 					String itemCode = map.get("itemCode");
 					String title = map.get("title");
 					String quantity = map.get("quantity");
-									
-					dc.createJobOrder(joNumber, dateToday, itemCode, title, quantity);
-					response.getWriter().println(joNumber);
+					if(!dc.checkJobOrder(joNumber)){
+						dc.createJobOrder(joNumber, dateToday, itemCode, title, quantity);
+						response.getWriter().println(joNumber);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Job Order Number Already Exists", "Error", JOptionPane.ERROR_MESSAGE);
+					}				
+					
 		
 				}
 				

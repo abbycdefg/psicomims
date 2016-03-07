@@ -509,9 +509,26 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_viewButtonActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	
+    	if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
+    		int row = deliveryReceiptsTable.getSelectedRow();
+    		String drNumber = deliveryReceiptsTable.getValueAt(row, 0).toString();
+    		String dateToday = deliveryReceiptsTable.getValueAt(row, 1).toString();
+    		String outlet = deliveryReceiptsTable.getValueAt(row, 2).toString();
+    		String quantity = deliveryReceiptsTable.getValueAt(row, 3).toString();
+    		String deliveryDate = deliveryReceiptsTable.getValueAt(row, 4).toString();
+    		String totalAmount = deliveryReceiptsTable.getValueAt(row, 5).toString();
+    		
+    		this.dispose();
+        	DCEditDeliveryReceiptScreen a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmount, deliveryDate);
+        	a.setVisible(true); 
+    		}
+
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+    }
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
@@ -571,6 +588,8 @@ public class DCDeliveryReceiptsTab extends javax.swing.JFrame {
                 	dateToday = rs.getString("date_today");
                     deliveryDate = rs.getString("date_delivery");
                     totalAmount = rs.getString("total_amount");
+                    outlet = rs.getString("outlet");
+                    quantity = rs.getString("orders");
                     model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
                     i++;
                 }
@@ -738,6 +757,8 @@ fileOut.close();**/
             	dateToday = rs.getString("date_today");
                 deliveryDate = rs.getString("date_delivery");
                 totalAmount = rs.getString("total_amount");
+                outlet = rs.getString("outlet");
+                quantity = rs.getString("orders");
                 model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
                 i++;
             }
@@ -753,7 +774,7 @@ fileOut.close();**/
             else {
                 System.out.println(i + " Records Found");
             }
-
+            
                   
         } catch (Exception e) {
             e.printStackTrace();

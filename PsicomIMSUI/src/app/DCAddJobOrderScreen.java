@@ -1,11 +1,24 @@
 package app;
 
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import antlr.debug.Event;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -13,6 +26,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.JComboBox;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,6 +51,11 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCAddJobOrderScreen
      */
+	private JComboBox itemCodecomboBox = new JComboBox();
+	private List<String> itemCodeList  = new ArrayList<String>();
+	private String []ic;
+	private String bookTitle = "";
+	
     public DCAddJobOrderScreen() {
         initComponents();
         
@@ -40,6 +67,16 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        Date now = new Date();
+        dateChooser.setDate(now);
+        
+        getItemCodeList();
+        
+        ic = new String[itemCodeList.size()];
+        itemCodeList.toArray(ic);
+        AutoCompleteSupport.install(itemCodecomboBox, GlazedLists.eventListOf(ic));
+        
     }
 
     /**
@@ -58,13 +95,31 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
         jobOrderNumberField = new javax.swing.JTextField();
         titleLabel = new javax.swing.JLabel();
         itemCodeLabel1 = new javax.swing.JLabel();
-        itemCodeField = new javax.swing.JTextField();
         titleField = new javax.swing.JTextField();
         quantityLabel = new javax.swing.JLabel();
         quantityField = new javax.swing.JTextField();
         addButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
+        
+        itemCodecomboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String s = (String) itemCodecomboBox.getSelectedItem();
+				if(s != null)
+				{
+					getBook(s);
+					titleField.setText(bookTitle);
+				}
+				else
+				{
+					titleField.setText("");
+				}
 
+				
+			}
+		});
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Job Order");
         setResizable(false);
@@ -95,13 +150,6 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
         itemCodeLabel1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         itemCodeLabel1.setForeground(new java.awt.Color(255, 255, 255));
         itemCodeLabel1.setText("Item Code");
-
-        itemCodeField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        itemCodeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemCodeFieldActionPerformed(evt);
-            }
-        });
 
         titleField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         titleField.addActionListener(new java.awt.event.ActionListener() {
@@ -144,84 +192,98 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
+        
+        itemCodecomboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    public int getWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public synchronized void addMouseListener(MouseListener l) {
+                    }
+                };
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(255, 255, 255)
-                .addComponent(addJobOrderLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(quantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(quantityLabel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(itemCodeLabel1)
-                                    .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(titleLabel)
-                                        .addGap(222, 222, 222))
-                                    .addComponent(titleField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jobOrderNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jobOrderNumberLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dateLabel)
-                                    .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(68, 68, 68))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(133, 133, 133))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(255)
+        			.addComponent(addJobOrderLabel)
+        			.addContainerGap(271, Short.MAX_VALUE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(60)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(quantityField, GroupLayout.PREFERRED_SIZE, 118, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(quantityLabel))
+        					.addContainerGap(457, Short.MAX_VALUE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jobOrderNumberField, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(jobOrderNumberLabel)
+        						.addComponent(itemCodecomboBox, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(itemCodeLabel1))
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        							.addGroup(layout.createSequentialGroup()
+        								.addPreferredGap(ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+        								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        									.addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+        									.addComponent(dateLabel))
+        								.addGap(68))
+        							.addGroup(layout.createSequentialGroup()
+        								.addComponent(titleField, GroupLayout.PREFERRED_SIZE, 247, GroupLayout.PREFERRED_SIZE)
+        								.addContainerGap()))
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(titleLabel)
+        							.addContainerGap())))))
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(150, Short.MAX_VALUE)
+        			.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        			.addGap(133))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(addJobOrderLabel)
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jobOrderNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jobOrderNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(itemCodeLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(quantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(quantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(addJobOrderLabel)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        					.addGap(29)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(dateLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(jobOrderNumberLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jobOrderNumberField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+        					.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+        					.addComponent(itemCodeLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(itemCodecomboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(titleField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(30)
+        			.addComponent(quantityLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(quantityField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(44)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -229,10 +291,6 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
     private void jobOrderNumberFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jobOrderNumberFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jobOrderNumberFieldActionPerformed
-
-    private void itemCodeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCodeFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemCodeFieldActionPerformed
 
     private void titleFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleFieldActionPerformed
         // TODO add your handling code here:
@@ -246,13 +304,35 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
         HashMap map;
         
         try{
-        	
-            String joNumber = jobOrderNumberField.getText();
-            String itemCode = itemCodeField.getText();
+        	String joNumber = "";
+            String itemCode = "";
+            String title = "";
+            String quantity = "";
+            boolean go = true;
             
-            
-            String title = titleField.getText();
-            String quantity = quantityField.getText();
+            if( jobOrderNumberField.getText().equals("") || itemCodecomboBox.getSelectedItem() == null|| titleField.getText().equals("")|| quantityField.getText().equals("")) {
+          	   go = false;
+               JOptionPane.showMessageDialog(null, "All fields must be filled", "Error", JOptionPane.ERROR_MESSAGE);
+             }
+            else {
+            	if(checkNumber(jobOrderNumberField.getText()) == true && checkCharacters(jobOrderNumberField.getText()) == false ) {
+            		joNumber = jobOrderNumberField.getText();
+            	}
+            	else {
+	            	 go = false;
+	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+            	}
+            	
+	            itemCode = itemCodecomboBox.getSelectedItem().toString(); 
+	            title = titleField.getText();
+	            if(checkNumber(quantityField.getText()) == true) {
+	            quantity = quantityField.getText();
+	            }
+	            else {
+	            	go = false;
+		           	 JOptionPane.showMessageDialog(null, "Please enter a numeric quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+            }
             
             DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             java.util.Date dateToday = dateChooser.getDate();
@@ -260,11 +340,12 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
             
 
             try{
-
-                map = doCommand("addJobOrder", joNumber, dateTodayStr, itemCode, title, quantity);
-            	this.dispose();
-            	DCJobOrdersTab a = new DCJobOrdersTab("");
-            	a.setVisible(true);
+            	if (go == true) {
+	                map = doCommand("addJobOrder", joNumber, dateTodayStr, itemCode, title, quantity);
+	            	this.dispose();
+	            	DCJobOrdersTab a = new DCJobOrdersTab("");
+	            	a.setVisible(true);
+            	}
                 
             }
             catch (Exception e){
@@ -323,7 +404,6 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private com.toedter.calendar.JDateChooser dateChooser;
     private javax.swing.JLabel dateLabel;
-    private javax.swing.JTextField itemCodeField;
     private javax.swing.JLabel itemCodeLabel1;
     private javax.swing.JTextField jobOrderNumberField;
     private javax.swing.JLabel jobOrderNumberLabel;
@@ -369,5 +449,79 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
             replyMap.put("message", reply);
             return replyMap; 
         }
+    }
+    public void getItemCodeList()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+    			ResultSet rs = pst.executeQuery();
+    		    Set<String> itemCodeSet = new HashSet();
+    			while (rs.next()) {
+    				if(!rs.getString("item_code").equals(null))
+    				{
+    					itemCodeSet.add(rs.getString("item_code"));
+    				}
+    			}
+    			itemCodeList.addAll(itemCodeSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    }
+    public void getBook(String itemCode1)
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+    			ResultSet rs = pst.executeQuery();
+    			while (rs.next()) {
+    				if(rs.getString("item_code").equals(itemCode1))
+    				{ 
+    					bookTitle = rs.getString("title");
+    					System.out.println(bookTitle);
+    					break;
+    				}
+    			}
+    			
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    }
+    private boolean checkNumber(String text) {
+    	try{
+    		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    private boolean checkCharacters(String text) {
+    	try{
+    		String thePattern = "[^A-Za-z0-9]+"; 
+    		Pattern.compile(thePattern).matcher(text).find();
+    	      return false;
+    	}
+    	catch (Exception e){
+    		return true;
+    	}
     }
 }

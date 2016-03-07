@@ -1,6 +1,8 @@
 package app;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,15 +12,26 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.awt.event.KeyAdapter;
+import javax.swing.JLabel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -33,16 +46,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class DCAddBookToPOScreen extends javax.swing.JFrame {
 	
 	private static String purchaseOrderNumber;
-	private static int contactPerson;
-	private static int outlet;
+	private static String contactPerson;
+	private static String outlet;
 	private static String dateToday;
 	private static List<String> booksList = new ArrayList<String>();
 	private static List<String> quantityList = new ArrayList<String>();
 	
+	
     /**
      * Creates new form DCAddBookToPOScreen
      */
-    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, int contactPerson1, int outlet1, List<String> booksList1, List<String> quantityList1) {
+    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1) {
+
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -60,9 +75,11 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         dateToday = dateToday1;
         booksList = booksList1;
         quantityList = quantityList1;
-        
-        if(booksList != null)
+        System.out.println(booksList +"booksList");
+        System.out.println(quantityList + "quantityList");       
+        if(booksList != null && quantityList !=null)
         {
+        	System.out.println("pasok dito");  
         	displayTable2(booksList, quantityList);
         }
  
@@ -82,7 +99,21 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         addBookToPOLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         booksTable = new javax.swing.JTable();
-
+        booksTable.addKeyListener(new KeyAdapter() {
+    		@Override
+    		public void keyPressed(KeyEvent e) {
+    			if(e.getKeyCode() == KeyEvent.VK_F5)
+    			{
+    		        System.out.println("F5 pressed");
+    		        refresh();
+    			}
+    			if(e.getKeyCode() == KeyEvent.VK_ENTER )
+    			{
+    		        System.out.println("Enter pressed");
+    		        addRow();
+    			}
+    		}
+    	});
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Book to Purchase Order");
         setResizable(false);
@@ -117,25 +148,14 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
 
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(51, 51, 51));
-        booksTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER", "DELIVERY DATE"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        booksTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        		{null, null, null, null},
+        	},
+        	new String[] {
+        		"TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"
+        	}
+        ));
         
 
         booksTable.setToolTipText("");
@@ -145,49 +165,58 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable.setRowHeight(18);
         booksTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(booksTable);
-        booksTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        
+        JLabel lblFSee = new JLabel("F5 - See title and stocks on hand; Enter - Add more rows.");
+        lblFSee.setForeground(Color.WHITE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(197, 197, 197)
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
-                        .addComponent(addBookToPOLabel)))
-                .addGap(36, 36, 36))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(36)
+        					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 675, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(197)
+        					.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        					.addGap(18)
+        					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(261)
+        					.addComponent(addBookToPOLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(233)
+        					.addComponent(lblFSee)))
+        			.addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(addBookToPOLabel)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(addBookToPOLabel)
+        			.addGap(1)
+        			.addComponent(lblFSee)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 360, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18, 18, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        try{
+    	boolean go = true;
+    	try{
         	booksList = new ArrayList<String>();
         	quantityList = new ArrayList<String>();
+        	
         	int rowCount = booksTable.getRowCount();
         	for(int i=0; i<rowCount; i++) {
         	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
@@ -196,24 +225,32 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         	    	booksList.add(selectedBook);
         	    	}
         	    	 
-        	    	if (booksTable.getModel().getValueAt(i,3) != null)
+        	    	if (booksTable.getModel().getValueAt(i,3) != null )
         	    	{
         	    		System.out.println("pasok");
         	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 3).toString();
-        	    		quantityList.add(quantitySelected);
-        	    		
+        	    		quantityList.add(quantitySelected); 
         	    	}
-
+    	    		    	       	    
         	}
+        	System.out.println(quantityList);
+	    	if(booksList != null && quantityList == null)
+	    	{
+	    		go = false;
+           	 JOptionPane.showMessageDialog(null, "Please enter quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}      
         	
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(quantityList);
+;
+        if(go == true)
+        {
         this.dispose();
     	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
     	a.setVisible(true);
+        }
         
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -284,10 +321,20 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
       return true;  
     }
 
-    public void displayTable(List<String> booksList, List<String> quantityList){
+    public void refresh(){
+    	booksList = new ArrayList<String>();
+    	int rowCount = booksTable.getRowCount();
+    	for(int i=0; i<rowCount; i++) {
+    	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
+    	    	if(selectedBook != null)
+    	    	{
+    	    	booksList.add(selectedBook);
+    	    	}
+    	}
+    	System.out.println(booksList);
     	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = (DefaultTableModel)booksTable.getModel();
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
@@ -298,24 +345,30 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         String itemCode = "";
         String stocksOnHand = "";
         
+        
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
             pst = con.prepareStatement("SELECT * FROM psicomims.book");
             ResultSet rs = pst.executeQuery();
             int i = 0;
-            for(int j = 0; j<=booksList.size(); j++)
-            {
-            while (rs.next()) {
-            	if (booksList.get(j).equals(rs.getString("item_code")))
-            	{
-                title = rs.getString("title");
-                itemCode = rs.getString("item_code");
-                stocksOnHand = "";
-                model.addRow(new Object[]{title, itemCode, stocksOnHand});
-                i++;
-            	}
+            
+            for(int h = booksList.size()-1; h>=0; h--){
+            	model.removeRow(h);
             }
+            for(int j = 0; j<booksList.size(); j++){
+            	while (rs.next()) {
+            		System.out.println(booksList.get(j));
+            		if (booksList.get(j).equals(rs.getString("item_code"))) {
+            			System.out.println("pasok2");
+            			title = rs.getString("title");
+            			itemCode = rs.getString("item_code");
+            			stocksOnHand = rs.getString("quantity");
+            			model.addRow(new Object[]{title, itemCode, stocksOnHand});          			
+            			i++;
+            			break;
+            		}
+            	}
             }
             
             if (i < 1) {
@@ -334,21 +387,35 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        booksTable = new JTable(model);
-        booksTable.setModel(model);
-        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+               
     }
     
+    private void addRow()
+    {
+        DefaultTableModel model = (DefaultTableModel)booksTable.getModel();
+
+       if (model != null) {
+       Vector v = new Vector(1);
+       for (int j = 0; j < booksTable.getColumnCount(); j++){
+                v.add("");
+            }
+            model.addRow(v);
+            }
+
+    }
     public void displayTable2(List<String> booksList, List<String> quantityList){
     	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
 
+        PreparedStatement pst;
+        Connection con;
         
         String itemCode = "";
         String quantity = "";
+        String title = "";
+        String stocksOnHand = "";
         
         try {
             int i = 0;
@@ -358,11 +425,10 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
                 quantity = quantityList.get(i).toString();
                 model.addRow(new Object[]{null, itemCode, null, quantity});
                 i++;
-
             }
             
             if (i < 1) {
-                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            	booksTable = new javax.swing.JTable();
             }
             
             if (i == 1) {
@@ -371,6 +437,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
             
             else {
                 System.out.println(i + " Records Found");
+                
             }
             
                   
@@ -379,12 +446,34 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         }
         
         booksTable = new JTable(model);
+        booksTable.addKeyListener(new KeyAdapter() {
+    		@Override
+    		public void keyPressed(KeyEvent e) {
+    			if(e.getKeyCode() == KeyEvent.VK_F5)
+    			{
+    		        System.out.println("F5 pressed");
+    		        refresh();
+    			}
+    			if(e.getKeyCode() == KeyEvent.VK_ENTER )
+    			{
+    		        System.out.println("Enter pressed");
+    		        addRow();
+    			}
+    		}
+    	});
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    }
-    public static void deleteAllRows(DefaultTableModel model) {
-        for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
-            model.removeRow(i);
-        }
+        booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        booksTable.setForeground(new java.awt.Color(51, 51, 51));
+        
+        booksTable.setToolTipText("");
+        booksTable.setRowHeight(18);
+        booksTable.setRequestFocusEnabled(false);
+        booksTable.setGridColor(new Color(204, 204, 255));
+        booksTable.setCellSelectionEnabled(true);
+        booksTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setColumnHeaderView(booksTable.getTableHeader());
+        jScrollPane1.getViewport().add (booksTable);
     }
 }
+    

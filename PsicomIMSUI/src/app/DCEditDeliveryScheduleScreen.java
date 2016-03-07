@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -30,6 +31,7 @@ import com.mysql.jdbc.PreparedStatement;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
@@ -91,6 +93,8 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
         dr = new String[drList.size()];
         drList.toArray(dr);
         AutoCompleteSupport.install(drCodeComboBox, GlazedLists.eventListOf(dr));
+        
+        scheduleCodeField.setEditable(false);
         
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -289,14 +293,32 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
          
          try{
          	
-        	 String scheduleCode = scheduleCodeField.getText();
-             String outlet = outletsComboBox.getSelectedItem().toString();
-             String deliveryReceiptCode =  drCodeComboBox.getSelectedItem().toString();
+        	 String scheduleCode = "";
+             String outlet = "";
+             String deliveryReceiptCode = "";
+             boolean go = true;
+             if(checkNumber(scheduleCodeField.getText()) == true && checkCharacters(scheduleCodeField.getText()) == false )
+             {
+             scheduleCode = scheduleCodeField.getText();
+             }
+             else {
+            	 go = false;
+            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+             }
+             if(drCodeComboBox.getSelectedIndex() != -1 && outletsComboBox.getSelectedIndex() != -1)
+             {
+             outlet = outletsComboBox.getSelectedItem().toString();
+
+             deliveryReceiptCode = drCodeComboBox.getSelectedItem().toString();
+             }
+             else {
+            	 go = false;
+            	 JOptionPane.showMessageDialog(null, "Invalid input..", "Error", JOptionPane.ERROR_MESSAGE);
+             }
              
              DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
              java.util.Date deliveryDate = dateChooser.getDate();
              String dateTodayStr = df.format(deliveryDate);
-             
 
              try{
 
@@ -454,5 +476,25 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
             replyMap.put("message", reply);
             return replyMap; 
         }
+    }
+    private boolean checkNumber(String text) {
+    	try{
+    		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    
+    private boolean checkCharacters(String text) {
+    	try{
+    		String thePattern = "[^A-Za-z0-9]+"; 
+    		Pattern.compile(thePattern).matcher(text).find();
+    	      return false;
+    	}
+    	catch (Exception e){
+    		return true;
+    	}
     }
 }

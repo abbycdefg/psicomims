@@ -36,10 +36,44 @@ public class DeliveryReceipt {
 	@Column
 	private String dateDelivery;
 	
+	@Column
+	private String purchaseOrderNumber;
+	
+	@Column
+	private String orders;
+	
+	@Column
+	private String outlet;
+	
+	
+	public String getOrders() {
+		return orders;
+	}
+
+	public void setOrders(String orders) {
+		this.orders = orders;
+	}
+
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "drId")
 	private Set<SpecificDr> specDr;
 
 	
+	public String getPurchaseOrderNumber() {
+		return purchaseOrderNumber;
+	}
+
+	public void setPurchaseOrderNumber(String poNumber) {
+		this.purchaseOrderNumber = poNumber;
+	}
+
+	public String getOutlet() {
+		return outlet;
+	}
+
+	public void setOutlet(String outlet) {
+		this.outlet = outlet;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -81,6 +115,14 @@ public class DeliveryReceipt {
 	}
 	public boolean checkDRNumber(String deliveryReceiptNumber){
 		return deliveryReceiptNumber.equals(this.deliveryReceiptNumber);
+	}
+
+	public Set<SpecificDr> getSpecDr() {
+		return specDr;
+	}
+
+	public void setSpecDr(Set<SpecificDr> specDr) {
+		this.specDr = specDr;
 	}
 
 	
