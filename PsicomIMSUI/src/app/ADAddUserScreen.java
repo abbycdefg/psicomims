@@ -184,11 +184,11 @@ public class ADAddUserScreen extends javax.swing.JFrame {
         
     }
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {	//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
         if(!usernameField.getText().equals("") && !passwordField.getText().equals("") && !reenterPasswordField.getText().equals(""))
         {
-        	if(passwordField.getText().length() >= 8)
+        	if(passwordField.getText().length() >= 8 && passwordField.getText().length() <= 25 && reenterPasswordField.getText().length() >= 8 && reenterPasswordField.getText().length() <= 25 && this.isAlpha(usernameField.getText()) && usernameField.getText().length() >= 8 && usernameField.getText().length() <= 25)
             {
 	    		try{
 	                String username = usernameField.getText();
@@ -213,10 +213,17 @@ public class ADAddUserScreen extends javax.swing.JFrame {
 	            catch (Exception e){
 	                e.printStackTrace();
 	            }
-            }
-        	else{
-        		JOptionPane.showMessageDialog(null, "Password should be at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+            }        	
+        	else if (usernameField.getText().length() < 8 || usernameField.getText().length() > 25){
+        		JOptionPane.showMessageDialog(null, "Username should contain 8-25 characters.", "Error", JOptionPane.ERROR_MESSAGE);
         	}
+        	else if (passwordField.getText().length() < 8 || passwordField.getText().length() > 25){
+        		JOptionPane.showMessageDialog(null, "Password should contain 8-25 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+        	else{
+        		JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+        	
     	  }
         else{
     		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
@@ -318,4 +325,9 @@ public class ADAddUserScreen extends javax.swing.JFrame {
     {
         System.out.println(map.get("message"));
     }
-}
+    
+    public boolean isAlpha(String s) {
+    	String s1 = s.replaceAll("\\s+","");
+        return s1.matches("[a-zA-Z]+");
+    }
+} 
