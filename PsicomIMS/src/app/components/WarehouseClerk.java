@@ -88,6 +88,7 @@ public class WarehouseClerk
 
     	Book b = bookDao.findByItemCode(itemCode);
     	b.setQuantity(newQuantity);
+    	b.setState("old");
     	b = bookDao.save(b);
     	
     	return b.getId()!= null;    	

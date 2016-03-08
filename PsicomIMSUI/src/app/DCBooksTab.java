@@ -159,7 +159,7 @@ public class DCBooksTab extends javax.swing.JFrame {
 
         copyrightLabel.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanel.setLayout(tablePanelLayout);
@@ -641,6 +641,7 @@ public class DCBooksTab extends javax.swing.JFrame {
         String author = "";
         String releaseDate = "";
         String quantity = "";
+        String state = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -658,7 +659,8 @@ public class DCBooksTab extends javax.swing.JFrame {
                 i++;
                 
                 quantity = rs.getString("quantity");
-                if (Integer.parseInt(quantity) < 13){
+                state = rs.getString("state");
+                if (Integer.parseInt(quantity) < 13 && !state.equals("new")){
                 	String titleNew = title;
                 	if (title.length() > 11){
                 		titleNew = title.substring(0, 13) + "...";

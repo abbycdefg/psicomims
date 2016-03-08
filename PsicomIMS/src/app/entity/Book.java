@@ -40,6 +40,9 @@ public class Book implements Serializable{
 	
 	@Column
 	private String location;
+	
+	@Column
+	private String state;
 
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "bookId")
 	private Set<SpecificPo> specPo;
@@ -115,6 +118,11 @@ public class Book implements Serializable{
     public boolean checkItemCode(String itemCode) {
         return itemCode.equals( this.itemCode );
     }
-
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	
 }
