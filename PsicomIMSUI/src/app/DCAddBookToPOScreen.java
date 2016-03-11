@@ -225,16 +225,14 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         	    	booksList.add(selectedBook);
         	    	}
         	    	 
-        	    	if (booksTable.getModel().getValueAt(i,3) != null )
+        	    	if (booksTable.getModel().getValueAt(i,3) != null)
         	    	{
-        	    		System.out.println("pasok");
         	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 3).toString();
         	    		quantityList.add(quantitySelected); 
         	    	}
-    	    		    	       	    
+   	    
         	}
-        	System.out.println(quantityList);
-	    	if(booksList != null && quantityList == null)
+	    	if(booksList.size() != 0 && quantityList.size() == 0)
 	    	{
 	    		go = false;
            	 JOptionPane.showMessageDialog(null, "Please enter quantity value.", "Error", JOptionPane.ERROR_MESSAGE);

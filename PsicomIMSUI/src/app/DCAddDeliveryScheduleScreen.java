@@ -2,6 +2,8 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.font.TextAttribute;
 import java.sql.DriverManager;
@@ -29,11 +31,15 @@ import javax.swing.AbstractButton;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.JComboBox;
+
+import org.hibernate.mapping.Component;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -57,10 +63,11 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
 	private String []dr;
 	private String []ou;
 	private JTextField scheduleCodeField;
+	private String outlet; 
 	
     public DCAddDeliveryScheduleScreen() {
         initComponents();
-        
+
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -94,7 +101,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+    	
         addDeliveryScheduleLabel = new javax.swing.JLabel();
         dateLabel = new javax.swing.JLabel();
         dateChooser = new com.toedter.calendar.JDateChooser();
@@ -188,7 +195,24 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
             }
         });
         
-       
+        drCodeComboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String s = (String) drCodeComboBox.getSelectedItem();
+				if(s != null)
+				{
+					getOutlet(s);
+					outletComboBox.setSelectedItem(outlet);
+				}
+				else
+				{
+					outletComboBox.setSelectedItem("");
+				}
+
+				
+			}
+		});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -198,26 +222,18 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         				.addGroup(layout.createSequentialGroup()
         					.addGap(81)
         					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addGroup(layout.createSequentialGroup()
-        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        								.addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
-        								.addComponent(dateLabel))
-        							.addGap(18)
-        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        								.addComponent(scheduleCodeLabel)
-        								.addComponent(scheduleCodeField, GroupLayout.PREFERRED_SIZE, 254, GroupLayout.PREFERRED_SIZE)))
-        						.addGroup(layout.createSequentialGroup()
+        						.addComponent(dateChooser, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(dateLabel)
+        						.addComponent(drCodeComboBox, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(deliveryReceiptCodeLabel))
+        					.addGap(18)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(scheduleCodeLabel)
+        						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        							.addComponent(scheduleCodeField, GroupLayout.PREFERRED_SIZE, 254, GroupLayout.PREFERRED_SIZE)
         							.addGroup(layout.createParallelGroup(Alignment.LEADING)
         								.addComponent(outletsLabel)
-        								.addComponent(outletComboBox, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE))
-        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        								.addGroup(layout.createSequentialGroup()
-        									.addGap(31)
-        									.addComponent(deliveryReceiptCodeLabel))
-        								.addGroup(layout.createSequentialGroup()
-        									.addPreferredGap(ComponentPlacement.RELATED)
-        									.addComponent(drCodeComboBox, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE)))))
-        					.addGap(29))
+        								.addComponent(outletComboBox, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE)))))
         				.addGroup(layout.createSequentialGroup()
         					.addGap(145)
         					.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
@@ -226,7 +242,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         				.addGroup(layout.createSequentialGroup()
         					.addGap(238)
         					.addComponent(addDeliveryScheduleLabel)))
-        			.addContainerGap(81, Short.MAX_VALUE))
+        			.addContainerGap(110, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
@@ -246,15 +262,14 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         			.addGap(18)
         			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
         				.addGroup(layout.createSequentialGroup()
+        					.addComponent(deliveryReceiptCodeLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(drCodeComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
         					.addComponent(outletsLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
         					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(outletComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(deliveryReceiptCodeLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.UNRELATED)
-        					.addComponent(drCodeComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)))
-        			.addGap(54)
+        					.addComponent(outletComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(59)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
         				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
@@ -284,7 +299,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
              }
              else {
             	 go = false;
-            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+            	 JOptionPane.showMessageDialog(null, "Please enter a numeric schedule delivery code value.", "Error", JOptionPane.ERROR_MESSAGE);
              }
              if(drCodeComboBox.getSelectedIndex() != -1 && outletComboBox.getSelectedIndex() != -1)
              {
@@ -482,5 +497,34 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
     	catch (Exception e){
     		return true;
     	}
+    }
+    
+    public void getOutlet(String drCode1)
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM delivery_receipt");
+    			ResultSet rs = pst.executeQuery();
+    			while (rs.next()) {
+    				if(rs.getString("delivery_receipt_number").equals(drCode1))
+    				{ 
+    					outlet = rs.getString("outlet");
+    					System.out.println(outlet);
+    					break;
+    				}
+    			}
+    			
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
     }
 }

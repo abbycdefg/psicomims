@@ -148,7 +148,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         
         booksList = booksList1;
         quantityList = quantityList1;
-        
+        System.out.println(quantityList + "quantityList3");
         
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -431,12 +431,16 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
 
     	purchaseOrderNumber = purchaseOrderNumberField.getText();
 
-
+    	
+    	if(contactsComboBox.getSelectedIndex() != -1){
         contactPerson = contactsComboBox.getSelectedItem().toString();
+    	}
+    	if(outletComboBox.getSelectedIndex() != -1) {
         outlet = outletComboBox.getSelectedItem().toString();
+    	}
         
         
-        
+        System.out.println(quantityList + "quantityList2");
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date dc = jDateChooser1.getDate();
         String dateToday = df.format(dc);

@@ -2,9 +2,18 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.awt.geom.Rectangle2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -45,7 +54,7 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
-        
+        printButton.addActionListener(new printAction());
         signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
             Font originalFont = null;
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -522,7 +531,9 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        // TODO add your handling code here:
+    	
+
+        
     }//GEN-LAST:event_printButtonActionPerformed
 
     /**
@@ -684,4 +695,25 @@ public class DCJobOrdersTab extends javax.swing.JFrame {
         }
     }
     
+    public static class printAction implements ActionListener, Printable{
+    	public int print(Graphics gx, PageFormat pf, int page) throws PrinterException { 
+   		 if (page>0){return NO_SUCH_PAGE;} 
+   		     Graphics2D g = (Graphics2D)gx; 
+   		     g.translate(pf.getImageableX(), pf.getImageableY()); 
+   		     g.drawString ("Hello world", 100, 100); 
+   		     return PAGE_EXISTS; 
+   		     }
+    	
+
+   	@Override
+   	public void actionPerformed(ActionEvent arg0) {
+   		PrinterJob job = PrinterJob.getPrinterJob();
+   		            job.setPrintable(this); 
+   		            if (job.printDialog() == true) { 
+   		                try {job.print();} catch (PrinterException ex){ 		                   		
+   		                }
+   		            }
+   	}
+
+   }
 }

@@ -76,6 +76,7 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
         ic = new String[itemCodeList.size()];
         itemCodeList.toArray(ic);
         AutoCompleteSupport.install(itemCodecomboBox, GlazedLists.eventListOf(ic));
+        titleField.setEditable(false);
         
     }
 
@@ -320,17 +321,27 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
             	}
             	else {
 	            	 go = false;
-	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric job order code value.", "Error", JOptionPane.ERROR_MESSAGE);
             	}
             	
-	            itemCode = itemCodecomboBox.getSelectedItem().toString(); 
+            	if(itemCodecomboBox.getSelectedIndex() != -1)
+            	{
+            		itemCode = itemCodecomboBox.getSelectedItem().toString(); 
+            	}
+            	
+            	else {
+	            	 go = false;
+	            	 JOptionPane.showMessageDialog(null, "Item code does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+            	}
+            	
 	            title = titleField.getText();
-	            if(checkNumber(quantityField.getText()) == true) {
-	            quantity = quantityField.getText();
+	            
+	            if(checkNumber(quantityField.getText()) == true && Integer.parseInt(quantityField.getText())  > 0) {
+	            	quantity = quantityField.getText();
 	            }
-	            else {
+	            else{
 	            	go = false;
-		           	 JOptionPane.showMessageDialog(null, "Please enter a numeric quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
+		           	 JOptionPane.showMessageDialog(null, "Please enter a positive numeric quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
 	            }
             }
             
@@ -514,6 +525,7 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
     		return false;
     	}
     }
+
     private boolean checkCharacters(String text) {
     	try{
     		String thePattern = "[^A-Za-z0-9]+"; 

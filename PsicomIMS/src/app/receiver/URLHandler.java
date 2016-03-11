@@ -482,7 +482,7 @@ class URLHandler extends AbstractHandler {
 						String itemCode = map.get("itemCode");
 						String title = map.get("title");
 						String quantity = map.get("quantity");
-
+						
 						dc.editJobOrder(joNumber, dateToday, itemCode, title, quantity);
 						response.getWriter().println("You have succesfully edited " + joNumber + ".");
 					} catch (Exception e) {
