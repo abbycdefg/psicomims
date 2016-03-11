@@ -143,6 +143,8 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         addBookToDRLabel.setForeground(new java.awt.Color(255, 255, 255));
         addBookToDRLabel.setText("ADD BOOK TO DELIVERY RECEIPT");
         
+        booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        booksTable.setForeground(Color.BLACK); 
         
         poNumberComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
             protected JButton createArrowButton() {
@@ -466,15 +468,14 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         
         booksTable = new JTable(model);
         booksTable.setModel(model);
-        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
-        booksTable.setForeground(Color.BLACK);       
+        booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);      
         booksTable.setToolTipText("");
         booksTable.setRowHeight(18);
         booksTable.setRequestFocusEnabled(false);
         booksTable.setGridColor(new Color(204, 204, 255));
         booksTable.setCellSelectionEnabled(true);
         booksTable.getTableHeader().setReorderingAllowed(false);
+
         jScrollPane1.setColumnHeaderView(booksTable.getTableHeader());
         jScrollPane1.getViewport().add(booksTable);
        

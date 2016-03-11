@@ -205,7 +205,8 @@ public class WCLogInScreen extends javax.swing.JFrame {
     }
 
     private void forgotPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotPasswordButtonActionPerformed
-        
+    	ADForgotPasswordScreen a = new ADForgotPasswordScreen();
+        a.setVisible(true);
     }
 
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed

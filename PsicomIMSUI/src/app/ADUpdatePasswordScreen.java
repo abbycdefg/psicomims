@@ -1,11 +1,17 @@
 package app;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JPasswordField;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -46,11 +52,8 @@ public class ADUpdatePasswordScreen extends javax.swing.JFrame {
 
         updatePasswordLabel = new javax.swing.JLabel();
         oldPasswordLabel = new javax.swing.JLabel();
-        oldPasswordField = new javax.swing.JTextField();
         newPasswordLabel = new javax.swing.JLabel();
-        newPasswordField = new javax.swing.JTextField();
         reenterPasswordLabel = new javax.swing.JLabel();
-        reenterPasswordField = new javax.swing.JTextField();
         updateButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
 
@@ -66,34 +69,13 @@ public class ADUpdatePasswordScreen extends javax.swing.JFrame {
         oldPasswordLabel.setForeground(new java.awt.Color(255, 255, 255));
         oldPasswordLabel.setText("Old Password");
 
-        oldPasswordField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        oldPasswordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                oldPasswordFieldActionPerformed(evt);
-            }
-        });
-
         newPasswordLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         newPasswordLabel.setForeground(new java.awt.Color(255, 255, 255));
         newPasswordLabel.setText("New Password");
 
-        newPasswordField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        newPasswordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newPasswordFieldActionPerformed(evt);
-            }
-        });
-
         reenterPasswordLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         reenterPasswordLabel.setForeground(new java.awt.Color(255, 255, 255));
         reenterPasswordLabel.setText("Re-enter Password");
-
-        reenterPasswordField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        reenterPasswordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reenterPasswordFieldActionPerformed(evt);
-            }
-        });
 
         updateButton.setBackground(new java.awt.Color(205, 0, 69));
         updateButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -119,99 +101,120 @@ public class ADUpdatePasswordScreen extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
+        
+        oldPasswordField = new JPasswordField();
+        oldPasswordField.setToolTipText("Password");
+        oldPasswordField.setForeground(Color.BLACK);
+        oldPasswordField.setFont(new Font("Calibri", Font.PLAIN, 12));
+        oldPasswordField.setEchoChar('*');
+        
+        newPasswordField = new JPasswordField();
+        newPasswordField.setToolTipText("Password");
+        newPasswordField.setForeground(Color.BLACK);
+        newPasswordField.setFont(new Font("Calibri", Font.PLAIN, 12));
+        newPasswordField.setEchoChar('*');
+        
+        reenterPasswordField = new JPasswordField();
+        reenterPasswordField.setToolTipText("Password");
+        reenterPasswordField.setForeground(Color.BLACK);
+        reenterPasswordField.setFont(new Font("Calibri", Font.PLAIN, 12));
+        reenterPasswordField.setEchoChar('*');
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(oldPasswordLabel)
-                    .addComponent(newPasswordLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(reenterPasswordLabel))
-                    .addComponent(oldPasswordField)
-                    .addComponent(newPasswordField)
-                    .addComponent(reenterPasswordField)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(64, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(updatePasswordLabel)
-                .addGap(106, 106, 106))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(115, Short.MAX_VALUE)
+        			.addComponent(updatePasswordLabel)
+        			.addGap(106))
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addGap(63)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(newPasswordField, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+        					.addContainerGap())
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        						.addComponent(oldPasswordField, Alignment.LEADING)
+        						.addGroup(Alignment.LEADING, layout.createParallelGroup(Alignment.TRAILING)
+        							.addComponent(oldPasswordLabel, Alignment.LEADING)
+        							.addComponent(newPasswordLabel, Alignment.LEADING)
+        							.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        								.addComponent(updateButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+        								.addPreferredGap(ComponentPlacement.UNRELATED)
+        								.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
+        							.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        								.addGap(2)
+        								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        									.addComponent(reenterPasswordField, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+        									.addComponent(reenterPasswordLabel)))))
+        					.addContainerGap(62, GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(updatePasswordLabel)
-                .addGap(31, 31, 31)
-                .addComponent(oldPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(oldPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(newPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(newPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(reenterPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reenterPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(41)
+        			.addComponent(updatePasswordLabel)
+        			.addGap(31)
+        			.addComponent(oldPasswordLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(oldPasswordField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(newPasswordLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(newPasswordField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(reenterPasswordLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(reenterPasswordField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(updateButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void oldPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oldPasswordFieldActionPerformed
-       
-    }
-
-    private void newPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPasswordFieldActionPerformed
-        
-    }
-
-    private void reenterPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reenterPasswordFieldActionPerformed
-        
-    }
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
     	HashMap map;
         if(!oldPasswordField.getText().equals("") && !newPasswordField.getText().equals("") && !reenterPasswordField.getText().equals(""))
         {
-        	try{
-            	String username = ADUsersTab.getData();
-                String oldPassword = oldPasswordField.getText();
-                String newPassword = newPasswordField.getText();
-                String newPassword2 = reenterPasswordField.getText();
-                
-
-                try{
-                    map = doCommand("updatePassword", username, oldPassword, newPassword, newPassword2);
-                    
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-                
-                cancelButton.setEnabled(false);
-                
-            	this.dispose();
-            	ADUsersTab a = new ADUsersTab();
-            	a.setVisible(true);
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
+        	if(newPasswordField.getText().length() >= 8 && newPasswordField.getText().length() <= 25 && reenterPasswordField.getText().length() >= 8 && reenterPasswordField.getText().length() <= 25)
+        	{
+        		try{
+	            	String username = ADUsersTab.getData();
+	                String oldPassword = oldPasswordField.getText();
+	                String newPassword = newPasswordField.getText();
+	                String newPassword2 = reenterPasswordField.getText();
+	                
+	
+	                try{
+	                    map = doCommand("updatePassword", username, oldPassword, newPassword, newPassword2);
+	                    
+	                }
+	                catch (Exception e){
+	                    e.printStackTrace();
+	                }
+	                
+	                cancelButton.setEnabled(false);
+	                
+	            	this.dispose();
+	            	ADUsersTab a = new ADUsersTab();
+	            	a.setVisible(true);
+	            }
+	            catch (Exception e){
+	                e.printStackTrace();
+	            }
+        	}
+        	else if (newPasswordField.getText().length() < 8 || newPasswordField.getText().length() > 25){
+        		JOptionPane.showMessageDialog(null, "New password should contain 8-25 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+        	else{
+        		JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
     	  }
         else{
     		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
@@ -262,14 +265,14 @@ public class ADUpdatePasswordScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private javax.swing.JTextField newPasswordField;
     private javax.swing.JLabel newPasswordLabel;
-    private javax.swing.JTextField oldPasswordField;
     private javax.swing.JLabel oldPasswordLabel;
-    private javax.swing.JTextField reenterPasswordField;
     private javax.swing.JLabel reenterPasswordLabel;
     private javax.swing.JButton updateButton;
     private javax.swing.JLabel updatePasswordLabel;
+    private JPasswordField oldPasswordField;
+    private JPasswordField newPasswordField;
+    private JPasswordField reenterPasswordField;
     // End of variables declaration//GEN-END:variables
     
     private HashMap doCommand(String command, String username, String oldPassword, String newPassword, String newPassword2) throws Exception

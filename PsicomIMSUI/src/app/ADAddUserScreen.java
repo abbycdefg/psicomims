@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -11,6 +12,11 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.swing.JPasswordField;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -53,9 +59,7 @@ public class ADAddUserScreen extends javax.swing.JFrame {
         usernameLabel = new javax.swing.JLabel();
         usernameField = new javax.swing.JTextField();
         passwordLabel = new javax.swing.JLabel();
-        passwordField = new javax.swing.JTextField();
         reenterPasswordLabel = new javax.swing.JLabel();
-        reenterPasswordField = new javax.swing.JTextField();
         addButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
 
@@ -82,23 +86,9 @@ public class ADAddUserScreen extends javax.swing.JFrame {
         passwordLabel.setForeground(new java.awt.Color(255, 255, 255));
         passwordLabel.setText("Password");
 
-        passwordField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        passwordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordFieldActionPerformed(evt);
-            }
-        });
-
         reenterPasswordLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         reenterPasswordLabel.setForeground(new java.awt.Color(255, 255, 255));
         reenterPasswordLabel.setText("Re-enter Password");
-
-        reenterPasswordField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        reenterPasswordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reenterPasswordFieldActionPerformed(evt);
-            }
-        });
 
         addButton.setBackground(new java.awt.Color(205, 0, 69));
         addButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -124,55 +114,68 @@ public class ADAddUserScreen extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
+        
+        passwordField = new JPasswordField();
+        passwordField.setToolTipText("Password");
+        passwordField.setForeground(Color.BLACK);
+        passwordField.setFont(new Font("Calibri", Font.PLAIN, 12));
+        passwordField.setEchoChar('*');
+        
+        reenterPasswordField = new JPasswordField();
+        reenterPasswordField.setToolTipText("Password");
+        reenterPasswordField.setForeground(Color.BLACK);
+        reenterPasswordField.setFont(new Font("Calibri", Font.PLAIN, 12));
+        reenterPasswordField.setEchoChar('*');
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(143, Short.MAX_VALUE)
-                .addComponent(addUserLabel)
-                .addGap(143, 143, 143))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(usernameLabel)
-                    .addComponent(passwordLabel)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(reenterPasswordLabel))
-                    .addComponent(usernameField)
-                    .addComponent(passwordField)
-                    .addComponent(reenterPasswordField)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(143, Short.MAX_VALUE)
+        			.addComponent(addUserLabel)
+        			.addGap(143))
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(63)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(passwordField)
+        				.addComponent(usernameLabel)
+        				.addComponent(passwordLabel)
+        				.addComponent(usernameField)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(2)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(reenterPasswordField, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(reenterPasswordLabel))))
+        			.addContainerGap(52, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(addUserLabel)
-                .addGap(32, 32, 32)
-                .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(passwordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(reenterPasswordLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reenterPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(addUserLabel)
+        			.addGap(32)
+        			.addComponent(usernameLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(usernameField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(passwordLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(reenterPasswordLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(reenterPasswordField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -181,19 +184,11 @@ public class ADAddUserScreen extends javax.swing.JFrame {
         
     }
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-        
-    }
-
-    private void reenterPasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reenterPasswordFieldActionPerformed
-        
-    }
-
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {	//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
         if(!usernameField.getText().equals("") && !passwordField.getText().equals("") && !reenterPasswordField.getText().equals(""))
         {
-        	if(passwordField.getText().length() >= 8)
+        	if(passwordField.getText().length() >= 8 && passwordField.getText().length() <= 25 && reenterPasswordField.getText().length() >= 8 && reenterPasswordField.getText().length() <= 25 && this.isAlpha(usernameField.getText()) && usernameField.getText().length() >= 8 && usernameField.getText().length() <= 25)
             {
 	    		try{
 	                String username = usernameField.getText();
@@ -218,10 +213,17 @@ public class ADAddUserScreen extends javax.swing.JFrame {
 	            catch (Exception e){
 	                e.printStackTrace();
 	            }
-            }
-        	else{
-        		JOptionPane.showMessageDialog(null, "Password should be at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+            }        	
+        	else if (usernameField.getText().length() < 8 || usernameField.getText().length() > 25){
+        		JOptionPane.showMessageDialog(null, "Username should contain 8-25 characters.", "Error", JOptionPane.ERROR_MESSAGE);
         	}
+        	else if (passwordField.getText().length() < 8 || passwordField.getText().length() > 25){
+        		JOptionPane.showMessageDialog(null, "Password should contain 8-25 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+        	else{
+        		JOptionPane.showMessageDialog(null, "Invalid input.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+        	
     	  }
         else{
     		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
@@ -273,12 +275,12 @@ public class ADAddUserScreen extends javax.swing.JFrame {
     private javax.swing.JButton addButton;
     private javax.swing.JLabel addUserLabel;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JTextField passwordField;
     private javax.swing.JLabel passwordLabel;
-    private javax.swing.JTextField reenterPasswordField;
     private javax.swing.JLabel reenterPasswordLabel;
     private javax.swing.JTextField usernameField;
     private javax.swing.JLabel usernameLabel;
+    private JPasswordField passwordField;
+    private JPasswordField reenterPasswordField;
     // End of variables declaration//GEN-END:variables
     
     private HashMap doCommand(String command, String username, String password, String password2) throws Exception
@@ -323,4 +325,9 @@ public class ADAddUserScreen extends javax.swing.JFrame {
     {
         System.out.println(map.get("message"));
     }
-}
+    
+    public boolean isAlpha(String s) {
+    	String s1 = s.replaceAll("\\s+","");
+        return s1.matches("[a-zA-Z]+");
+    }
+} 

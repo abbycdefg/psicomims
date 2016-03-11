@@ -28,13 +28,14 @@ public class Inventory {
         
     }
     
-    public boolean addBook(String title, String itemCode, double price, String author, String releaseDate) {
+    public boolean addBook(String title, String itemCode, double price, String author, String releaseDate, String state) {
     	Book b = new Book();
     	b.setTitle(title);
     	b.setItemCode(itemCode);
     	b.setPrice(price);
     	b.setAuthor(author);
     	b.setReleaseDate(releaseDate);
+    	b.setState(state);
     	b = bookDao.save(b);
     	
     	return b.getId()!= null;    	

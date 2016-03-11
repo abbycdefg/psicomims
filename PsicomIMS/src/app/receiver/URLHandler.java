@@ -256,11 +256,12 @@ class URLHandler extends AbstractHandler {
 					String price = map.get("price");
 					String author = map.get("author");
 					String releaseDate = map.get("releaseDate");
+					String state = "new";
 					double priceDb = Double.parseDouble(price);
 
 					
 					if(!in.checkItemCode(itemCode)){
-							in.addBook(title, itemCode, priceDb, author, releaseDate);
+							in.addBook(title, itemCode, priceDb, author, releaseDate, state);
 							response.getWriter().println("You have succesfully added " + title + ".");
 					}
 					else{
