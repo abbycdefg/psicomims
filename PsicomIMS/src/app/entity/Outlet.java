@@ -20,11 +20,8 @@ public class Outlet implements Serializable
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
-    private Long id;
+    private Long outletId;
 
-	@Column
-    private String outletId;
-	
 	@Column
     private String outletName;
 	
@@ -32,18 +29,12 @@ public class Outlet implements Serializable
     private String dateCreated;
 	
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getOutletId() {
+	public Long getOutletId() {
 		return outletId;
 	}
 
-	public void setOutletId(String outletId) {
+	public void setOutletId(Long outletId) {
 		this.outletId = outletId;
 	}
 

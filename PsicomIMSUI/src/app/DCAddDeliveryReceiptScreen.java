@@ -78,6 +78,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         dateTodayChooser.setDate(now);
         deliveryDateChooser.setDate(now);
         totalAmountField.setEditable(false);
+        dateTodayChooser.setEnabled(false);
     }
     
     public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1, String poNumber1) {
@@ -125,6 +126,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 		}
         totalAmountField.setText(totalAmt);
         totalAmountField.setEditable(false);
+        dateTodayChooser.setEnabled(false);
         booksList = booksList1;
         quantityList = quantityList1;
         poNumber = poNumber1;
@@ -322,6 +324,8 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
          	String quantityListStr = "";
          	String listString = "";
          	String order = "";
+         	String dateTodayStr = "";
+         	String deliveryDateStr = "";
          	int orderInt = 0;
          	boolean go = true;
          	
@@ -336,14 +340,23 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
             	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
              }
              DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+             Date now = new Date();
              java.util.Date dateToday = dateTodayChooser.getDate();
-             String dateTodayStr = df.format(dateToday);
              
+             dateTodayStr = df.format(dateToday);
+
+
              String totalAmt = totalAmountField.getText();
              
              java.util.Date deliveryDate = deliveryDateChooser.getDate();
-             String deliveryDateStr = df.format(deliveryDate);
-             
+             if(!deliveryDate.before(now))
+             {
+              deliveryDateStr = df.format(deliveryDate);
+             }
+             else {
+            	 go = false;
+            	 JOptionPane.showMessageDialog(null, "Please enter valid date.", "Error", JOptionPane.ERROR_MESSAGE);
+             }
              if (booksList != null || quantityList != null)
              {
              String[] strarray = booksList.toArray(new String[0]);

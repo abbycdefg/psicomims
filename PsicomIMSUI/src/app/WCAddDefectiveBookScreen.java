@@ -1,14 +1,38 @@
 package app;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.JComboBox;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +49,11 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
     /**
      * Creates new form WCAddDefectiveBookScreen
      */
+	private List<String> itemCodeList  = new ArrayList<String>();
+    JComboBox itemCodeComboBox = new JComboBox();
+    private String []co;
+    private String title;
+    
     public WCAddDefectiveBookScreen() {
         initComponents();
         
@@ -36,6 +65,14 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        getItemCode();
+        
+        co = new String[itemCodeList.size()];
+        itemCodeList.toArray(co);
+        AutoCompleteSupport.install(itemCodeComboBox, GlazedLists.eventListOf(co));
+        titleField.setEditable(false);
+        quantityField.setText("1");
     }
 
     /**
@@ -50,7 +87,6 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
         addDefectiveBookLabel = new javax.swing.JLabel();
         itemCodeLabel = new javax.swing.JLabel();
         titleLabel = new javax.swing.JLabel();
-        itemCodeField = new javax.swing.JTextField();
         titleField = new javax.swing.JTextField();
         quantityLabel = new javax.swing.JLabel();
         quantityField = new javax.swing.JTextField();
@@ -72,13 +108,6 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
         titleLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setText("Title");
-
-        itemCodeField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        itemCodeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemCodeFieldActionPerformed(evt);
-            }
-        });
 
         titleField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         titleField.addActionListener(new java.awt.event.ActionListener() {
@@ -121,65 +150,92 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
+        
 
+        itemCodeComboBox.setUI(new BasicComboBoxUI() { // make the down arrow invisible
+            protected JButton createArrowButton() {
+                return new JButton() {
+                    public int getWidth() {
+                        return 0;
+                    }
+
+                    @Override
+                    public synchronized void addMouseListener(MouseListener l) {
+                    }
+                };
+            }
+        });
+        itemCodeComboBox.addActionListener(new ActionListener() {
+           
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						String s = (String) itemCodeComboBox.getSelectedItem();
+						if(s != null)
+						{
+							getTitle(s);
+							titleField.setText(title);
+						}
+						else
+						{
+							titleField.setText("");
+						}
+					}
+				});
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(itemCodeLabel)
-                    .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleLabel)
-                    .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(quantityLabel))
-                    .addComponent(quantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(75, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(addDefectiveBookLabel)
-                        .addGap(141, 141, 141))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44))))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(51, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(addDefectiveBookLabel)
+        					.addGap(141))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        					.addGap(44))))
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addGap(75)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(itemCodeComboBox, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addGroup(Alignment.LEADING, layout.createParallelGroup(Alignment.LEADING, false)
+        					.addComponent(itemCodeLabel)
+        					.addComponent(titleLabel)
+        					.addComponent(titleField, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+        					.addGroup(layout.createSequentialGroup()
+        						.addGap(2)
+        						.addComponent(quantityLabel))
+        					.addComponent(quantityField, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)))
+        			.addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(addDefectiveBookLabel)
-                .addGap(18, 36, Short.MAX_VALUE)
-                .addComponent(itemCodeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(quantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(quantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(addDefectiveBookLabel)
+        			.addGap(18, 36, Short.MAX_VALUE)
+        			.addComponent(itemCodeLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(itemCodeComboBox, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(titleField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(quantityLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(quantityField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(52)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void itemCodeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCodeFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_itemCodeFieldActionPerformed
 
     private void titleFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_titleFieldActionPerformed
         // TODO add your handling code here:
@@ -191,11 +247,11 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
-        if(!itemCodeField.getText().equals("") && !quantityField.getText().equals(""))
+        if(!(itemCodeComboBox.getSelectedIndex() == -1) && !quantityField.getText().equals(""))
         {
-        	if(this.isNumeric(itemCodeField.getText()) && this.isNumeric(quantityField.getText())){
+        	if(this.isNumeric(quantityField.getText())){
         		try{
-                    String itemCode = itemCodeField.getText();
+                    String itemCode = itemCodeComboBox.getSelectedItem().toString();
                     String title = titleField.getText();
                     String quantity = quantityField.getText();
                     
@@ -274,7 +330,6 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
     private javax.swing.JButton addButton;
     private javax.swing.JLabel addDefectiveBookLabel;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JTextField itemCodeField;
     private javax.swing.JLabel itemCodeLabel;
     private javax.swing.JTextField quantityField;
     private javax.swing.JLabel quantityLabel;
@@ -319,7 +374,62 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
         }
     }
 
+    public void getItemCode()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
 
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+    			ResultSet rs = pst.executeQuery();
+    			Set<String> bookSet = new HashSet();
+     			while (rs.next()) {
+     				if(!rs.getString("item_code").equals(null))
+     				{
+     					bookSet.add(rs.getString("item_code"));
+     				}
+     			}
+     			itemCodeList.addAll(bookSet);
+    			
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    }
+    public void getTitle(String itemCode1)
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+    			ResultSet rs = pst.executeQuery();
+    			while (rs.next()) {
+    				if(rs.getString("item_code").equals(itemCode1))
+    				{ 
+    					title = rs.getString("title");
+    					System.out.println(title);
+    					break;
+    				}
+    			}
+    			
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    }
     private static void printMessage(HashMap map)
     {
         System.out.println(map.get("message"));

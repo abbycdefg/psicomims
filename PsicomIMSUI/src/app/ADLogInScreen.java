@@ -25,8 +25,9 @@ public class ADLogInScreen extends javax.swing.JFrame {
      * Creates new form LogInScreen
      */
     public ADLogInScreen() {
+    	
         initComponents();
-        
+
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -132,27 +133,29 @@ public class ADLogInScreen extends javax.swing.JFrame {
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
         			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(logoLabel)
+        				.addComponent(logoLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         				.addGroup(layout.createSequentialGroup()
         					.addGap(68)
-        					.addComponent(copyrightLabel))
+        					.addComponent(copyrightLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addGap(39))
         				.addGroup(layout.createSequentialGroup()
-        					.addGap(78)
-        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        							.addComponent(usernameField, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-        							.addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-        							.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE))
+        					.addGap(80)
+        					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        						.addComponent(usernameField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
         						.addGroup(layout.createSequentialGroup()
         							.addGap(64)
-        							.addComponent(forgotPasswordButton, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)))))
-        			.addContainerGap(35, Short.MAX_VALUE))
+        							.addComponent(forgotPasswordButton, GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+        							.addGap(66)))
+        					.addGap(80)))
+        			.addGap(35))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
         			.addGap(88)
-        			.addComponent(logoLabel)
+        			.addComponent(logoLabel, GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
         			.addGap(55)
         			.addComponent(usernameField, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
         			.addGap(18)
@@ -160,9 +163,9 @@ public class ADLogInScreen extends javax.swing.JFrame {
         			.addGap(27)
         			.addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(forgotPasswordButton)
-        			.addPreferredGap(ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
-        			.addComponent(copyrightLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(forgotPasswordButton, GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)
+        			.addGap(149)
+        			.addComponent(copyrightLabel, GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
         			.addContainerGap())
         );
         getContentPane().setLayout(layout);

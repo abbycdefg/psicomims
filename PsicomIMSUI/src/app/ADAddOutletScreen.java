@@ -9,6 +9,9 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,9 +28,9 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
     /**
      * Creates new form ADAddOutletTab
      */
+	
     public ADAddOutletScreen() {
         initComponents();
-        
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -51,8 +54,6 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         addOutletLabel = new javax.swing.JLabel();
-        outletIDLabel = new javax.swing.JLabel();
-        outletIDField = new javax.swing.JTextField();
         outletNameLabel = new javax.swing.JLabel();
         outletNameField = new javax.swing.JTextField();
         dateCreatedLabel = new javax.swing.JLabel();
@@ -67,17 +68,6 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
         addOutletLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         addOutletLabel.setForeground(new java.awt.Color(255, 255, 255));
         addOutletLabel.setText("ADD OUTLET");
-
-        outletIDLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        outletIDLabel.setForeground(new java.awt.Color(255, 255, 255));
-        outletIDLabel.setText("Outlet ID");
-
-        outletIDField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        outletIDField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                outletIDFieldActionPerformed(evt);
-            }
-        });
 
         outletNameLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         outletNameLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -120,61 +110,50 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(addOutletLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(outletIDLabel)
-                            .addComponent(outletNameLabel)
-                            .addComponent(outletIDField)
-                            .addComponent(outletNameField)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(2, 2, 2)
-                                .addComponent(dateCreatedLabel))
-                            .addComponent(dateCreatedChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(70, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(135)
+        					.addComponent(addOutletLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(58)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        						.addGroup(layout.createSequentialGroup()
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
+        						.addComponent(dateCreatedChooser, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        						.addComponent(dateCreatedLabel)
+        						.addComponent(outletNameField)
+        						.addComponent(outletNameLabel))))
+        			.addContainerGap(70, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(addOutletLabel)
-                .addGap(30, 30, 30)
-                .addComponent(outletIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(outletIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(outletNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(outletNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(dateCreatedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateCreatedChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(addOutletLabel)
+        			.addGap(45)
+        			.addComponent(outletNameLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(outletNameField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(28)
+        			.addComponent(dateCreatedLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(dateCreatedChooser, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+        			.addGap(56)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap(57, Short.MAX_VALUE))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void outletIDFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outletIDFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_outletIDFieldActionPerformed
 
     private void outletNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outletNameFieldActionPerformed
         // TODO add your handling code here:
@@ -182,21 +161,18 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
-        if(!outletIDField.getText().equals("") && !outletNameField.getText().equals("") && dateCreatedChooser.getDate() != null)
+        if( !outletNameField.getText().equals("") && dateCreatedChooser.getDate() != null)
         {
-        	if(this.isAlpha(outletNameField.getText()) && this.isNumeric(outletIDField.getText())){
+        	
         		try{
-                    String outletId = outletIDField.getText();
                     String outletName = outletNameField.getText();
                     
                     DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
                     Date dc = dateCreatedChooser.getDate();
                     String dateCreated = df.format(dc);
                     
-
-                    try{
-                        map = doCommand("addOutlet", outletId, outletName, dateCreated);
-                        
+                    try{                   	
+                        map = doCommand("addOutlet", outletName, dateCreated);
                     }
                     catch (Exception e){
                         e.printStackTrace();
@@ -217,11 +193,9 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
         		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
 	    	}
     	}
-        else{
-    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
-    	}
+
     
-    }//GEN-LAST:event_addButtonActionPerformed
+    //GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
     	this.dispose();
@@ -271,19 +245,16 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private com.toedter.calendar.JDateChooser dateCreatedChooser;
     private javax.swing.JLabel dateCreatedLabel;
-    private javax.swing.JTextField outletIDField;
-    private javax.swing.JLabel outletIDLabel;
     private javax.swing.JTextField outletNameField;
     private javax.swing.JLabel outletNameLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String outletId, String outletName, String dateCreated) throws Exception
+    private HashMap doCommand(String command, String outletName, String dateCreated) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
         HashMap<String, Object> map = new HashMap<String, Object>();
 
-        map.put("outletId", outletId);
         map.put("outletName", outletName);
         map.put("dateCreated", dateCreated);
 

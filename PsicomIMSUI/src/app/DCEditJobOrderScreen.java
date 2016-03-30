@@ -78,6 +78,7 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
         
         jobOrderNumberField.setText(joNumber1);
         jobOrderNumberField.setEditable(false);
+        titleField.setEditable(false);
         getItemCodeList();
         
         ic = new String[itemCodeList.size()];
@@ -330,28 +331,38 @@ HashMap map;
             boolean go = true;
             
             if( jobOrderNumberField.getText().equals("") || itemCodecomboBox.getSelectedItem() == null|| titleField.getText().equals("")|| quantityField.getText().equals("")) {
-          	   go = false;
-               JOptionPane.showMessageDialog(null, "All fields must be filled", "Error", JOptionPane.ERROR_MESSAGE);
+           	   go = false;
+                JOptionPane.showMessageDialog(null, "All fields must be filled", "Error", JOptionPane.ERROR_MESSAGE);
+              }
+             else {
+             	if(checkNumber(jobOrderNumberField.getText()) == true && checkCharacters(jobOrderNumberField.getText()) == false ) {
+             		joNumber = jobOrderNumberField.getText();
+             	}
+             	else {
+ 	            	 go = false;
+ 	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric job order code value.", "Error", JOptionPane.ERROR_MESSAGE);
+             	}
+             	
+             	if(itemCodecomboBox.getSelectedIndex() != -1)
+             	{
+             		itemCode = itemCodecomboBox.getSelectedItem().toString(); 
+             	}
+             	
+             	else {
+ 	            	 go = false;
+ 	            	 JOptionPane.showMessageDialog(null, "Item code does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+             	}
+             	
+ 	            title = titleField.getText();
+ 	            
+ 	            if(checkNumber(quantityField.getText()) == true && Integer.parseInt(quantityField.getText())  > 0) {
+ 	            	quantity = quantityField.getText();
+ 	            }
+ 	            else{
+ 	            	go = false;
+ 		           	 JOptionPane.showMessageDialog(null, "Please enter a positive numeric quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
+ 	            }
              }
-            else {
-            	if(checkNumber(jobOrderNumberField.getText()) == true && checkCharacters(jobOrderNumberField.getText()) == false ) {
-            		joNumber = jobOrderNumberField.getText();
-            	}
-            	else {
-	            	 go = false;
-	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
-            	}
-            	
-	            itemCode = itemCodecomboBox.getSelectedItem().toString(); 
-	            title = titleField.getText();
-	            if(checkNumber(quantityField.getText()) == true) {
-	            quantity = quantityField.getText();
-	            }
-	            else {
-	            	go = false;
-		           	 JOptionPane.showMessageDialog(null, "Please enter a numeric quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
-	            }
-            }
             
             DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             java.util.Date dateToday = dateChooser.getDate();

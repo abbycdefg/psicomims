@@ -41,10 +41,19 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
         
         String outletId = ADOutletsTab.getFirstColumnData();
     	String outletName = ADOutletsTab.getSecondColumnData();     
-        
+        String date = ADOutletsTab.getThirdColumnData();
         outletIDField.setText(outletId);
-        outletNameField.setText(outletName);        
-        dateCreatedChooser.setEnabled(false);
+        outletIDField.setEnabled(false);
+        outletNameField.setText(outletName);  
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateCreated = df.parse(date);
+			dateCreatedChooser.setDate(dateCreated);
+			dateCreatedChooser.setEnabled(false);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
     }
 
@@ -184,8 +193,7 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
     	
         if(!outletIDField.getText().equals("") && !outletNameField.getText().equals(""))
         {
-        	if(this.isAlpha(outletNameField.getText()) && this.isNumeric(outletIDField.getText())){
-                try{
+        	
                 	String outletId = outletIDField.getText();
                     String outletName = outletNameField.getText();         
 
@@ -202,15 +210,6 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
                 	this.dispose();
                 	ADOutletsTab a = new ADOutletsTab();
                 	a.setVisible(true);
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-	    	  }
-        	else
-        	{
-        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
-	    	}
     	}
         else{
     		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);

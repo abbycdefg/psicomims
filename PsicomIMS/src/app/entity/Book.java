@@ -18,10 +18,6 @@ import javax.persistence.OneToMany;
 public class Book implements Serializable{
 	
 
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column
-	private Long id;
-
 	@Column
 	private String title;
 	
@@ -41,6 +37,9 @@ public class Book implements Serializable{
 	@Column
 	private String location;
 	
+	@Column	
+	private int threshold;
+	
 	@Column
 	private String state;
 
@@ -55,7 +54,24 @@ public class Book implements Serializable{
 
 	private double discountedPrice;
 	
-	
+	public int getThreshold() {
+		return threshold;
+	}
+	public void setThreshold(int threshold) {
+		this.threshold = threshold;
+	}
+	public Set<SpecificDr> getSpecDr() {
+		return specDr;
+	}
+	public void setSpecDr(Set<SpecificDr> specDr) {
+		this.specDr = specDr;
+	}
+	public double getDiscountedPrice() {
+		return discountedPrice;
+	}
+	public void setDiscountedPrice(double discountedPrice) {
+		this.discountedPrice = discountedPrice;
+	}
 	public Set<SpecificPo> getSpecPo() {
 		return specPo;
 	}
@@ -69,13 +85,7 @@ public class Book implements Serializable{
 	public void setLocation(String location) {
 		this.location = location;
 	}
-
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -111,8 +121,8 @@ public class Book implements Serializable{
 		return quantity;
 	}
 	
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
+	public void setQuantity(int quantity1) {
+		quantity = quantity1;
 	}
 
     public boolean checkItemCode(String itemCode) {

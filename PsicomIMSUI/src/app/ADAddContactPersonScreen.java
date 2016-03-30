@@ -9,6 +9,9 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +28,7 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
     /**
      * Creates new form ADAddContactPersonScreen
      */
+	private int idNumber = 0;
     public ADAddContactPersonScreen() {
         initComponents();
         
@@ -51,8 +55,6 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         addContactPersonLabel = new javax.swing.JLabel();
-        contactPersonIDLabel = new javax.swing.JLabel();
-        contactPersonIDField = new javax.swing.JTextField();
         contactPersonNameLabel = new javax.swing.JLabel();
         contactPersonNameField = new javax.swing.JTextField();
         dateCreatedLabel = new javax.swing.JLabel();
@@ -67,17 +69,6 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
         addContactPersonLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         addContactPersonLabel.setForeground(new java.awt.Color(255, 255, 255));
         addContactPersonLabel.setText("ADD CONTACT PERSON");
-
-        contactPersonIDLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        contactPersonIDLabel.setForeground(new java.awt.Color(255, 255, 255));
-        contactPersonIDLabel.setText("Contact Person ID");
-
-        contactPersonIDField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        contactPersonIDField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                contactPersonIDFieldActionPerformed(evt);
-            }
-        });
 
         contactPersonNameLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         contactPersonNameLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -120,60 +111,49 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(contactPersonIDLabel)
-                    .addComponent(contactPersonNameLabel)
-                    .addComponent(contactPersonIDField)
-                    .addComponent(contactPersonNameField)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(dateCreatedLabel))
-                    .addComponent(dateCreatedChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(70, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(addContactPersonLabel)
-                .addGap(98, 98, 98))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(107, Short.MAX_VALUE)
+        			.addComponent(addContactPersonLabel)
+        			.addGap(98))
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(54)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(dateCreatedLabel)
+        				.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        					.addComponent(dateCreatedChooser, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addComponent(contactPersonNameField)
+        					.addComponent(contactPersonNameLabel)
+        					.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        						.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+        						.addPreferredGap(ComponentPlacement.UNRELATED)
+        						.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))))
+        			.addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(addContactPersonLabel)
-                .addGap(29, 29, 29)
-                .addComponent(contactPersonIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(contactPersonIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(contactPersonNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(contactPersonNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(dateCreatedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dateCreatedChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(addContactPersonLabel)
+        			.addGap(51)
+        			.addComponent(contactPersonNameLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(contactPersonNameField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(29)
+        			.addComponent(dateCreatedLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(dateCreatedChooser, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(52))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void contactPersonIDFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactPersonIDFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_contactPersonIDFieldActionPerformed
 
     private void contactPersonNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactPersonNameFieldActionPerformed
         // TODO add your handling code here:
@@ -181,11 +161,10 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
-        if(!contactPersonIDField.getText().equals("") && !contactPersonNameField.getText().equals("") && dateCreatedChooser.getDate() != null)
+        if(!contactPersonNameField.getText().equals("") && dateCreatedChooser.getDate() != null)
         {
-        	if(this.isAlpha(contactPersonNameField.getText()) && this.isNumeric(contactPersonIDField.getText())){
-	    	  try{
-		            String contactPersonId = contactPersonIDField.getText();
+        	if(this.isAlpha(contactPersonNameField.getText())){
+	    	  try{;
 		            String contactPersonName = contactPersonNameField.getText();
 		            
 		            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -193,7 +172,7 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
 		            String dateCreated = df.format(dc);
 		            
 		            try{
-		                map = doCommand("addContactPerson", contactPersonId, contactPersonName, dateCreated);
+		                map = doCommand("addContactPerson", contactPersonName, dateCreated);
 		                
 		            }
 		            catch (Exception e){
@@ -265,21 +244,18 @@ public class ADAddContactPersonScreen extends javax.swing.JFrame {
     private javax.swing.JButton addButton;
     private javax.swing.JLabel addContactPersonLabel;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JTextField contactPersonIDField;
-    private javax.swing.JLabel contactPersonIDLabel;
     private javax.swing.JTextField contactPersonNameField;
     private javax.swing.JLabel contactPersonNameLabel;
     private com.toedter.calendar.JDateChooser dateCreatedChooser;
     private javax.swing.JLabel dateCreatedLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String contactPersonId, String contactPersonName, String dateCreated) throws Exception
+    private HashMap doCommand(String command, String contactPersonName, String dateCreated) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
         HashMap<String, Object> map = new HashMap<String, Object>();
 
-        map.put("contactPersonId", contactPersonId);
         map.put("contactPersonName", contactPersonName);
         map.put("dateCreated", dateCreated);
 

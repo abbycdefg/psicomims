@@ -2,6 +2,9 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
@@ -9,11 +12,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -34,7 +43,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
      */
     public DCDeliverySchedulesTab(String page) {
         initComponents();
-        
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -76,6 +85,13 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
                 searchField.setText("");
             }
         });
+        
+        Date now = new Date();
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayStr = df.format(now);
+        dsPerDayChooser1.setDate(now);
+        displayAll(dateTodayStr, "");
+
     }
 
     /**
@@ -86,7 +102,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+    	
         logoLabel = new javax.swing.JLabel();
         tablePanel = new javax.swing.JPanel();
         titleLabel1 = new javax.swing.JLabel();
@@ -112,7 +128,8 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         greetingLabel = new javax.swing.JLabel();
         signOutButton = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
-        searchButton = new javax.swing.JButton();
+        searchButton = new javax.swing.JButton();       
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Delivery Schedules");
@@ -134,33 +151,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
 
         deliverySchedulesTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliverySchedulesTable.setForeground(new java.awt.Color(255, 255, 255));
-        deliverySchedulesTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        this.displayAll();
         deliverySchedulesTable.setToolTipText("");
         deliverySchedulesTable.setCellSelectionEnabled(true);
         deliverySchedulesTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -285,35 +276,37 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         advanceSearchPanel1.setLayer(dsPerWeekMonthLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
-                            .addComponent(copyrightLabel1)
-                            .addComponent(advanceSearchPanel1)))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(293, 293, 293)
-                        .addComponent(titleLabel1)))
-                .addContainerGap(20, Short.MAX_VALUE))
+        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(18)
+        					.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+        						.addComponent(copyrightLabel1)
+        						.addGroup(tablePanelLayout.createSequentialGroup()
+        							.addComponent(advanceSearchPanel1)
+        							.addGap(9))))
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(293)
+        					.addComponent(titleLabel1)))
+        			.addGap(20))
         );
         tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(titleLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(advanceSearchPanel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(21)
+        			.addComponent(titleLabel1)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(advanceSearchPanel1, GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -490,48 +483,48 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(logoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(greetingLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signOutButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(logoLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 459, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(greetingLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(signOutButton))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(20))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(signOutButton)
-                            .addComponent(greetingLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(signOutButton)
+        						.addComponent(greetingLabel))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(searchButton)))
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(logoLabel)))
+        			.addGap(17)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -609,7 +602,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         if (searchField.getText() == null || searchField.getText() == " "){
-            this.displayAll();
+            this.displayAll("", "");
         }
         else{
         	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
@@ -662,9 +655,33 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
-    private void advSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advSearchButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_advSearchButtonActionPerformed
+    private void advSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {
+
+    	 DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+         if (dsFromChooser1.getDate() != null && dsToChooser1.getDate() != null)
+         {
+         java.util.Date firstDate = dsFromChooser1.getDate();
+         String fromDate = df.format(firstDate);
+         
+         java.util.Date secondDate = dsToChooser1.getDate();
+         String toDate = df.format(secondDate);
+         if(!fromDate.equals("") && !toDate.equals("")) {
+        	 
+             displayAll(fromDate, toDate);
+         }
+         }
+         
+         else if(dsPerDayChooser1.getDate() != null)
+         {
+	         java.util.Date dayDate = dsPerDayChooser1.getDate();
+	         String dayDateStr = df.format(dayDate);
+	
+	          if (!dayDateStr.equals(""))
+	         {
+	        	 displayAll(dayDateStr, "");
+	         }
+         }
+    }
 
     private void advSearchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_advSearchButtonMouseEntered
         // TODO add your handling code here:
@@ -743,7 +760,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
-    public void displayAll(){
+    public void displayAll(String date1, String date2){
     	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
 
         DefaultTableModel model = new DefaultTableModel();
@@ -760,18 +777,56 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM delivery_schedule");
+        	pst = con.prepareStatement("SELECT * FROM delivery_schedule");
             ResultSet rs = pst.executeQuery();
-            int i = 0;
-            while (rs.next()) {
-            	date = rs.getString("date");       	
-            	scheduleCode = rs.getString("schedule_code");
-            	outlet = rs.getString("outlet");
-            	deliveryReceiptCode = rs.getString("delivery_receipt_code");
-                model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
-                i++;
-            }
+        	int i = 0;
             
+            	if(!date1.equals("") && date2.equals("")){
+            		while (rs.next()) {
+	            		if(date1.equals(rs.getString("date")))
+	            		{
+            			
+            				date = rs.getString("date");       	
+            				scheduleCode = rs.getString("schedule_code");
+            				outlet = rs.getString("outlet");
+            				deliveryReceiptCode = rs.getString("delivery_receipt_code");
+            				model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});		
+            				i++;
+            			
+	            		}
+            		}
+            	}
+            		
+            		else if( !date1.equals("") && !date2.equals(""))
+            		{
+            			while (rs.next()) {
+	            		Date dateTo = dsToChooser1.getDate();
+	            		Date dateFrom = dsFromChooser1.getDate();
+	            		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+	            		Date thisDate = df.parse(rs.getString("date"));
+	            			if(dateFrom.compareTo(thisDate) * thisDate.compareTo(dateTo) > 0)
+	                		{
+	            				
+	            				date = rs.getString("date");       	
+	            				scheduleCode = rs.getString("schedule_code");
+	            				outlet = rs.getString("outlet");
+	            				deliveryReceiptCode = rs.getString("delivery_receipt_code");
+	            				model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+	            				i++;
+	                		}
+                		}
+            		}
+            		else {
+            			while (rs.next()) {
+	            			date = rs.getString("date");       	
+	                    	scheduleCode = rs.getString("schedule_code");
+	                    	outlet = rs.getString("outlet");
+	                    	deliveryReceiptCode = rs.getString("delivery_receipt_code");
+	                        model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+	                        i++;
+            			}
+            		}
+            	
             if (i < 1) {
                 JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -792,5 +847,18 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         deliverySchedulesTable = new JTable(model);
         deliverySchedulesTable.setModel(model);
         deliverySchedulesTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        deliverySchedulesTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        deliverySchedulesTable.setForeground(new java.awt.Color(255, 255, 255));
+        deliverySchedulesTable.setForeground(Color.BLACK);      
+        deliverySchedulesTable.setToolTipText("");
+        deliverySchedulesTable.setCellSelectionEnabled(true);
+        deliverySchedulesTable.setGridColor(new java.awt.Color(204, 204, 255));
+        deliverySchedulesTable.setRequestFocusEnabled(false);
+        deliverySchedulesTable.setRowHeight(18);
+        deliverySchedulesTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setColumnHeaderView(deliverySchedulesTable.getTableHeader());
+        jScrollPane1.setViewportView(deliverySchedulesTable);
     }
+    
+    
 }

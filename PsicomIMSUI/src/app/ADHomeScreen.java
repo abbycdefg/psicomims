@@ -7,6 +7,14 @@ import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JFrame;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.GroupLayout;
+import javax.swing.SwingConstants;
+import java.awt.ComponentOrientation;
+import java.awt.Component;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -24,7 +32,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
      */
     public ADHomeScreen() {
         initComponents();
-        
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -38,30 +46,6 @@ public class ADHomeScreen extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 signOutButton.setFont(originalFont);
-            }
-        });
-        
-             searchField.addFocusListener(new FocusListener(){            
-            @Override
-            public void focusLost(FocusEvent arg0) {
-            }
-
-            @Override
-            public void focusGained(FocusEvent arg0) {
-                searchField.setText("");
-            }
-        }); 
-             
-        
-        
-        searchField.addFocusListener(new FocusListener(){            
-            @Override
-            public void focusLost(FocusEvent arg0) {
-            }
-
-            @Override
-            public void focusGained(FocusEvent arg0) {
-                searchField.setText("");
             }
         });
     }
@@ -78,19 +62,28 @@ public class ADHomeScreen extends javax.swing.JFrame {
         logoLabel = new javax.swing.JLabel();
         greetingLabel = new javax.swing.JLabel();
         signOutButton = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
-        searchButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         copyrightLabel1 = new javax.swing.JLabel();
         booksButton = new javax.swing.JButton();
+        booksButton.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        booksButton.setHorizontalTextPosition(SwingConstants.LEFT);
+        booksButton.setHorizontalAlignment(SwingConstants.LEFT);
         poButton = new javax.swing.JButton();
+        poButton.setHorizontalAlignment(SwingConstants.LEFT);
         joButton = new javax.swing.JButton();
+        joButton.setHorizontalAlignment(SwingConstants.LEFT);
         drButton = new javax.swing.JButton();
+        drButton.setHorizontalAlignment(SwingConstants.LEFT);
         dsButton = new javax.swing.JButton();
-        histButton = new javax.swing.JButton();
+        dsButton.setAlignmentY(1.0f);
+        dsButton.setAlignmentX(1.0f);
+        dsButton.setHorizontalAlignment(SwingConstants.LEFT);
         usersButton = new javax.swing.JButton();
+        usersButton.setHorizontalAlignment(SwingConstants.LEFT);
         outletButton = new javax.swing.JButton();
+        outletButton.setHorizontalAlignment(SwingConstants.LEFT);
         contactButton = new javax.swing.JButton();
+        contactButton.setHorizontalAlignment(SwingConstants.LEFT);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home");
@@ -115,42 +108,13 @@ public class ADHomeScreen extends javax.swing.JFrame {
             }
         });
 
-        searchField.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
-        searchField.setForeground(new java.awt.Color(153, 153, 153));
-        searchField.setText("   Search");
-        searchField.setToolTipText("Search");
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
-            }
-        });
-
-        searchButton.setBackground(new java.awt.Color(205, 0, 69));
-        searchButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
-        searchButton.setForeground(new java.awt.Color(255, 255, 255));
-        searchButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_search.png"))); // NOI18N
-        searchButton.setToolTipText("");
-        searchButton.setAlignmentY(0.0F);
-        searchButton.setBorder(null);
-        searchButton.setBorderPainted(false);
-        searchButton.setContentAreaFilled(false);
-        searchButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        searchButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        searchButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_search2.png"))); // NOI18N
-        searchButton.setRequestFocusEnabled(false);
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchButtonActionPerformed(evt);
-            }
-        });
-
         mainPanel.setBackground(new java.awt.Color(227, 234, 245));
         mainPanel.setAlignmentX(0.0F);
         mainPanel.setAlignmentY(0.0F);
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("\u00A9 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         booksButton.setBackground(new java.awt.Color(255, 255, 255));
         booksButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -225,7 +189,6 @@ public class ADHomeScreen extends javax.swing.JFrame {
         dsButton.setForeground(new java.awt.Color(255, 255, 255));
         dsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_ds.png"))); // NOI18N
         dsButton.setToolTipText("Books");
-        dsButton.setAlignmentY(0.0F);
         dsButton.setBorder(null);
         dsButton.setBorderPainted(false);
         dsButton.setContentAreaFilled(false);
@@ -234,23 +197,6 @@ public class ADHomeScreen extends javax.swing.JFrame {
         dsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dsButtonActionPerformed(evt);
-            }
-        });
-
-        histButton.setBackground(new java.awt.Color(255, 255, 255));
-        histButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        histButton.setForeground(new java.awt.Color(255, 255, 255));
-        histButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_hist.png"))); // NOI18N
-        histButton.setToolTipText("Books");
-        histButton.setAlignmentY(0.0F);
-        histButton.setBorder(null);
-        histButton.setBorderPainted(false);
-        histButton.setContentAreaFilled(false);
-        histButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        histButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_hist2.png"))); // NOI18N
-        histButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                histButtonActionPerformed(evt);
             }
         });
 
@@ -306,95 +252,97 @@ public class ADHomeScreen extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
-        mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(copyrightLabel1))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(booksButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(poButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(joButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(drButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(dsButton))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(histButton)
-                        .addGap(30, 30, 30)
-                        .addComponent(usersButton)
-                        .addGap(30, 30, 30)
-                        .addComponent(outletButton)
-                        .addGap(30, 30, 30)
-                        .addComponent(contactButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	mainPanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(mainPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(copyrightLabel1)
+        			.addContainerGap(760, Short.MAX_VALUE))
+        		.addGroup(mainPanelLayout.createSequentialGroup()
+        			.addGap(174)
+        			.addGroup(mainPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(mainPanelLayout.createSequentialGroup()
+        					.addComponent(booksButton, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+        					.addGap(30)
+        					.addComponent(outletButton, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+        					.addGap(30)
+        					.addComponent(contactButton, GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+        					.addGap(54)
+        					.addComponent(usersButton, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+        					.addGap(115))
+        				.addGroup(mainPanelLayout.createSequentialGroup()
+        					.addGap(52)
+        					.addComponent(drButton, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+        					.addGap(18)
+        					.addComponent(poButton, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(joButton, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+        					.addGap(18)
+        					.addComponent(dsButton, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)))
+        			.addGap(153))
         );
         mainPanelLayout.setVerticalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(booksButton)
-                    .addComponent(poButton)
-                    .addComponent(joButton)
-                    .addComponent(drButton)
-                    .addComponent(dsButton))
-                .addGap(18, 18, 18)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(histButton)
-                    .addComponent(usersButton)
-                    .addComponent(outletButton)
-                    .addComponent(contactButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	mainPanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(mainPanelLayout.createSequentialGroup()
+        			.addGap(117)
+        			.addGroup(mainPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(poButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(joButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addGroup(mainPanelLayout.createSequentialGroup()
+        					.addComponent(drButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addGap(2))
+        				.addGroup(mainPanelLayout.createSequentialGroup()
+        					.addComponent(dsButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addGap(2)))
+        			.addGap(18)
+        			.addGroup(mainPanelLayout.createParallelGroup(Alignment.LEADING, false)
+        				.addGroup(mainPanelLayout.createSequentialGroup()
+        					.addGap(16)
+        					.addGroup(mainPanelLayout.createParallelGroup(Alignment.LEADING, false)
+        						.addComponent(usersButton, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(outletButton)
+        						.addComponent(contactButton)))
+        				.addGroup(mainPanelLayout.createSequentialGroup()
+        					.addPreferredGap(ComponentPlacement.RELATED, 2, Short.MAX_VALUE)
+        					.addComponent(booksButton)))
+        			.addGap(237)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        mainPanel.setLayout(mainPanelLayout);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(logoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 497, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(greetingLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signOutButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(logoLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 631, Short.MAX_VALUE)
+        			.addComponent(greetingLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(signOutButton)
+        			.addGap(20))
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addGap(10)
+        			.addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(signOutButton)
-                            .addComponent(greetingLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton))))
-                .addGap(18, 18, 18)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(logoLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(signOutButton)
+        						.addComponent(greetingLabel))))
+        			.addGap(18)
+        			.addComponent(mainPanel, GroupLayout.PREFERRED_SIZE, 639, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(241, Short.MAX_VALUE))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -404,14 +352,6 @@ public class ADHomeScreen extends javax.swing.JFrame {
     	ADLogInScreen a = new ADLogInScreen();
     	a.setVisible(true);
     }//GEN-LAST:event_signOutButtonActionPerformed
-
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
-
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchButtonActionPerformed
 
     private void booksButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
@@ -442,12 +382,6 @@ public class ADHomeScreen extends javax.swing.JFrame {
         DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("ad");
         a.setVisible(true);
     }
-
-    private void histButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histButtonActionPerformed
-    	this.dispose();
-    	ADHistoryTab a = new ADHistoryTab();
-    	a.setVisible(true);
-    }//GEN-LAST:event_histButtonActionPerformed
 
     private void usersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usersButtonActionPerformed
     	this.dispose();
@@ -509,14 +443,11 @@ public class ADHomeScreen extends javax.swing.JFrame {
     private javax.swing.JButton drButton;
     private javax.swing.JButton dsButton;
     private javax.swing.JLabel greetingLabel;
-    private javax.swing.JButton histButton;
     private javax.swing.JButton joButton;
     private javax.swing.JLabel logoLabel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JButton outletButton;
     private javax.swing.JButton poButton;
-    private javax.swing.JButton searchButton;
-    private javax.swing.JTextField searchField;
     private javax.swing.JButton signOutButton;
     private javax.swing.JButton usersButton;
     // End of variables declaration//GEN-END:variables

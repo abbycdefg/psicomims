@@ -20,10 +20,7 @@ public class ContactPerson implements Serializable
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column
-    private Long id;
-
-	@Column
-    private String contactPersonId;
+    private Long contactPersonId;
 	
 	@Column
     private String contactPersonName;
@@ -32,19 +29,12 @@ public class ContactPerson implements Serializable
     private String dateCreated;
 	
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getContactPersonId() {
+	public Long getContactPersonId() {
 		return contactPersonId;
 	}
 
-	public void setContactPersonId(String contactPersonId) {
-		this.contactPersonId = contactPersonId;
+	public void setContactPersonId(Long id) {
+		this.contactPersonId = id;
 	}
 
 	public String getContactPersonName() {
