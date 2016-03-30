@@ -340,7 +340,7 @@ class URLHandler extends AbstractHandler {
 					}
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
 					System.out.println(purchaseOrderNumber);
-					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
+					if(dc.checkPurchaseOrder(purchaseOrderNumber)){
 							dc.editPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
 							response.getWriter().println("You have succesfully edited Purchase Order " + purchaseOrderNumber + ".");
 
