@@ -28,7 +28,7 @@ public class Inventory {
         
     }
     
-    public boolean addBook(String title, String itemCode, double price, String author, String releaseDate, String state) {
+    public boolean addBook(String title, String itemCode, double price, String author, String releaseDate, String state, int threshold) {
     	Book b = new Book();
     	b.setTitle(title);
     	b.setItemCode(itemCode);
@@ -36,27 +36,29 @@ public class Inventory {
     	b.setAuthor(author);
     	b.setReleaseDate(releaseDate);
     	b.setState(state);
+    	b.setThreshold(threshold);
     	b = bookDao.save(b);
     	
-    	return b.getId()!= null;    	
+    	return b.getItemCode()!= null;    	
     }
     
-    public boolean editBook(String title, String itemCode, double price, String author, String releaseDate) {
+    public boolean editBook(String title, String itemCode, double price, String author, String releaseDate, int threshold) {
     	Book b = bookDao.findByItemCode(itemCode);
     	b.setTitle(title);
     	b.setPrice(price);
     	b.setAuthor(author);
     	b.setReleaseDate(releaseDate);
+    	b.setThreshold(threshold);
     	b = bookDao.save(b);
     	
-    	return b.getId()!= null;    	
+    	return b.getItemCode()!= null;    	
     }
     
     public boolean deleteBook(String itemCode) {
     	Book b = bookDao.findByItemCode(itemCode);
     	bookDao.delete(b);
     	
-    	return b.getId()!= null;    	
+    	return b.getItemCode()!= null;    	
     }
     
 

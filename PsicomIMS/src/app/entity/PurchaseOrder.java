@@ -85,12 +85,6 @@ public class PurchaseOrder implements Serializable{
 	public void setOutlet(String outlet) {
 		this.outlet = outlet;
 	}
-	/**public Set<Book> getBooks() {
-		return books;
-	}
-	public void setBooks(Set<Book> books) {
-		this.books = books;
-	}	/**/
 	
 	public boolean checkPONumber(String purchaseOrderNumber){
 		return purchaseOrderNumber.equals(this.purchaseOrderNumber);

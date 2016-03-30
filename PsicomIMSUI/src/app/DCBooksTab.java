@@ -433,9 +433,10 @@ public class DCBooksTab extends javax.swing.JFrame {
     		String price = booksTable.getValueAt(row, 2).toString();
     		String author = booksTable.getValueAt(row, 3).toString();
     		String releaseDate = booksTable.getValueAt(row, 4).toString();
+    		String threshold = booksTable.getValueAt(row, 6).toString();
     		
 	    	this.dispose();
-	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate);
+	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold);
 	    	a.setVisible(true); 
     		}
 
@@ -629,7 +630,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     
     
     public void displayAll(){
-    	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "AUTHOR", "RELEASE DATE"};
+    	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "AUTHOR", "RELEASE DATE", "QUANTITY", "THRESHOLD"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
@@ -644,6 +645,7 @@ public class DCBooksTab extends javax.swing.JFrame {
         String releaseDate = "";
         String quantity = "";
         String state = "";
+        String threshold = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -657,12 +659,14 @@ public class DCBooksTab extends javax.swing.JFrame {
                 price = rs.getString("price");
                 author = rs.getString("author");
                 releaseDate = rs.getString("release_date");
-                model.addRow(new Object[]{title, itemCode, price, author, releaseDate});
+                quantity = rs.getString("quantity");
+                threshold = rs.getString("threshold");
+                model.addRow(new Object[]{title, itemCode, price, author, releaseDate, quantity, threshold});
                 i++;
                 
-                quantity = rs.getString("quantity");
+                
                 state = rs.getString("state");
-                if (Integer.parseInt(quantity) < 13 && !state.equals("new")){
+                if (Integer.parseInt(quantity) < Integer.parseInt(rs.getString("threshold")) && !state.equals("new")){
                 	String titleNew = title;
                 	if (title.length() > 11){
                 		titleNew = title.substring(0, 13) + "...";

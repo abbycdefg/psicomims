@@ -51,8 +51,8 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
 	private JComboBox outletComboBox = new JComboBox();
 	private String []co;
 	private String []ou;	
-	private List<String> booksList;	
-	private List<String> quantityList;
+	private List<String> booksList = new ArrayList<String>();
+	private List<String> quantityList = new ArrayList<String>();
 	private List<String> contactList  = new ArrayList<String>();
 	private List<String> outletsList  = new ArrayList<String>();
 
@@ -128,11 +128,11 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         outletsList.toArray(ou);
         AutoCompleteSupport.install(outletComboBox, GlazedLists.eventListOf(ou));
         
-        
+        getBookList(poNumber1);
        purchaseOrderNumberField.setText(poNumber1);
        contactComboBox.setSelectedItem(contactPerson1);
        outletComboBox.setSelectedItem(outlet1);
-        
+       
         
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -146,7 +146,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         
     }
     
-    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1,  int contactPerson1, int outlet1, List<String> booksList1, List<String> quantityList1 ) {
+    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1,  String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1 ) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -173,15 +173,9 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
                 editBooksButton.setFont(originalFont);
             }
         });
-        purchaseOrderNumberField.setEditable(false);
-        purchaseOrderNumberField.setText(poNumber1);
-        
-        booksList = booksList1;
-        quantityList = quantityList1;
-        
         getContactPersonList();
         getOutletList();
-        
+        System.out.println("pasok again dito");
         co = new String[contactList.size()];
         contactList.toArray(co);
         AutoCompleteSupport.install(contactComboBox, GlazedLists.eventListOf(co));
@@ -189,6 +183,25 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         ou = new String[outletsList.size()];
         outletsList.toArray(ou);
         AutoCompleteSupport.install(outletComboBox, GlazedLists.eventListOf(ou));
+        
+        
+       purchaseOrderNumberField.setText(poNumber1);
+       contactComboBox.setSelectedItem(contactPerson1);
+       outletComboBox.setSelectedItem(outlet1);
+        
+        booksList = booksList1;
+        quantityList = quantityList1;
+        System.out.println(quantityList + "quantityList3");
+        
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateToday = df.parse(dateToday1);
+			dateTodayChooser.setDate(dateToday);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
     }
     /**
@@ -397,7 +410,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
             
             
             if(contactComboBox.getSelectedIndex() != -1 && outletComboBox.getSelectedIndex() != -1 && ! purchaseOrderNumberField.getText().equals("")){
-              if(checkString(contactComboBox.getSelectedItem().toString()) == false && checkString(outletComboBox.getSelectedItem().toString()) == false && checkString(purchaseOrderNumberField.getText().toString())== false)
+              if(checkString(contactComboBox.getSelectedItem().toString()) == false && checkString(purchaseOrderNumberField.getText().toString())== false)
              {contactPerson = contactComboBox.getSelectedItem().toString();
              outlet = outletComboBox.getSelectedItem().toString();
              purchaseOrderNumber = purchaseOrderNumberField.getText();
@@ -448,17 +461,29 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         }
     }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.dispose();
+    	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
+    	a.setVisible(true);
+    }
 
     private void editBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	String purchaseOrderNumber = purchaseOrderNumberField.getText();
-        int contactPerson = contactComboBox.getSelectedIndex();
-        int outlet = outletComboBox.getSelectedIndex();
+    	String purchaseOrderNumber = "";
+    	String contactPerson = "";
+    	String outlet ="";
+
+    	purchaseOrderNumber = purchaseOrderNumberField.getText();
+
+    	
+    	if(contactComboBox.getSelectedIndex() != -1){
+        contactPerson = contactComboBox.getSelectedItem().toString();
+    	}
+    	if(outletComboBox.getSelectedIndex() != -1) {
+        outlet = outletComboBox.getSelectedItem().toString();
+    	}
         
         
-        
+        System.out.println(quantityList + "quantityList2");
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date dc = dateTodayChooser.getDate();
         String dateToday = df.format(dc);
@@ -471,6 +496,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         this.dispose();    
         DCEditBookToPOScreen a = new DCEditBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
     	a.setVisible(true);
+    	
     }
 
     /**
@@ -572,6 +598,38 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
     				}
     			}
     			outletsList.addAll(outletSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    }
+    public void getBookList(String poNumber)
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+    			ResultSet rs = pst.executeQuery();
+    		    Set<String> bookSet = new HashSet();
+    		    Set<String> quantitySet = new HashSet();
+    			while (rs.next()) {
+    				System.out.println(rs.getString("po_id"));
+    				if(poNumber.equals(rs.getString("po_id")))
+    				{
+    					bookSet.add(rs.getString("book_id"));
+    					quantitySet.add(rs.getString("quantity"));
+    				}
+    			}
+    			System.out.println(bookSet);
+    			booksList.addAll(bookSet);
+    			quantityList.addAll(quantitySet);
     		} catch (ClassNotFoundException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();

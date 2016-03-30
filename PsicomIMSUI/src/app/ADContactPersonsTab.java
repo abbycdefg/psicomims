@@ -14,6 +14,10 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Frame;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,8 +35,9 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
      * Creates new form ADContactPersonsTab
      */
     public ADContactPersonsTab() {
+    	setExtendedState(Frame.MAXIMIZED_BOTH);
         initComponents();
-        
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
          Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -132,32 +137,32 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
         contactPersonsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(copyrightLabel1)))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(299, 299, 299)
-                        .addComponent(titleLabel)))
-                .addContainerGap(26, Short.MAX_VALUE))
+        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(18)
+        					.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+        						.addComponent(copyrightLabel1)))
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(299)
+        					.addComponent(titleLabel)))
+        			.addGap(26))
         );
         tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(titleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(22)
+        			.addComponent(titleLabel)
+        			.addGap(29)
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -315,48 +320,48 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
         greetingLabel.setText("Hello, Administrator  | ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(logoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(greetingLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signOutButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(logoLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 503, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(greetingLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(signOutButton))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(20))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(signOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(greetingLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(logoLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(signOutButton, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(greetingLabel))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(searchButton))))
+        			.addGap(28)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -532,7 +537,14 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
     	return selectedCell;
     	
     }
-
+    
+    public static String getThirdColumnData(){ 
+    	int selectedRowIndex = contactPersonsTable.getSelectedRow();
+    	int selectedColumnIndex = contactPersonsTable.getSelectedColumn() + 2;
+    	String selectedCell = (String) contactPersonsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    	
+    }
     
     public void displayAll(){
     	String[] columnNames = {"CONTACT PERSON ID", "CONTACT PERSONS", "DATE CREATED"};

@@ -8,6 +8,5 @@ import app.entity.Outlet;
 @Repository
 public interface OutletRepository extends JpaRepository<Outlet, Long> 
 {
-	public Outlet findByOutletId(String outletId);
-	public Outlet findById(Long id);
+	public Outlet findByOutletId(Long outletId);
 }

@@ -79,7 +79,7 @@ public class Admin
     {
         try
         {
-            Outlet o = outletDao.findByOutletId(outletId);
+            Outlet o = outletDao.findByOutletId(Long.parseLong(outletId));
             return o.checkOutletId(outletId);
         }
         catch(Exception e)
@@ -89,28 +89,26 @@ public class Admin
         
     }
     
-    public boolean addOutlet(String outletId, String outletName, String dateCreated) {
+    public boolean addOutlet(String outletName, String dateCreated) {
     	Outlet o = new Outlet();
-    	o.setOutletId(outletId);
     	o.setOutletName(outletName);
     	o.setDateCreated(dateCreated);
     	o = outletDao.save(o);
     	
-    	return o.getId()!= null;    	
+    	return o.getOutletId()!= null;    	
     }
     
     public boolean editOutlet(String outletId, String outletName) {
-    	Outlet o = outletDao.findByOutletId(outletId);
-    	o.setOutletId(outletId);
+    	Outlet o = outletDao.findByOutletId(Long.parseLong(outletId));
     	o.setOutletName(outletName);
     	o = outletDao.save(o);
     	
-    	return o.getId()!= null;    	
+    	return o.getOutletId()!= null;    	
     }
     
     public boolean deleteOutlet(String outletId) {
     	try{
-	    	Outlet o = outletDao.findByOutletId(outletId);
+	    	Outlet o = outletDao.findByOutletId(Long.parseLong(outletId));
 	    	outletDao.delete(o);    	    	
 	    	return true;  
 	    }
@@ -120,17 +118,16 @@ public class Admin
 		}
     }
     
-    public String getOutletId(String outletId){
-    	Outlet o = outletDao.findByOutletId(outletId);
+    public Long getOutletId(String outletId){
+    	Outlet o = outletDao.findByOutletId(Long.parseLong(outletId));
     	return o.getOutletId();
     }
     
-  //fix
     public boolean checkContactPerson(String contactPersonId)
     {
         try
         {
-        	ContactPerson c = contactPersonDao.findByContactPersonId(contactPersonId);
+        	ContactPerson c = contactPersonDao.findByContactPersonId(Long.parseLong(contactPersonId));
             return c.checkContactPersonId(contactPersonId);
         }
         catch(Exception e)
@@ -140,28 +137,26 @@ public class Admin
         
     }
     
-    public boolean addContactPerson(String contactPersonId, String contactPersonName, String dateCreated) {
+    public boolean addContactPerson(String contactPersonName, String dateCreated) {
     	ContactPerson c = new ContactPerson();
-    	c.setContactPersonId(contactPersonId);
     	c.setContactPersonName(contactPersonName);
     	c.setDateCreated(dateCreated);
     	c = contactPersonDao.save(c);
     	
-    	return c.getId()!= null;    	
+    	return c.getContactPersonId()!= null;    	
     }
     
     public boolean editContactPerson(String contactPersonId, String contactPersonName) {
-    	ContactPerson c = contactPersonDao.findByContactPersonId(contactPersonId);
-    	c.setContactPersonId(contactPersonId);
+    	ContactPerson c = contactPersonDao.findByContactPersonId(Long.parseLong(contactPersonId));
     	c.setContactPersonName(contactPersonName);
     	c = contactPersonDao.save(c);
     	
-    	return c.getId()!= null;    	
+    	return c.getContactPersonId()!= null;    	
     }
     
     public boolean deleteContactPerson(String contactPersonId) {
     	try{
-    		ContactPerson c = contactPersonDao.findByContactPersonId(contactPersonId);
+    		ContactPerson c = contactPersonDao.findByContactPersonId(Long.parseLong(contactPersonId));
     		contactPersonDao.delete(c);    	    	
 	    	return true;  
 	    }
@@ -171,8 +166,8 @@ public class Admin
 		}
     }
     
-    public String getContactPersonId(String contactPersonId){
-    	ContactPerson c = contactPersonDao.findByContactPersonId(contactPersonId);
+    public Long getContactPersonId(String contactPersonId){
+    	ContactPerson c = contactPersonDao.findByContactPersonId(Long.parseLong(contactPersonId));
     	return c.getContactPersonId();
     }
    

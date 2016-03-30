@@ -13,6 +13,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Frame;
+import java.awt.ComponentOrientation;
+import java.awt.Rectangle;
+import java.awt.Cursor;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -30,6 +38,13 @@ public class DCAddBookScreen extends javax.swing.JFrame {
      * Creates new form DCAddBookScreen
      */
     public DCAddBookScreen() {
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setAlwaysOnTop(true);
+    	setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    	setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+    	setBounds(new Rectangle(0, 0, 4, 4));
+    	getContentPane().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+    	setExtendedState(Frame.MAXIMIZED_BOTH);
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -68,8 +83,6 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         addBookLabel = new javax.swing.JLabel();
         releaseDateLabel = new javax.swing.JLabel();
         releaseDateChooser = new com.toedter.calendar.JDateChooser();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Book");
         setResizable(false);
 
@@ -148,6 +161,13 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         releaseDateLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         releaseDateLabel.setForeground(new java.awt.Color(255, 255, 255));
         releaseDateLabel.setText("Release Date");
+        
+        thresholdTextField = new JTextField();
+        thresholdTextField.setColumns(10);
+        
+        JLabel lblThreshold = new JLabel("Threshold");
+        lblThreshold.setForeground(Color.WHITE);
+        lblThreshold.setFont(new Font("Calibri", Font.PLAIN, 15));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -164,7 +184,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         							.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
         							.addPreferredGap(ComponentPlacement.RELATED)
         							.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
-        						.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        						.addGroup(layout.createParallelGroup(Alignment.LEADING)
         							.addComponent(titleField)
         							.addGroup(layout.createSequentialGroup()
         								.addGroup(layout.createParallelGroup(Alignment.LEADING)
@@ -176,9 +196,15 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         									.addComponent(priceField, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)))
         							.addComponent(authorLabel)
         							.addComponent(authorField)
-        							.addComponent(releaseDateLabel)
-        							.addComponent(releaseDateChooser, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
-        							.addComponent(titleLabel)))
+        							.addComponent(titleLabel)
+        							.addGroup(layout.createSequentialGroup()
+        								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        									.addComponent(releaseDateChooser, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
+        									.addComponent(releaseDateLabel))
+        								.addPreferredGap(ComponentPlacement.RELATED)
+        								.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        									.addComponent(lblThreshold)
+        									.addComponent(thresholdTextField, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))))
         					.addGap(67))))
         );
         layout.setVerticalGroup(
@@ -203,9 +229,13 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(authorField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
         			.addGap(18)
-        			.addComponent(releaseDateLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(releaseDateLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(lblThreshold))
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(releaseDateChooser, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(thresholdTextField)
+        				.addComponent(releaseDateChooser, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
         			.addGap(23)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
@@ -230,21 +260,29 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         	
         	String itemCode = "";
             String price = "";
+            String threshold = "";
             boolean go = true;
              
             String title = titleField.getText();
             String author = authorField.getText();
-            if( title.equals("") || author.equals("") || itemCodeField.getText().equals("")|| priceField.getText().equals("")) {
+            if( title.equals("") || author.equals("") || itemCodeField.getText().equals("")|| priceField.getText().equals("")||thresholdTextField.getText().equals("")) {
          	   go = false;
               JOptionPane.showMessageDialog(null, "All fields must be filled", "Error", JOptionPane.ERROR_MESSAGE);
             }
             else {
-	            if(checkNumber(itemCodeField.getText()) == true && checkCharacters(itemCodeField.getText()) == false ) {
+	            if(checkCode(itemCodeField.getText()) == true && checkCharacters(itemCodeField.getText()) == false ) {
 	            	itemCode = itemCodeField.getText();
 	            }
 	            else {
 	            	 go = false;
-	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric item code value.", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	            if(checkNumber(thresholdTextField.getText()) == true && checkCharacters(thresholdTextField.getText()) == false ) {
+	            	threshold = thresholdTextField.getText();
+	            }
+	            else {
+	            	 go = false;
+	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric threshold value.", "Error", JOptionPane.ERROR_MESSAGE);
 	            }
 	           	if(checkPrice(priceField.getText()) == true && checkCharacters(priceField.getText()) == false ) {
 	           		price = priceField.getText();
@@ -254,12 +292,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
 	           	 JOptionPane.showMessageDialog(null, "Please enter a numeric price value.", "Error", JOptionPane.ERROR_MESSAGE);
 	           }
             }
-
-        	   
-            
-            
-           
-            
+      
             DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             java.util.Date releaseDate = releaseDateChooser.getDate();
             String releaseDateStr = df.format(releaseDate);
@@ -267,10 +300,10 @@ public class DCAddBookScreen extends javax.swing.JFrame {
 
             try{
             	if(go == true) {
-                map = doCommand("addBook", title, itemCode, price, author, releaseDateStr);
+                map = doCommand("addBook", title, itemCode, price, author, releaseDateStr, threshold);
             	this.dispose();
             	DCBooksTab a = new DCBooksTab("");
-            	a.setVisible(true);
+              	a.setVisible(true);
             	}
                 
             }
@@ -348,10 +381,11 @@ public class DCAddBookScreen extends javax.swing.JFrame {
     private javax.swing.JLabel releaseDateLabel;
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
+    private JTextField thresholdTextField;
     // End of variables declaration//GEN-END:variables
     
 
-    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate ) throws Exception
+    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate, String threshold ) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -362,7 +396,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         map.put("price", price);
         map.put("author", author);
         map.put("releaseDate", releaseDate);
-
+        map.put("threshold", threshold);
         
         // CONVERT JAVA DATA TO JSON
         ObjectMapper mapper = new ObjectMapper();
@@ -398,6 +432,15 @@ public class DCAddBookScreen extends javax.swing.JFrame {
     		return false;
     	}
     }
+    private boolean checkCode(String text) {
+    	try{
+    		 Long.parseLong( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
     private boolean checkPrice(String text) {
     	try{
     		 Double.parseDouble( text );
@@ -418,5 +461,4 @@ public class DCAddBookScreen extends javax.swing.JFrame {
     		return true;
     	}
     }
-
 }

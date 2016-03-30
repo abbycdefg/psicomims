@@ -360,7 +360,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
             
             
             if(contactsComboBox.getSelectedIndex() != -1 && outletComboBox.getSelectedIndex() != -1 && !purchaseOrderNumberField.getText().equals("")){
-              if(checkString(contactsComboBox.getSelectedItem().toString()) == false && checkString(outletComboBox.getSelectedItem().toString()) == false && checkString(purchaseOrderNumberField.getText().toString())== false)
+              if( checkString(purchaseOrderNumberField.getText().toString())== false)
              {contactPerson = contactsComboBox.getSelectedItem().toString();
              outlet = outletComboBox.getSelectedItem().toString();
              purchaseOrderNumber = purchaseOrderNumberField.getText();

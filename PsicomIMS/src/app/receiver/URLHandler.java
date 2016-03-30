@@ -136,7 +136,7 @@ class URLHandler extends AbstractHandler {
 
 					
 					if(!ad.checkOutlet(outletId)){
-						ad.addOutlet(outletId, outletName, dateCreated);
+						ad.addOutlet(outletName, dateCreated);
 						response.getWriter().println("You have succesfully registered " + outletName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
 					}
@@ -151,16 +151,11 @@ class URLHandler extends AbstractHandler {
 					String outletId = map.get("outletId");
 					String outletName = map.get("outletName");
 					
-					if(ad.checkOutlet(outletId)){
+
 						ad.editOutlet(outletId, outletName);
 						response.getWriter().println("You have succesfully updated the information of " + outletName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
-					}
-					else{
-						response.getWriter().println("Invalid request.");
-						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-	
+
 		
 				}
 				else if (target.equalsIgnoreCase("/deleteOutlet")) {
@@ -168,34 +163,23 @@ class URLHandler extends AbstractHandler {
 
 					String outletId = map.get("outletId");
 					
-					if(ad.checkOutlet(outletId)){
 						ad.deleteOutlet(outletId);
 						response.getWriter().println("Success!");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
-					}
-					else{
-						response.getWriter().println("Invalid request.");
-						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-					}	
+					
 		
 				}
 				else if (target.equalsIgnoreCase("/addContactPerson")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
-					String contactPersonId = map.get("contactPersonId");
 					String contactPersonName = map.get("contactPersonName");
 					String dateCreated = map.get("dateCreated");
 
 					
-					if(!ad.checkContactPerson(contactPersonId)){
-						ad.addContactPerson(contactPersonId, contactPersonName, dateCreated);
+						ad.addContactPerson(contactPersonName, dateCreated);
 						response.getWriter().println("You have succesfully registered " + contactPersonName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
-					}
-					else{
-						response.getWriter().println("Invalid request.");
-						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-					}
+						
 				}
 				else if (target.equalsIgnoreCase("/editContactPerson")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
@@ -203,31 +187,19 @@ class URLHandler extends AbstractHandler {
 					String contactPersonId = map.get("contactPersonId");
 					String contactPersonName = map.get("contactPersonName");
 					
-					//fix
-					if(ad.checkContactPerson(contactPersonId)){
 						ad.editContactPerson(contactPersonId, contactPersonName);
 						response.getWriter().println("You have succesfully updated the information of " + contactPersonName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
-					}
-					else{
-						response.getWriter().println("Invalid request.");
-						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-					}
+
 				}
 				else if (target.equalsIgnoreCase("/deleteContactPerson")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
 					String contactPersonId = map.get("contactPersonId");
-					
-					if(ad.checkContactPerson(contactPersonId)){
+
 						ad.deleteContactPerson(contactPersonId);
 						response.getWriter().println("Success!");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
-					}
-					else{
-						response.getWriter().println("Invalid request.");
-						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-					}	
 		
 				}
 				
@@ -256,12 +228,13 @@ class URLHandler extends AbstractHandler {
 					String price = map.get("price");
 					String author = map.get("author");
 					String releaseDate = map.get("releaseDate");
+					String threshold = map.get("threshold");
 					String state = "new";
 					double priceDb = Double.parseDouble(price);
-
+					int thresholdInt = Integer.parseInt(threshold);
 					
 					if(!in.checkItemCode(itemCode)){
-							in.addBook(title, itemCode, priceDb, author, releaseDate, state);
+							in.addBook(title, itemCode, priceDb, author, releaseDate, state, thresholdInt);
 							response.getWriter().println("You have succesfully added " + title + ".");
 					}
 					else{
@@ -280,9 +253,11 @@ class URLHandler extends AbstractHandler {
 							String price = map.get("price");
 							String author = map.get("author");
 							String releaseDate = map.get("releaseDate");
+							String threshold = map.get("threshold");
 							double priceDb = Double.parseDouble(price);
-
-							in.editBook(title, itemCode, priceDb, author, releaseDate);
+							int thresholdInt = Integer.parseInt(threshold);
+							
+							in.editBook(title, itemCode, priceDb, author, releaseDate, thresholdInt);
 							response.getWriter().println("You have succesfully edited " + title + ".");
 						} catch (Exception e) {
 							response.getWriter().println("Invalid.");
@@ -364,7 +339,7 @@ class URLHandler extends AbstractHandler {
 					quantity = quantity.substring(1, quantity.length()-1);
 					}
 					List<String> quantityList = Arrays.asList(quantity.split("\\s*,\\s*"));
-					System.out.println(quantityList);
+					System.out.println(purchaseOrderNumber);
 					if(!dc.checkPurchaseOrder(purchaseOrderNumber)){
 							dc.editPurchaseOrder(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
 							response.getWriter().println("You have succesfully edited Purchase Order " + purchaseOrderNumber + ".");

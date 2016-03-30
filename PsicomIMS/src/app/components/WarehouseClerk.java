@@ -85,13 +85,15 @@ public class WarehouseClerk
     }
     
     public boolean updateStock(String itemCode, int newQuantity) {
-
+    	int a = 0;
+    	
     	Book b = bookDao.findByItemCode(itemCode);
-    	b.setQuantity(newQuantity);
+    	a = b.getQuantity();
+    	b.setQuantity(a+=newQuantity);
     	b.setState("old");
     	b = bookDao.save(b);
     	
-    	return b.getId()!= null;    	
+    	return b.getItemCode()!= null;    	
     }
     
     @Transactional

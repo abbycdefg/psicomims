@@ -53,9 +53,11 @@ public class DocumentationClerk
 	
 	public boolean checkPurchaseOrder(String poNumber)
     {
+
         try
         {
             PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
+    		System.out.println(poNumber);
             return p.checkPONumber(poNumber);
         }
         catch(Exception e)
@@ -112,11 +114,13 @@ public class DocumentationClerk
     	
     	for(int i = 0; i<booksList.size(); i++)
     	{
+    		int bQty = 0;
     		SpecificPo sp = new SpecificPo();
     		Book b = bookDao.findByItemCode(booksList.get(i)); 
     		System.out.println(b + "check book");
     		if(b!=null)
-    		{
+    		{    		
+    		bQty = b.getQuantity();
     		sp.setStatus("INCOMPLETE");	
     		sp.setBookId(b);
 			listOfBooks.add(b);
@@ -128,15 +132,19 @@ public class DocumentationClerk
     		if(quantityList.get(i) != null)
     		{
     			String quantity = quantityList.get(i);
-    			System.out.println(quantity);
+    			
     			if (quantity != "")
-    			{
+    			{    			
     			int qty = Integer.parseInt(quantity);
     			sp.setQuantity(qty);
+    			int newQty = bQty - qty;
+    			System.out.println(newQty);
+    			b.setQuantity(newQty);
     			}
     		}
     		
-    		spoDao.save(sp);    		
+    		spoDao.save(sp); 
+    		bookDao.save(b);
     	}
     	
 

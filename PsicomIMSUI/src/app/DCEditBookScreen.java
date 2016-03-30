@@ -10,6 +10,12 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -42,7 +48,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
 
 
     
-    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDateStr) {
+    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDateStr, String threshold1) {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -59,6 +65,8 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         itemCodeField.setEditable(false);
         priceField.setText(price);
         authorField.setText(author);
+        thresholdTextField.setText(threshold1);
+        
         
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -90,10 +98,8 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         authorLabel = new javax.swing.JLabel();
         itemCodeField = new javax.swing.JTextField();
         priceField = new javax.swing.JTextField();
-        locationLabel = new javax.swing.JLabel();
         releaseDateLabel = new javax.swing.JLabel();
         releaseDateChooser = new com.toedter.calendar.JDateChooser();
-        locationComboBox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Edit Book");
@@ -171,102 +177,93 @@ public class DCEditBookScreen extends javax.swing.JFrame {
             }
         });
 
-        locationLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        locationLabel.setForeground(new java.awt.Color(255, 255, 255));
-        locationLabel.setText("Location");
-
         releaseDateLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         releaseDateLabel.setForeground(new java.awt.Color(255, 255, 255));
         releaseDateLabel.setText("Release Date");
-
-        locationComboBox.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        locationComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50" }));
-        locationComboBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        locationComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                locationComboBoxActionPerformed(evt);
-            }
-        });
+        
+        thresholdTextField = new JTextField();
+        thresholdTextField.setColumns(10);
+        
+        lblNewLabel = new JLabel("Threshold");
+        lblNewLabel.setForeground(Color.WHITE);
+        lblNewLabel.setFont(new Font("Calibri", Font.PLAIN, 15));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(69, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(editBookLabel)
-                        .addGap(199, 199, 199))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(releaseDateLabel)
-                                    .addComponent(releaseDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(locationLabel)
-                                    .addComponent(locationComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(titleLabel)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(titleField, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(itemCodeLabel)
-                                            .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(priceLabel)
-                                            .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(authorLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(authorField, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(67, 67, 67))))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(69)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(editBookLabel)
+        					.addGap(199))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        								.addComponent(titleField)
+        								.addGroup(layout.createSequentialGroup()
+        									.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        										.addComponent(itemCodeLabel)
+        										.addComponent(itemCodeField, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE))
+        									.addPreferredGap(ComponentPlacement.RELATED)
+        									.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        										.addComponent(priceLabel)
+        										.addComponent(priceField, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)))
+        								.addComponent(authorLabel)
+        								.addComponent(authorField)
+        								.addComponent(titleLabel))
+        							.addGroup(layout.createSequentialGroup()
+        								.addComponent(editButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        								.addPreferredGap(ComponentPlacement.RELATED)
+        								.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)))
+        						.addGroup(layout.createSequentialGroup()
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(releaseDateChooser, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
+        								.addComponent(releaseDateLabel))
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(thresholdTextField)
+        								.addComponent(lblNewLabel))))
+        					.addGap(67)))
+        			.addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(editBookLabel)
-                .addGap(31, 31, 31)
-                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(itemCodeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(itemCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(authorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(authorField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(releaseDateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(locationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(releaseDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(locationComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(editBookLabel)
+        			.addGap(31)
+        			.addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(titleField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(priceLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(itemCodeLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(itemCodeField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(priceField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+        			.addGap(18)
+        			.addComponent(authorLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(authorField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(releaseDateLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(lblNewLabel))
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(thresholdTextField)
+        				.addComponent(releaseDateChooser, GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+        			.addGap(22)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(editButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+        			.addGap(40))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -287,24 +284,32 @@ public class DCEditBookScreen extends javax.swing.JFrame {
          
          try{
          	
-         	String itemCode = "";
+         	 String itemCode = "";
              String price = "";
+             String threshold = "";
              boolean go = true;
               
              String title = titleField.getText();
              String author = authorField.getText();
-             if( title.equals("") || author.equals("") || itemCodeField.getText().equals("")|| priceField.getText().equals("")) {
+             if( title.equals("") || author.equals("") || itemCodeField.getText().equals("")|| priceField.getText().equals("") ||thresholdTextField.getText().equals("")) {
           	   go = false;
                JOptionPane.showMessageDialog(null, "All fields must be filled", "Error", JOptionPane.ERROR_MESSAGE);
              }
              else {
- 	            if(checkNumber(itemCodeField.getText()) == true && checkCharacters(itemCodeField.getText()) == false ) {
+ 	            if(checkItemCode(itemCodeField.getText()) == true && checkCharacters(itemCodeField.getText()) == false ) {
  	            	itemCode = itemCodeField.getText();
  	            }
  	            else {
  	            	 go = false;
- 	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric delivery receipt code value.", "Error", JOptionPane.ERROR_MESSAGE);
+ 	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric item code value.", "Error", JOptionPane.ERROR_MESSAGE);
  	            }
+ 	           if(checkNumber(thresholdTextField.getText()) == true && checkCharacters(thresholdTextField.getText()) == false ) {
+	            	threshold = thresholdTextField.getText();
+	            }
+	            else {
+	            	 go = false;
+	            	 JOptionPane.showMessageDialog(null, "Please enter a numeric threshold value.", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
  	           	if(checkPrice(priceField.getText()) == true && checkCharacters(priceField.getText()) == false ) {
  	           		price = priceField.getText();
  	           	}
@@ -321,7 +326,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
 
              try{
              	if(go == true) {
-                 map = doCommand("editBook", title, itemCode, price, author, releaseDateStr);
+                 map = doCommand("editBook", title, itemCode, price, author, releaseDateStr, threshold);
              	this.dispose();
              	DCBooksTab a = new DCBooksTab("");
              	a.setVisible(true);
@@ -350,10 +355,6 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     private void priceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_priceFieldActionPerformed
-
-    private void locationComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_locationComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_locationComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -398,17 +399,17 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     private javax.swing.JButton editButton;
     private javax.swing.JTextField itemCodeField;
     private javax.swing.JLabel itemCodeLabel;
-    private javax.swing.JComboBox locationComboBox;
-    private javax.swing.JLabel locationLabel;
     private javax.swing.JTextField priceField;
     private javax.swing.JLabel priceLabel;
     private com.toedter.calendar.JDateChooser releaseDateChooser;
     private javax.swing.JLabel releaseDateLabel;
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
+    private JTextField thresholdTextField;
+    private JLabel lblNewLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate) throws Exception
+    private HashMap doCommand(String command, String title, String itemCode, String price, String author, String releaseDate, String threshold) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -420,6 +421,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         map.put("price", price);
         map.put("author", author);
         map.put("releaseDate", releaseDate);
+        map.put("threshold", threshold);
 
         
         // CONVERT JAVA DATA TO JSON
@@ -451,6 +453,15 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     private boolean checkNumber(String text) {
     	try{
     		 Integer.parseInt( text );
+    	      return true;
+    	}
+    	catch (Exception e){
+    		return false;
+    	}
+    }
+    private boolean checkItemCode(String text) {
+    	try{
+    		 Long.parseLong( text );
     	      return true;
     	}
     	catch (Exception e){

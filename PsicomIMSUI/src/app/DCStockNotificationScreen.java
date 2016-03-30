@@ -1,5 +1,13 @@
 package app;
 import java.awt.Color;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import java.awt.Font;
+import javax.swing.border.BevelBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,12 +26,12 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
      */
     public DCStockNotificationScreen(String title) {
         initComponents();
-        
+        this.setAlwaysOnTop(true);
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
 
         Color z = new Color(102, 102, 102);
-        okayButton.setBackground(z);
+        cancelButton.setBackground(z);
         
         titleLabel.setText(title);
     }
@@ -40,7 +48,7 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
         titleLabel = new javax.swing.JLabel();
         confirmationLabel = new javax.swing.JLabel();
         confirmationLabel1 = new javax.swing.JLabel();
-        okayButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,68 +64,85 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
 
         confirmationLabel1.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         confirmationLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        confirmationLabel1.setText("Create a job order now");
+        confirmationLabel1.setText("Create a job order now?");
 
-        okayButton.setBackground(new java.awt.Color(102, 102, 102));
-        okayButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        okayButton.setForeground(new java.awt.Color(255, 255, 255));
-        okayButton.setText("Okay");
-        okayButton.setBorder(null);
-        okayButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        okayButton.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setBackground(new java.awt.Color(102, 102, 102));
+        cancelButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        cancelButton.setForeground(new java.awt.Color(255, 255, 255));
+        cancelButton.setText("Cancel");
+        cancelButton.setBorder(null);
+        cancelButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okayButtonActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
+        
+        JButton okayButton = new JButton();
+        okayButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt1) {
+        		okayButtonActionPerformed(evt1);
+        	}
+        });
+        okayButton.setBorder(null);
+        okayButton.setText("Create Job Order");
+        okayButton.setForeground(Color.WHITE);
+        okayButton.setFont(new Font("Calibri", Font.PLAIN, 14));
+        okayButton.setBackground(new Color(205, 0, 69));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(titleLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(confirmationLabel1)
-                            .addComponent(confirmationLabel))))
-                .addGap(98, 98, 98))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(113, 113, 113)
-                .addComponent(okayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(65, Short.MAX_VALUE)
+        			.addComponent(jLabel1)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(titleLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(10)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(okayButton, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+        							.addGap(15)
+        							.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE))
+        						.addComponent(confirmationLabel1)
+        						.addComponent(confirmationLabel))))
+        			.addGap(166))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(titleLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(confirmationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(confirmationLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1))
-                .addGap(27, 27, 27)
-                .addComponent(okayButton, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(44)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(titleLabel)
+        					.addGap(18)
+        					.addComponent(confirmationLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addComponent(confirmationLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(jLabel1))
+        			.addGap(27)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(okayButton, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
+        			.addGap(39))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okayButtonActionPerformed
+    private void okayButtonActionPerformed(java.awt.event.ActionEvent evt1) {//GEN-FIRST:event_okayButtonActionPerformed
         this.dispose();
         DCJobOrdersTab j = new DCJobOrdersTab("");
         j.setVisible(true);
     }//GEN-LAST:event_okayButtonActionPerformed
-
+    
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okayButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_okayButtonActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -158,7 +183,6 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
     private javax.swing.JLabel confirmationLabel;
     private javax.swing.JLabel confirmationLabel1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton okayButton;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JLabel titleLabel;
-    // End of variables declaration//GEN-END:variables
 }

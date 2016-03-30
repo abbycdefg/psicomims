@@ -2,11 +2,14 @@ package app;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,20 +21,29 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.awt.event.KeyAdapter;
+
 import javax.swing.JLabel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import org.apache.poi.ss.usermodel.Cell;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -51,7 +63,11 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
 	private static String dateToday;
 	private static List<String> booksList = new ArrayList<String>();
 	private static List<String> quantityList = new ArrayList<String>();
-	
+	private String []co;
+	private List<String> bookAutoList  = new ArrayList<String>();
+	private  JComboBox comboBox = new JComboBox();
+	private String title;
+	private String stocksOnHand;
 	
     /**
      * Creates new form DCAddBookToPOScreen
@@ -82,6 +98,10 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         	System.out.println("pasok dito");  
         	displayTable2(booksList, quantityList);
         }
+        getItemCodeList();
+        co = new String[bookAutoList.size()];
+        bookAutoList.toArray(co);
+        AutoCompleteSupport.install(comboBox, GlazedLists.eventListOf(co));
  
     }
 
@@ -99,14 +119,10 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         addBookToPOLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         booksTable = new javax.swing.JTable();
+       
         booksTable.addKeyListener(new KeyAdapter() {
     		@Override
     		public void keyPressed(KeyEvent e) {
-    			if(e.getKeyCode() == KeyEvent.VK_F5)
-    			{
-    		        System.out.println("F5 pressed");
-    		        refresh();
-    			}
     			if(e.getKeyCode() == KeyEvent.VK_ENTER )
     			{
     		        System.out.println("Enter pressed");
@@ -151,9 +167,26 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable.setModel(new DefaultTableModel(
         	new Object[][] {
         		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
         	},
         	new String[] {
-        		"TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"
+        		"ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER"
         	}
         ));
         
@@ -164,6 +197,27 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable.setRequestFocusEnabled(false);
         booksTable.setRowHeight(18);
         booksTable.getTableHeader().setReorderingAllowed(false);
+        
+       
+        TableColumn itemCodeColumn = booksTable.getColumnModel().getColumn(0);
+
+        itemCodeColumn.setCellEditor(new DefaultCellEditor(comboBox));
+        
+        comboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String s = (String) comboBox.getSelectedItem();
+				int row = booksTable.getSelectedRow();
+				if(s != null)
+				{
+					getItemCode(s);
+			       booksTable.setValueAt(title, row, 1);
+			       booksTable.setValueAt(stocksOnHand, row, 2);
+				}
+			}
+		});
+
         jScrollPane1.setViewportView(booksTable);
         
         JLabel lblFSee = new JLabel("F5 - See title and stocks on hand; Enter - Add more rows.");
@@ -219,7 +273,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         	
         	int rowCount = booksTable.getRowCount();
         	for(int i=0; i<rowCount; i++) {
-        	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
+        	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 0);
         	    	if(selectedBook != null)
         	    	{
         	    	booksList.add(selectedBook);
@@ -318,75 +372,6 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
       }  
       return true;  
     }
-
-    public void refresh(){
-    	booksList = new ArrayList<String>();
-    	int rowCount = booksTable.getRowCount();
-    	for(int i=0; i<rowCount; i++) {
-    	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
-    	    	if(selectedBook != null)
-    	    	{
-    	    	booksList.add(selectedBook);
-    	    	}
-    	}
-    	System.out.println(booksList);
-    	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
-
-    	DefaultTableModel model = (DefaultTableModel)booksTable.getModel();
-        model.setColumnIdentifiers(columnNames);
-        
-        PreparedStatement pst;
-        Connection con;
-        
-
-        String title = "";
-        String itemCode = "";
-        String stocksOnHand = "";
-        
-        
-        try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.book");
-            ResultSet rs = pst.executeQuery();
-            int i = 0;
-            
-            for(int h = booksList.size()-1; h>=0; h--){
-            	model.removeRow(h);
-            }
-            for(int j = 0; j<booksList.size(); j++){
-            	while (rs.next()) {
-            		System.out.println(booksList.get(j));
-            		if (booksList.get(j).equals(rs.getString("item_code"))) {
-            			System.out.println("pasok2");
-            			title = rs.getString("title");
-            			itemCode = rs.getString("item_code");
-            			stocksOnHand = rs.getString("quantity");
-            			model.addRow(new Object[]{title, itemCode, stocksOnHand});          			
-            			i++;
-            			break;
-            		}
-            	}
-            }
-            
-            if (i < 1) {
-                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            
-            if (i == 1) {
-                System.out.println(i + " Record Found");
-            } 
-            
-            else {
-                System.out.println(i + " Records Found");
-            }
-            
-                  
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-               
-    }
     
     private void addRow()
     {
@@ -401,8 +386,68 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
             }
 
     }
+    public void getItemCodeList()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+    			ResultSet rs = pst.executeQuery();
+    		    Set<String> itemCodeSet = new HashSet();
+    		    int i = 0;
+    			while (rs.next()) {
+    				if(!rs.getString("item_code").equals(null))
+    				{
+    					itemCodeSet.add(rs.getString("item_code"));
+    				}
+    				i++;
+    			}
+    			bookAutoList.addAll(itemCodeSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+
+    	
+    }   
+    public void getItemCode(String itemCode1)
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+    			ResultSet rs = pst.executeQuery();
+    			while (rs.next()) {
+    				if(rs.getString("item_code").equals(itemCode1))
+    				{ 
+    					title = rs.getString("title");
+    					stocksOnHand = rs.getString("quantity");
+    					System.out.println("got it");
+    					break;
+    				}
+    			}
+    			
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    }
     public void displayTable2(List<String> booksList, List<String> quantityList){
-    	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
+    	String[] columnNames = { "ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
@@ -414,14 +459,30 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         String quantity = "";
         String title = "";
         String stocksOnHand = "";
-        
         try {
+        Class.forName("com.mysql.jdbc.Driver");
+    	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+        pst = con.prepareStatement("SELECT * FROM psicomims.book");
+        ResultSet rs = pst.executeQuery();
+
+   
             int i = 0;
             for(int j = 0; j<booksList.size(); j++)
             {
-                itemCode = booksList.get(i).toString();               
-                quantity = quantityList.get(i).toString();
-                model.addRow(new Object[]{null, itemCode, null, quantity});
+                itemCode = booksList.get(j).toString();
+                while (rs.next()) {
+            		if (booksList.get(j).equals(rs.getString("item_code"))) {
+            			title = rs.getString("title");
+            			itemCode = rs.getString("item_code");
+            			stocksOnHand = rs.getString("quantity");
+            			      			
+            			i++;
+            			break;
+            		}
+            	}
+                quantity = quantityList.get(j).toString();
+                
+                model.addRow(new Object[]{itemCode, title, stocksOnHand, quantity});    
                 i++;
             }
             
@@ -447,11 +508,6 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable.addKeyListener(new KeyAdapter() {
     		@Override
     		public void keyPressed(KeyEvent e) {
-    			if(e.getKeyCode() == KeyEvent.VK_F5)
-    			{
-    		        System.out.println("F5 pressed");
-    		        refresh();
-    			}
     			if(e.getKeyCode() == KeyEvent.VK_ENTER )
     			{
     		        System.out.println("Enter pressed");
@@ -471,7 +527,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         booksTable.setCellSelectionEnabled(true);
         booksTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setColumnHeaderView(booksTable.getTableHeader());
-        jScrollPane1.getViewport().add (booksTable);
+        jScrollPane1.setViewportView(booksTable);
     }
 }
     

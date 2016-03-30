@@ -2,6 +2,7 @@ package app;
 
 import java.awt.Color;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,11 +39,23 @@ public class ADEditContactPersonScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
         
         String contactPersonId = ADContactPersonsTab.getFirstColumnData();
-    	String contactPersonName = ADContactPersonsTab.getSecondColumnData();     
+    	String contactPersonName = ADContactPersonsTab.getSecondColumnData(); 
+    	String date = ADContactPersonsTab.getThirdColumnData();
         
+    	
         contactPersonIDField.setText(contactPersonId);
+        contactPersonIDField.setEnabled(false);
         contactPersonNameField.setText(contactPersonName);        
-        dateCreatedChooser.setEnabled(false);
+
+        try {
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+			java.util.Date dateCreated = df.parse(date);
+			dateCreatedChooser.setDate(dateCreated);
+			dateCreatedChooser.setEnabled(false);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /**
