@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -29,6 +30,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  *
  * @author Abby
@@ -38,7 +41,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 	String prevPage;
 	private String quantityCount;
 	private String poNumber;
-		
+	
     /**
      * Creates new form DCIncompleteDeliveryReceiptsTab
      */
@@ -112,6 +115,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         homeButton = new javax.swing.JButton();
         exportButton = new javax.swing.JButton();
         completeButton = new javax.swing.JButton();
+        setCompleteButton = new javax.swing.JButton();
         greetingLabel = new javax.swing.JLabel();
         signOutButton = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
@@ -136,32 +140,9 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
-        deliveryReceiptsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        this.displayAll();
+        
         deliveryReceiptsTable.setToolTipText("");
         deliveryReceiptsTable.setCellSelectionEnabled(true);
         deliveryReceiptsTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -332,6 +313,24 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             }
         });
 
+        setCompleteButton.setBackground(new java.awt.Color(255, 255, 255));
+        setCompleteButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        setCompleteButton.setForeground(new java.awt.Color(255, 255, 255));
+        setCompleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_complete.png"))); // NOI18N
+        setCompleteButton.setAlignmentY(0.0F);
+        setCompleteButton.setBorder(null);
+        setCompleteButton.setBorderPainted(false);
+        setCompleteButton.setContentAreaFilled(false);
+        setCompleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        setCompleteButton.setIconTextGap(0);
+        setCompleteButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        setCompleteButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_complete2.png"))); // NOI18N
+        setCompleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setCompleteButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
         navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
@@ -348,7 +347,8 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
                                 .addComponent(homeButton))
                             .addComponent(exportButton, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(completeButton))
+                    .addComponent(completeButton)
+                    .addComponent(setCompleteButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
@@ -365,6 +365,8 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(setCompleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -623,7 +625,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM delivery_receipt WHERE delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM delivery_receipt  WHERE status LIKE 'COMPLETE' OR delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -661,9 +663,90 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
     	this.dispose();
-    	DCCompleteDeliveryReceiptsTab a = new DCCompleteDeliveryReceiptsTab();
+    	DCCompleteDeliveryReceiptsTab a = new DCCompleteDeliveryReceiptsTab("");
     	a.setVisible(true);
     }//GEN-LAST:event_completeButtonActionPerformed
+
+    private void setCompleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCompleteButtonActionPerformed
+    	HashMap map;    	
+    	if (deliveryReceiptsTable.getSelectedColumn() == 0){
+    		try{
+    			
+    			String drNumber = this.getColumnData(0);
+                String status = "COMPLETE";
+                
+                try{
+                    map = doCommand("setDRStatus", drNumber, status);
+                    
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+    		
+
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}   
+    	
+    	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String drNumber = "";
+        String dateToday = "";
+        String outlet = "";
+        String quantity = "";
+        String deliveryDate = "";
+        String totalAmount = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM delivery_receipt  WHERE status LIKE 'INCOMPLETE' OR delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
+            ResultSet rs = pst.executeQuery();
+
+            int i = 0;
+            while (rs.next()) {
+            	drNumber = rs.getString("delivery_receipt_number");
+            	dateToday = rs.getString("date_today");
+                deliveryDate = rs.getString("date_delivery");
+                totalAmount = rs.getString("total_amount");
+                outlet = rs.getString("outlet");
+                quantity = rs.getString("orders");
+                model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+            
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        deliveryReceiptsTable.setModel(model);
+        deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }//GEN-LAST:event_setCompleteButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -715,6 +798,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JPanel navbarPanel;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
+    private javax.swing.JButton setCompleteButton;
     private javax.swing.JButton signOutButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel1;
@@ -748,7 +832,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM delivery_receipt");
+            pst = con.prepareStatement("SELECT * FROM delivery_receipt WHERE status LIKE 'INCOMPLETE'");
             ResultSet rs = pst.executeQuery();
 
             int i = 0;
@@ -783,5 +867,41 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable = new JTable(model);
         deliveryReceiptsTable.setModel(model);
         deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    
+    private HashMap doCommand(String command, String drNumber, String status) throws Exception
+    {
+        String url1 = "http://localhost:8080/"+command;
+        
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        map.put("deliveryReceiptNumber", drNumber);
+        map.put("status", status);
+
+        
+        // CONVERT JAVA DATA TO JSON
+        ObjectMapper mapper = new ObjectMapper();
+        String json1 = mapper.writeValueAsString(map);
+        
+        
+        // SEND TO SERVICE
+        String reply = NetUtil.postJsonDataToUrl(url1, json1);
+        System.out.println("REPLY = "+reply);
+        
+        
+        try
+        {
+            // CONVERT REPLY JSON STRING TO A JAVA OBJECT 
+            HashMap replyMap = (HashMap) mapper.readValue(reply, HashMap.class);
+            return replyMap;
+        }
+        catch(Exception e)
+        {
+            //System.out.println(reply);
+            HashMap replyMap = new HashMap();
+            replyMap.put("message", reply);
+            return replyMap;
+            
+        }
     }
 }

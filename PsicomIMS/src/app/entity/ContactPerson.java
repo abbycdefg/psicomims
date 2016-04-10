@@ -53,9 +53,8 @@ public class ContactPerson implements Serializable
 		this.dateCreated = dateCreated;
 	}
 	
-	//fix
-    public boolean checkContactPersonId(String contactPersonId) {
-        return contactPersonId.equals( this.contactPersonId );
+    public boolean checkContactPersonName(String contactPersonName) {
+        return contactPersonName.equalsIgnoreCase(this.contactPersonName);
     }
     	
 }

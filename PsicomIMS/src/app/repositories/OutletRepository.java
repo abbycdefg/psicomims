@@ -9,4 +9,5 @@ import app.entity.Outlet;
 public interface OutletRepository extends JpaRepository<Outlet, Long> 
 {
 	public Outlet findByOutletId(Long outletId);
+	public Outlet findByOutletName(String outletName);
 }

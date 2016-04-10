@@ -206,6 +206,7 @@ public class DocumentationClerk
     	d.setPurchaseOrderNumber(poNumber);
     	d.setOutlet(outlet);
     	d.setOrders(order);
+    	d.setStatus("INCOMPLETE");
     	d = drDao.save(d);
     	
     	
@@ -391,4 +392,12 @@ public class DocumentationClerk
     	
     }
     
+    public boolean setDRStatus(String drNumber, String status){
+    	
+    	DeliveryReceipt d = drDao.findByDeliveryReceiptNumber(drNumber);
+    	d.setStatus(status);    	
+    	drDao.save(d);
+    	
+      	return d.getId()!= null;
+    }
 }

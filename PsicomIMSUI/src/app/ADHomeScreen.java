@@ -114,7 +114,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("\u00A9 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         booksButton.setBackground(new java.awt.Color(255, 255, 255));
         booksButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N

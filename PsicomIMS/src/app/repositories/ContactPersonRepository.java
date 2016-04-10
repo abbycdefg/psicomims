@@ -9,4 +9,5 @@ import app.entity.ContactPerson;
 public interface ContactPersonRepository extends JpaRepository<ContactPerson, Long> 
 {
 	public ContactPerson findByContactPersonId(Long contactPersonId);
+	public ContactPerson findByContactPersonName(String contactPersonName);
 }

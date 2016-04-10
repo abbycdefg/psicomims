@@ -3,14 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package additional;
+package app;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -18,11 +29,18 @@ import java.util.Map;
  */
 public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
+	String prevPage;
+	private String quantityCount;
+	private String poNumber;
+	
     /**
      * Creates new form DCCompleteDeliveryReceiptsTab
      */
-    public DCCompleteDeliveryReceiptsTab() {
+    public DCCompleteDeliveryReceiptsTab(String page) {
         initComponents();
+        
+        this.setExtendedState(MAXIMIZED_BOTH);
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -149,36 +167,13 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
-        deliveryReceiptsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        this.displayAll();
+        
         deliveryReceiptsTable.setToolTipText("");
         deliveryReceiptsTable.setCellSelectionEnabled(true);
         deliveryReceiptsTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -332,11 +327,75 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADLogInScreen a = new ADLogInScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCLogInScreen a = new DCLogInScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+    	if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String drNumber = "";
+            String dateToday = "";
+            String outlet = "";
+            String quantity = "";
+            String deliveryDate = "";
+            String totalAmount = "";
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM delivery_receipt  WHERE status LIKE 'COMPLETE' OR delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                	drNumber = rs.getString("delivery_receipt_number");
+                	dateToday = rs.getString("date_today");
+                    deliveryDate = rs.getString("date_delivery");
+                    totalAmount = rs.getString("total_amount");
+                    outlet = rs.getString("outlet");
+                    quantity = rs.getString("orders");
+                    model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
+                    i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            deliveryReceiptsTable.setModel(model);
+            deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseEntered
@@ -344,11 +403,22 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonMouseEntered
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
+    	a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADHomeScreen a = new ADHomeScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCHomeScreen a = new DCHomeScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_homeButtonActionPerformed
 
     /**
@@ -381,7 +451,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCCompleteDeliveryReceiptsTab().setVisible(true);
+                new DCCompleteDeliveryReceiptsTab("").setVisible(true);
             }
         });
     }
@@ -389,7 +459,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JButton createButton;
-    private javax.swing.JTable deliveryReceiptsTable;
+    private static javax.swing.JTable deliveryReceiptsTable;
     private javax.swing.JLabel greetingLabel;
     private javax.swing.JButton homeButton;
     private javax.swing.JScrollPane jScrollPane1;
@@ -401,4 +471,69 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel1;
     // End of variables declaration//GEN-END:variables
+    
+    public static String getColumnData(int n){
+    	int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
+    	int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
+    	String selectedCell = (String) deliveryReceiptsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    }
+    
+    public void displayAll(){
+    	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        PreparedStatement pst2;
+        Connection con;
+        
+        String drNumber = "";
+        String dateToday = "";
+        String outlet = "";
+        String quantity = "";
+        String deliveryDate = "";
+        String totalAmount = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM delivery_receipt WHERE status LIKE 'COMPLETE'");
+            ResultSet rs = pst.executeQuery();
+
+            int i = 0;
+            while (rs.next()) {
+            	drNumber = rs.getString("delivery_receipt_number");
+            	dateToday = rs.getString("date_today");
+                deliveryDate = rs.getString("date_delivery");
+                totalAmount = rs.getString("total_amount");
+                outlet = rs.getString("outlet");
+                quantity = rs.getString("orders");
+                model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+            
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        deliveryReceiptsTable = new JTable(model);
+        deliveryReceiptsTable.setModel(model);
+        deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    
 }

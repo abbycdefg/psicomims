@@ -74,13 +74,12 @@ public class Admin
     	return u.getPassword();
     }
     
-    //fix
-    public boolean checkOutlet(String outletId)
+    public boolean checkOutlet(String outletName)
     {
         try
         {
-            Outlet o = outletDao.findByOutletId(Long.parseLong(outletId));
-            return o.checkOutletId(outletId);
+            Outlet o = outletDao.findByOutletName(outletName);
+            return o.checkOutletName(outletName);
         }
         catch(Exception e)
         {
@@ -123,12 +122,12 @@ public class Admin
     	return o.getOutletId();
     }
     
-    public boolean checkContactPerson(String contactPersonId)
+    public boolean checkContactPerson(String contactPersonName)
     {
         try
         {
-        	ContactPerson c = contactPersonDao.findByContactPersonId(Long.parseLong(contactPersonId));
-            return c.checkContactPersonId(contactPersonId);
+        	ContactPerson c = contactPersonDao.findByContactPersonName(contactPersonName);
+            return c.checkContactPersonName(contactPersonName);
         }
         catch(Exception e)
         {

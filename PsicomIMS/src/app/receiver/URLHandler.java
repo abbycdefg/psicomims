@@ -136,7 +136,7 @@ class URLHandler extends AbstractHandler {
 					String dateCreated = map.get("dateCreated");
 
 					
-					if(!ad.checkOutlet(outletId)){
+					if(!ad.checkOutlet(outletName)){
 						ad.addOutlet(outletName, dateCreated);
 						response.getWriter().println("You have succesfully registered " + outletName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
@@ -176,10 +176,15 @@ class URLHandler extends AbstractHandler {
 					String contactPersonName = map.get("contactPersonName");
 					String dateCreated = map.get("dateCreated");
 
-					
+					if(!ad.checkContactPerson(contactPersonName)){
 						ad.addContactPerson(contactPersonName, dateCreated);
 						response.getWriter().println("You have succesfully registered " + contactPersonName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+					}						
 						
 				}
 				else if (target.equalsIgnoreCase("/editContactPerson")) {
@@ -188,9 +193,15 @@ class URLHandler extends AbstractHandler {
 					String contactPersonId = map.get("contactPersonId");
 					String contactPersonName = map.get("contactPersonName");
 					
+					if(!ad.checkContactPerson(contactPersonName)){
 						ad.editContactPerson(contactPersonId, contactPersonName);
 						response.getWriter().println("You have succesfully updated the information of " + contactPersonName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+					}
+					else{
+						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+					}					
 
 				}
 				else if (target.equalsIgnoreCase("/deleteContactPerson")) {
@@ -590,6 +601,23 @@ class URLHandler extends AbstractHandler {
 					if(dc.checkBook(itemCode)){
 						wc.setOrderStatus(spoId, poId, itemCode, status, dc.getPOCounter(poId));
 						response.getWriter().println("You have succesfully updated the status of " + wc.getBookTitle(itemCode) + ".");
+
+					}
+					else{
+
+						response.getWriter().println("Invalid request.");
+						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else if (target.equalsIgnoreCase("/setDRStatus")) {
+					HashMap<String, String> map = convertJsonToCommand(request);
+
+					String drNumber = map.get("deliveryReceiptNumber");
+					String status = map.get("status");
+					
+					if(dc.checkDeliveryReceipt(drNumber)){
+						dc.setDRStatus(drNumber, status);
+						response.getWriter().println("Status updated to " + status + ".");
 
 					}
 					else{

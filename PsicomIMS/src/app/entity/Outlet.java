@@ -54,9 +54,8 @@ public class Outlet implements Serializable
 		this.dateCreated = dateCreated;
 	}
 	
-	//fix
-    public boolean checkOutletId(String outletId) {
-        return outletId.equals( this.outletId );
+    public boolean checkOutletName(String outletName) {
+        return outletName.equals( this.outletName );
     }
     	
 }
