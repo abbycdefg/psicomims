@@ -10,21 +10,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,15 +26,14 @@ import javax.swing.LayoutStyle.ComponentPlacement;
  *
  * @author Abby
  */
-public class DCPurchaseOrdersTab extends javax.swing.JFrame {
+public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
 
 	String prevPage;
 	
     /**
-     * Creates new form DCPurchaseOrdersTab
+     * Creates new form WCCompletePurchaseOrdersTab
      */
-		
-    public DCPurchaseOrdersTab(String page) {
+    public DCCompletePurchaseOrdersTab(String page) {
         initComponents();
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         prevPage = page;
@@ -107,18 +96,14 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
         purchaseOrdersTable = new javax.swing.JTable();
         navbarPanel = new javax.swing.JPanel();
         createButton = new javax.swing.JButton();
-        viewButton = new javax.swing.JButton();
-        editButton = new javax.swing.JButton();
-        deleteButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
         greetingLabel = new javax.swing.JLabel();
         signOutButton = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Purchase Orders");
-        setResizable(false);
+        setTitle("Complete Purchase Orders");
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/VS2.1.png"))); // NOI18N
 
@@ -136,7 +121,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
 
         purchaseOrdersTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         purchaseOrdersTable.setForeground(new java.awt.Color(255, 255, 255));
-       
+        
         this.displayAll();
         
         purchaseOrdersTable.setToolTipText("");
@@ -146,34 +131,35 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
         purchaseOrdersTable.setRowHeight(18);
         purchaseOrdersTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(purchaseOrdersTable);
+        purchaseOrdersTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
+        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(tablePanelLayout.createSequentialGroup()
-        					.addGap(18)
-        					.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
-        						.addComponent(copyrightLabel1)))
-        				.addGroup(tablePanelLayout.createSequentialGroup()
-        					.addGap(290)
-        					.addComponent(titleLabel1)))
-        			.addGap(20))
+            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tablePanelLayout.createSequentialGroup()
+                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tablePanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(copyrightLabel1)))
+                    .addGroup(tablePanelLayout.createSequentialGroup()
+                        .addGap(290, 290, 290)
+                        .addComponent(titleLabel1)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         tablePanelLayout.setVerticalGroup(
-        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(19)
-        			.addComponent(titleLabel1)
-        			.addGap(30)
-        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-        			.addGap(18)
-        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-        			.addGap(7))
+            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(titleLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7))
         );
-        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -181,14 +167,14 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
         createButton.setBackground(new java.awt.Color(205, 0, 69));
         createButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         createButton.setForeground(new java.awt.Color(255, 255, 255));
-        createButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_createPO.png"))); // NOI18N
+        createButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_createDR.png"))); // NOI18N
         createButton.setBorder(null);
         createButton.setBorderPainted(false);
         createButton.setContentAreaFilled(false);
         createButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         createButton.setIconTextGap(0);
         createButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        createButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_createPO2.png"))); // NOI18N
+        createButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_createDR2.png"))); // NOI18N
         createButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 createButtonMouseEntered(evt);
@@ -197,61 +183,6 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
         createButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 createButtonActionPerformed(evt);
-            }
-        });
-
-        viewButton.setBackground(new java.awt.Color(255, 255, 255));
-        viewButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        viewButton.setForeground(new java.awt.Color(255, 255, 255));
-        viewButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_view.png"))); // NOI18N
-        viewButton.setAlignmentY(0.0F);
-        viewButton.setBorder(null);
-        viewButton.setBorderPainted(false);
-        viewButton.setContentAreaFilled(false);
-        viewButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        viewButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_view2.png"))); // NOI18N
-        viewButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewButtonActionPerformed(evt);
-            }
-        });
-
-        editButton.setBackground(new java.awt.Color(255, 255, 255));
-        editButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        editButton.setForeground(new java.awt.Color(255, 255, 255));
-        editButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_edit.png"))); // NOI18N
-        editButton.setAlignmentY(0.0F);
-        editButton.setBorder(null);
-        editButton.setBorderPainted(false);
-        editButton.setContentAreaFilled(false);
-        editButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        editButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        editButton.setIconTextGap(0);
-        editButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        editButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_edit2.png"))); // NOI18N
-        editButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editButtonActionPerformed(evt);
-            }
-        });
-
-        deleteButton.setBackground(new java.awt.Color(255, 255, 255));
-        deleteButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        deleteButton.setForeground(new java.awt.Color(255, 255, 255));
-        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_delete.png"))); // NOI18N
-        deleteButton.setToolTipText("");
-        deleteButton.setAlignmentY(0.0F);
-        deleteButton.setBorder(null);
-        deleteButton.setBorderPainted(false);
-        deleteButton.setContentAreaFilled(false);
-        deleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        deleteButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        deleteButton.setIconTextGap(0);
-        deleteButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        deleteButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_delete2.png"))); // NOI18N
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
             }
         });
 
@@ -280,9 +211,6 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
             .addGroup(navbarPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(editButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(viewButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(deleteButton)
                     .addComponent(homeButton)
                     .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -292,26 +220,10 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
             .addGroup(navbarPanelLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(createButton)
-                .addGap(109, 109, 109)
-                .addComponent(viewButton)
-                .addGap(18, 18, 18)
-                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
-
-        searchField.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
-        searchField.setForeground(new java.awt.Color(153, 153, 153));
-        searchField.setText("   Search");
-        searchField.setToolTipText("Search");
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
-            }
-        });
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -327,6 +239,16 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
         signOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 signOutButtonActionPerformed(evt);
+            }
+        });
+
+        searchField.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
+        searchField.setForeground(new java.awt.Color(153, 153, 153));
+        searchField.setText("   Search");
+        searchField.setToolTipText("Search");
+        searchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchFieldActionPerformed(evt);
             }
         });
 
@@ -350,50 +272,51 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(logoLabel)
-        			.addPreferredGap(ComponentPlacement.RELATED, 459, Short.MAX_VALUE)
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(greetingLabel)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(signOutButton))
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
-        			.addGap(20))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(logoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(greetingLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(signOutButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(logoLabel))
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(25)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(signOutButton)
-        						.addComponent(greetingLabel))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(searchButton))))
-        			.addGap(18)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logoLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(signOutButton)
+                            .addComponent(greetingLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchButton))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
-        getContentPane().setLayout(layout);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseEntered
@@ -402,59 +325,9 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
     	this.dispose();
-    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen();
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen();
     	a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
-
-    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-    	if (purchaseOrdersTable.getSelectedColumn() == 0){
-    		
-    		String poNumber = DCPurchaseOrdersTab.getColumnData(0);
-			String contactPerson = DCPurchaseOrdersTab.getColumnData(2);
-			String outlet = DCPurchaseOrdersTab.getColumnData(3);
-			
-			this.dispose();
-	        DCViewPurchaseOrderScreen a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet);
-	        a.setVisible(true);
-    	}
-    	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-    	}
-    
-    }//GEN-LAST:event_viewButtonActionPerformed
-
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-    	
-    	if (purchaseOrdersTable.getSelectedRowCount() == 1 && purchaseOrdersTable.getSelectedColumn() == 0){
-    		int row = purchaseOrdersTable.getSelectedRow();
-    		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
-    		String date = purchaseOrdersTable.getValueAt(row, 1).toString();
-    		String contactPers = purchaseOrdersTable.getValueAt(row, 2).toString();
-    		String outlet = purchaseOrdersTable.getValueAt(row, 3).toString();
-    		
-	    	this.dispose();
-	    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(poNumber, date, contactPers, outlet);
-	    	a.setVisible(true);
-    		}
-
-    	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-    	}
-    }
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	if (purchaseOrdersTable.getSelectedRowCount() == 1 && purchaseOrdersTable.getSelectedColumn() == 0){
-    		int row = purchaseOrdersTable.getSelectedRow();
-    		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
-    		System.out.println(poNumber);
-    		
-	    	this.dispose();
-	    	DCDeletePurchaseOrderScreen a = new DCDeletePurchaseOrderScreen(poNumber);
-	    	a.setVisible(true);
-    	}
-    	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-    	}
-    }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
     	if(prevPage.equals("ad")){
@@ -469,10 +342,6 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_homeButtonActionPerformed
 
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchFieldActionPerformed
-
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
     	if(prevPage.equals("ad")){
     		this.dispose();
@@ -486,8 +355,12 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchFieldActionPerformed
+
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        if (searchField.getText() == null || searchField.getText() == " "){
+    	if (searchField.getText() == null || searchField.getText() == " "){
             this.displayAll();
         }
         else{
@@ -503,6 +376,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
             String date = "";
             String contactPerson = "";
             String outlet = "";
+            String status = "";
             
             try {
             	Class.forName("com.mysql.jdbc.Driver");
@@ -514,9 +388,10 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
                     poNumber = rs.getString("purchase_order_number");
                     date = rs.getString("date_Today");
                     contactPerson = rs.getString("contact_person");
-                    outlet = rs.getString("outlet");
-                    model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
-                    i++;
+                    outlet = rs.getString("outlet");status = rs.getString("po_status");
+                    if (status.equals("COMPLETE")){
+                    	model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
+                    }
                 }
                 
                 if (i < 1) {
@@ -558,20 +433,21 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DCPurchaseOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCCompletePurchaseOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DCPurchaseOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCCompletePurchaseOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DCPurchaseOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCCompletePurchaseOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DCPurchaseOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCCompletePurchaseOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCPurchaseOrdersTab("").setVisible(true);
+                new DCCompletePurchaseOrdersTab("").setVisible(true);
             }
         });
     }
@@ -579,8 +455,6 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JButton createButton;
-    private javax.swing.JButton deleteButton;
-    private javax.swing.JButton editButton;
     private javax.swing.JLabel greetingLabel;
     private javax.swing.JButton homeButton;
     private javax.swing.JScrollPane jScrollPane1;
@@ -592,7 +466,6 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
     private javax.swing.JButton signOutButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel1;
-    private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
     
     public static String getData(){
@@ -623,6 +496,7 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
         String date = "";
         String contactPerson = "";
         String outlet = "";
+        String status = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -630,12 +504,17 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
             pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order");
             ResultSet rs = pst.executeQuery();
             int i = 0;
+            
+            
             while (rs.next()) {
                 poNumber = rs.getString("purchase_order_number");
                 date = rs.getString("date_Today");
                 contactPerson = rs.getString("contact_person");
                 outlet = rs.getString("outlet");
-                model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
+                status = rs.getString("po_status");
+                if (status.equals("COMPLETE")){
+                	model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
+                }
                 i++;
             }
             
@@ -650,9 +529,9 @@ public class DCPurchaseOrdersTab extends javax.swing.JFrame {
             else {
                 System.out.println(i + " Records Found");
             }
-
-                  
-        } catch (Exception e) {
+                             
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
         

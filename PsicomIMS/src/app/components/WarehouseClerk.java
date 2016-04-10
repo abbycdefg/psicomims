@@ -22,6 +22,7 @@ import app.repositories.DefectiveBookRepository;
 import app.repositories.DeliveryReceiptRepository;
 import app.repositories.OutletRepository;
 import app.repositories.PurchaseOrderRepository;
+import app.repositories.SpecificPoRepository;
 import app.repositories.UserRepository;
 
 import java.util.*;
@@ -44,6 +45,9 @@ public class WarehouseClerk
 	
 	@Autowired
 	private DeliveryReceiptRepository drDao;
+	
+	@Autowired
+	private SpecificPoRepository spoDao;
 	
     public boolean checkUser(String username)
     {
@@ -123,6 +127,30 @@ public class WarehouseClerk
         }
         
     } 
+    
+    @Transactional
+    public boolean setStatus(String spoId, String poId, String itemCode, String status, int counter){
+    	
+    	Long spoId2 = Long.parseLong(spoId);    	
+    	SpecificPo sp2 = spoDao.findById(spoId2);
+    	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poId);
+    	Set<SpecificPo> books = p.getSpecPo();
+    	
+    	sp2.setStatus(status);    	
+    	spoDao.save(sp2);
+    	counter++;
+    	
+    	p.setCounter(counter);    	
+    	poDao.save(p);  
+    	
+    	if (counter == books.size()){
+    		p.setPoStatus("COMPLETE");
+    	}
+    	else{
+    		p.setPoStatus("INCOMPLETE");
+    	}
+    	
+      	return p.getId()!= null;
+    }
 
- 
 }

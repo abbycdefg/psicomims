@@ -448,7 +448,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
             	{
                 map = doCommand("editPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityListStr);
                 this.dispose();
-             	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
+             	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
              	a.setVisible(true);
             	}
             }
@@ -463,7 +463,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
-    	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
+    	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
     	a.setVisible(true);
     }
 

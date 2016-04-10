@@ -42,7 +42,16 @@ public class PurchaseOrder implements Serializable{
 	@Column
 	private String poStatus;	
 	
+	@Column
+	private int counter;
 	
+	
+	public int getCounter() {
+		return counter;
+	}
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
 	public String getPoStatus() {
 		return poStatus;
 	}

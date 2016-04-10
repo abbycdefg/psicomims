@@ -1,10 +1,13 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package app;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
@@ -20,29 +23,21 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
  * @author Abby
  */
-public class DCDeliverySchedulesTab extends javax.swing.JFrame {
+public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
 	String prevPage;
 	
     /**
-     * Creates new form DCDeliverySchedulesTab
+     * Creates new form DCIncompleteDeliverySchedulesTab
      */
-    public DCDeliverySchedulesTab(String page) {
+    public DCIncompleteDeliverySchedulesTab(String page) {
         initComponents();
+        
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         prevPage = page;
         
@@ -85,13 +80,6 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
                 searchField.setText("");
             }
         });
-        
-        Date now = new Date();
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        String dateTodayStr = df.format(now);
-        dsPerDayChooser1.setDate(now);
-        displayAll(dateTodayStr, "");
-
     }
 
     /**
@@ -102,7 +90,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-    	
+
         logoLabel = new javax.swing.JLabel();
         tablePanel = new javax.swing.JPanel();
         titleLabel1 = new javax.swing.JLabel();
@@ -125,15 +113,14 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
+        completeButton = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
         greetingLabel = new javax.swing.JLabel();
         signOutButton = new javax.swing.JButton();
-        searchField = new javax.swing.JTextField();
-        searchButton = new javax.swing.JButton();       
-        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Delivery Schedules");
-        setResizable(false);
+        setTitle("Incomplete Delivery Schedules");
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/VS2.1.png"))); // NOI18N
 
@@ -151,7 +138,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
 
         deliverySchedulesTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliverySchedulesTable.setForeground(new java.awt.Color(255, 255, 255));
-
+        
         deliverySchedulesTable.setToolTipText("");
         deliverySchedulesTable.setCellSelectionEnabled(true);
         deliverySchedulesTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -276,37 +263,35 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         advanceSearchPanel1.setLayer(dsPerWeekMonthLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
+        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(tablePanelLayout.createSequentialGroup()
-        					.addGap(18)
-        					.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
-        						.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
-        						.addComponent(copyrightLabel1)
-        						.addGroup(tablePanelLayout.createSequentialGroup()
-        							.addComponent(advanceSearchPanel1)
-        							.addGap(9))))
-        				.addGroup(tablePanelLayout.createSequentialGroup()
-        					.addGap(293)
-        					.addComponent(titleLabel1)))
-        			.addGap(20))
+            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tablePanelLayout.createSequentialGroup()
+                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tablePanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+                            .addComponent(copyrightLabel1)
+                            .addComponent(advanceSearchPanel1)))
+                    .addGroup(tablePanelLayout.createSequentialGroup()
+                        .addGap(293, 293, 293)
+                        .addComponent(titleLabel1)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         tablePanelLayout.setVerticalGroup(
-        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(21)
-        			.addComponent(titleLabel1)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(advanceSearchPanel1, GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-        			.addGap(18)
-        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-        			.addGap(18)
-        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-        			.addGap(7))
+            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(titleLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(advanceSearchPanel1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7))
         );
-        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -406,6 +391,28 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
             }
         });
 
+        completeButton.setBackground(new java.awt.Color(205, 0, 69));
+        completeButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        completeButton.setForeground(new java.awt.Color(255, 255, 255));
+        completeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_completeDS1.png"))); // NOI18N
+        completeButton.setBorder(null);
+        completeButton.setBorderPainted(false);
+        completeButton.setContentAreaFilled(false);
+        completeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        completeButton.setIconTextGap(0);
+        completeButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        completeButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_completeDS2.png"))); // NOI18N
+        completeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                completeButtonMouseEntered(evt);
+            }
+        });
+        completeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                completeButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
         navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
@@ -413,19 +420,23 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
             .addGroup(navbarPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(editButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(viewButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(deleteButton)
-                    .addComponent(homeButton)
+                    .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(editButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(viewButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(deleteButton)
+                        .addComponent(homeButton))
+                    .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
             navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(32, 32, 32)
+                .addComponent(completeButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(createButton)
-                .addGap(109, 109, 109)
+                .addGap(70, 70, 70)
                 .addComponent(viewButton)
                 .addGap(18, 18, 18)
                 .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -435,23 +446,6 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
                 .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
-
-        greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
-
-        signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
-        signOutButton.setForeground(new java.awt.Color(255, 255, 255));
-        signOutButton.setText("Sign Out");
-        signOutButton.setBorder(null);
-        signOutButton.setBorderPainted(false);
-        signOutButton.setContentAreaFilled(false);
-        signOutButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        signOutButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                signOutButtonActionPerformed(evt);
-            }
-        });
 
         searchField.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
         searchField.setForeground(new java.awt.Color(153, 153, 153));
@@ -482,68 +476,116 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
             }
         });
 
+        greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
+        greetingLabel.setText("Hello, Documentation Clerk  | ");
+
+        signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
+        signOutButton.setForeground(new java.awt.Color(255, 255, 255));
+        signOutButton.setText("Sign Out");
+        signOutButton.setBorder(null);
+        signOutButton.setBorderPainted(false);
+        signOutButton.setContentAreaFilled(false);
+        signOutButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        signOutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                signOutButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(logoLabel)
-        			.addPreferredGap(ComponentPlacement.RELATED, 459, Short.MAX_VALUE)
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(greetingLabel)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(signOutButton))
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
-        			.addGap(20))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(logoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(greetingLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(signOutButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(25)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(signOutButton)
-        						.addComponent(greetingLabel))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(searchButton)))
-        				.addGroup(layout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(logoLabel)))
-        			.addGap(17)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(signOutButton)
+                            .addComponent(greetingLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchButton)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logoLabel)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
-        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void advSearchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_advSearchButtonMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_advSearchButtonMouseEntered
+
+    private void advSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advSearchButtonActionPerformed
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        if (dsFromChooser1.getDate() != null && dsToChooser1.getDate() != null)
+        {
+        java.util.Date firstDate = dsFromChooser1.getDate();
+        String fromDate = df.format(firstDate);
+        
+        java.util.Date secondDate = dsToChooser1.getDate();
+        String toDate = df.format(secondDate);
+        if(!fromDate.equals("") && !toDate.equals("")) {
+       	 
+            displayAll(fromDate, toDate);
+        }
+        }
+        
+        else if(dsPerDayChooser1.getDate() != null)
+        {
+	         java.util.Date dayDate = dsPerDayChooser1.getDate();
+	         String dayDateStr = df.format(dayDate);
+	
+	          if (!dayDateStr.equals(""))
+	         {
+	        	 displayAll(dayDateStr, "");
+	         }
+        }
+    }//GEN-LAST:event_advSearchButtonActionPerformed
 
     private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_createButtonMouseEntered
 
-    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        this.dispose();
+    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
+    	this.dispose();
         DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
         a.setVisible(true);
-    }
+    }//GEN-LAST:event_createButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_viewButtonActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
     	if (deliverySchedulesTable.getSelectedRowCount() == 1 && deliverySchedulesTable.getSelectedColumn() == 0){
     		int row = deliverySchedulesTable.getSelectedRow();
     		String  date = deliverySchedulesTable.getValueAt(row, 0).toString();
@@ -559,10 +601,9 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
+    }//GEN-LAST:event_editButtonActionPerformed
 
-    }
-
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
     	if (deliverySchedulesTable.getSelectedRowCount() == 1 && deliverySchedulesTable.getSelectedColumn() == 0){
     		int row = deliverySchedulesTable.getSelectedRow();
     		String scheduleCode = deliverySchedulesTable.getValueAt(row, 1).toString();
@@ -575,9 +616,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
-
-    }
-
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
     	if(prevPage.equals("ad")){
@@ -592,25 +631,12 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_homeButtonActionPerformed
 
-    private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-    	if(prevPage.equals("ad")){
-    		this.dispose();
-	    	ADLogInScreen a = new ADLogInScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-	    	this.dispose();
-	    	DCLogInScreen a = new DCLogInScreen();
-	    	a.setVisible(true);
-    	}
-    }//GEN-LAST:event_signOutButtonActionPerformed
-
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        if (searchField.getText() == null || searchField.getText() == " "){
+    	if (searchField.getText() == null || searchField.getText() == " "){
             this.displayAll("", "");
         }
         else{
@@ -664,37 +690,28 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
-    private void advSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADLogInScreen a = new ADLogInScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCLogInScreen a = new DCLogInScreen();
+	    	a.setVisible(true);
+    	}
+    }//GEN-LAST:event_signOutButtonActionPerformed
 
-    	 DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-         if (dsFromChooser1.getDate() != null && dsToChooser1.getDate() != null)
-         {
-         java.util.Date firstDate = dsFromChooser1.getDate();
-         String fromDate = df.format(firstDate);
-         
-         java.util.Date secondDate = dsToChooser1.getDate();
-         String toDate = df.format(secondDate);
-         if(!fromDate.equals("") && !toDate.equals("")) {
-        	 
-             displayAll(fromDate, toDate);
-         }
-         }
-         
-         else if(dsPerDayChooser1.getDate() != null)
-         {
-	         java.util.Date dayDate = dsPerDayChooser1.getDate();
-	         String dayDateStr = df.format(dayDate);
-	
-	          if (!dayDateStr.equals(""))
-	         {
-	        	 displayAll(dayDateStr, "");
-	         }
-         }
-    }
-
-    private void advSearchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_advSearchButtonMouseEntered
+    private void completeButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_completeButtonMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_advSearchButtonMouseEntered
+    }//GEN-LAST:event_completeButtonMouseEntered
+
+    private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
+    	this.dispose();
+        DCCompleteDeliverySchedulesTab a = new DCCompleteDeliverySchedulesTab();
+        a.setVisible(true);
+    }//GEN-LAST:event_completeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -713,48 +730,39 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DCDeliverySchedulesTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCIncompleteDeliverySchedulesTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DCDeliverySchedulesTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCIncompleteDeliverySchedulesTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DCDeliverySchedulesTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCIncompleteDeliverySchedulesTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DCDeliverySchedulesTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCIncompleteDeliverySchedulesTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeliverySchedulesTab("").setVisible(true);
+                new DCIncompleteDeliverySchedulesTab("").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton advSearchButton;
-    private javax.swing.JLayeredPane advanceSearchPanel;
     private javax.swing.JLayeredPane advanceSearchPanel1;
-    private javax.swing.JButton advancedSearchButton;
-    private javax.swing.JLabel advancedSearchLabel;
     private javax.swing.JLabel advancedSearchLabel1;
+    private javax.swing.JButton completeButton;
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteButton;
     private javax.swing.JTable deliverySchedulesTable;
-    private com.toedter.calendar.JDateChooser dsFromChooser;
     private com.toedter.calendar.JDateChooser dsFromChooser1;
-    private javax.swing.JLabel dsFromLabel;
     private javax.swing.JLabel dsFromLabel1;
-    private com.toedter.calendar.JDateChooser dsPerDayChooser;
     private com.toedter.calendar.JDateChooser dsPerDayChooser1;
-    private javax.swing.JLabel dsPerDayLabel;
     private javax.swing.JLabel dsPerDayLabel1;
-    private javax.swing.JLabel dsPerWeekMonthLabel;
     private javax.swing.JLabel dsPerWeekMonthLabel1;
-    private com.toedter.calendar.JDateChooser dsToChooser;
     private com.toedter.calendar.JDateChooser dsToChooser1;
-    private javax.swing.JLabel dsToLabel;
     private javax.swing.JLabel dsToLabel1;
     private javax.swing.JButton editButton;
     private javax.swing.JLabel greetingLabel;
@@ -769,6 +777,7 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+    
     public void displayAll(String date1, String date2){
     	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
 
@@ -868,6 +877,4 @@ public class DCDeliverySchedulesTab extends javax.swing.JFrame {
         jScrollPane1.setColumnHeaderView(deliverySchedulesTable.getTableHeader());
         jScrollPane1.setViewportView(deliverySchedulesTable);
     }
-    
-    
 }

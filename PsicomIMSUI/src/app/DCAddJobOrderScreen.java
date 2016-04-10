@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import antlr.debug.Event;
+
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 

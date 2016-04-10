@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
 import app.components.Admin;
 import app.components.DocumentationClerk;
 import app.components.Inventory;
@@ -582,12 +583,12 @@ class URLHandler extends AbstractHandler {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
 					String spoId = map.get("spoId");
-					String itemCode = map.get("itemCode");
 					String poId = map.get("poId");
+					String itemCode = map.get("itemCode");
 					String status = map.get("status");
 					
 					if(dc.checkBook(itemCode)){
-						dc.setStatus(spoId, itemCode, poId, status);
+						wc.setStatus(spoId, poId, itemCode, status, dc.getPOCounter(poId));
 						response.getWriter().println("You have succesfully updated the status of " + wc.getBookTitle(itemCode) + ".");
 
 					}
@@ -597,6 +598,7 @@ class URLHandler extends AbstractHandler {
 						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
+
 				else {
 					// Invalid request
 					response.getWriter().println("Unsupported POST request: " + target);

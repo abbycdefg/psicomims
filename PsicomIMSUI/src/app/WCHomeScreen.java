@@ -25,7 +25,7 @@ public class WCHomeScreen extends javax.swing.JFrame {
     public WCHomeScreen() {
         initComponents();
         
-                Color x = new Color(32, 55, 73);
+        Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
         signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {

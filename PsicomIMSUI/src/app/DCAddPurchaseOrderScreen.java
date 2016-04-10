@@ -405,7 +405,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
                 
 
                 	this.dispose();
-                	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
+                	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
                 	a.setVisible(true);
             	}
             }
@@ -420,7 +420,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
      	this.dispose();
-    	DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
+    	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
     	a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 

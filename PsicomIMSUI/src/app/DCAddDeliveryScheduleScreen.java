@@ -39,7 +39,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.JComboBox;
 
-import org.hibernate.mapping.Component;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.

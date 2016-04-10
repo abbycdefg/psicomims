@@ -361,7 +361,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
 
     private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("ad");
+        DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("ad");
         a.setVisible(true);
     }
 

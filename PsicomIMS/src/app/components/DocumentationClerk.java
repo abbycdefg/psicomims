@@ -5,6 +5,7 @@ import java.io.*;
 import javax.annotation.PostConstruct;
 import javax.persistence.metamodel.ListAttribute;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -108,10 +109,10 @@ public class DocumentationClerk
     	p.setDateToday(dateToday);
     	p.setContactPerson(contactPerson);
     	p.setOutlet(outlet);
+    	p.setPoStatus("INCOMPLETE");
+    	p.setCounter(0);
     	p = poDao.save(p);
-    	
-    	
-    	
+    	   	
     	for(int i = 0; i<booksList.size(); i++)
     	{
     		int bQty = 0;
@@ -377,28 +378,14 @@ public class DocumentationClerk
     	return d.getScheduleCode()!= null;
     	
     }
-    
-    @Transactional
-    public boolean setStatus(String spoId, String itemCode, String poId, String status){
-    	//Book b = bookDao.findByItemCode(itemCode);
-    	
-    	//System.out.println(b.getTitle());
-    	
-    	Long spoId2 = Long.parseLong(spoId);
-    	
-    	//PurchaseOrder p = poDao.findByPurchaseOrderNumber(poId);
-    	
-    	//System.out.println(p.getPurchaseOrderNumber());
-    	
-    	SpecificPo sp2 = spoDao.findById(spoId2);
-    	
-    	System.out.println(sp2.getId());
+       
+    public int getPOCounter(String poId) {
 
-    	sp2.setStatus(status);
+    	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poId);
+    	int c = p.getCounter();
     	
-    	spoDao.save(sp2);    	
+    	return c;
     	
-      	return sp2.getId()!= null;
     }
-
+    
 }

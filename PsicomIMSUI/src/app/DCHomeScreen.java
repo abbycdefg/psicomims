@@ -334,26 +334,26 @@ public class DCHomeScreen extends javax.swing.JFrame {
 
     private void poButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCPurchaseOrdersTab a = new DCPurchaseOrdersTab("");
+        DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
         a.setVisible(true);
     }
 
 
     private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCJobOrdersTab a = new DCJobOrdersTab("");
+        DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
         a.setVisible(true);
     }
 
     private void drButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
+        DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
         a.setVisible(true);
     }
 
     private void dsButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
+        DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
         a.setVisible(true);
     }
 

@@ -45,8 +45,8 @@ public class SpecificPo implements Serializable{
 		this.bookId = bookId;
 	}
 	public PurchaseOrder getPoId() {
-		return poId;
-	}
+			return poId;
+		}
 	public void setPoId(PurchaseOrder poId) {
 		this.poId = poId;
 	}
