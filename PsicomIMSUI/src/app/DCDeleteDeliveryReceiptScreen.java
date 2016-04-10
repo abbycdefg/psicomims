@@ -138,7 +138,7 @@ public class DCDeleteDeliveryReceiptScreen extends javax.swing.JFrame {
     	try{
             map = doCommand("deleteDeliveryReceipt", drNumber);
             this.dispose();
-         	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
+         	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
          	a.setVisible(true);
         }
         catch (Exception e){
@@ -148,7 +148,7 @@ public class DCDeleteDeliveryReceiptScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
  	this.dispose();
- 	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
+ 	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
  	a.setVisible(true);
     }
 

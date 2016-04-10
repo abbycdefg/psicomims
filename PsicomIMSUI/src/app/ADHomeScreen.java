@@ -373,7 +373,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
 
     private void drButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("ad");
+        DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("ad");
         a.setVisible(true);
     }
 

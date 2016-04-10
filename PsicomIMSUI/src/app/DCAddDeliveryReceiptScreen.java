@@ -378,7 +378,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
             	 {
                 map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, order, outlet, listString, quantityListStr);
              	this.dispose();
-             	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("", poNumber);
+             	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("", poNumber);
              	a.setVisible(true);
             	 }
 
@@ -396,7 +396,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
      	this.dispose();
-     	DCDeliveryReceiptsTab a = new DCDeliveryReceiptsTab("");
+     	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
      	a.setVisible(true);
     }
    

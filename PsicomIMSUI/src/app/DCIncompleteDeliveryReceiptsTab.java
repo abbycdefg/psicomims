@@ -92,6 +92,56 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         });
     }
 
+    public DCIncompleteDeliveryReceiptsTab(String page, String poNumber1) {
+        initComponents();
+        
+        prevPage = page;
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            Font originalFont = null;
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                originalFont = signOutButton.getFont();
+                Map attributes = originalFont.getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                signOutButton.setFont(originalFont.deriveFont(attributes));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                signOutButton.setFont(originalFont);
+            }
+        });
+        
+             searchField.addFocusListener(new FocusListener(){            
+            @Override
+            public void focusLost(FocusEvent arg0) {
+            }
+
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                searchField.setText("");
+            }
+        }); 
+             
+        
+        
+        searchField.addFocusListener(new FocusListener(){            
+            @Override
+            public void focusLost(FocusEvent arg0) {
+            }
+
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                searchField.setText("");
+            }
+        });
+        
+        poNumber = poNumber1;
+        System.out.println(poNumber);
+    }
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -479,9 +529,9 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
     	if (deliveryReceiptsTable.getSelectedColumn() == 0){
     		
-    		String drNumber = DCDeliveryReceiptsTab.getColumnData(0);
-			String dateDelivery = DCDeliveryReceiptsTab.getColumnData(4);
-			String totalAmount = DCDeliveryReceiptsTab.getColumnData(5);
+    		String drNumber = DCIncompleteDeliveryReceiptsTab.getColumnData(0);
+			String dateDelivery = DCIncompleteDeliveryReceiptsTab.getColumnData(4);
+			String totalAmount = DCIncompleteDeliveryReceiptsTab.getColumnData(5);
 			
 			this.dispose();
 	        DCViewDeliveryReceiptScreen a = new DCViewDeliveryReceiptScreen(drNumber, dateDelivery, totalAmount);
