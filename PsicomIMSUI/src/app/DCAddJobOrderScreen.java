@@ -354,7 +354,7 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
             	if (go == true) {
 	                map = doCommand("addJobOrder", joNumber, dateTodayStr, itemCode, title, quantity);
 	            	this.dispose();
-	            	DCJobOrdersTab a = new DCJobOrdersTab("");
+	            	DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
 	            	a.setVisible(true);
             	}
                 
@@ -370,7 +370,7 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
-        DCJobOrdersTab a = new DCJobOrdersTab("");
+        DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
         a.setVisible(true);
     }
 

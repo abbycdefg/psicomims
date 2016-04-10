@@ -139,7 +139,7 @@ public class DCDeleteJobOrderScreen extends javax.swing.JFrame {
          try{
              map = doCommand("deleteJobOrder", joNumber);
              this.dispose();
-             DCJobOrdersTab a = new DCJobOrdersTab("");
+             DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
              a.setVisible(true);
              
          }
@@ -151,7 +151,7 @@ public class DCDeleteJobOrderScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCJobOrdersTab a = new DCJobOrdersTab("");
+        DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
         a.setVisible(true);
     }
 

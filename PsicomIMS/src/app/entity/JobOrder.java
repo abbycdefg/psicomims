@@ -30,6 +30,26 @@ public class JobOrder implements Serializable{
 	
 	@Column
 	private String quantity;
+	
+	@Column
+	private String joStatus;
+	
+	@Column
+	private String remainingOrders;
+	
+	public String getRemainingOrders() {
+		return remainingOrders;
+	}
+	public void setRemainingOrders(String remainingOrders) {
+		this.remainingOrders = remainingOrders;
+	}
+	public String getJoStatus() {
+		return joStatus;
+	}
+	public void setJoStatus(String status) {
+		this.joStatus = status;
+	}
+
 	public Long getId() {
 		return id;
 	}

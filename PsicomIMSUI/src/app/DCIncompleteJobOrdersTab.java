@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.DCJobOrdersTab.printAction;
+import app.DCIncompleteJobOrdersTab.printAction;
 
 /**
  *
@@ -450,12 +450,13 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
             this.displayAll();
         }
         else{
-        	String[] columnNames = {"JO NUMBER", "DATE", "ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER"};
+        	String[] columnNames = {"JO NUMBER", "DATE", "ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER", "REMAINING"};
 
             DefaultTableModel model = new DefaultTableModel();
             model.setColumnIdentifiers(columnNames);
             
             PreparedStatement pst;
+            PreparedStatement pst2;
             Connection con;
             
             String joNumber = "";
@@ -464,21 +465,36 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
             String title = "";
             String stocksOnHand = "";
             String order = "";
+            String status = "";
+            String remaining = "";
             
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM job_order WHERE jo_number LIKE '%" + searchField.getText() + "%' OR date LIKE '%" + searchField.getText() + "%' OR item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%" + searchField.getText() + "%' OR quantity LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM job_order WHERE jo_number LIKE '%" + searchField.getText() + "%' OR jo_status LIKE 'COMPLETE' OR date LIKE '%" + searchField.getText() + "%' OR item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%" + searchField.getText() + "%' OR quantity LIKE '%" + searchField.getText() + "%'");
                 ResultSet rs = pst.executeQuery();
+                                
                 int i = 0;
                 while (rs.next()) {
                 	joNumber = rs.getString("jo_number");
                 	date = rs.getString("date");
                 	itemCode = rs.getString("item_code");
                 	title = rs.getString("title");
-                	//stocksOnHand = rs.getString("stocks_on_hand");
-                	order = rs.getString("quantity");
-                    model.addRow(new Object[]{joNumber, date, itemCode, title, stocksOnHand, order});
+                	
+                	pst2 = con.prepareStatement("SELECT * FROM book WHERE item_code LIKE '" + itemCode +"'");
+                    ResultSet rs2 = pst2.executeQuery();              
+                    while (rs2.next()) {
+                		if(itemCode.equals(rs2.getString("item_code")))
+                		{
+                			stocksOnHand = rs2.getString("quantity");
+                			break;
+                		}
+                	 }
+                	
+                    order = rs.getString("quantity");
+                	status = rs.getString("jo_status");
+                	remaining = rs.getString("remaining_orders");
+                	model.addRow(new Object[]{joNumber, date, itemCode, title, stocksOnHand, order, remaining});
                     i++;
                 }
                 
@@ -509,7 +525,9 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonMouseEntered
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        // TODO add your handling code here:
+    	this.dispose();
+    	DCAddJobOrderScreen a = new DCAddJobOrderScreen();
+    	a.setVisible(true); 
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -520,8 +538,7 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
     		String itemCode = jobOrdersTable.getValueAt(row, 2).toString();
     		String title = jobOrdersTable.getValueAt(row, 3).toString();
     		String quantity = jobOrdersTable.getValueAt(row, 5).toString();
-    		
-	    	this.dispose();
+    		this.dispose();
 	    	DCEditJobOrderScreen a = new DCEditJobOrderScreen(joNumber, date, itemCode, title, quantity);
 	    	a.setVisible(true); 
     	} 
@@ -531,8 +548,7 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
     	if (jobOrdersTable.getSelectedRowCount() == 1 && jobOrdersTable.getSelectedColumn() == 0){
     		int row = jobOrdersTable.getSelectedRow();
     		String joNumber = jobOrdersTable.getValueAt(row, 0).toString();
-    		
-            this.dispose();
+    		this.dispose();
             DCDeleteJobOrderScreen a = new DCDeleteJobOrderScreen(joNumber);
             a.setVisible(true);
     	} 
@@ -561,7 +577,7 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
 
     private void completeButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButton4ActionPerformed
     	this.dispose();
-        DCCompleteJobOrdersTab a = new DCCompleteJobOrdersTab();
+        DCCompleteJobOrdersTab a = new DCCompleteJobOrdersTab("");
         a.setVisible(true);
     }//GEN-LAST:event_completeButton4ActionPerformed
 
@@ -626,7 +642,7 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     public void displayAll(){
-    	String[] columnNames = {"JO NUMBER", "DATE", "ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER"};
+    	String[] columnNames = {"JO NUMBER", "DATE", "ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER", "REMAINING"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
@@ -641,15 +657,14 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
         String title = "";
         String stocksOnHand = "";
         String order = "";
+        String status = "";
+        String remaining ="";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM job_order");
+            pst = con.prepareStatement("SELECT * FROM job_order WHERE jo_status LIKE 'INCOMPLETE'");
             ResultSet rs = pst.executeQuery();
-            
-            pst2 = con.prepareStatement("SELECT * FROM book");
-            ResultSet rs2 = pst2.executeQuery();
             
             int i = 0;
             while (rs.next()) {
@@ -657,16 +672,21 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
             	date = rs.getString("date");
             	itemCode = rs.getString("item_code");
             	title = rs.getString("title");
-            	 while (rs2.next()) {
-            		 if(itemCode.equals(rs2.getString("item_code")))
-            		 {
-            			 stocksOnHand = rs2.getString("quantity");
-            			 System.out.println(stocksOnHand);
-            			 break;
-            		 }
-            	 }
+            	
+            	pst2 = con.prepareStatement("SELECT * FROM book WHERE item_code LIKE '" + itemCode +"'");
+                ResultSet rs2 = pst2.executeQuery();              
+                while (rs2.next()) {
+            		if(itemCode.equals(rs2.getString("item_code")))
+            		{
+            			stocksOnHand = rs2.getString("quantity");
+            			break;
+            		}
+            	 }     	
+            	
             	order = rs.getString("quantity");
-                model.addRow(new Object[]{joNumber, date, itemCode, title, stocksOnHand, order});
+            	status = rs.getString("jo_status");
+            	remaining = rs.getString("remaining_orders");
+            	model.addRow(new Object[]{joNumber, date, itemCode, title, stocksOnHand, order, remaining});
                 i++;
             }
             

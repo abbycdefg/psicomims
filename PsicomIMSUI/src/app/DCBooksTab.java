@@ -409,7 +409,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
-       	this.dispose();
+    	this.dispose();
     	DCAddBookScreen a = new DCAddBookScreen();
     	a.setVisible(true);
     }
@@ -418,7 +418,6 @@ public class DCBooksTab extends javax.swing.JFrame {
     	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
-    		
     		this.dispose();
     		DCViewBookScreen a = new DCViewBookScreen(itemCode);
 	    	a.setVisible(true); 
@@ -435,7 +434,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     		String releaseDate = booksTable.getValueAt(row, 4).toString();
     		String threshold = booksTable.getValueAt(row, 6).toString();
     		
-	    	this.dispose();
+    		this.dispose();
 	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold);
 	    	a.setVisible(true); 
     		}
@@ -449,7 +448,6 @@ public class DCBooksTab extends javax.swing.JFrame {
     	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
-    		
     		this.dispose();
     		DCDeleteBookScreen a = new DCDeleteBookScreen(itemCode);
 	    	a.setVisible(true); 

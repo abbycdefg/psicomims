@@ -373,7 +373,7 @@ HashMap map;
             	if (go == true) {
 	                map = doCommand("editJobOrder", joNumber, dateTodayStr, itemCode, title, quantity);
 	            	this.dispose();
-	            	DCJobOrdersTab a = new DCJobOrdersTab("");
+	            	DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
 	            	a.setVisible(true);
             	}
                 
@@ -389,7 +389,7 @@ HashMap map;
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCJobOrdersTab a = new DCJobOrdersTab("");
+        DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
         a.setVisible(true);
     }
 

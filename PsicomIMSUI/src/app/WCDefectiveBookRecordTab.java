@@ -383,7 +383,7 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	this.dispose();
-        WCAddDefectiveBookScreen a = new WCAddDefectiveBookScreen();
+    	WCAddDefectiveBookScreen a = new WCAddDefectiveBookScreen();
         a.setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 

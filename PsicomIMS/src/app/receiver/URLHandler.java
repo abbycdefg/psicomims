@@ -588,7 +588,7 @@ class URLHandler extends AbstractHandler {
 					String status = map.get("status");
 					
 					if(dc.checkBook(itemCode)){
-						wc.setStatus(spoId, poId, itemCode, status, dc.getPOCounter(poId));
+						wc.setOrderStatus(spoId, poId, itemCode, status, dc.getPOCounter(poId));
 						response.getWriter().println("You have succesfully updated the status of " + wc.getBookTitle(itemCode) + ".");
 
 					}

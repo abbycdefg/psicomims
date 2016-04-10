@@ -424,9 +424,8 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     		String poNumber = DCIncompletePurchaseOrdersTab.getColumnData(0);
 			String contactPerson = DCIncompletePurchaseOrdersTab.getColumnData(2);
 			String outlet = DCIncompletePurchaseOrdersTab.getColumnData(3);
-			
 			this.dispose();
-	        DCViewPurchaseOrderScreen a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet);
+			DCViewPurchaseOrderScreen a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet);
 	        a.setVisible(true);
     	}
     	else{
@@ -441,8 +440,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     		String date = purchaseOrdersTable.getValueAt(row, 1).toString();
     		String contactPers = purchaseOrdersTable.getValueAt(row, 2).toString();
     		String outlet = purchaseOrdersTable.getValueAt(row, 3).toString();
-    		
-	    	this.dispose();
+    		this.dispose();
 	    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(poNumber, date, contactPers, outlet);
 	    	a.setVisible(true);
     		}
@@ -457,8 +455,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     		int row = purchaseOrdersTable.getSelectedRow();
     		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
     		System.out.println(poNumber);
-    		
-	    	this.dispose();
+    		this.dispose();
 	    	DCDeletePurchaseOrderScreen a = new DCDeletePurchaseOrderScreen(poNumber);
 	    	a.setVisible(true);
     	}
@@ -506,7 +503,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'INCOMPLETE' OR purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -514,9 +511,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
                     date = rs.getString("date_Today");
                     contactPerson = rs.getString("contact_person");
                     outlet = rs.getString("outlet");status = rs.getString("po_status");
-                    if (status.equals("INCOMPLETE")){
-                    	model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
-                    }
+                    model.addRow(new Object[]{poNumber, date, contactPerson, outlet});                    
                 }
                 
                 if (i < 1) {
@@ -648,10 +643,9 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order");
+            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'INCOMPLETE'");
             ResultSet rs = pst.executeQuery();
-            int i = 0;
-            
+            int i = 0;            
             
             while (rs.next()) {
                 poNumber = rs.getString("purchase_order_number");
@@ -659,9 +653,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
                 contactPerson = rs.getString("contact_person");
                 outlet = rs.getString("outlet");
                 status = rs.getString("po_status");
-                if (status.equals("INCOMPLETE")){
-                	model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
-                }
+                model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
                 i++;
             }
             

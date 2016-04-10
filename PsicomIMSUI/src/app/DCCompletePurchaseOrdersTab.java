@@ -381,7 +381,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'COMPLETE' OR purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -501,7 +501,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order");
+            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'COMPLETE'");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             
@@ -512,9 +512,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
                 contactPerson = rs.getString("contact_person");
                 outlet = rs.getString("outlet");
                 status = rs.getString("po_status");
-                if (status.equals("COMPLETE")){
-                	model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
-                }
+                model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
                 i++;
             }
             

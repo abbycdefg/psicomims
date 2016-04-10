@@ -319,8 +319,8 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
     	if (stocksTable.getSelectedRowCount() == 1 && stocksTable.getSelectedColumn() == 0){
-	    	this.dispose();
-	        WCUpdateStockLevelScreen a = new WCUpdateStockLevelScreen();
+    		this.dispose();
+    		WCUpdateStockLevelScreen a = new WCUpdateStockLevelScreen();
 	        a.setVisible(true);
     	}
     	else{
@@ -494,6 +494,7 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
             pst = con.prepareStatement("SELECT * FROM psicomims.book");
             ResultSet rs = pst.executeQuery();
+            
             int i = 0;
             while (rs.next()) {
                 itemCode = rs.getString("item_code");

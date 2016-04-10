@@ -136,7 +136,7 @@ public class DCStockNotificationScreen extends javax.swing.JFrame {
 
     private void okayButtonActionPerformed(java.awt.event.ActionEvent evt1) {//GEN-FIRST:event_okayButtonActionPerformed
         this.dispose();
-        DCJobOrdersTab j = new DCJobOrdersTab("");
+        DCIncompleteJobOrdersTab j = new DCIncompleteJobOrdersTab("");
         j.setVisible(true);
     }//GEN-LAST:event_okayButtonActionPerformed
     

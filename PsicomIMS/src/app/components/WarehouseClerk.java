@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import app.entity.Book;
 import app.entity.ContactPerson;
 import app.entity.DefectiveBook;
+import app.entity.JobOrder;
 import app.entity.Outlet;
 import app.entity.PurchaseOrder;
 import app.entity.SpecificPo;
@@ -20,6 +21,7 @@ import app.repositories.BookRepository;
 import app.repositories.ContactPersonRepository;
 import app.repositories.DefectiveBookRepository;
 import app.repositories.DeliveryReceiptRepository;
+import app.repositories.JobOrderRepository;
 import app.repositories.OutletRepository;
 import app.repositories.PurchaseOrderRepository;
 import app.repositories.SpecificPoRepository;
@@ -48,6 +50,9 @@ public class WarehouseClerk
 	
 	@Autowired
 	private SpecificPoRepository spoDao;
+	
+	@Autowired
+	private JobOrderRepository joDao;
 	
     public boolean checkUser(String username)
     {
@@ -88,14 +93,34 @@ public class WarehouseClerk
         
     }
     
+    @Transactional
     public boolean updateStock(String itemCode, int newQuantity) {
     	int a = 0;
+    	int remainingOrders = 0;
     	
     	Book b = bookDao.findByItemCode(itemCode);
     	a = b.getQuantity();
     	b.setQuantity(a+=newQuantity);
     	b.setState("old");
     	b = bookDao.save(b);
+    	
+    	if (joDao.count() > 0 ){
+    		JobOrder j = joDao.findByItemCode(itemCode);    		
+	    	if (j != null){
+	    		remainingOrders = Integer.parseInt(j.getRemainingOrders());
+		    	if (newQuantity >= remainingOrders){
+		    		j.setJoStatus("COMPLETE");
+		    		j.setItemCode(itemCode + "-CO");
+		    	}
+		    	else if (newQuantity < remainingOrders){
+		    		j.setJoStatus("INCOMPLETE");
+		    		remainingOrders -= newQuantity;
+		    	}         		
+	    		j.setRemainingOrders(Integer.toString(remainingOrders));
+	    		joDao.save(j);
+	    	}	    	
+    	}
+    	
     	
     	return b.getItemCode()!= null;    	
     }
@@ -129,7 +154,7 @@ public class WarehouseClerk
     } 
     
     @Transactional
-    public boolean setStatus(String spoId, String poId, String itemCode, String status, int counter){
+    public boolean setOrderStatus(String spoId, String poId, String itemCode, String status, int counter){
     	
     	Long spoId2 = Long.parseLong(spoId);    	
     	SpecificPo sp2 = spoDao.findById(spoId2);
@@ -140,8 +165,7 @@ public class WarehouseClerk
     	spoDao.save(sp2);
     	counter++;
     	
-    	p.setCounter(counter);    	
-    	poDao.save(p);  
+    	p.setCounter(counter);
     	
     	if (counter == books.size()){
     		p.setPoStatus("COMPLETE");
@@ -149,7 +173,8 @@ public class WarehouseClerk
     	else{
     		p.setPoStatus("INCOMPLETE");
     	}
-    	
+    	    	
+    	poDao.save(p);  
       	return p.getId()!= null;
     }
 

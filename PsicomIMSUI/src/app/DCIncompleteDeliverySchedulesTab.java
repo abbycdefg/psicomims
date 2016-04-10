@@ -134,7 +134,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliverySchedulesTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliverySchedulesTable.setForeground(new java.awt.Color(255, 255, 255));
@@ -577,7 +577,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
     	this.dispose();
-        DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
+    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
         a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
@@ -592,8 +592,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     		String scheduleCode = deliverySchedulesTable.getValueAt(row, 1).toString();
     		String outlet = deliverySchedulesTable.getValueAt(row, 2).toString();
     		String deliveryReciptCode = deliverySchedulesTable.getValueAt(row, 3).toString();
-    		
-	    	this.dispose();
+    		this.dispose();
 	    	DCEditDeliveryScheduleScreen a = new DCEditDeliveryScheduleScreen(date, scheduleCode, outlet, deliveryReciptCode);
 	    	a.setVisible(true); 
     		}
@@ -607,8 +606,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     	if (deliverySchedulesTable.getSelectedRowCount() == 1 && deliverySchedulesTable.getSelectedColumn() == 0){
     		int row = deliverySchedulesTable.getSelectedRow();
     		String scheduleCode = deliverySchedulesTable.getValueAt(row, 1).toString();
-    		
-	    	this.dispose();
+    		this.dispose();
 	    	DCDeleteScheduleScreen a = new DCDeleteScheduleScreen(scheduleCode);
 	    	a.setVisible(true); 
     		}

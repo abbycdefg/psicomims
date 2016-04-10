@@ -319,7 +319,7 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
     private javax.swing.JLabel updateStockLevelLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String itemCode, String newQuantity ) throws Exception
+    private HashMap doCommand(String command, String itemCode, String newQuantity) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         

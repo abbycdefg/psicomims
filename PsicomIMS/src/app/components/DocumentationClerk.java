@@ -322,6 +322,8 @@ public class DocumentationClerk
     	j.setItemCode(itemCode);
     	j.setTitle(title);
     	j.setQuantity(quantity);
+    	j.setJoStatus("INCOMPLETE");
+    	j.setRemainingOrders(quantity);
     	
     	j = joDao.save(j);
    
@@ -335,6 +337,7 @@ public class DocumentationClerk
     	j.setItemCode(itemCode);
     	j.setTitle(title);
     	j.setQuantity(quantity);
+    	j.setRemainingOrders(quantity);
     	
     	j = joDao.save(j);
     	return j.getId()!= null;    	

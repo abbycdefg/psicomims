@@ -367,7 +367,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
 
     private void joButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-        DCJobOrdersTab a = new DCJobOrdersTab("ad");
+        DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("ad");
         a.setVisible(true);
     }
 

@@ -132,7 +132,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
@@ -501,7 +501,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     		String totalAmount = deliveryReceiptsTable.getValueAt(row, 5).toString();
     		
     		this.dispose();
-        	DCEditDeliveryReceiptScreen a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmount, deliveryDate);
+    		DCEditDeliveryReceiptScreen a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmount, deliveryDate);
         	a.setVisible(true); 
     		}
 
@@ -514,8 +514,8 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     	if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
     		int row = deliveryReceiptsTable.getSelectedRow();
     		String drNumber = deliveryReceiptsTable.getValueAt(row, 0).toString();
-	    	this.dispose();
-	    	DCDeleteDeliveryReceiptScreen a = new DCDeleteDeliveryReceiptScreen(drNumber);
+    		this.dispose();
+    		DCDeleteDeliveryReceiptScreen a = new DCDeleteDeliveryReceiptScreen(drNumber);
 	    	a.setVisible(true); 
     		}
 
