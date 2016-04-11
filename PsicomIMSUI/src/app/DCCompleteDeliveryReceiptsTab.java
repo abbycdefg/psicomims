@@ -83,7 +83,6 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         });
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -104,7 +103,6 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         deliveryReceiptsTable = new javax.swing.JTable();
         navbarPanel = new javax.swing.JPanel();
-        createButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -168,13 +166,13 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
-
-        this.displayAll();
         
+        this.displayAll();
+
         deliveryReceiptsTable.setToolTipText("");
         deliveryReceiptsTable.setCellSelectionEnabled(true);
         deliveryReceiptsTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -215,28 +213,6 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
 
-        createButton.setBackground(new java.awt.Color(205, 0, 69));
-        createButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        createButton.setForeground(new java.awt.Color(255, 255, 255));
-        createButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_createDS.png"))); // NOI18N
-        createButton.setBorder(null);
-        createButton.setBorderPainted(false);
-        createButton.setContentAreaFilled(false);
-        createButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        createButton.setIconTextGap(0);
-        createButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        createButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_createDS2.png"))); // NOI18N
-        createButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                createButtonMouseEntered(evt);
-            }
-        });
-        createButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createButtonActionPerformed(evt);
-            }
-        });
-
         homeButton.setBackground(new java.awt.Color(255, 255, 255));
         homeButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         homeButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -261,17 +237,13 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbarPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(homeButton)
-                    .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(homeButton)
                 .addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
             navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(createButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 362, Short.MAX_VALUE)
+                .addContainerGap(428, Short.MAX_VALUE)
                 .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
@@ -328,7 +300,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-    	if(prevPage.equals("ad")){
+        if(prevPage.equals("ad")){
     		this.dispose();
 	    	ADLogInScreen a = new ADLogInScreen();
 	    	a.setVisible(true);
@@ -341,7 +313,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-    	if (searchField.getText() == null || searchField.getText() == " "){
+        if (searchField.getText() == null || searchField.getText() == " "){
             this.displayAll();
         }
         else{
@@ -399,18 +371,8 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
-    private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_createButtonMouseEntered
-
-    private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-    	this.dispose();
-    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
-    	a.setVisible(true);
-    }//GEN-LAST:event_createButtonActionPerformed
-
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-    	if(prevPage.equals("ad")){
+        if(prevPage.equals("ad")){
     		this.dispose();
 	    	ADHomeScreen a = new ADHomeScreen();
 	    	a.setVisible(true);
@@ -459,7 +421,6 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel copyrightLabel1;
-    private javax.swing.JButton createButton;
     private static javax.swing.JTable deliveryReceiptsTable;
     private javax.swing.JLabel greetingLabel;
     private javax.swing.JButton homeButton;
@@ -472,7 +433,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel1;
     // End of variables declaration//GEN-END:variables
-    
+
     public static String getColumnData(int n){
     	int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
     	int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
@@ -536,5 +497,4 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable.setModel(model);
         deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
-    
 }

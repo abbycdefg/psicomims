@@ -10,16 +10,9 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.io.*;
+import java.sql.*;
+import java.util.*;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -41,16 +34,17 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 	String prevPage;
 	private String quantityCount;
 	private String poNumber;
-	
+
     /**
      * Creates new form DCIncompleteDeliveryReceiptsTab
      */
     public DCIncompleteDeliveryReceiptsTab(String page) {
         initComponents();
         
+
         this.setExtendedState(MAXIMIZED_BOTH);
         prevPage = page;
-        
+
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -92,7 +86,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         });
     }
 
-    public DCIncompleteDeliveryReceiptsTab(String page, String poNumber1) {
+	public DCIncompleteDeliveryReceiptsTab(String page, String poNumber1) {
         initComponents();
         
         prevPage = page;
@@ -141,7 +135,6 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         System.out.println(poNumber);
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -165,7 +158,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         homeButton = new javax.swing.JButton();
         exportButton = new javax.swing.JButton();
         completeButton = new javax.swing.JButton();
-        setCompleteButton = new javax.swing.JButton();
+        createDSButton = new javax.swing.JButton();
         greetingLabel = new javax.swing.JLabel();
         signOutButton = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
@@ -186,13 +179,13 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
-
+       
         this.displayAll();
-        
+
         deliveryReceiptsTable.setToolTipText("");
         deliveryReceiptsTable.setCellSelectionEnabled(true);
         deliveryReceiptsTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -363,21 +356,21 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             }
         });
 
-        setCompleteButton.setBackground(new java.awt.Color(255, 255, 255));
-        setCompleteButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        setCompleteButton.setForeground(new java.awt.Color(255, 255, 255));
-        setCompleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_complete.png"))); // NOI18N
-        setCompleteButton.setAlignmentY(0.0F);
-        setCompleteButton.setBorder(null);
-        setCompleteButton.setBorderPainted(false);
-        setCompleteButton.setContentAreaFilled(false);
-        setCompleteButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        setCompleteButton.setIconTextGap(0);
-        setCompleteButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        setCompleteButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_complete2.png"))); // NOI18N
-        setCompleteButton.addActionListener(new java.awt.event.ActionListener() {
+        createDSButton.setBackground(new java.awt.Color(255, 255, 255));
+        createDSButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        createDSButton.setForeground(new java.awt.Color(255, 255, 255));
+        createDSButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_createDS.png"))); // NOI18N
+        createDSButton.setAlignmentY(0.0F);
+        createDSButton.setBorder(null);
+        createDSButton.setBorderPainted(false);
+        createDSButton.setContentAreaFilled(false);
+        createDSButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        createDSButton.setIconTextGap(0);
+        createDSButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        createDSButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_createDS2.png"))); // NOI18N
+        createDSButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setCompleteButtonActionPerformed(evt);
+                createDSButtonActionPerformed(evt);
             }
         });
 
@@ -398,7 +391,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
                             .addComponent(exportButton, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(completeButton)
-                    .addComponent(setCompleteButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(createDSButton, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
@@ -408,15 +401,15 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
                 .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(createButton)
-                .addGap(83, 83, 83)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(createDSButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
                 .addComponent(viewButton)
                 .addGap(18, 18, 18)
                 .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(setCompleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -520,14 +513,15 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_createButtonMouseEntered
 
+    //create DR
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-    	this.dispose();
+        this.dispose();
     	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen();
     	a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-    	if (deliveryReceiptsTable.getSelectedColumn() == 0){
+        if (deliveryReceiptsTable.getSelectedColumn() == 0){
     		
     		String drNumber = DCIncompleteDeliveryReceiptsTab.getColumnData(0);
 			String dateDelivery = DCIncompleteDeliveryReceiptsTab.getColumnData(4);
@@ -543,7 +537,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-    	if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
+        if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
     		int row = deliveryReceiptsTable.getSelectedRow();
     		String drNumber = deliveryReceiptsTable.getValueAt(row, 0).toString();
     		String dateToday = deliveryReceiptsTable.getValueAt(row, 1).toString();
@@ -563,7 +557,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-    	if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
+        if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
     		int row = deliveryReceiptsTable.getSelectedRow();
     		String drNumber = deliveryReceiptsTable.getValueAt(row, 0).toString();
     		this.dispose();
@@ -577,7 +571,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-    	if(prevPage.equals("ad")){
+        if(prevPage.equals("ad")){
     		this.dispose();
 	    	ADHomeScreen a = new ADHomeScreen();
 	    	a.setVisible(true);
@@ -590,7 +584,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
-    	//Blank workbook
+        //Blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook(); 
          
         //Create a blank sheet
@@ -636,7 +630,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_exportButtonActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-    	if(prevPage.equals("ad")){
+        if(prevPage.equals("ad")){
     		this.dispose();
 	    	ADLogInScreen a = new ADLogInScreen();
 	    	a.setVisible(true);
@@ -653,7 +647,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-    	if (searchField.getText() == null || searchField.getText() == " "){
+        if (searchField.getText() == null || searchField.getText() == " "){
             this.displayAll();
         }
         else{
@@ -712,13 +706,13 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
-    	this.dispose();
+        this.dispose();
     	DCCompleteDeliveryReceiptsTab a = new DCCompleteDeliveryReceiptsTab("");
     	a.setVisible(true);
     }//GEN-LAST:event_completeButtonActionPerformed
 
-    private void setCompleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCompleteButtonActionPerformed
-    	HashMap map;    	
+    private void createDSButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDSButtonActionPerformed
+        HashMap map;    	
     	if (deliveryReceiptsTable.getSelectedColumn() == 0){
     		try{
     			
@@ -796,7 +790,12 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         
         deliveryReceiptsTable.setModel(model);
         deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    }//GEN-LAST:event_setCompleteButtonActionPerformed
+    
+        this.dispose();
+    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
+    	a.setVisible(true);
+
+    }//GEN-LAST:event_createDSButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -837,6 +836,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JButton completeButton;
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JButton createButton;
+    private javax.swing.JButton createDSButton;
     private javax.swing.JButton deleteButton;
     private static javax.swing.JTable deliveryReceiptsTable;
     private javax.swing.JButton editButton;
@@ -848,13 +848,12 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JPanel navbarPanel;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchField;
-    private javax.swing.JButton setCompleteButton;
     private javax.swing.JButton signOutButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
-    
+
     public static String getColumnData(int n){
     	int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
     	int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;

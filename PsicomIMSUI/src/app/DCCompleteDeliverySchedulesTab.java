@@ -3,14 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package additional;
+package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,11 +31,16 @@ import java.util.Map;
  */
 public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCCompleteDeliverySchedulesTab
      */
-    public DCCompleteDeliverySchedulesTab() {
+    public DCCompleteDeliverySchedulesTab(String page) {
         initComponents();
+        
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -98,7 +116,7 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
         homeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Complete Deliverie Schedules");
+        setTitle("Complete Delivery Schedules");
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/VS2.1.png"))); // NOI18N
 
@@ -154,7 +172,7 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         titleLabel1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         titleLabel1.setForeground(new java.awt.Color(32, 55, 73));
@@ -277,32 +295,9 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
         deliverySchedulesTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliverySchedulesTable.setForeground(new java.awt.Color(255, 255, 255));
-        deliverySchedulesTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+                
+        this.displayAll("", "");
+        
         deliverySchedulesTable.setToolTipText("");
         deliverySchedulesTable.setCellSelectionEnabled(true);
         deliverySchedulesTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -427,7 +422,16 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADLogInScreen a = new ADLogInScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCLogInScreen a = new DCLogInScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -435,11 +439,81 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+    	if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll("", "");
+        }
+        else{
+        	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String date = "";
+            String scheduleCode = "";
+            String outlet = "";
+            String deliveryReceiptCode = "";
+            
+            Date dateToday = Calendar.getInstance().getTime();        
+            DateFormat d = new SimpleDateFormat("MM/dd/yyyy");
+            String dateTodayStr = d.format(dateToday);
+            
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM delivery_schedule WHERE date LIKE '%" + searchField.getText() + "%' OR delivery_receipt_code LIKE '%" + searchField.getText() + "%' OR schedule_code LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                	date = rs.getString("date");
+                	scheduleCode = rs.getString("delivery_receipt_code");
+                	outlet = rs.getString("outlet");
+                	deliveryReceiptCode = rs.getString("schedule_code");
+                	
+                	Date givenDate = d.parse(date);
+    				boolean before = givenDate.before(d.parse(dateTodayStr));
+    				
+    				if (before == true){
+    					model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+    				}
+    				i++;
+                }
+                
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            deliverySchedulesTable.setModel(model);
+            deliverySchedulesTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-        // TODO add your handling code here:
+    	if(prevPage.equals("ad")){
+    		this.dispose();
+	    	ADHomeScreen a = new ADHomeScreen();
+	    	a.setVisible(true);
+    	}
+    	else{
+	    	this.dispose();
+	    	DCHomeScreen a = new DCHomeScreen();
+	    	a.setVisible(true);
+    	}
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void advSearchButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_advSearchButtonMouseEntered
@@ -447,7 +521,30 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
     }//GEN-LAST:event_advSearchButtonMouseEntered
 
     private void advSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advSearchButtonActionPerformed
-        // TODO add your handling code here:
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        if (dsFromChooser1.getDate() != null && dsToChooser1.getDate() != null)
+        {
+	        java.util.Date firstDate = dsFromChooser1.getDate();
+	        String fromDate = df.format(firstDate);
+	        
+	        java.util.Date secondDate = dsToChooser1.getDate();
+	        String toDate = df.format(secondDate);
+	        if(!fromDate.equals("") && !toDate.equals("")) {
+	       	 
+	            displayAll(fromDate, toDate);
+	        }
+        }
+        
+        else if(dsPerDayChooser1.getDate() != null)
+        {
+	         java.util.Date dayDate = dsPerDayChooser1.getDate();
+	         String dayDateStr = df.format(dayDate);
+	
+	          if (!dayDateStr.equals(""))
+	         {
+	        	 displayAll(dayDateStr, "");
+	         }
+        }
     }//GEN-LAST:event_advSearchButtonActionPerformed
 
     /**
@@ -480,7 +577,7 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCCompleteDeliverySchedulesTab().setVisible(true);
+                new DCCompleteDeliverySchedulesTab("").setVisible(true);
             }
         });
     }
@@ -509,4 +606,126 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel1;
     // End of variables declaration//GEN-END:variables
+    
+    public void displayAll(String date1, String date2){
+    	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String date = "";
+        String scheduleCode = "";
+        String outlet = "";
+        String deliveryReceiptCode = "";
+        
+        Date dateToday = Calendar.getInstance().getTime();        
+        DateFormat d = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayStr = d.format(dateToday);
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+        	pst = con.prepareStatement("SELECT * FROM delivery_schedule");
+            ResultSet rs = pst.executeQuery();
+        	int i = 0;
+            
+            	if(!date1.equals("") && date2.equals("")){
+            		while (rs.next()) {            	                   	        
+	            		if(date1.equals(rs.getString("date")))
+	            		{
+            			
+            				date = rs.getString("date");       	
+            				scheduleCode = rs.getString("schedule_code");
+            				outlet = rs.getString("outlet");
+            				deliveryReceiptCode = rs.getString("delivery_receipt_code");
+            				
+            				Date givenDate = d.parse(date);
+            				boolean before = givenDate.before(d.parse(dateTodayStr));
+            				
+            				if (before == true){
+            					model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+            				}
+            				i++;
+            			
+	            		}
+            		}
+            	}
+            		
+        		else if( !date1.equals("") && !date2.equals("")){
+        			while (rs.next()) {        				
+            		Date dateTo = dsToChooser1.getDate();
+            		Date dateFrom = dsFromChooser1.getDate();
+            		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            		Date thisDate = df.parse(rs.getString("date"));
+            			if(dateFrom.compareTo(thisDate) * thisDate.compareTo(dateTo) > 0)
+                		{
+            				
+            				date = rs.getString("date");       	
+            				scheduleCode = rs.getString("schedule_code");
+            				outlet = rs.getString("outlet");
+            				deliveryReceiptCode = rs.getString("delivery_receipt_code");
+            				
+            				Date givenDate = d.parse(date);
+            				boolean before = givenDate.before(d.parse(dateTodayStr));
+            				
+            				if (before == true){
+            					model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+            				}
+            				i++;
+                		}
+            		}
+        		}
+            	
+        		else {
+        			while (rs.next()) {
+            			date = rs.getString("date");       	
+                    	scheduleCode = rs.getString("schedule_code");
+                    	outlet = rs.getString("outlet");
+                    	deliveryReceiptCode = rs.getString("delivery_receipt_code");
+                    	
+                    	Date givenDate = d.parse(date);
+        				boolean before = givenDate.before(d.parse(dateTodayStr));
+        				
+        				if (before == true){
+        					model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+        				}
+        				i++;
+        			}
+        		}
+            	
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        deliverySchedulesTable = new JTable(model);
+        deliverySchedulesTable.setModel(model);
+        deliverySchedulesTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        deliverySchedulesTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        deliverySchedulesTable.setForeground(new java.awt.Color(255, 255, 255));
+        deliverySchedulesTable.setForeground(Color.BLACK);      
+        deliverySchedulesTable.setToolTipText("");
+        deliverySchedulesTable.setCellSelectionEnabled(true);
+        deliverySchedulesTable.setGridColor(new java.awt.Color(204, 204, 255));
+        deliverySchedulesTable.setRequestFocusEnabled(false);
+        deliverySchedulesTable.setRowHeight(18);
+        deliverySchedulesTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setColumnHeaderView(deliverySchedulesTable.getTableHeader());
+        jScrollPane1.setViewportView(deliverySchedulesTable);
+    }
 }

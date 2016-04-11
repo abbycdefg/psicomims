@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -139,6 +140,8 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
         deliverySchedulesTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliverySchedulesTable.setForeground(new java.awt.Color(255, 255, 255));
         
+        this.displayAll("", "");
+        
         deliverySchedulesTable.setToolTipText("");
         deliverySchedulesTable.setCellSelectionEnabled(true);
         deliverySchedulesTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -166,7 +169,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
         dsToLabel1.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         dsToLabel1.setForeground(new java.awt.Color(51, 51, 51));
         dsToLabel1.setText("to");
-
+        
         advSearchButton.setBackground(new java.awt.Color(205, 0, 69));
         advSearchButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         advSearchButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -548,15 +551,15 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         if (dsFromChooser1.getDate() != null && dsToChooser1.getDate() != null)
         {
-        java.util.Date firstDate = dsFromChooser1.getDate();
-        String fromDate = df.format(firstDate);
-        
-        java.util.Date secondDate = dsToChooser1.getDate();
-        String toDate = df.format(secondDate);
-        if(!fromDate.equals("") && !toDate.equals("")) {
-       	 
-            displayAll(fromDate, toDate);
-        }
+	        java.util.Date firstDate = dsFromChooser1.getDate();
+	        String fromDate = df.format(firstDate);
+	        
+	        java.util.Date secondDate = dsToChooser1.getDate();
+	        String toDate = df.format(secondDate);
+	        if(!fromDate.equals("") && !toDate.equals("")) {
+	       	 
+	            displayAll(fromDate, toDate);
+	        }
         }
         
         else if(dsPerDayChooser1.getDate() != null)
@@ -651,6 +654,10 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
             String outlet = "";
             String deliveryReceiptCode = "";
             
+            Date dateToday = Calendar.getInstance().getTime();        
+            DateFormat d = new SimpleDateFormat("MM/dd/yyyy");
+            String dateTodayStr = d.format(dateToday);
+            
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
@@ -662,8 +669,15 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
                 	scheduleCode = rs.getString("delivery_receipt_code");
                 	outlet = rs.getString("outlet");
                 	deliveryReceiptCode = rs.getString("schedule_code");
-                    model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
-                    i++;
+                	
+                	Date givenDate = d.parse(date);
+    				boolean after = givenDate.after(d.parse(dateTodayStr));
+    				boolean same = givenDate.equals(d.parse(dateTodayStr));
+    				    				
+    				if (after == true || same == true){
+    					model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+    				}
+    				i++;
                 }
                 
                 if (i < 1) {
@@ -707,7 +721,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
     	this.dispose();
-        DCCompleteDeliverySchedulesTab a = new DCCompleteDeliverySchedulesTab();
+        DCCompleteDeliverySchedulesTab a = new DCCompleteDeliverySchedulesTab("");
         a.setVisible(true);
     }//GEN-LAST:event_completeButtonActionPerformed
 
@@ -790,6 +804,10 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
         String outlet = "";
         String deliveryReceiptCode = "";
         
+        Date dateToday = Calendar.getInstance().getTime();        
+        DateFormat d = new SimpleDateFormat("MM/dd/yyyy");
+        String dateTodayStr = d.format(dateToday);
+        
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
@@ -798,7 +816,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
         	int i = 0;
             
             	if(!date1.equals("") && date2.equals("")){
-            		while (rs.next()) {
+            		while (rs.next()) {            	                   	        
 	            		if(date1.equals(rs.getString("date")))
 	            		{
             			
@@ -806,42 +824,63 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
             				scheduleCode = rs.getString("schedule_code");
             				outlet = rs.getString("outlet");
             				deliveryReceiptCode = rs.getString("delivery_receipt_code");
-            				model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});		
+            				
+            				Date givenDate = d.parse(date);
+            				boolean after = givenDate.after(d.parse(dateTodayStr));
+            				boolean same = givenDate.equals(d.parse(dateTodayStr));
+            				
+            				if (after == true || same == true){
+            					model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+            				}
             				i++;
             			
 	            		}
             		}
             	}
             		
-            		else if( !date1.equals("") && !date2.equals(""))
-            		{
-            			while (rs.next()) {
-	            		Date dateTo = dsToChooser1.getDate();
-	            		Date dateFrom = dsFromChooser1.getDate();
-	            		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-	            		Date thisDate = df.parse(rs.getString("date"));
-	            			if(dateFrom.compareTo(thisDate) * thisDate.compareTo(dateTo) > 0)
-	                		{
-	            				
-	            				date = rs.getString("date");       	
-	            				scheduleCode = rs.getString("schedule_code");
-	            				outlet = rs.getString("outlet");
-	            				deliveryReceiptCode = rs.getString("delivery_receipt_code");
-	            				model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
-	            				i++;
-	                		}
+        		else if( !date1.equals("") && !date2.equals("")){
+        			while (rs.next()) {        				
+            		Date dateTo = dsToChooser1.getDate();
+            		Date dateFrom = dsFromChooser1.getDate();
+            		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            		Date thisDate = df.parse(rs.getString("date"));
+            			if(dateFrom.compareTo(thisDate) * thisDate.compareTo(dateTo) > 0)
+                		{
+            				
+            				date = rs.getString("date");       	
+            				scheduleCode = rs.getString("schedule_code");
+            				outlet = rs.getString("outlet");
+            				deliveryReceiptCode = rs.getString("delivery_receipt_code");
+            				
+            				Date givenDate = d.parse(date);
+            				boolean after = givenDate.after(d.parse(dateTodayStr));
+            				boolean same = givenDate.equals(d.parse(dateTodayStr));
+            				
+            				if (after == true || same == true){
+            					model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+            				}
+            				i++;
                 		}
             		}
-            		else {
-            			while (rs.next()) {
-	            			date = rs.getString("date");       	
-	                    	scheduleCode = rs.getString("schedule_code");
-	                    	outlet = rs.getString("outlet");
-	                    	deliveryReceiptCode = rs.getString("delivery_receipt_code");
-	                        model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
-	                        i++;
-            			}
-            		}
+        		}
+            	
+        		else {
+        			while (rs.next()) {
+            			date = rs.getString("date");       	
+                    	scheduleCode = rs.getString("schedule_code");
+                    	outlet = rs.getString("outlet");
+                    	deliveryReceiptCode = rs.getString("delivery_receipt_code");
+                    	
+                    	Date givenDate = d.parse(date);
+        				boolean after = givenDate.after(d.parse(dateTodayStr));
+        				boolean same = givenDate.equals(d.parse(dateTodayStr));
+        				
+        				if (after == true || same == true){
+        					model.addRow(new Object[]{date, scheduleCode, outlet, deliveryReceiptCode});
+        				}
+        				i++;
+        			}
+        		}
             	
             if (i < 1) {
                 JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
