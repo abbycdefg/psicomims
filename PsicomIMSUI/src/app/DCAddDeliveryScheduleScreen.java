@@ -321,7 +321,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
             	 if( go == true){
                  map = doCommand("addDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
              	this.dispose();
-             	DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("");
+             	DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
              	a.setVisible(true);
             	 }
                  
@@ -337,7 +337,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
    	 this.dispose();
-     DCDeliverySchedulesTab a = new DCDeliverySchedulesTab("page");
+     DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("page");
      a.setVisible(true);
     }
 
