@@ -391,7 +391,12 @@ public class ADOutletsTab extends javax.swing.JFrame {
     	else{
 	    	String[] columnNames = {"OUTLET ID", "OUTLETS", "DATE CREATED"};
 	
-	        DefaultTableModel model = new DefaultTableModel();
+	    	DefaultTableModel model = new DefaultTableModel(){
+	        	public boolean isCellEditable(int row, int column)
+	        	 {
+	        	     return false;
+	        	 }
+	        };
 	        model.setColumnIdentifiers(columnNames);
 	        
 	    	PreparedStatement pst;
@@ -558,7 +563,12 @@ public class ADOutletsTab extends javax.swing.JFrame {
     public void displayAll(){
     	String[] columnNames = {"OUTLET ID", "OUTLETS", "DATE CREATED"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;

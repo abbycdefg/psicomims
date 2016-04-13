@@ -393,7 +393,12 @@ public class ADUsersTab extends javax.swing.JFrame {
     	else{
 	    	String[] columnNames = {"USERNAME", "PASSWORD", "DATE CREATED"};
 	
-	        DefaultTableModel model = new DefaultTableModel();
+	    	DefaultTableModel model = new DefaultTableModel(){
+	        	public boolean isCellEditable(int row, int column)
+	        	 {
+	        	     return false;
+	        	 }
+	        };
 	        model.setColumnIdentifiers(columnNames);
 	        
 	    	PreparedStatement pst;
@@ -502,7 +507,12 @@ public class ADUsersTab extends javax.swing.JFrame {
     public void displayAll(){
     	String[] columnNames = {"USERNAME", "PASSWORD", "DATE CREATED"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;

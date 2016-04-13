@@ -357,7 +357,70 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        // TODO add your handling code here:
+    	if (searchField.getText() == null || searchField.getText() == " "){
+            this.displayAll();
+        }
+        else{
+        	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+
+        	DefaultTableModel model = new DefaultTableModel(){
+            	public boolean isCellEditable(int row, int column)
+            	 {
+            	     return false;
+            	 }
+            };
+            model.setColumnIdentifiers(columnNames);
+            
+            PreparedStatement pst;
+            Connection con;
+            
+            String itemCode = "";
+            String title = "";
+            String quantity = "";
+            String location = "";
+            String poId = "";
+            String status = "";
+            String spoId = "";
+
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+               	pst = con.prepareStatement("SELECT * FROM psicomims.book WHERE id LIKE '%" + searchField.getText() + "%' OR book_id LIKE '%"  + searchField.getText() + "%' OR title LIKE '%"  + searchField.getText() + "%' OR quantity LIKE '%"  + searchField.getText() + "%' OR location LIKE '%"  + searchField.getText() + "%' OR po_id LIKE '%" + searchField.getText() + "%'");
+            	ResultSet rs = pst.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                    title = rs.getString("title");
+                    location = rs.getString("location");
+                    itemCode = rs.getString("book_id");
+                    quantity = rs.getString("quantity");
+                    poId = rs.getString("po_id");
+                    status = rs.getString("status");
+                    spoId = rs.getString("id");
+                    model.addRow(new Object[]{spoId, itemCode, title, quantity, location, poId, status});
+                    i++;
+                }
+                
+                if (i < 1){
+                
+                    JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+                } 
+                
+                else {
+                    System.out.println(i + " Records Found");
+                }
+
+                      
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+	        ordersTable.setModel(model);
+	        ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
@@ -391,7 +454,12 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     	
     	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
@@ -477,7 +545,12 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     	
     	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
@@ -594,7 +667,12 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     public void displayAll(){
     	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;

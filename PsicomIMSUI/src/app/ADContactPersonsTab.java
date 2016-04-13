@@ -417,7 +417,12 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
     	else{
         	String[] columnNames = {"CONTACT PERSON ID", "CONTACT PERSONS", "DATE CREATED"};
 
-            DefaultTableModel model = new DefaultTableModel();
+        	DefaultTableModel model = new DefaultTableModel(){
+            	public boolean isCellEditable(int row, int column)
+            	 {
+            	     return false;
+            	 }
+            };
             model.setColumnIdentifiers(columnNames);
             
             PreparedStatement pst;
@@ -549,7 +554,12 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
     public void displayAll(){
     	String[] columnNames = {"CONTACT PERSON ID", "CONTACT PERSONS", "DATE CREATED"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;

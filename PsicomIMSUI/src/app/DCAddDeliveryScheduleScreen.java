@@ -337,7 +337,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
    	 this.dispose();
-     DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("page");
+     DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
      a.setVisible(true);
     }
 

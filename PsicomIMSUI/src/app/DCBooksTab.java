@@ -145,8 +145,10 @@ public class DCBooksTab extends javax.swing.JFrame {
 
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(255, 255, 255));
-        this.displayAll();
         
+        
+        this.displayAll();
+               
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -166,26 +168,28 @@ public class DCBooksTab extends javax.swing.JFrame {
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanelLayout.setHorizontalGroup(
-        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
         		.addGroup(tablePanelLayout.createSequentialGroup()
         			.addGap(18)
-        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
-        				.addComponent(copyrightLabel)
-        				.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE))
-        			.addGap(20))
-        		.addGroup(Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
+        			.addComponent(copyrightLabel)
+        			.addContainerGap(438, Short.MAX_VALUE))
+        		.addGroup(tablePanelLayout.createSequentialGroup()
         			.addGap(449)
         			.addComponent(titleLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         			.addGap(190))
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(28)
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         tablePanelLayout.setVerticalGroup(
         	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
         		.addGroup(tablePanelLayout.createSequentialGroup()
         			.addGap(22)
         			.addComponent(titleLabel)
-        			.addGap(27)
+        			.addGap(41)
         			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-        			.addGap(25)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
         			.addComponent(copyrightLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
         			.addGap(7))
         );
@@ -474,7 +478,12 @@ public class DCBooksTab extends javax.swing.JFrame {
         else{
         	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "AUTHOR", "RELEASE DATE"};
 
-            DefaultTableModel model = new DefaultTableModel();
+        	DefaultTableModel model = new DefaultTableModel(){
+            	public boolean isCellEditable(int row, int column)
+            	 {
+            	     return false;
+            	 }
+            };
             model.setColumnIdentifiers(columnNames);
             
             PreparedStatement pst;
@@ -630,7 +639,12 @@ public class DCBooksTab extends javax.swing.JFrame {
     public void displayAll(){
     	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "AUTHOR", "RELEASE DATE", "QUANTITY", "THRESHOLD"};
 
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
@@ -691,10 +705,12 @@ public class DCBooksTab extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         
         booksTable = new JTable(model);
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        
     }
    
  

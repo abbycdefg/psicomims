@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,6 +23,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  *
@@ -29,17 +33,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
-	String prevPage;
-	private String quantityCount;
-	private String poNumber;
-	
+    String prevPage;
+    private String quantityCount;
+    private String poNumber;
+
     /**
      * Creates new form DCCompleteDeliveryReceiptsTab
      */
     public DCCompleteDeliveryReceiptsTab(String page) {
         initComponents();
-        
-        this.setExtendedState(MAXIMIZED_BOTH);
+
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -249,48 +252,48 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(logoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(greetingLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signOutButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(tablePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(logoLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 459, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(greetingLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(signOutButton))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(20))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(signOutButton)
-                            .addComponent(greetingLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(logoLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(signOutButton)
+        						.addComponent(greetingLabel))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(searchButton))))
+        			.addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -301,15 +304,15 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
         if(prevPage.equals("ad")){
-    		this.dispose();
-	    	ADLogInScreen a = new ADLogInScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-	    	this.dispose();
-	    	DCLogInScreen a = new DCLogInScreen();
-	    	a.setVisible(true);
-    	}
+            this.dispose();
+            ADLogInScreen a = new ADLogInScreen();
+            a.setVisible(true);
+        }
+        else{
+            this.dispose();
+            DCLogInScreen a = new DCLogInScreen();
+            a.setVisible(true);
+        }
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
@@ -317,7 +320,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             this.displayAll();
         }
         else{
-        	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+            String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
 
             DefaultTableModel model = new DefaultTableModel();
             model.setColumnIdentifiers(columnNames);
@@ -333,14 +336,14 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             String totalAmount = "";
             
             try {
-            	Class.forName("com.mysql.jdbc.Driver");
-            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
                 pst = con.prepareStatement("SELECT * FROM delivery_receipt  WHERE status LIKE 'COMPLETE' OR delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
-                	drNumber = rs.getString("delivery_receipt_number");
-                	dateToday = rs.getString("date_today");
+                    drNumber = rs.getString("delivery_receipt_number");
+                    dateToday = rs.getString("date_today");
                     deliveryDate = rs.getString("date_delivery");
                     totalAmount = rs.getString("total_amount");
                     outlet = rs.getString("outlet");
@@ -373,15 +376,15 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         if(prevPage.equals("ad")){
-    		this.dispose();
-	    	ADHomeScreen a = new ADHomeScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-	    	this.dispose();
-	    	DCHomeScreen a = new DCHomeScreen();
-	    	a.setVisible(true);
-    	}
+            this.dispose();
+            ADHomeScreen a = new ADHomeScreen();
+            a.setVisible(true);
+        }
+        else{
+            this.dispose();
+            DCHomeScreen a = new DCHomeScreen();
+            a.setVisible(true);
+        }
     }//GEN-LAST:event_homeButtonActionPerformed
 
     /**
@@ -434,15 +437,15 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     // End of variables declaration//GEN-END:variables
 
-    public static String getColumnData(int n){
-    	int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
-    	int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
-    	String selectedCell = (String) deliveryReceiptsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-    	return selectedCell;
+     public static String getColumnData(int n){
+        int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
+        int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
+        String selectedCell = (String) deliveryReceiptsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+        return selectedCell;
     }
     
     public void displayAll(){
-    	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+        String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
@@ -459,15 +462,15 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         String totalAmount = "";
         
         try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
             pst = con.prepareStatement("SELECT * FROM delivery_receipt WHERE status LIKE 'COMPLETE'");
             ResultSet rs = pst.executeQuery();
 
             int i = 0;
             while (rs.next()) {
-            	drNumber = rs.getString("delivery_receipt_number");
-            	dateToday = rs.getString("date_today");
+                drNumber = rs.getString("delivery_receipt_number");
+                dateToday = rs.getString("date_today");
                 deliveryDate = rs.getString("date_delivery");
                 totalAmount = rs.getString("total_amount");
                 outlet = rs.getString("outlet");
