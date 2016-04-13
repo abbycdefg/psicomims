@@ -643,7 +643,12 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
         else{
         	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
 
-            DefaultTableModel model = new DefaultTableModel();
+        	DefaultTableModel model = new DefaultTableModel(){
+            	public boolean isCellEditable(int row, int column)
+            	 {
+            	     return false;
+            	 }
+            };
             model.setColumnIdentifiers(columnNames);
             
             PreparedStatement pst;
@@ -793,7 +798,12 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     public void displayAll(String date1, String date2){
     	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;

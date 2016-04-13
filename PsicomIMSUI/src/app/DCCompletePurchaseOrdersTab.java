@@ -366,7 +366,12 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
         else{
         	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET"};
 
-            DefaultTableModel model = new DefaultTableModel();
+        	DefaultTableModel model = new DefaultTableModel(){
+            	public boolean isCellEditable(int row, int column)
+            	 {
+            	     return false;
+            	 }
+            };
             model.setColumnIdentifiers(columnNames);
             
             PreparedStatement pst;
@@ -485,8 +490,12 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
     public void displayAll(){
     	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET"};
 
-        DefaultTableModel model = new DefaultTableModel();
-        
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;

@@ -654,7 +654,12 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         else{
         	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
 
-            DefaultTableModel model = new DefaultTableModel();
+        	DefaultTableModel model = new DefaultTableModel(){
+            	public boolean isCellEditable(int row, int column)
+            	 {
+            	     return false;
+            	 }
+            };
             model.setColumnIdentifiers(columnNames);
             
             PreparedStatement pst;
@@ -865,7 +870,12 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     public void displayAll(){
     	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;

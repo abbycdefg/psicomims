@@ -326,7 +326,12 @@ public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
          else{
          	String[] columnNames = {"JO NUMBER", "DATE", "ITEM CODE", "TITLE", "STOCKS ON HAND", "QTY ORDERED"};
 
-             DefaultTableModel model = new DefaultTableModel();
+         	 DefaultTableModel model = new DefaultTableModel(){
+            	 public boolean isCellEditable(int row, int column)
+            	 {
+            	      return false;
+            	 }
+             };
              model.setColumnIdentifiers(columnNames);
              
              PreparedStatement pst;
@@ -459,7 +464,12 @@ public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
     public void displayAll(){
     	String[] columnNames = {"JO NUMBER", "DATE", "ITEM CODE", "TITLE", "STOCKS ON HAND", "QTY ORDERED",};
 
-        DefaultTableModel model = new DefaultTableModel();
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
