@@ -31,13 +31,20 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
+	String msgAD = "Administrator";
+	String msgDC = "Documentation Clerk";
 	String prevPage;
 	
     /**
      * Creates new form DCIncompleteDeliverySchedulesTab
      */
     public DCIncompleteDeliverySchedulesTab(String page) {
-        initComponents();
+    	if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	} 
         
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         prevPage = page;
@@ -90,7 +97,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         logoLabel = new javax.swing.JLabel();
         tablePanel = new javax.swing.JPanel();
@@ -481,7 +488,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
+        greetingLabel.setText("Hello, "+ message + " | ");
 
         signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         signOutButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -580,7 +587,15 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
     	this.dispose();
-    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
+    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen("");
+        
+        if (prevPage.equals("")){
+        	a = new DCAddDeliveryScheduleScreen("");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddDeliveryScheduleScreen("ad");;
+        }
+        
         a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
@@ -596,9 +611,17 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     		String outlet = deliverySchedulesTable.getValueAt(row, 2).toString();
     		String deliveryReciptCode = deliverySchedulesTable.getValueAt(row, 3).toString();
     		this.dispose();
-	    	DCEditDeliveryScheduleScreen a = new DCEditDeliveryScheduleScreen(date, scheduleCode, outlet, deliveryReciptCode);
-	    	a.setVisible(true); 
-    		}
+	    	DCEditDeliveryScheduleScreen a = new DCEditDeliveryScheduleScreen(date, scheduleCode, outlet, deliveryReciptCode, "");
+	    	
+	         if (prevPage.equals("")){
+	         	a = new DCEditDeliveryScheduleScreen(date, scheduleCode, outlet, deliveryReciptCode, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCEditDeliveryScheduleScreen(date, scheduleCode, outlet, deliveryReciptCode, "ad");
+	         }
+            
+            a.setVisible(true);
+    	}
 
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -610,8 +633,16 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     		int row = deliverySchedulesTable.getSelectedRow();
     		String scheduleCode = deliverySchedulesTable.getValueAt(row, 1).toString();
     		this.dispose();
-	    	DCDeleteScheduleScreen a = new DCDeleteScheduleScreen(scheduleCode);
-	    	a.setVisible(true); 
+	    	DCDeleteScheduleScreen a = new DCDeleteScheduleScreen(scheduleCode, "");
+	    	
+	         if (prevPage.equals("")){
+	        	 a = new DCDeleteScheduleScreen(scheduleCode, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	        	 a = new DCDeleteScheduleScreen(scheduleCode, "ad");
+	         }
+            
+            a.setVisible(true);
     		}
 
     	else{
@@ -727,7 +758,16 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
     	this.dispose();
         DCCompleteDeliverySchedulesTab a = new DCCompleteDeliverySchedulesTab("");
-        a.setVisible(true);
+               
+        if (prevPage.equals("")){
+        	a = new DCCompleteDeliverySchedulesTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCCompleteDeliverySchedulesTab("ad");
+        	
+    	}
+        
+    	a.setVisible(true);
     }//GEN-LAST:event_completeButtonActionPerformed
 
     /**

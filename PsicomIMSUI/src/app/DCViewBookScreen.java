@@ -24,6 +24,8 @@ import com.mysql.jdbc.PreparedStatement;
  */
 public class DCViewBookScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCViewBookScreen
      */
@@ -33,8 +35,10 @@ public class DCViewBookScreen extends javax.swing.JFrame {
 	private static String author;
 	private static String quantity;
 	private static String location;
-    public DCViewBookScreen() {
+    public DCViewBookScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -49,8 +53,10 @@ public class DCViewBookScreen extends javax.swing.JFrame {
         quantityValueLabel.setText("");
         locationValueLabel.setText("");
     }
-    public DCViewBookScreen(String itemCode1) {
+    public DCViewBookScreen(String itemCode1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -255,7 +261,15 @@ public class DCViewBookScreen extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
     	DCBooksTab a = new DCBooksTab("");
-    	a.setVisible(true);
+    	
+        if (prevPage.equals("")){
+        	a = new DCBooksTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCBooksTab("ad");
+     	}
+        
+        a.setVisible(true);  
     }
 
     /**
@@ -288,7 +302,7 @@ public class DCViewBookScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCViewBookScreen().setVisible(true);
+                new DCViewBookScreen("").setVisible(true);
             }
         });
     }
@@ -326,7 +340,7 @@ public class DCViewBookScreen extends javax.swing.JFrame {
 				int i = 0;
 			    
 				while (rs.next()) {
-					if(!rs.getString("item_code").equals(itemCode1))
+					if(rs.getString("item_code").equals(itemCode1))
 					{
 				    	 title = rs.getString("title");
 				    	 price = rs.getString("price");

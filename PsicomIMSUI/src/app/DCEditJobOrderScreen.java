@@ -44,6 +44,8 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
  */
 public class DCEditJobOrderScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCEditJobOrderScreen
      */
@@ -51,8 +53,10 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
 	private List<String> itemCodeList  = new ArrayList<String>();
 	private String []ic;
 	private String bookTitle = "";
-    public DCEditJobOrderScreen() {
+    public DCEditJobOrderScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -64,8 +68,10 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCEditJobOrderScreen(String joNumber1, String date1, String itemCode1, String title1, String quantity1) {
+    public DCEditJobOrderScreen(String joNumber1, String date1, String itemCode1, String title1, String quantity1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -321,7 +327,7 @@ public class DCEditJobOrderScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_quantityFieldActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
-HashMap map;
+    	HashMap map;
         
         try{
         	String joNumber = "";
@@ -374,7 +380,15 @@ HashMap map;
 	                map = doCommand("editJobOrder", joNumber, dateTodayStr, itemCode, title, quantity);
 	            	this.dispose();
 	            	DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
-	            	a.setVisible(true);
+	            	
+		   	         if (prevPage.equals("")){
+		   	         	a = new DCIncompleteJobOrdersTab("");
+		   	         }
+		   	         else if (prevPage.equals("ad")){
+		   	         	a = new DCIncompleteJobOrdersTab("ad");
+		   	         }
+	                
+	                a.setVisible(true);
             	}
                 
             }
@@ -390,7 +404,15 @@ HashMap map;
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
         DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
-        a.setVisible(true);
+      
+        if (prevPage.equals("")){
+        	a = new DCIncompleteJobOrdersTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompleteJobOrdersTab("ad");
+     	}
+        
+        a.setVisible(true);  
     }
 
     /**
@@ -423,7 +445,7 @@ HashMap map;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCEditJobOrderScreen().setVisible(true);
+                new DCEditJobOrderScreen("").setVisible(true);
             }
         });
     }

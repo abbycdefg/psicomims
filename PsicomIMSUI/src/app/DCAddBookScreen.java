@@ -10,16 +10,20 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
 import java.awt.Frame;
 import java.awt.ComponentOrientation;
 import java.awt.Rectangle;
 import java.awt.Cursor;
+
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 
 /*
@@ -34,10 +38,15 @@ import java.awt.Font;
  */
 public class DCAddBookScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCAddBookScreen
      */
-    public DCAddBookScreen() {
+    public DCAddBookScreen(String page) {
+    	
+    	prevPage = page;
+    	
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	setAlwaysOnTop(true);
     	setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -250,6 +259,14 @@ public class DCAddBookScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
         DCBooksTab a = new DCBooksTab("");
+                
+        if (prevPage.equals("")){
+        	a = new DCBooksTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCBooksTab("ad");
+     	}
+        
         a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -300,10 +317,18 @@ public class DCAddBookScreen extends javax.swing.JFrame {
 
             try{
             	if(go == true) {
-                map = doCommand("addBook", title, itemCode, price, author, releaseDateStr, threshold);
-            	this.dispose();
-            	DCBooksTab a = new DCBooksTab("");
-              	a.setVisible(true);
+	                map = doCommand("addBook", title, itemCode, price, author, releaseDateStr, threshold);
+	            	this.dispose();
+	            	DCBooksTab a = new DCBooksTab("");
+	              	
+	                if (prevPage.equals("")){
+	                	a = new DCBooksTab("");
+	   	         	}
+	   	         	else if (prevPage.equals("ad")){
+	   	         		a = new DCBooksTab("ad");
+	   	         	}
+	                
+	                a.setVisible(true);
             	}
                 
             }
@@ -362,7 +387,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddBookScreen().setVisible(true);
+                new DCAddBookScreen("").setVisible(true);
             }
         });
     }

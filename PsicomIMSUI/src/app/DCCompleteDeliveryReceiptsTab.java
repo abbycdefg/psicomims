@@ -32,6 +32,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
  */
 public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
+	String msgAD = "Administrator";
+	String msgDC = "Documentation Clerk";
 	String prevPage;
 	private String quantityCount;
 	private String poNumber;
@@ -40,7 +42,12 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
      * Creates new form DCCompleteDeliveryReceiptsTab
      */
     public DCCompleteDeliveryReceiptsTab(String page) {
-        initComponents();
+    	if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	}
         
         prevPage = page;
         
@@ -92,7 +99,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         logoLabel = new javax.swing.JLabel();
         greetingLabel = new javax.swing.JLabel();
@@ -114,7 +121,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
+        greetingLabel.setText("Hello, "+ message + " | ");
 
         searchField.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
         searchField.setForeground(new java.awt.Color(153, 153, 153));
@@ -168,7 +175,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));

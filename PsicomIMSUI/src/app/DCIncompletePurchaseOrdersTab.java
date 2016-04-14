@@ -28,13 +28,21 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
 
+	String msgAD = "Administrator";
+	String msgDC = "Documentation Clerk";
 	String prevPage;
 	
     /**
      * Creates new form DCIncompletePurchaseOrdersTab
      */
     public DCIncompletePurchaseOrdersTab(String page) {
-        initComponents();
+    	if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	}  
+    	
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         prevPage = page;
         
@@ -86,7 +94,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         logoLabel = new javax.swing.JLabel();
         tablePanel = new javax.swing.JPanel();
@@ -359,7 +367,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
+        greetingLabel.setText("Hello, "+ message + " | ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -414,8 +422,16 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
     	this.dispose();
-    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen();
-    	a.setVisible(true);
+    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen("");
+    	
+        if (prevPage.equals("")){
+        	a = new DCAddPurchaseOrderScreen("");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddPurchaseOrderScreen("ad");
+        }
+        
+        a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
@@ -425,8 +441,16 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
 			String contactPerson = DCIncompletePurchaseOrdersTab.getColumnData(2);
 			String outlet = DCIncompletePurchaseOrdersTab.getColumnData(3);
 			this.dispose();
-			DCViewPurchaseOrderScreen a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet);
-	        a.setVisible(true);
+			DCViewPurchaseOrderScreen a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet, "");
+	        
+	         if (prevPage.equals("")){
+	         	a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet, "ad");
+	         }
+            
+            a.setVisible(true);
     	}
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -441,8 +465,16 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     		String contactPers = purchaseOrdersTable.getValueAt(row, 2).toString();
     		String outlet = purchaseOrdersTable.getValueAt(row, 3).toString();
     		this.dispose();
-	    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(poNumber, date, contactPers, outlet);
-	    	a.setVisible(true);
+	    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(poNumber, date, contactPers, outlet, "");
+	    	
+	         if (prevPage.equals("")){
+	         	a = new DCEditPurchaseOrderScreen(poNumber, date, contactPers, outlet, "");;
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCEditPurchaseOrderScreen(poNumber, date, contactPers, outlet, "ad");;
+	         }
+            
+            a.setVisible(true);
     		}
 
     	else{
@@ -456,8 +488,16 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
     		System.out.println(poNumber);
     		this.dispose();
-	    	DCDeletePurchaseOrderScreen a = new DCDeletePurchaseOrderScreen(poNumber);
-	    	a.setVisible(true);
+	    	DCDeletePurchaseOrderScreen a = new DCDeletePurchaseOrderScreen(poNumber, "");
+	    	
+	         if (prevPage.equals("")){
+	         	a = new DCDeletePurchaseOrderScreen(poNumber, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCDeletePurchaseOrderScreen(poNumber, "ad");;
+	         }
+            
+            a.setVisible(true);	    	
     	}
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -557,6 +597,15 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
     	this.dispose();
     	DCCompletePurchaseOrdersTab a = new DCCompletePurchaseOrdersTab("");
+    	
+        if (prevPage.equals("")){
+        	a = new DCCompletePurchaseOrdersTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCCompletePurchaseOrdersTab("ad");
+        	
+    	}
+        
     	a.setVisible(true);
     }//GEN-LAST:event_completeButtonActionPerformed
 
@@ -641,6 +690,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
+        PreparedStatement pst2;
         Connection con;
         
         String poNumber = "";
@@ -648,14 +698,17 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
         String contactPerson = "";
         String outlet = "";
         String status = "";
+        String title2 = "";
+        String quantity2 = "";
+        String state2 = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
             pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'INCOMPLETE'");
             ResultSet rs = pst.executeQuery();
-            int i = 0;            
-            
+                      
+            int i = 0;                        
             while (rs.next()) {
                 poNumber = rs.getString("purchase_order_number");
                 date = rs.getString("date_Today");
@@ -664,6 +717,24 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
                 status = rs.getString("po_status");
                 model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
                 i++;
+                
+                //Stock notification
+                pst2 = con.prepareStatement("SELECT * FROM book");
+                ResultSet rs2 = pst2.executeQuery();    
+		        while (rs2.next()) {  		            
+			        title2 = rs2.getString("title");
+			        quantity2 = rs2.getString("quantity");
+			        state2 = rs2.getString("state");
+			        if (Integer.parseInt(quantity2) < Integer.parseInt(rs2.getString("threshold")) && !state2.equals("new")){
+			        	String titleNew = title2;
+			        	if (title2.length() > 11){
+			        		titleNew = title2.substring(0, 13) + "...";
+			        	}
+			        	DCStockNotificationScreen d = new DCStockNotificationScreen(titleNew);
+			        	d.setVisible(true);
+		        }
+		        }
+	              
             }
             
             if (i < 1) {

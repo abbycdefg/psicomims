@@ -53,6 +53,7 @@ import javax.swing.table.TableModel;
  */
 public class DCAddBookToDRScreen extends javax.swing.JFrame {
 
+	String prevPage;
     /**
      * Creates new form DCAddBookToDRScreen
      */
@@ -70,8 +71,10 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
 	private static List<String> booksList = new ArrayList<String>();
 	private static List<String> quantityList = new ArrayList<String>();
 	
-    public DCAddBookToDRScreen() {
+    public DCAddBookToDRScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -83,8 +86,10 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1, String poNumber1) {
+    public DCAddBookToDRScreen(String drNumber1, String dateToday1, String totalAmt1, String dateDelivery1, String poNumber1, String page) {
         initComponents();
+        
+        prevPage = page;
 
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -328,14 +333,30 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
             e.printStackTrace();
         }
     	this.dispose();
-    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, poNumber);
-    	a.setVisible(true);
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, poNumber, "");
+    	
+    	if (prevPage.equals("")){
+        	a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, poNumber, "");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, poNumber, "ad");
+        }
+        
+        a.setVisible(true);
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
-    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, "");
-    	a.setVisible(true);
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, "", "");
+    	
+        if (prevPage.equals("")){
+        	a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, "", "");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddDeliveryReceiptScreen(drNumber, dateToday, totalAmt, dateDelivery, booksList, quantityList, "", "ad");
+        }
+        
+        a.setVisible(true);
     }
 
     /**
@@ -368,7 +389,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddBookToDRScreen().setVisible(true);
+                new DCAddBookToDRScreen("").setVisible(true);
             }
         });
     }

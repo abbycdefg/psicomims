@@ -47,6 +47,8 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
  */
 public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCEditDeliveryScheduleScreen
      */
@@ -58,8 +60,10 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
     private String []dr;
 	private String []ou;
 	private JTextField deliveryReceiptCodeField;
-    public DCEditDeliveryScheduleScreen() {
+    public DCEditDeliveryScheduleScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -71,8 +75,10 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCEditDeliveryScheduleScreen(String date1, String scheduleCode1, String outlet1, String deliveryReciptCode1) {
+    public DCEditDeliveryScheduleScreen(String date1, String scheduleCode1, String outlet1, String deliveryReciptCode1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -325,7 +331,15 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
                 map = doCommand("editDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
              	this.dispose();
              	DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
-             	a.setVisible(true);
+             	
+             	if (prevPage.equals("")){
+             		a = new DCIncompleteDeliverySchedulesTab("");
+             	}
+             	else if (prevPage.equals("ad")){
+             		a = new DCIncompleteDeliverySchedulesTab("ad");
+             	}	
+                
+                a.setVisible(true);
                  
              }
              catch (Exception e){
@@ -338,9 +352,17 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-   	 this.dispose();
-     DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
-     a.setVisible(true);
+    	this.dispose();
+	    DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
+	     
+	 	if (prevPage.equals("")){
+	 		a = new DCIncompleteDeliverySchedulesTab("");
+		}
+	 	else if (prevPage.equals("ad")){
+	 		a = new DCIncompleteDeliverySchedulesTab("ad");
+	  	}
+     
+	 	a.setVisible(true); 
     }
 
     /**
@@ -373,7 +395,7 @@ public class DCEditDeliveryScheduleScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCEditDeliveryScheduleScreen().setVisible(true);
+                new DCEditDeliveryScheduleScreen("").setVisible(true);
             }
         });
     }

@@ -29,20 +29,25 @@ import javax.swing.LayoutStyle.ComponentPlacement;
  */
 public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
 
+	String prevPage;
 	
     /**
      * Creates new form DCViewPurchaseOrderScreen
      */
-    public DCViewPurchaseOrderScreen() {
+    public DCViewPurchaseOrderScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
 
    }
     
-    public DCViewPurchaseOrderScreen(String poNumber, String contactPerson, String outlet) {
+    public DCViewPurchaseOrderScreen(String poNumber, String contactPerson, String outlet, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -183,7 +188,15 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
     	this.dispose();
         DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
-        a.setVisible(true);
+        
+        if (prevPage.equals("")){
+        	a = new DCIncompletePurchaseOrdersTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompletePurchaseOrdersTab("ad");
+     	}
+        
+        a.setVisible(true);  
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
@@ -216,7 +229,7 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCViewPurchaseOrderScreen().setVisible(true);
+                new DCViewPurchaseOrderScreen("").setVisible(true);
             }
         });
     }

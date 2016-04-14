@@ -27,14 +27,22 @@ import javax.swing.table.DefaultTableModel;
  * @author Abby
  */
 public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
-
+	
+	String msgAD = "Administrator";
+	String msgDC = "Documentation Clerk";
 	String prevPage;
 	
     /**
      * Creates new form WCCompletePurchaseOrdersTab
      */
     public DCCompletePurchaseOrdersTab(String page) {
-        initComponents();
+    	if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	}
+        
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         prevPage = page;
         
@@ -86,7 +94,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         logoLabel = new javax.swing.JLabel();
         tablePanel = new javax.swing.JPanel();
@@ -227,7 +235,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
+        greetingLabel.setText("Hello, "+ message + " | ");
 
         signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         signOutButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -325,8 +333,16 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
     	this.dispose();
-    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen();
-    	a.setVisible(true);
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen("");
+    	
+        if (prevPage.equals("")){
+        	a = new DCAddDeliveryReceiptScreen("");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddDeliveryReceiptScreen("ad");
+        }
+        
+        a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed

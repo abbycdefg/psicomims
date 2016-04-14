@@ -17,6 +17,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 
+
+
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
@@ -48,6 +50,8 @@ import javax.swing.JComboBox;
  */
 public class DCAddJobOrderScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCAddJobOrderScreen
      */
@@ -56,8 +60,10 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
 	private String []ic;
 	private String bookTitle = "";
 	
-    public DCAddJobOrderScreen() {
+    public DCAddJobOrderScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -355,7 +361,15 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
 	                map = doCommand("addJobOrder", joNumber, dateTodayStr, itemCode, title, quantity);
 	            	this.dispose();
 	            	DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
-	            	a.setVisible(true);
+	            	
+		   	        if (prevPage.equals("")){
+		   	        	a = new DCIncompleteJobOrdersTab("");
+		   	        }
+		   	        else if (prevPage.equals("ad")){
+		   	        	a = new DCIncompleteJobOrdersTab("ad");
+		   	        }
+	                
+	                a.setVisible(true);
             	}
                 
             }
@@ -371,6 +385,14 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
         DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
+              
+        if (prevPage.equals("")){
+        	a = new DCIncompleteJobOrdersTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompleteJobOrdersTab("ad");
+     	}
+        
         a.setVisible(true);
     }
 
@@ -404,7 +426,7 @@ public class DCAddJobOrderScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddJobOrderScreen().setVisible(true);
+                new DCAddJobOrderScreen("").setVisible(true);
             }
         });
     }

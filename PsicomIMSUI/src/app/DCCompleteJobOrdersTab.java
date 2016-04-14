@@ -39,13 +39,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
 
+	String msgAD = "Administrator";
+	String msgDC = "Documentation Clerk";
 	String prevPage;
 	
     /**
      * Creates new form DCCompleteJobOrdersTab
      */
     public DCCompleteJobOrdersTab(String page) {
-        initComponents();        
+    	if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	}    
         
         this.setExtendedState(MAXIMIZED_BOTH);
         prevPage = page;
@@ -98,7 +105,7 @@ public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         logoLabel = new javax.swing.JLabel();
         greetingLabel = new javax.swing.JLabel();
@@ -120,7 +127,7 @@ public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
+        greetingLabel.setText("Hello, "+ message + " | ");
 
         signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         signOutButton.setForeground(new java.awt.Color(255, 255, 255));
