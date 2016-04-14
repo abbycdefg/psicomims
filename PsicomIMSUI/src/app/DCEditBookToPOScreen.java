@@ -54,6 +54,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
  */
 public class DCEditBookToPOScreen extends javax.swing.JFrame {
 
+	String prevPage;
+
     /**
      * Creates new form DCEditBookToPO
      */
@@ -70,8 +72,10 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
 	private String stocksOnHand;
 	
 	
-    public DCEditBookToPOScreen() {
+    public DCEditBookToPOScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -82,8 +86,10 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
-    public DCEditBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1) {
+    public DCEditBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -279,16 +285,32 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
 ;
         if(go == true)
         {
-        this.dispose();
-    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
-    	a.setVisible(true);
+	        this.dispose();
+	    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+	    	
+	        if (prevPage.equals("")){
+	        	a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+	        }
+	        else if (prevPage.equals("ad")){
+	        	a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "ad");
+	        }
+	        
+	        a.setVisible(true);
         }
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
     	this.dispose();
-     	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
-     	a.setVisible(true);
+     	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+     	
+        if (prevPage.equals("")){
+        	a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "ad");
+        }
+        
+        a.setVisible(true);
     }
 
     /**
@@ -322,7 +344,7 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCEditBookToPOScreen().setVisible(true);
+                new DCEditBookToPOScreen("").setVisible(true);
             }
         });
     }

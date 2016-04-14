@@ -28,6 +28,7 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -38,14 +39,21 @@ import javax.swing.LayoutStyle.ComponentPlacement;
  */
 public class DCBooksTab extends javax.swing.JFrame {
 
+	String msgAD = "Administrator";
+	String msgDC = "Documentation Clerk";
 	String prevPage;
 
     /**
      * Creates new form BookTabDC
      */
     public DCBooksTab(String page) {
-        
-        initComponents();
+      	if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	} 
+    	
         this.setExtendedState(this.MAXIMIZED_BOTH);
         prevPage = page;
         
@@ -97,7 +105,7 @@ public class DCBooksTab extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         logoLabel = new javax.swing.JLabel();
         greetingLabel = new javax.swing.JLabel();
@@ -124,7 +132,7 @@ public class DCBooksTab extends javax.swing.JFrame {
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
+        greetingLabel.setText("Hello, "+ message + " | ");
 
         signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         signOutButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -414,7 +422,15 @@ public class DCBooksTab extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
-    	DCAddBookScreen a = new DCAddBookScreen();
+    	DCAddBookScreen a = new DCAddBookScreen("");
+    	
+    	if (prevPage.equals("")){
+        	a = new DCAddBookScreen("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCAddBookScreen("ad");
+     	}
+    	
     	a.setVisible(true);
     }
 
@@ -422,10 +438,19 @@ public class DCBooksTab extends javax.swing.JFrame {
     	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
+    		
     		this.dispose();
-    		DCViewBookScreen a = new DCViewBookScreen(itemCode);
-	    	a.setVisible(true); 
-    		}
+    		DCViewBookScreen a = new DCViewBookScreen(itemCode, "");
+	    	
+	        if (prevPage.equals("")){
+	        	a = new DCViewBookScreen(itemCode, "");
+	       	}
+	    	else if (prevPage.equals("ad")){
+	    		a = new DCViewBookScreen(itemCode, "ad");
+	     	}
+	        
+	        a.setVisible(true);
+    	}
     }
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -439,9 +464,17 @@ public class DCBooksTab extends javax.swing.JFrame {
     		String threshold = booksTable.getValueAt(row, 6).toString();
     		
     		this.dispose();
-	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold);
-	    	a.setVisible(true); 
-    		}
+	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold, "");
+	    	
+	        if (prevPage.equals("")){
+	        	a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold, "");
+	       	}
+	    	else if (prevPage.equals("ad")){
+	    		a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold, "ad");
+	     	}
+	        
+	        a.setVisible(true);
+    	}
 
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -454,8 +487,16 @@ public class DCBooksTab extends javax.swing.JFrame {
     		String itemCode = booksTable.getValueAt(row, 1).toString();
     		this.dispose();
     		DCDeleteBookScreen a = new DCDeleteBookScreen(itemCode);
-	    	a.setVisible(true); 
-    		}
+	    	
+	    	if (prevPage.equals("")){
+	        	a = new DCDeleteBookScreen(itemCode, "");
+	       	}
+	    	else if (prevPage.equals("ad")){
+	    		a = new DCDeleteBookScreen(itemCode, "ad");
+	     	}
+	    	
+	    	a.setVisible(true);
+    	}
     }
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {

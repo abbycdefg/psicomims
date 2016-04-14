@@ -31,6 +31,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
+	String msgAD = "Administrator";
+	String msgDC = "Documentation Clerk";
 	String prevPage;
 	private String quantityCount;
 	private String poNumber;
@@ -40,8 +42,12 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
      * @wbp.parser.constructor
      */
     public DCIncompleteDeliveryReceiptsTab(String page) {
-        initComponents();
-        
+    	if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	}        
 
         this.setExtendedState(MAXIMIZED_BOTH);
         prevPage = page;
@@ -87,8 +93,13 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         });
     }
 
-	public DCIncompleteDeliveryReceiptsTab(String page, String poNumber1) {
-        initComponents();
+	public DCIncompleteDeliveryReceiptsTab(String poNumber1, String page) {
+		if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	}
         
         prevPage = page;
         
@@ -143,7 +154,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         logoLabel = new javax.swing.JLabel();
         tablePanel = new javax.swing.JPanel();
@@ -180,7 +191,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("\u00A9 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
@@ -419,7 +430,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
+        greetingLabel.setText("Hello, "+ message + " | ");
 
         signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         signOutButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -517,8 +528,16 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     //create DR
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         this.dispose();
-    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen();
-    	a.setVisible(true);
+    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen("");
+    	
+        if (prevPage.equals("")){
+        	a = new DCAddDeliveryReceiptScreen("");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddDeliveryReceiptScreen("ad");
+        }
+        
+        a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
@@ -529,8 +548,16 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 			String totalAmount = DCIncompleteDeliveryReceiptsTab.getColumnData(5);
 			
 			this.dispose();
-	        DCViewDeliveryReceiptScreen a = new DCViewDeliveryReceiptScreen(drNumber, dateDelivery, totalAmount);
-	        a.setVisible(true);
+	        DCViewDeliveryReceiptScreen a = new DCViewDeliveryReceiptScreen(drNumber, dateDelivery, totalAmount, "");
+	        
+	         if (prevPage.equals("")){
+	         	a = new DCViewDeliveryReceiptScreen(drNumber, dateDelivery, totalAmount, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCViewDeliveryReceiptScreen(drNumber, dateDelivery, totalAmount, "ad");
+	         }
+            
+            a.setVisible(true);
     	}
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -548,9 +575,17 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     		String totalAmount = deliveryReceiptsTable.getValueAt(row, 5).toString();
     		
     		this.dispose();
-    		DCEditDeliveryReceiptScreen a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmount, deliveryDate);
-        	a.setVisible(true); 
-    		}
+    		DCEditDeliveryReceiptScreen a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmount, deliveryDate, "");
+        	
+	         if (prevPage.equals("")){
+	         	a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmount, deliveryDate, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCEditDeliveryReceiptScreen(drNumber, dateToday, totalAmount, deliveryDate, "ad");
+	         }
+            
+            a.setVisible(true);
+    	}
 
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -562,8 +597,16 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     		int row = deliveryReceiptsTable.getSelectedRow();
     		String drNumber = deliveryReceiptsTable.getValueAt(row, 0).toString();
     		this.dispose();
-    		DCDeleteDeliveryReceiptScreen a = new DCDeleteDeliveryReceiptScreen(drNumber);
-	    	a.setVisible(true); 
+    		DCDeleteDeliveryReceiptScreen a = new DCDeleteDeliveryReceiptScreen(drNumber, "");
+	    	
+	         if (prevPage.equals("")){
+	         	a = new DCDeleteDeliveryReceiptScreen(drNumber, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCDeleteDeliveryReceiptScreen(drNumber, "ad");
+	         }
+            
+            a.setVisible(true);
     		}
 
     	else{
@@ -713,7 +756,16 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
     private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
         this.dispose();
-    	DCCompleteDeliveryReceiptsTab a = new DCCompleteDeliveryReceiptsTab("");
+        DCCompleteDeliveryReceiptsTab a = new DCCompleteDeliveryReceiptsTab("");
+        
+        if (prevPage.equals("")){
+        	a = new DCCompleteDeliveryReceiptsTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCCompleteDeliveryReceiptsTab("ad");
+        	
+    	}
+        
     	a.setVisible(true);
     }//GEN-LAST:event_completeButtonActionPerformed
 
@@ -798,8 +850,16 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     
         this.dispose();
-    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen();
-    	a.setVisible(true);
+    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen("");
+    	
+        if (prevPage.equals("")){
+        	a = new DCAddDeliveryScheduleScreen("");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddDeliveryScheduleScreen("ad");
+        }
+        
+        a.setVisible(true);
 
     }//GEN-LAST:event_createDSButtonActionPerformed
 

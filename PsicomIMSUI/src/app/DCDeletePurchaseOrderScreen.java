@@ -17,12 +17,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCDeletePurchaseOrderScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCDeletePurchaseOrderScreen
      */
 	private String poNumber;
-    public DCDeletePurchaseOrderScreen() {
+    public DCDeletePurchaseOrderScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -34,8 +38,10 @@ public class DCDeletePurchaseOrderScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCDeletePurchaseOrderScreen(String poNumber1) {
+    public DCDeletePurchaseOrderScreen(String poNumber1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -140,7 +146,15 @@ public class DCDeletePurchaseOrderScreen extends javax.swing.JFrame {
             map = doCommand("deletePurchaseOrder", poNumber);
             this.dispose();
          	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
-         	a.setVisible(true);
+         	
+	         if (prevPage.equals("")){
+	         	a = new DCIncompletePurchaseOrdersTab("");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCIncompletePurchaseOrdersTab("ad");
+	         }
+            
+            a.setVisible(true);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -148,9 +162,17 @@ public class DCDeletePurchaseOrderScreen extends javax.swing.JFrame {
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	 this.dispose();
+    	this.dispose();
       	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
-      	a.setVisible(true);
+      	
+        if (prevPage.equals("")){
+        	a = new DCIncompletePurchaseOrdersTab("");
+       	}
+	     else if (prevPage.equals("ad")){
+	     	a = new DCIncompletePurchaseOrdersTab("ad");
+	     }
+        
+        a.setVisible(true);
     }
 
     /**
@@ -183,7 +205,7 @@ public class DCDeletePurchaseOrderScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeletePurchaseOrderScreen().setVisible(true);
+                new DCDeletePurchaseOrderScreen("").setVisible(true);
             }
         });
     }

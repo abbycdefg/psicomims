@@ -10,11 +10,13 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 
 /*
@@ -29,11 +31,15 @@ import java.awt.Font;
  */
 public class DCEditBookScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCEditBookScreen
      */
-    public DCEditBookScreen() {
+    public DCEditBookScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -48,8 +54,10 @@ public class DCEditBookScreen extends javax.swing.JFrame {
 
 
     
-    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDateStr, String threshold1) {
+    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDateStr, String threshold1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -275,7 +283,15 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
         DCBooksTab a = new DCBooksTab("");
-        a.setVisible(true);
+                
+        if (prevPage.equals("")){
+        	a = new DCBooksTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCBooksTab("ad");
+     	}
+        
+        a.setVisible(true); 
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -326,10 +342,18 @@ public class DCEditBookScreen extends javax.swing.JFrame {
 
              try{
              	if(go == true) {
-                 map = doCommand("editBook", title, itemCode, price, author, releaseDateStr, threshold);
-             	this.dispose();
-             	DCBooksTab a = new DCBooksTab("");
-             	a.setVisible(true);
+	                map = doCommand("editBook", title, itemCode, price, author, releaseDateStr, threshold);
+	             	this.dispose();
+	             	DCBooksTab a = new DCBooksTab("");
+	             	
+		   	         if (prevPage.equals("")){
+		   	         	a = new DCBooksTab("");
+		   	         }
+		   	         else if (prevPage.equals("ad")){
+		   	         	a = new DCBooksTab("ad");
+		   	         }
+	                
+	                a.setVisible(true);
              	}
                  
              }
@@ -386,7 +410,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCEditBookScreen().setVisible(true);
+                new DCEditBookScreen("").setVisible(true);
             }
         });
     }

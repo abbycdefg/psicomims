@@ -21,18 +21,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCViewDeliveryReceiptScreen
      */
-    public DCViewDeliveryReceiptScreen() {
+    public DCViewDeliveryReceiptScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
     }
     
-    public DCViewDeliveryReceiptScreen(String drNumber, String dateDelivery, String totalAmount) {
+    public DCViewDeliveryReceiptScreen(String drNumber, String dateDelivery, String totalAmount, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -174,7 +180,15 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
     	this.dispose();
         DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
-        a.setVisible(true);
+        
+        if (prevPage.equals("")){
+        	a = new DCIncompleteDeliveryReceiptsTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompleteDeliveryReceiptsTab("ad");
+     	}
+        
+        a.setVisible(true);  
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
@@ -207,7 +221,7 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCViewDeliveryReceiptScreen().setVisible(true);
+                new DCViewDeliveryReceiptScreen("").setVisible(true);
             }
         });
     }

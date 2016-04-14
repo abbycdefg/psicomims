@@ -40,6 +40,8 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
  */
 public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCAddDeliveryReceiptScreen
      */
@@ -47,8 +49,10 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
 	private List<String> quantityList;
 	private String poNumber = "";
 	private String outlet = "";
-    public DCAddDeliveryReceiptScreen() {
+    public DCAddDeliveryReceiptScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -81,8 +85,10 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         dateTodayChooser.setEnabled(false);
     }
     
-    public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1, String poNumber1) {
+    public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1, String poNumber1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -376,10 +382,18 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
              try{
             	 if (go == true)
             	 {
-                map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, order, outlet, listString, quantityListStr);
-             	this.dispose();
-             	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("", poNumber);
-             	a.setVisible(true);
+	                map = doCommand("addDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, order, outlet, listString, quantityListStr);
+	             	this.dispose();
+	             	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab(poNumber, "");
+	             	
+		   	         if (prevPage.equals("")){
+		   	         	a = new DCIncompleteDeliveryReceiptsTab(poNumber, "");		             	
+		   	         }
+		   	         else if (prevPage.equals("ad")){
+		   	        	a = new DCIncompleteDeliveryReceiptsTab(poNumber, "ad");
+		             }
+	                
+	                a.setVisible(true);
             	 }
 
                  
@@ -397,7 +411,15 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
      	this.dispose();
      	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
-     	a.setVisible(true);
+     	
+        if (prevPage.equals("")){
+        	a = new DCIncompleteDeliveryReceiptsTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompleteDeliveryReceiptsTab("ad");
+     	}
+        
+        a.setVisible(true);
     }
    
     private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -415,8 +437,17 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
          }
          java.util.Date deliveryDate = deliveryDateChooser.getDate();
          String deliveryDateStr = df.format(deliveryDate);
+         
          this.dispose();
-         DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber);
+         DCAddBookToDRScreen b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, "");
+         
+         if (prevPage.equals("")){
+         	b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, "");
+         }
+         else if (prevPage.equals("ad")){
+        	b = new DCAddBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, "ad");
+         }
+         
          b.setVisible(true);
 
     }
@@ -451,7 +482,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddDeliveryReceiptScreen().setVisible(true);
+                new DCAddDeliveryReceiptScreen("").setVisible(true);
             }
         });
     }

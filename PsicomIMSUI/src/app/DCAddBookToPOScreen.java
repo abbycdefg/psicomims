@@ -57,6 +57,7 @@ import org.apache.poi.ss.usermodel.Cell;
  */
 public class DCAddBookToPOScreen extends javax.swing.JFrame {
 	
+	String prevPage;
 	private static String purchaseOrderNumber;
 	private static String contactPerson;
 	private static String outlet;
@@ -72,9 +73,11 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCAddBookToPOScreen
      */
-    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1) {
+    public DCAddBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1, String page) {
 
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -295,21 +298,37 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         }
         catch (Exception e){
             e.printStackTrace();
-        }
-;
+        };
+        
         if(go == true)
         {
-        this.dispose();
-    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
-    	a.setVisible(true);
+	        this.dispose();
+	    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "" );
+	    	
+	        if (prevPage.equals("")){
+	        	a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+	        }
+	        else if (prevPage.equals("ad")){
+	        	a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "ad");
+	        }
+	        
+	        a.setVisible(true);
         }
         
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
      	this.dispose();
-     	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
-     	a.setVisible(true);
+    	DCAddPurchaseOrderScreen a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "" );
+    	
+        if (prevPage.equals("")){
+        	a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "ad");
+        }
+        
+        a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
@@ -342,7 +361,7 @@ public class DCAddBookToPOScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList).setVisible(true);
+                new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "").setVisible(true);
             }
         });
     }

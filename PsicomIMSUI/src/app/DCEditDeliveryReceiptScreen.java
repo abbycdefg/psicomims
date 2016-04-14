@@ -29,6 +29,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCEditDeliveryReceiptScreen
      */
@@ -36,10 +38,12 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
 	private List<String> quantityList= new ArrayList<String>();
 	private String poNumber = "";
 	private String outlet = "";
-    public DCEditDeliveryReceiptScreen() {
+    public DCEditDeliveryReceiptScreen(String page) {
         initComponents();
         
-         Color x = new Color(32, 55, 73);
+        prevPage = page;
+        
+        Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
         editBooksButton.setOpaque(false);
@@ -65,10 +69,12 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCEditDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr) {
+    public DCEditDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, String page) {
         initComponents();
         
-         Color x = new Color(32, 55, 73);
+        prevPage = page;
+        
+        Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
         editBooksButton.setOpaque(false);
@@ -112,8 +118,10 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
         totalAmountField.setEditable(false);
     }
 
-    public DCEditDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1, String poNumber) {
+    public DCEditDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1, String poNumber, String page) {
         initComponents();
+        
+        prevPage = page;
         
          Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -354,8 +362,17 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
          java.util.Date deliveryDate = deliveryDateChooser.getDate();
          String deliveryDateStr = df.format(deliveryDate);
          this.dispose();
-         DCEditBookToDRScreen b = new DCEditBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber);
-         b.setVisible(true);
+         DCEditBookToDRScreen a = new DCEditBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, "");
+
+         if (prevPage.equals("")){
+         	a = new DCEditBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, "");
+         }
+         else if (prevPage.equals("ad")){
+        	 new DCEditBookToDRScreen(drNumber, dateTodayStr, totalAmt, deliveryDateStr, poNumber, "ad");
+         }
+         
+         a.setVisible(true);
+         
     }
 
     private void totalAmountFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalAmountFieldActionPerformed
@@ -404,10 +421,18 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
              try{
             	 if (go == true)
             	 {
-                map = doCommand("editDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString, quantityListStr);
-             	this.dispose();
-             	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("", poNumber);
-             	a.setVisible(true);
+	                map = doCommand("editDeliveryReceipt", drNumber, dateTodayStr, totalAmt, deliveryDateStr, listString, quantityListStr);
+	             	this.dispose();
+	             	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab(poNumber, "");
+	             	
+		   	         if (prevPage.equals("")){
+		   	         	a = new DCIncompleteDeliveryReceiptsTab(poNumber, "");
+		   	         }
+		   	         else if (prevPage.equals("ad")){
+		   	         	a = new DCIncompleteDeliveryReceiptsTab(poNumber, "ad");
+		   	         }
+	                
+	                a.setVisible(true);
             	 }
 
                  
@@ -424,7 +449,15 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
      	this.dispose();
      	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
-     	a.setVisible(true);   
+     	
+        if (prevPage.equals("")){
+        	a = new DCIncompleteDeliveryReceiptsTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompleteDeliveryReceiptsTab("ad");
+     	}
+        
+        a.setVisible(true); 
     }
 
     /**
@@ -457,7 +490,7 @@ public class DCEditDeliveryReceiptScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCEditDeliveryReceiptScreen().setVisible(true);
+                new DCEditDeliveryReceiptScreen("").setVisible(true);
             }
         });
     }

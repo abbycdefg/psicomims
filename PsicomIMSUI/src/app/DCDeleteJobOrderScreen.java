@@ -17,12 +17,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCDeleteJobOrderScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCDeleteJobOrderScreen
      */
 	private String joNumber;
-    public DCDeleteJobOrderScreen() {
+    public DCDeleteJobOrderScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -33,8 +37,10 @@ public class DCDeleteJobOrderScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
-    public DCDeleteJobOrderScreen(String joNumber1) {
+    public DCDeleteJobOrderScreen(String joNumber1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -138,9 +144,20 @@ public class DCDeleteJobOrderScreen extends javax.swing.JFrame {
 	       
          try{
              map = doCommand("deleteJobOrder", joNumber);
+             
              this.dispose();
              DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
+            
+	         if (prevPage.equals("")){
+	         	a = new DCIncompleteJobOrdersTab("");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCIncompleteJobOrdersTab("ad");
+	         }
+             
              a.setVisible(true);
+             
+             
              
          }
          catch (Exception e){
@@ -152,7 +169,15 @@ public class DCDeleteJobOrderScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
         DCIncompleteJobOrdersTab a = new DCIncompleteJobOrdersTab("");
-        a.setVisible(true);
+        
+        if (prevPage.equals("")){
+        	a = new DCIncompleteJobOrdersTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompleteJobOrdersTab("ad");
+     	}
+        
+        a.setVisible(true);        
     }
 
     /**
@@ -185,7 +210,7 @@ public class DCDeleteJobOrderScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeleteJobOrderScreen().setVisible(true);
+                new DCDeleteJobOrderScreen("").setVisible(true);
             }
         });
     }

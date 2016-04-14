@@ -47,6 +47,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
 	
+	String prevPage;
+	
 	private JComboBox contactComboBox = new JComboBox();   
 	private JComboBox outletComboBox = new JComboBox();
 	private String []co;
@@ -60,8 +62,10 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
      * Creates new form DCEditPurchaseOrderScreen
      */
 	
-    public DCEditPurchaseOrderScreen() {
+    public DCEditPurchaseOrderScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -89,8 +93,10 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         });
     }
 
-    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1, String contactPerson1, String outlet1) {
+    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1, String contactPerson1, String outlet1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -146,8 +152,10 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         
     }
     
-    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1,  String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1 ) {
+    public DCEditPurchaseOrderScreen(String poNumber1, String dateToday1,  String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -446,10 +454,18 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
             try{
             	if(error == false)
             	{
-                map = doCommand("editPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityListStr);
-                this.dispose();
-             	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
-             	a.setVisible(true);
+	                map = doCommand("editPurchaseOrder", purchaseOrderNumber, dateToday, contactPerson, outlet, listString, quantityListStr);
+	                this.dispose();
+	             	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
+		             	
+		   	         if (prevPage.equals("")){
+		   	         	a = new DCIncompletePurchaseOrdersTab("");
+		   	         }
+		   	         else if (prevPage.equals("ad")){
+		   	         	a = new DCIncompletePurchaseOrdersTab("ad");
+		   	         }
+	                
+	                a.setVisible(true);
             	}
             }
             catch (Exception e){
@@ -464,7 +480,15 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
     	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
-    	a.setVisible(true);
+    	
+        if (prevPage.equals("")){
+        	a = new DCIncompletePurchaseOrdersTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompletePurchaseOrdersTab("ad");
+     	}
+        
+        a.setVisible(true);  
     }
 
     private void editBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -494,8 +518,16 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         	purchaseOrderNumber.equals("");
         }
         this.dispose();    
-        DCEditBookToPOScreen a = new DCEditBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
-    	a.setVisible(true);
+        DCEditBookToPOScreen a = new DCEditBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+    	
+        if (prevPage.equals("")){
+        	a = new DCEditBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCEditBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "ad");
+        }
+        
+        a.setVisible(true);
     	
     }
 
@@ -529,7 +561,7 @@ public class DCEditPurchaseOrderScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCEditPurchaseOrderScreen().setVisible(true);
+                new DCEditPurchaseOrderScreen("").setVisible(true);
             }
         });
     }

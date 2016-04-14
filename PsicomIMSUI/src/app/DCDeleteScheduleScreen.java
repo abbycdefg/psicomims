@@ -17,12 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCDeleteScheduleScreen extends javax.swing.JFrame {
 
+	String prevPage;
     /**
      * Creates new form DCDeleteScheduleScreen
      */
 	private String scheduleCode;
-    public DCDeleteScheduleScreen() {
+    public DCDeleteScheduleScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -33,8 +36,10 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
-    public DCDeleteScheduleScreen(String scheduleCode1) {
+    public DCDeleteScheduleScreen(String scheduleCode1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -142,7 +147,15 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
                 map = doCommand("deleteDeliverySchedule", scheduleCode);
              	this.dispose();
              	DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
-             	a.setVisible(true);
+	             	
+	   	         if (prevPage.equals("")){
+	   	         	a = new DCIncompleteDeliverySchedulesTab("");
+	   	         }
+	   	         else if (prevPage.equals("ad")){
+	   	         	a = new DCIncompleteDeliverySchedulesTab("ad");
+	   	         }
+                
+                a.setVisible(true);
                  
              }
              catch (Exception e){
@@ -153,6 +166,14 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	 this.dispose();
          DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
+         
+         if (prevPage.equals("")){
+         	a = new DCIncompleteDeliverySchedulesTab("");
+        	}
+	     else if (prevPage.equals("ad")){
+	     	a = new DCIncompleteDeliverySchedulesTab("ad");
+	     }
+         
          a.setVisible(true);
     }
 
@@ -186,7 +207,7 @@ public class DCDeleteScheduleScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeleteScheduleScreen().setVisible(true);
+                new DCDeleteScheduleScreen("").setVisible(true);
             }
         });
     }

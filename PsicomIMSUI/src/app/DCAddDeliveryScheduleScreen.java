@@ -46,14 +46,15 @@ import javax.swing.JComboBox;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Abby
  */
 public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
 
-    /**
+	String prevPage;
+    
+	/**
      * Creates new form DCAddDeliverySchedule
      */
 	private List<String> outletsList  = new ArrayList<String>();
@@ -65,9 +66,11 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
 	private JTextField scheduleCodeField;
 	private String outlet; 
 	
-    public DCAddDeliveryScheduleScreen() {
+    public DCAddDeliveryScheduleScreen(String page) {
         initComponents();
 
+        prevPage = page;
+        
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -318,11 +321,20 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
              
 
              try{
-            	 if( go == true){
-                 map = doCommand("addDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
-             	this.dispose();
+            	if( go == true){
+                map = doCommand("addDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
+             	
+                this.dispose();
              	DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
-             	a.setVisible(true);
+             	
+	   	        if (prevPage.equals("")){
+	   	        	a = new DCIncompleteDeliverySchedulesTab("");
+	   	        }
+	   	        else if (prevPage.equals("ad")){
+	   	        	a = new DCIncompleteDeliverySchedulesTab("ad");
+	   	        }
+                
+                a.setVisible(true);
             	 }
                  
              }
@@ -336,9 +348,17 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-   	 this.dispose();
-     DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
-     a.setVisible(true);
+	   	this.dispose();
+	    DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
+	     
+     	if (prevPage.equals("")){
+     		a = new DCIncompleteDeliverySchedulesTab("");
+    	}
+	 	else if (prevPage.equals("ad")){
+	 		a = new DCIncompleteDeliverySchedulesTab("ad");
+	  	}
+	     
+	    a.setVisible(true);     
     }
 
     /**
@@ -372,7 +392,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddDeliveryScheduleScreen().setVisible(true);
+                new DCAddDeliveryScheduleScreen("").setVisible(true);
             }
         });
     }

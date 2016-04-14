@@ -17,12 +17,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DCDeleteDeliveryReceiptScreen extends javax.swing.JFrame {
 
+	String prevPage;
+	
     /**
      * Creates new form DCDeleteDeliveryReceiptScreen
      */
 	private String drNumber;
-    public DCDeleteDeliveryReceiptScreen() {
+    public DCDeleteDeliveryReceiptScreen(String page) {
         initComponents();
+       
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -33,8 +37,10 @@ public class DCDeleteDeliveryReceiptScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
-    public DCDeleteDeliveryReceiptScreen(String drNumber1) {
+    public DCDeleteDeliveryReceiptScreen(String drNumber1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -139,7 +145,15 @@ public class DCDeleteDeliveryReceiptScreen extends javax.swing.JFrame {
             map = doCommand("deleteDeliveryReceipt", drNumber);
             this.dispose();
          	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
-         	a.setVisible(true);
+         	
+	         if (prevPage.equals("")){
+	         	a = new DCIncompleteDeliveryReceiptsTab("");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCIncompleteDeliveryReceiptsTab("ad");
+	         }
+            
+            a.setVisible(true);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -147,9 +161,17 @@ public class DCDeleteDeliveryReceiptScreen extends javax.swing.JFrame {
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
- 	this.dispose();
- 	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
- 	a.setVisible(true);
+	 	this.dispose();
+	 	DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
+		 	
+	    if (prevPage.equals("")){
+	    	a = new DCIncompleteDeliveryReceiptsTab("");
+	   	}
+		else if (prevPage.equals("ad")){
+			a = new DCIncompleteDeliveryReceiptsTab("ad");
+	 	}
+	    
+	    a.setVisible(true);  
     }
 
     /**
@@ -182,7 +204,7 @@ public class DCDeleteDeliveryReceiptScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeleteDeliveryReceiptScreen().setVisible(true);
+                new DCDeleteDeliveryReceiptScreen("").setVisible(true);
             }
         });
     }

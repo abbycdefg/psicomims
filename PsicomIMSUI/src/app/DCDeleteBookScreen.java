@@ -16,12 +16,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Abby
  */
 public class DCDeleteBookScreen extends javax.swing.JFrame {
-    private static String itemCode;
+    
+	String prevPage;
+	private static String itemCode;
 	/**
      * Creates new form DCDeleteBookScreen
      */
-    public DCDeleteBookScreen() {
+    public DCDeleteBookScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -33,8 +37,10 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
     }
     
-    public DCDeleteBookScreen(String itemCode1) {
+    public DCDeleteBookScreen(String itemCode1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -140,7 +146,16 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
                 map = doCommand("deleteBook", itemCode);
             	this.dispose();
             	DCBooksTab a = new DCBooksTab("");
-            	a.setVisible(true);
+            	
+               
+   	         	if (prevPage.equals("")){
+   	         		a = new DCBooksTab("");
+   	        	}
+   	         	else if (prevPage.equals("ad")){
+   	         		a = new DCBooksTab("ad");
+   	         	}
+                
+                a.setVisible(true);
                 
             }
             catch (Exception e){
@@ -151,7 +166,15 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	this.dispose();
     	DCBooksTab a = new DCBooksTab("");
-    	a.setVisible(true);
+    	
+        if (prevPage.equals("")){
+        	a = new DCBooksTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCBooksTab("ad");
+     	}
+        
+        a.setVisible(true);
     }
 
     /**
@@ -184,7 +207,7 @@ public class DCDeleteBookScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCDeleteBookScreen().setVisible(true);
+                new DCDeleteBookScreen("").setVisible(true);
             }
         });
     }

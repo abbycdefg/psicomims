@@ -57,11 +57,16 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     private JComboBox outletComboBox = new JComboBox();
 	private String []co;
 	private String []ou;
+	
+	String prevPage;
+	
     /**
      * Creates new form DCAddPurchaseOrderScreen
      */
-    public DCAddPurchaseOrderScreen() {
+    public DCAddPurchaseOrderScreen(String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -103,8 +108,10 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         jDateChooser1.setDate(now);
     }
 
-    public DCAddPurchaseOrderScreen(String purchaseOrderNumber1,  String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1) {
+    public DCAddPurchaseOrderScreen(String purchaseOrderNumber1,  String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1, String page) {
         initComponents();
+        
+        prevPage = page;
         
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
@@ -406,7 +413,15 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
 
                 	this.dispose();
                 	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
-                	a.setVisible(true);
+                	
+	       	        if (prevPage.equals("")){
+	       	        	a = new DCIncompletePurchaseOrdersTab("");
+	       	        }
+	       	        else if (prevPage.equals("ad")){
+	       	        	a = new DCIncompletePurchaseOrdersTab("ad");
+	       	        }
+                    
+                    a.setVisible(true);
             	}
             }
             catch (Exception e){
@@ -421,7 +436,15 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
      	this.dispose();
     	DCIncompletePurchaseOrdersTab a = new DCIncompletePurchaseOrdersTab("");
-    	a.setVisible(true);
+    	
+        if (prevPage.equals("")){
+        	a = new DCIncompletePurchaseOrdersTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCIncompletePurchaseOrdersTab("ad");
+     	}
+        
+        a.setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void addBooksButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksButtonActionPerformed
@@ -450,9 +473,18 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         {
         	purchaseOrderNumber.equals("");
         }
+        
         this.dispose();    
-        DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList);
-    	a.setVisible(true);
+        DCAddBookToPOScreen a = new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+    	
+        if (prevPage.equals("")){
+        	a = new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddBookToPOScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "ad");
+        }
+        
+        a.setVisible(true);
     	
     	
     }//GEN-LAST:event_addBooksButtonActionPerformed
@@ -487,7 +519,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddPurchaseOrderScreen().setVisible(true);
+                new DCAddPurchaseOrderScreen("").setVisible(true);
             }
         });
     }

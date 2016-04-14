@@ -39,13 +39,20 @@ import app.DCIncompleteJobOrdersTab.printAction;
  */
 public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
 
+	String msgAD = "Administrator";
+	String msgDC = "Documentation Clerk";
 	String prevPage;
 	
     /**
      * Creates new form DCIncompleteJobOrdersTab
      */
     public DCIncompleteJobOrdersTab(String page) {
-        initComponents();
+    	if (page.equals("")){
+    		initComponents(msgDC);
+    	}
+    	else if (page.equals("ad")){
+    		initComponents(msgAD);
+    	}   
         
         this.setExtendedState(MAXIMIZED_BOTH);
         prevPage = page;
@@ -98,7 +105,7 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents(String message) {
 
         logoLabel = new javax.swing.JLabel();
         greetingLabel = new javax.swing.JLabel();
@@ -125,7 +132,7 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hello, Documentation Clerk  | ");
+        greetingLabel.setText("Hello, "+ message + " | ");
 
         signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         signOutButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -531,8 +538,16 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
     	this.dispose();
-    	DCAddJobOrderScreen a = new DCAddJobOrderScreen();
-    	a.setVisible(true); 
+    	DCAddJobOrderScreen a = new DCAddJobOrderScreen("");
+    	
+        if (prevPage.equals("")){
+        	a = new DCAddJobOrderScreen("");
+        }
+        else if (prevPage.equals("ad")){
+        	a = new DCAddJobOrderScreen("ad");
+        }
+        
+        a.setVisible(true);
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -544,8 +559,16 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
     		String title = jobOrdersTable.getValueAt(row, 3).toString();
     		String quantity = jobOrdersTable.getValueAt(row, 5).toString();
     		this.dispose();
-	    	DCEditJobOrderScreen a = new DCEditJobOrderScreen(joNumber, date, itemCode, title, quantity);
-	    	a.setVisible(true); 
+	    	DCEditJobOrderScreen a = new DCEditJobOrderScreen(joNumber, date, itemCode, title, quantity, "");
+	    	
+	         if (prevPage.equals("")){
+	         	a = new DCEditJobOrderScreen(joNumber, date, itemCode, title, quantity, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCEditJobOrderScreen(joNumber, date, itemCode, title, quantity, "ad");
+	         }
+            
+            a.setVisible(true);
     	} 
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -554,7 +577,15 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
     		int row = jobOrdersTable.getSelectedRow();
     		String joNumber = jobOrdersTable.getValueAt(row, 0).toString();
     		this.dispose();
-            DCDeleteJobOrderScreen a = new DCDeleteJobOrderScreen(joNumber);
+            DCDeleteJobOrderScreen a = new DCDeleteJobOrderScreen(joNumber, "");
+            
+	         if (prevPage.equals("")){
+	         	a = new DCDeleteJobOrderScreen(joNumber, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCDeleteJobOrderScreen(joNumber, "ad");
+	         }
+            
             a.setVisible(true);
     	} 
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -583,7 +614,16 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
     private void completeButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButton4ActionPerformed
     	this.dispose();
         DCCompleteJobOrdersTab a = new DCCompleteJobOrdersTab("");
-        a.setVisible(true);
+        
+        if (prevPage.equals("")){
+        	a = new DCCompleteJobOrdersTab("");
+       	}
+    	else if (prevPage.equals("ad")){
+    		a = new DCCompleteJobOrdersTab("ad");
+        	
+    	}
+        
+    	a.setVisible(true);
     }//GEN-LAST:event_completeButton4ActionPerformed
 
     /**
