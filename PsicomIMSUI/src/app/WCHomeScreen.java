@@ -284,7 +284,7 @@ public class WCHomeScreen extends javax.swing.JFrame {
 
     private void dispButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dispButtonActionPerformed
     	this.dispose();
-        WCDisplayOrdersTab a = new WCDisplayOrdersTab();
+        WCDisplayIncompleteOrdersTab a = new WCDisplayIncompleteOrdersTab();
         a.setVisible(true);
     }//GEN-LAST:event_dispButtonActionPerformed
 
