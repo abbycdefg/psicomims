@@ -697,7 +697,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM delivery_schedule WHERE date LIKE '%" + searchField.getText() + "%' OR delivery_receipt_code LIKE '%" + searchField.getText() + "%' OR schedule_code LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.delivery_schedule WHERE date LIKE '%" + searchField.getText() + "%' OR delivery_receipt_code LIKE '%" + searchField.getText() + "%' OR schedule_code LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%' ORDER BY date ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -861,7 +861,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-        	pst = con.prepareStatement("SELECT * FROM delivery_schedule");
+        	pst = con.prepareStatement("SELECT * FROM psicomims.delivery_schedule ORDER BY date ASC");
             ResultSet rs = pst.executeQuery();
         	int i = 0;
             

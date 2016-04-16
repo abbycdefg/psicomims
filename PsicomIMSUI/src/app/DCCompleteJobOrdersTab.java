@@ -356,7 +356,7 @@ public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
              try {
              	Class.forName("com.mysql.jdbc.Driver");
              	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                 pst = con.prepareStatement("SELECT * FROM job_order WHERE jo_number LIKE '%" + searchField.getText() + "%' OR jo_status LIKE 'COMPLETE' OR date LIKE '%" + searchField.getText() + "%' OR item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%" + searchField.getText() + "%' OR quantity LIKE '%" + searchField.getText() + "%'");
+                 pst = con.prepareStatement("SELECT * FROM psicomims.job_order WHERE (jo_number LIKE '%" + searchField.getText() + "%' OR date LIKE '%" + searchField.getText() + "%' OR item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%" + searchField.getText() + "%' OR quantity LIKE '%" + searchField.getText() + "%') AND jo_status='COMPLETE' ORDER BY date ASC");
                  ResultSet rs = pst.executeQuery();
                  
                  int i = 0;
@@ -367,7 +367,7 @@ public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
                  	itemCode = rs.getString("item_code"); 
                  	itemCode = itemCode.split("-")[0];
                  	
-                 	pst2 = con.prepareStatement("SELECT * FROM book WHERE item_code LIKE '" + itemCode +"'");
+                 	pst2 = con.prepareStatement("SELECT * FROM psicomims.book WHERE item_code LIKE '" + itemCode +"'");
                      ResultSet rs2 = pst2.executeQuery();              
                      while (rs2.next()) {
                  		if(itemCode.equals(rs2.getString("item_code")))
@@ -494,7 +494,7 @@ public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM job_order WHERE jo_status LIKE 'COMPLETE'");
+            pst = con.prepareStatement("SELECT * FROM psicomims.job_order WHERE jo_status='COMPLETE' ORDER BY date ASC");
             ResultSet rs = pst.executeQuery();
             
             int i = 0;
@@ -505,7 +505,7 @@ public class DCCompleteJobOrdersTab extends javax.swing.JFrame {
             	itemCode = rs.getString("item_code");
              	itemCode = itemCode.split("-")[0];
             	
-            	pst2 = con.prepareStatement("SELECT * FROM book WHERE item_code LIKE '" + itemCode +"'");
+            	pst2 = con.prepareStatement("SELECT * FROM psicomims.book WHERE item_code LIKE '" + itemCode +"'");
                 ResultSet rs2 = pst2.executeQuery();              
                 while (rs2.next()) {
             		if(itemCode.equals(rs2.getString("item_code")))

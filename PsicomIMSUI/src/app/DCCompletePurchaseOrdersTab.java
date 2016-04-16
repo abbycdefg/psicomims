@@ -402,7 +402,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'COMPLETE' OR purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE (purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%') AND po_status='COMPLETE' ORDER BY date_today ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -413,6 +413,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
                     if (status.equals("COMPLETE")){
                     	model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
                     }
+                    i++;
                 }
                 
                 if (i < 1) {
@@ -526,7 +527,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'COMPLETE'");
+            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status='COMPLETE' ORDER BY date_today ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             

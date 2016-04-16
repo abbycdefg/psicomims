@@ -394,7 +394,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p WHERE b.item_code=p.book_id AND p.status LIKE 'INCOMPLETE'");
+            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
@@ -465,7 +465,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM psicomims.book b psicomims.specific_po p WHERE p.status='INCOMPLETE' AND b.id LIKE '%" + searchField.getText() + "%' OR b.book_id LIKE '%"  + searchField.getText() + "%' OR b.title LIKE '%"  + searchField.getText() + "%' OR b.quantity LIKE '%"  + searchField.getText() + "%' OR b.location LIKE '%"  + searchField.getText() + "%' OR b.po_id LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE (b.item_code LIKE '%" + searchField.getText() + "%' OR p.book_id LIKE '%"  + searchField.getText() + "%' OR b.title LIKE '%"  + searchField.getText() + "%' OR b.quantity LIKE '%"  + searchField.getText() + "%' OR b.location LIKE '%"  + searchField.getText() + "%' OR p.po_id LIKE '%" + searchField.getText() + "%') AND b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -600,7 +600,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p WHERE b.item_code=p.book_id AND p.status='INCOMPLETE'");
+            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
