@@ -718,7 +718,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE status LIKE 'COMPLETE' OR delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE (delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%') AND status='INCOMPLETE' ORDER BY date_today ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -796,59 +796,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
     	}   
     	
-    	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
-
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columnNames);
-        
-        PreparedStatement pst;
-        Connection con;
-        
-        String drNumber = "";
-        String dateToday = "";
-        String outlet = "";
-        String quantity = "";
-        String deliveryDate = "";
-        String totalAmount = "";
-        
-        try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt  WHERE status LIKE 'INCOMPLETE' OR delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
-            ResultSet rs = pst.executeQuery();
-
-            int i = 0;
-            while (rs.next()) {
-            	drNumber = rs.getString("delivery_receipt_number");
-            	dateToday = rs.getString("date_today");
-                deliveryDate = rs.getString("date_delivery");
-                totalAmount = rs.getString("total_amount");
-                outlet = rs.getString("outlet");
-                quantity = rs.getString("orders");
-                model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
-                i++;
-            }
-            
-            if (i < 1) {
-                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            
-            if (i == 1) {
-                System.out.println(i + " Record Found");
-            } 
-            
-            else {
-                System.out.println(i + " Records Found");
-            }
-            
-                  
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        deliveryReceiptsTable.setModel(model);
-        deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    
+    	
         this.dispose();
     	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen("");
     	
@@ -952,7 +900,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE status='INCOMPLETE' ORDER BY ");
+            pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE status='INCOMPLETE' ORDER BY date_today ASC");
             ResultSet rs = pst.executeQuery();
 
             int i = 0;
