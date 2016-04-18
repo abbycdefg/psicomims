@@ -104,7 +104,7 @@ public class WCHomeScreen extends javax.swing.JFrame {
         updateButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         updateButton.setForeground(new java.awt.Color(255, 255, 255));
         updateButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_up.png"))); // NOI18N
-        updateButton.setToolTipText("Books");
+        updateButton.setToolTipText("Update Stocks");
         updateButton.setAlignmentY(0.0F);
         updateButton.setBorder(null);
         updateButton.setBorderPainted(false);
@@ -121,7 +121,7 @@ public class WCHomeScreen extends javax.swing.JFrame {
         defButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         defButton.setForeground(new java.awt.Color(255, 255, 255));
         defButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_def.png"))); // NOI18N
-        defButton.setToolTipText("Books");
+        defButton.setToolTipText("Defective Books");
         defButton.setAlignmentY(0.0F);
         defButton.setBorder(null);
         defButton.setBorderPainted(false);
@@ -138,7 +138,7 @@ public class WCHomeScreen extends javax.swing.JFrame {
         dispButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         dispButton.setForeground(new java.awt.Color(255, 255, 255));
         dispButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_disp.png"))); // NOI18N
-        dispButton.setToolTipText("Books");
+        dispButton.setToolTipText("Display Orders");
         dispButton.setAlignmentY(0.0F);
         dispButton.setBorder(null);
         dispButton.setBorderPainted(false);
@@ -284,7 +284,7 @@ public class WCHomeScreen extends javax.swing.JFrame {
 
     private void dispButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dispButtonActionPerformed
     	this.dispose();
-        WCDisplayOrdersTab a = new WCDisplayOrdersTab();
+        WCDisplayIncompleteOrdersTab a = new WCDisplayIncompleteOrdersTab();
         a.setVisible(true);
     }//GEN-LAST:event_dispButtonActionPerformed
 

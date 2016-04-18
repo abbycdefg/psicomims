@@ -539,7 +539,7 @@ public class DCBooksTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM book WHERE title LIKE '%" + searchField.getText() + "%' OR item_code LIKE '%" + searchField.getText() + "%' OR author LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.book WHERE title LIKE '%" + searchField.getText() + "%' OR item_code LIKE '%" + searchField.getText() + "%' OR author LIKE '%" + searchField.getText() + "%'");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -703,7 +703,7 @@ public class DCBooksTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM book");
+            pst = con.prepareStatement("SELECT * FROM psicomims.book");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {

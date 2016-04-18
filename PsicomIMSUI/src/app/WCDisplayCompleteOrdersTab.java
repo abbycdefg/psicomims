@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package app;
 
 import java.awt.Color;
@@ -22,24 +27,18 @@ import javax.swing.ImageIcon;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author Abby
  */
-public class WCDisplayOrdersTab extends javax.swing.JFrame {
-	
+public class WCDisplayCompleteOrdersTab extends javax.swing.JFrame {
+
     /**
-     * Creates new form WCDisplayOrdersTab
+     * Creates new form WCDisplayCompleteOrdersTab
      */
-    public WCDisplayOrdersTab() {
+    public WCDisplayCompleteOrdersTab() {
         initComponents();
-        
+
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -99,16 +98,13 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         navbarPanel = new javax.swing.JPanel();
         homeButton = new javax.swing.JButton();
         incompleteButton = new javax.swing.JButton();
-        completeButton = new javax.swing.JButton();
         greetingLabel = new javax.swing.JLabel();
-        signOutButton = new javax.swing.JButton();
         searchField = new javax.swing.JTextField();
+        signOutButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
-        searchButton.setSelectedIcon(new ImageIcon(WCDisplayOrdersTab.class.getResource("/images/button_search2.png")));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Display Orders");
-        setResizable(false);
+        setTitle("Complete Orders");
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/VS2.1.png"))); // NOI18N
 
@@ -122,13 +118,14 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         ordersTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         ordersTable.setForeground(new java.awt.Color(255, 255, 255));
+        
 
         this.displayAll();
-        
+
         ordersTable.setToolTipText("");
         ordersTable.setCellSelectionEnabled(true);
         ordersTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -136,7 +133,6 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         ordersTable.setRowHeight(18);
         ordersTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(ordersTable);
-        ordersTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanel.setLayout(tablePanelLayout);
@@ -152,7 +148,7 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
                     .addGroup(tablePanelLayout.createSequentialGroup()
                         .addGap(308, 308, 308)
                         .addComponent(titleLabel)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         tablePanelLayout.setVerticalGroup(
             tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,24 +201,6 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
             }
         });
 
-        completeButton.setBackground(new java.awt.Color(255, 255, 255));
-        completeButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        completeButton.setForeground(new java.awt.Color(255, 255, 255));
-        completeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_complete.png"))); // NOI18N
-        completeButton.setAlignmentY(0.0F);
-        completeButton.setBorder(null);
-        completeButton.setBorderPainted(false);
-        completeButton.setContentAreaFilled(false);
-        completeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        completeButton.setIconTextGap(0);
-        completeButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        completeButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_complete2.png"))); // NOI18N
-        completeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                completeButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
         navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
@@ -231,16 +209,13 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(homeButton)
-                    .addComponent(incompleteButton)
-                    .addComponent(completeButton))
+                    .addComponent(incompleteButton))
                 .addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
             navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(completeButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(70, 70, 70)
                 .addComponent(incompleteButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -250,6 +225,16 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
         greetingLabel.setText("Hello, Warehouse Clerk  | ");
+
+        searchField.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
+        searchField.setForeground(new java.awt.Color(153, 153, 153));
+        searchField.setText("   Search");
+        searchField.setToolTipText("Search");
+        searchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchFieldActionPerformed(evt);
+            }
+        });
 
         signOutButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         signOutButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -261,16 +246,6 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         signOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 signOutButtonActionPerformed(evt);
-            }
-        });
-
-        searchField.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
-        searchField.setForeground(new java.awt.Color(153, 153, 153));
-        searchField.setText("   Search");
-        searchField.setToolTipText("Search");
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
             }
         });
 
@@ -299,8 +274,8 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(navbarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(logoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -341,33 +316,33 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
-    	this.dispose();
-    	WCHomeScreen a = new WCHomeScreen();
-    	a.setVisible(true);
+        this.dispose();
+        WCHomeScreen a = new WCHomeScreen();
+        a.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
-
-    private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-    	this.dispose();
-    	WCLogInScreen a = new WCLogInScreen();
-    	a.setVisible(true);
-    }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchFieldActionPerformed
 
+    private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
+        this.dispose();
+        WCLogInScreen a = new WCLogInScreen();
+        a.setVisible(true);
+    }//GEN-LAST:event_signOutButtonActionPerformed
+
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-    	if (searchField.getText() == null || searchField.getText() == " "){
+        if (searchField.getText() == null || searchField.getText() == " "){
             this.displayAll();
         }
         else{
-        	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+            String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
 
-        	DefaultTableModel model = new DefaultTableModel(){
-            	public boolean isCellEditable(int row, int column)
-            	 {
-            	     return false;
-            	 }
+            DefaultTableModel model = new DefaultTableModel(){
+                public boolean isCellEditable(int row, int column)
+                 {
+                     return false;
+                 }
             };
             model.setColumnIdentifiers(columnNames);
             
@@ -383,10 +358,10 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
             String spoId = "";
 
             try {
-            	Class.forName("com.mysql.jdbc.Driver");
-            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-               	pst = con.prepareStatement("SELECT * FROM psicomims.book WHERE id LIKE '%" + searchField.getText() + "%' OR book_id LIKE '%"  + searchField.getText() + "%' OR title LIKE '%"  + searchField.getText() + "%' OR quantity LIKE '%"  + searchField.getText() + "%' OR location LIKE '%"  + searchField.getText() + "%' OR po_id LIKE '%" + searchField.getText() + "%'");
-            	ResultSet rs = pst.executeQuery();
+                Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                pst = con.prepareStatement("SELECT * FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE (b.item_code LIKE '%" + searchField.getText() + "%' OR p.book_id LIKE '%"  + searchField.getText() + "%' OR b.title LIKE '%"  + searchField.getText() + "%' OR b.quantity LIKE '%"  + searchField.getText() + "%' OR b.location LIKE '%"  + searchField.getText() + "%' OR p.po_id LIKE '%" + searchField.getText() + "%') AND b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='COMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
+                ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
                     title = rs.getString("title");
@@ -418,110 +393,19 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
                 e.printStackTrace();
             }
 
-	        ordersTable.setModel(model);
-	        ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            ordersTable.setModel(model);
+            ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
-    private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
-    	HashMap map;    	
-    	if (ordersTable.getSelectedColumn() == 0){
-    		try{
-    			
-    			String itemCode = this.getColumnData(1);
-    			String poId = this.getColumnData(5);
-    			String spoId = this.getColumnData(0);
-                String status = "COMPLETE";
-                
-                try{
-                    map = doCommand("setOrderStatus", spoId, itemCode, poId, status);
-                    
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-                
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-    		
-
-    	}
-    	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-    	}   
-    	
-    	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
-
-    	DefaultTableModel model = new DefaultTableModel(){
-        	public boolean isCellEditable(int row, int column)
-        	 {
-        	     return false;
-        	 }
-        };
-        model.setColumnIdentifiers(columnNames);
-        
-        PreparedStatement pst;
-        Connection con;
-        
-        String itemCode = "";
-        String title = "";
-        String quantity = "";
-        String location = "";
-        String poId = "";
-        String status = "";
-        String spoId = "";
-
-        try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-           	pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p WHERE b.item_code=p.book_id");
-        	ResultSet rs = pst.executeQuery();
-            int i = 0;
-            while (rs.next()) {
-                title = rs.getString("title");
-                location = rs.getString("location");
-                itemCode = rs.getString("book_id");
-                quantity = rs.getString("quantity");
-                poId = rs.getString("po_id");
-                status = rs.getString("status");
-                spoId = rs.getString("id");
-                model.addRow(new Object[]{spoId, itemCode, title, quantity, location, poId, status});
-                i++;
-            }
-            
-            if (i < 1){
-            
-                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            
-            if (i == 1) {
-                System.out.println(i + " Record Found");
-            } 
-            
-            else {
-                System.out.println(i + " Records Found");
-            }
-
-                  
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        ordersTable.setModel(model);
-        ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    	
-    }//GEN-LAST:event_completeButtonActionPerformed
-
     private void incompleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_incompleteButtonActionPerformed
-    	HashMap map;    	
-    	if (ordersTable.getSelectedColumn() == 0){
-    		try{
-    			
-    			String itemCode = this.getColumnData(1);
-    			String poId = this.getColumnData(5);
-    			String spoId = this.getColumnData(0);
+        HashMap map;        
+        if (ordersTable.getSelectedColumn() == 0){
+            try{
+                
+                String itemCode = this.getColumnData(1);
+                String poId = this.getColumnData(5);
+                String spoId = this.getColumnData(0);
                 String status = "INCOMPLETE";
                 
                 try{
@@ -536,20 +420,20 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
             catch (Exception e){
                 e.printStackTrace();
             }
-    		
+            
 
-    	}
-    	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-    	}   
-    	
-    	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+        }   
+        
+        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
 
-    	DefaultTableModel model = new DefaultTableModel(){
-        	public boolean isCellEditable(int row, int column)
-        	 {
-        	     return false;
-        	 }
+        DefaultTableModel model = new DefaultTableModel(){
+            public boolean isCellEditable(int row, int column)
+             {
+                 return false;
+             }
         };
         model.setColumnIdentifiers(columnNames);
         
@@ -565,10 +449,10 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         String spoId = "";
 
         try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-           	pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p WHERE b.item_code=p.book_id");
-        	ResultSet rs = pst.executeQuery();
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='COMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
+            ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
                 title = rs.getString("title");
@@ -621,26 +505,25 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(WCDisplayOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCDisplayCompleteOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(WCDisplayOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCDisplayCompleteOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(WCDisplayOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCDisplayCompleteOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(WCDisplayOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCDisplayCompleteOrdersTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new WCDisplayOrdersTab().setVisible(true);
+                new WCDisplayCompleteOrdersTab().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton completeButton;
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JLabel greetingLabel;
     private javax.swing.JButton homeButton;
@@ -655,23 +538,23 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
-    
-    public static String getColumnData(int n){ 
-    	int selectedRowIndex = ordersTable.getSelectedRow();
-    	int selectedColumnIndex = ordersTable.getSelectedColumn() + n;
-    	String selectedCell = (String) ordersTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-    	return selectedCell;
-    	
+
+        public static String getColumnData(int n){ 
+        int selectedRowIndex = ordersTable.getSelectedRow();
+        int selectedColumnIndex = ordersTable.getSelectedColumn() + n;
+        String selectedCell = (String) ordersTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+        return selectedCell;
+        
     } 
     
     public void displayAll(){
-    	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
 
-    	DefaultTableModel model = new DefaultTableModel(){
-        	public boolean isCellEditable(int row, int column)
-        	 {
-        	     return false;
-        	 }
+        DefaultTableModel model = new DefaultTableModel(){
+            public boolean isCellEditable(int row, int column)
+             {
+                 return false;
+             }
         };
         model.setColumnIdentifiers(columnNames);
         
@@ -687,10 +570,10 @@ public class WCDisplayOrdersTab extends javax.swing.JFrame {
         String spoId = "";
 
         try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-           	pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p WHERE b.item_code=p.book_id");
-        	ResultSet rs = pst.executeQuery();
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='COMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
+            ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
                 title = rs.getString("title");

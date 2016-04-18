@@ -137,7 +137,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
         poButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         poButton.setForeground(new java.awt.Color(255, 255, 255));
         poButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_po.png"))); // NOI18N
-        poButton.setToolTipText("Books");
+        poButton.setToolTipText("Purchase Orders");
         poButton.setAlignmentY(0.0F);
         poButton.setBorder(null);
         poButton.setBorderPainted(false);
@@ -154,7 +154,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
         joButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         joButton.setForeground(new java.awt.Color(255, 255, 255));
         joButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_jo.png"))); // NOI18N
-        joButton.setToolTipText("Books");
+        joButton.setToolTipText("Job Orders");
         joButton.setAlignmentY(0.0F);
         joButton.setBorder(null);
         joButton.setBorderPainted(false);
@@ -171,7 +171,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
         drButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         drButton.setForeground(new java.awt.Color(255, 255, 255));
         drButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_dr.png"))); // NOI18N
-        drButton.setToolTipText("Books");
+        drButton.setToolTipText("Delivery Receipts");
         drButton.setAlignmentY(0.0F);
         drButton.setBorder(null);
         drButton.setBorderPainted(false);
@@ -188,7 +188,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
         dsButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         dsButton.setForeground(new java.awt.Color(255, 255, 255));
         dsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_ds.png"))); // NOI18N
-        dsButton.setToolTipText("Books");
+        dsButton.setToolTipText("Delivery Schedules");
         dsButton.setBorder(null);
         dsButton.setBorderPainted(false);
         dsButton.setContentAreaFilled(false);
@@ -204,7 +204,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
         usersButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         usersButton.setForeground(new java.awt.Color(255, 255, 255));
         usersButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_users.png"))); // NOI18N
-        usersButton.setToolTipText("Books");
+        usersButton.setToolTipText("Users");
         usersButton.setAlignmentY(0.0F);
         usersButton.setBorder(null);
         usersButton.setBorderPainted(false);
@@ -221,7 +221,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
         outletButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         outletButton.setForeground(new java.awt.Color(255, 255, 255));
         outletButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_outlets.png"))); // NOI18N
-        outletButton.setToolTipText("Books");
+        outletButton.setToolTipText("Outlets");
         outletButton.setAlignmentY(0.0F);
         outletButton.setBorder(null);
         outletButton.setBorderPainted(false);
@@ -238,7 +238,7 @@ public class ADHomeScreen extends javax.swing.JFrame {
         contactButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         contactButton.setForeground(new java.awt.Color(255, 255, 255));
         contactButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/home_contacts.png"))); // NOI18N
-        contactButton.setToolTipText("Books");
+        contactButton.setToolTipText("Contact Persons");
         contactButton.setAlignmentY(0.0F);
         contactButton.setBorder(null);
         contactButton.setBorderPainted(false);

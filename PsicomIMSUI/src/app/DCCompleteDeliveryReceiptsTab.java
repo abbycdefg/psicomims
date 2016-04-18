@@ -349,7 +349,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM delivery_receipt  WHERE status LIKE 'COMPLETE' OR delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt  WHERE (delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%') AND status='COMPLETE' ORDER BY date_today ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
@@ -480,7 +480,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM delivery_receipt WHERE status LIKE 'COMPLETE'");
+            pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE status='COMPLETE' ORDER BY date_today ASC");
             ResultSet rs = pst.executeQuery();
 
             int i = 0;

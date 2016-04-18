@@ -551,15 +551,17 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
             try {
             	Class.forName("com.mysql.jdbc.Driver");
             	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'INCOMPLETE' OR purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%'");
+                pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE (purchase_order_number LIKE '%" + searchField.getText() + "%' OR date_Today LIKE '%" + searchField.getText() + "%' OR contact_person LIKE '%" + searchField.getText() + "%' OR outlet LIKE '%" + searchField.getText() + "%') AND po_status='INCOMPLETE' ORDER BY date_today ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
                     poNumber = rs.getString("purchase_order_number");
                     date = rs.getString("date_Today");
                     contactPerson = rs.getString("contact_person");
-                    outlet = rs.getString("outlet");status = rs.getString("po_status");
-                    model.addRow(new Object[]{poNumber, date, contactPerson, outlet});                    
+                    outlet = rs.getString("outlet");
+                    status = rs.getString("po_status");
+                    model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
+                    i++;
                 }
                 
                 if (i < 1) {
@@ -708,7 +710,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status LIKE 'INCOMPLETE'");
+            pst = con.prepareStatement("SELECT * FROM psicomims.purchase_order WHERE po_status='INCOMPLETE' ORDER BY date_today ASC");
             ResultSet rs = pst.executeQuery();
                       
             int i = 0;                        
@@ -717,26 +719,9 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
                 date = rs.getString("date_Today");
                 contactPerson = rs.getString("contact_person");
                 outlet = rs.getString("outlet");
-                status = rs.getString("po_status");
+                status = rs.getString("po_status");               
                 model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
                 i++;
-                
-                //Stock notification
-                pst2 = con.prepareStatement("SELECT * FROM book");
-                ResultSet rs2 = pst2.executeQuery();    
-		        while (rs2.next()) {  		            
-			        title2 = rs2.getString("title");
-			        quantity2 = rs2.getString("quantity");
-			        state2 = rs2.getString("state");
-			        if (Integer.parseInt(quantity2) < Integer.parseInt(rs2.getString("threshold")) && !state2.equals("new")){
-			        	String titleNew = title2;
-			        	if (title2.length() > 11){
-			        		titleNew = title2.substring(0, 13) + "...";
-			        	}
-			        	DCStockNotificationScreen d = new DCStockNotificationScreen(titleNew);
-			        	d.setVisible(true);
-		        }
-		        }
 	              
             }
             
@@ -751,6 +736,26 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
             else {
                 System.out.println(i + " Records Found");
             }
+            
+            //Stock notification
+            int j = 0;
+            pst2 = con.prepareStatement("SELECT * FROM psicomims.book");
+            ResultSet rs2 = pst2.executeQuery();    
+	        while (rs2.next()) {  		            
+		        title2 = rs2.getString("title");
+		        quantity2 = rs2.getString("quantity");
+		        state2 = rs2.getString("state");
+		        if (Integer.parseInt(quantity2) < Integer.parseInt(rs2.getString("threshold")) && !state2.equals("new")){
+		        	String titleNew = title2;
+		        	if (title2.length() > 11){
+		        		titleNew = title2.substring(0, 13) + "...";
+		        	}
+		        	DCStockNotificationScreen d = new DCStockNotificationScreen(titleNew);
+		        	d.setVisible(true);
+		        }
+		        j++;
+	        }
+	        
                              
         } 
         catch (Exception e) {
