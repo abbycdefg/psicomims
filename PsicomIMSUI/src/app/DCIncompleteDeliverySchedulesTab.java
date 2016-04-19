@@ -600,7 +600,28 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
-        // TODO add your handling code here:
+    	if (deliverySchedulesTable.getSelectedColumn() == 0){
+    		
+    		String scheduleCode = DCIncompleteDeliverySchedulesTab.getColumnData(1);
+    		String drNumber = DCIncompleteDeliverySchedulesTab.getColumnData(3);
+			String dateDelivery = DCIncompleteDeliverySchedulesTab.getColumnData(0);
+			String outlet = DCIncompleteDeliverySchedulesTab.getColumnData(2);
+			
+			this.dispose();
+			DCViewDeliveryScheduleScreen a = new DCViewDeliveryScheduleScreen(scheduleCode, dateDelivery, drNumber, outlet, "");
+	        
+	         if (prevPage.equals("")){
+	         	a = new DCViewDeliveryScheduleScreen(scheduleCode, dateDelivery, drNumber, outlet, "");
+	         }
+	         else if (prevPage.equals("ad")){
+	         	a = new DCViewDeliveryScheduleScreen(scheduleCode, dateDelivery, drNumber, outlet, "ad");
+	         }
+            
+            a.setVisible(true);
+    	}
+    	else{
+    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
     }//GEN-LAST:event_viewButtonActionPerformed
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
@@ -813,7 +834,7 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     private javax.swing.JLabel copyrightLabel1;
     private javax.swing.JButton createButton;
     private javax.swing.JButton deleteButton;
-    private javax.swing.JTable deliverySchedulesTable;
+    private static javax.swing.JTable deliverySchedulesTable;
     private com.toedter.calendar.JDateChooser dsFromChooser1;
     private javax.swing.JLabel dsFromLabel1;
     private com.toedter.calendar.JDateChooser dsPerDayChooser1;
@@ -834,6 +855,13 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
+    
+    public static String getColumnData(int n){
+    	int selectedRowIndex = deliverySchedulesTable.getSelectedRow();
+    	int selectedColumnIndex = deliverySchedulesTable.getSelectedColumn() + n;
+    	String selectedCell = (String) deliverySchedulesTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    }
     
     public void displayAll(String date1, String date2){
     	String[] columnNames = {"DATE", "SCHEDULE CODE", "OUTLETS", "DELIVERY RECEIPT CODE"};
