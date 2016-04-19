@@ -65,10 +65,43 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
 	private String []ou;
 	private JTextField scheduleCodeField;
 	private String outlet; 
+	private String deliveryReceiptNumber;
 	
     public DCAddDeliveryScheduleScreen(String page) {
         initComponents();
 
+        prevPage = page;
+        
+        Color x = new Color(32, 55, 73);
+        this.getContentPane().setBackground(x);
+        
+        Color y = new Color(205, 0, 69);
+        addButton.setBackground(y);
+        
+        Color z = new Color(102, 102, 102);
+        cancelButton.setBackground(z);
+        
+        getOutletList();
+        getDeliveryReceipts();
+        
+        ou = new String[outletsList.size()];
+        outletsList.toArray(ou);
+        AutoCompleteSupport.install(outletComboBox, GlazedLists.eventListOf(ou));
+        
+        dr = new String[drList.size()];
+        drList.toArray(dr);
+        AutoCompleteSupport.install(drCodeComboBox, GlazedLists.eventListOf(dr));
+        
+        Date now = new Date();
+        dateChooser.setDate(now);
+        
+    }
+    
+    public DCAddDeliveryScheduleScreen(String drNumber, String page) {
+        initComponents();
+
+        deliveryReceiptNumber = drNumber;
+        
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -306,9 +339,9 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
              }
              if(drCodeComboBox.getSelectedIndex() != -1 && outletComboBox.getSelectedIndex() != -1)
              {
-             outlet = outletComboBox.getSelectedItem().toString();
+            	 outlet = outletComboBox.getSelectedItem().toString();
 
-             deliveryReceiptCode = drCodeComboBox.getSelectedItem().toString();
+            	 deliveryReceiptCode = drCodeComboBox.getSelectedItem().toString();
              }
              else {
             	 go = false;
@@ -322,7 +355,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
 
              try{
             	if( go == true){
-                map = doCommand("addDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode);
+                map = doCommand("addDeliverySchedule", dateTodayStr, scheduleCode, outlet, deliveryReceiptCode, "COMPLETE");
              	
                 this.dispose();
              	DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
@@ -348,7 +381,27 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-	   	this.dispose();
+    	HashMap map;    	
+    	String drNumber = "";
+    	
+    	try{
+    		drNumber = deliveryReceiptNumber;			
+            String status = "INCOMPLETE";
+            System.out.println(drNumber + "tae");
+            try{
+                map = doCommand("setDRStatus", "", "", "", drNumber, status);
+                
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    	
+    	this.dispose();
 	    DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
 	     
      	if (prevPage.equals("")){
@@ -408,7 +461,7 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
     private javax.swing.JLabel scheduleCodeLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String date, String scheduleCode, String outlets, String deliveryReceiptCode ) throws Exception
+    private HashMap doCommand(String command, String date, String scheduleCode, String outlets, String deliveryReceiptNumber, String drStatus) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -417,7 +470,8 @@ public class DCAddDeliveryScheduleScreen extends javax.swing.JFrame {
         map.put("date", date);
         map.put("scheduleCode", scheduleCode);
         map.put("outlets", outlets);
-        map.put("deliveryReceiptCode", deliveryReceiptCode);
+        map.put("deliveryReceiptNumber", deliveryReceiptNumber);
+        map.put("drStatus", drStatus);
 
         
         // CONVERT JAVA DATA TO JSON

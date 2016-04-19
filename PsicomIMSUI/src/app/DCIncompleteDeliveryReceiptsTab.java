@@ -666,6 +666,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             workbook.write(out);
             out.close();
             System.out.println("howtodoinjava_demo.xlsx written successfully on disk.");
+            JOptionPane.showMessageDialog(null, "Export success!", "Success", JOptionPane.PLAIN_MESSAGE);
         } 
         catch (Exception e) 
         {
@@ -770,11 +771,12 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_completeButtonActionPerformed
 
     private void createDSButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDSButtonActionPerformed
-        HashMap map;    	
+        HashMap map;
+        String drNumber = "";
     	if (deliveryReceiptsTable.getSelectedColumn() == 0){
     		try{
     			
-    			String drNumber = this.getColumnData(0);
+    			drNumber = this.getColumnData(0);
                 String status = "COMPLETE";
                 
                 try{
@@ -784,6 +786,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
                 catch (Exception e){
                     e.printStackTrace();
                 }
+                System.out.println(drNumber);
                 
             }
             catch (Exception e){
@@ -798,13 +801,13 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     	
     	
         this.dispose();
-    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen("");
+    	DCAddDeliveryScheduleScreen a = new DCAddDeliveryScheduleScreen(drNumber, "");
     	
         if (prevPage.equals("")){
-        	a = new DCAddDeliveryScheduleScreen("");
+        	a = new DCAddDeliveryScheduleScreen(drNumber, "");
         }
         else if (prevPage.equals("ad")){
-        	a = new DCAddDeliveryScheduleScreen("ad");
+        	a = new DCAddDeliveryScheduleScreen(drNumber, "ad");
         }
         
         a.setVisible(true);
@@ -887,7 +890,6 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
-        PreparedStatement pst2;
         Connection con;
         
         String drNumber = "";
@@ -939,14 +941,14 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
     
-    private HashMap doCommand(String command, String drNumber, String status) throws Exception
+    private HashMap doCommand(String command, String drNumber, String drStatus) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
         HashMap<String, Object> map = new HashMap<String, Object>();
 
         map.put("deliveryReceiptNumber", drNumber);
-        map.put("status", status);
+        map.put("drStatus", drStatus);
 
         
         // CONVERT JAVA DATA TO JSON

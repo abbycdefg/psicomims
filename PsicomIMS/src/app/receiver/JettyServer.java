@@ -14,7 +14,7 @@ public class JettyServer
     private Server httpServer;
     
     
-    @Value("${app.webServerPort}")
+    
     private int webServerPort;
 
     @Autowired
@@ -24,6 +24,7 @@ public class JettyServer
     @PostConstruct
     public void start()
     {
+    	webServerPort = 8080;
         if (httpServer==null)
         {
             Thread serverRunner = new Thread(new Runnable()
