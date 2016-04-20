@@ -48,7 +48,6 @@ public class DCBooksTab extends javax.swing.JFrame {
      * Creates new form BookTabDC
      */
     public DCBooksTab(String page) {
-    	initComponents("");
     	if (page.equals("")){
     		initComponents(msgDC);
     	}

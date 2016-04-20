@@ -36,7 +36,6 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
      * Creates new form WCCompletePurchaseOrdersTab
      */
     public DCCompletePurchaseOrdersTab(String page) {
-    	initComponents("");
     	if (page.equals("")){
     		initComponents(msgDC);
     	}

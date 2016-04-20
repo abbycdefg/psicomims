@@ -42,7 +42,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
      * @wbp.parser.constructor
      */
     public DCIncompleteDeliveryReceiptsTab(String page) {
-    	initComponents("");
+
     	if (page.equals("")){
     		initComponents(msgDC);
     	}

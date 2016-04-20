@@ -42,7 +42,6 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
      * Creates new form DCCompleteDeliveryReceiptsTab
      */
     public DCCompleteDeliveryReceiptsTab(String page) {
-    	initComponents("");
     	if (page.equals("")){
             initComponents(msgDC);
         }

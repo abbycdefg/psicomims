@@ -39,7 +39,6 @@ public class DCIncompleteDeliverySchedulesTab extends javax.swing.JFrame {
      * Creates new form DCIncompleteDeliverySchedulesTab
      */
     public DCIncompleteDeliverySchedulesTab(String page) {
-    	initComponents("");
     	if (page.equals("")){
     		initComponents(msgDC);
     	}

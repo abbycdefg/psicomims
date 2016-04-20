@@ -47,7 +47,6 @@ public class DCIncompleteJobOrdersTab extends javax.swing.JFrame {
      * Creates new form DCIncompleteJobOrdersTab
      */
     public DCIncompleteJobOrdersTab(String page) {
-    	initComponents("");
     	if (page.equals("")){
     		initComponents(msgDC);
     	}
