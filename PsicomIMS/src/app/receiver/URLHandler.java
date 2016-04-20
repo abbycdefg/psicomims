@@ -613,11 +613,11 @@ class URLHandler extends AbstractHandler {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
 					String drNumber = map.get("deliveryReceiptNumber");
-					String status = map.get("status");
+					String drStatus = map.get("drStatus");
 					
 					if(dc.checkDeliveryReceipt(drNumber)){
-						dc.setDRStatus(drNumber, status);
-						response.getWriter().println("Status updated to " + status + ".");
+						dc.setDRStatus(drNumber, drStatus);
+						response.getWriter().println("Status updated to " + drStatus + ".");
 
 					}
 					else{

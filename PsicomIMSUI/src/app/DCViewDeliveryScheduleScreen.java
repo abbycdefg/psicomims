@@ -1,4 +1,5 @@
 package app;
+
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,33 +10,27 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author Abby
  */
-public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
+public class DCViewDeliveryScheduleScreen extends javax.swing.JFrame {
 
 	String prevPage;
 	
     /**
-     * Creates new form DCViewDeliveryReceiptScreen
+     * Creates new form DCViewDeliveryScheduleScreen
      */
-    public DCViewDeliveryReceiptScreen(String page) {
+    public DCViewDeliveryScheduleScreen(String page) {
         initComponents();
         
         prevPage = page;
-        
+                    
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
     }
     
-    public DCViewDeliveryReceiptScreen(String drNumber, String dateDelivery, String totalAmount, String page) {
+    public DCViewDeliveryScheduleScreen(String scheduleCode, String dateDelivery, String drNumber, String outlet, String page) {
         initComponents();
         
         prevPage = page;
@@ -43,12 +38,14 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
-        drNumberValueLabel.setText(drNumber);
+        schedCodeValueLabel.setText(scheduleCode);
         dateDeliveryValueLabel.setText(dateDelivery);
-        totalAmountValueLabel.setText(totalAmount);
+        drNumberValueLabel.setText(drNumber);
+        outletValueLabel.setText(outlet);
         
         this.displayAll(drNumber);
-   }
+        System.out.println(drNumber + "tae");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,36 +56,37 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        viewDrLabel = new javax.swing.JLabel();
+        viewDsLabel = new javax.swing.JLabel();
+        schedCodeValueLabel = new javax.swing.JLabel();
         drNumberLabel = new javax.swing.JLabel();
-        drNumberValueLabel = new javax.swing.JLabel();
         dateLabel = new javax.swing.JLabel();
         dateDeliveryValueLabel = new javax.swing.JLabel();
         totalAmountLabel = new javax.swing.JLabel();
-        totalAmountValueLabel = new javax.swing.JLabel();
+        outletValueLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         deliveryReceiptsTable = new javax.swing.JTable();
         backButton = new javax.swing.JButton();
+        dateLabel1 = new javax.swing.JLabel();
+        drNumberValueLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("View Delivery Receipt");
-        setResizable(false);
+        setTitle("View Delivery Schedule");
 
-        viewDrLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
-        viewDrLabel.setForeground(new java.awt.Color(255, 255, 255));
-        viewDrLabel.setText("VIEW DELIVERY RECEIPT");
+        viewDsLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
+        viewDsLabel.setForeground(new java.awt.Color(255, 255, 255));
+        viewDsLabel.setText("VIEW DELIVERY SCHEDULE");
+
+        schedCodeValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        schedCodeValueLabel.setForeground(new java.awt.Color(255, 255, 255));
+        schedCodeValueLabel.setText("<Value Here>");
 
         drNumberLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         drNumberLabel.setForeground(new java.awt.Color(255, 255, 255));
-        drNumberLabel.setText("DR Number:");
-
-        drNumberValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        drNumberValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        drNumberValueLabel.setText("<Value Here>");
+        drNumberLabel.setText("Schedule Code:");
 
         dateLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         dateLabel.setForeground(new java.awt.Color(255, 255, 255));
-        dateLabel.setText("Delivery Date:");
+        dateLabel.setText("DR Number:");
 
         dateDeliveryValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         dateDeliveryValueLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -96,15 +94,15 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
 
         totalAmountLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         totalAmountLabel.setForeground(new java.awt.Color(255, 255, 255));
-        totalAmountLabel.setText("Total Amount");
+        totalAmountLabel.setText("Outlet:");
 
-        totalAmountValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        totalAmountValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        totalAmountValueLabel.setText("<Value Here>");
+        outletValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        outletValueLabel.setForeground(new java.awt.Color(255, 255, 255));
+        outletValueLabel.setText("<Value Here>");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
-        
+
         backButton.setBackground(new java.awt.Color(205, 0, 69));
         backButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         backButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -116,6 +114,14 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
                 backButtonActionPerformed(evt);
             }
         });
+
+        dateLabel1.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        dateLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        dateLabel1.setText("Delivery Date:");
+
+        drNumberValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        drNumberValueLabel.setForeground(new java.awt.Color(255, 255, 255));
+        drNumberValueLabel.setText("<Value Here>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,44 +137,52 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(300, 300, 300)
-                        .addComponent(viewDrLabel))
+                        .addGap(290, 290, 290)
+                        .addComponent(viewDsLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(dateLabel)
+                                .addComponent(dateLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(dateDeliveryValueLabel))
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(dateLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(drNumberValueLabel))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(totalAmountLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(totalAmountValueLabel))
+                                .addComponent(outletValueLabel))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(drNumberLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(drNumberValueLabel)))))
+                                .addComponent(schedCodeValueLabel)))))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(viewDrLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(viewDsLabel)
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(drNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(drNumberValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(schedCodeValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dateDeliveryValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateDeliveryValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(drNumberValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(totalAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(totalAmountValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(outletValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -179,16 +193,16 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
     	this.dispose();
-        DCIncompleteDeliveryReceiptsTab a = new DCIncompleteDeliveryReceiptsTab("");
+        DCIncompleteDeliverySchedulesTab a = new DCIncompleteDeliverySchedulesTab("");
         
         if (prevPage.equals("")){
-        	a = new DCIncompleteDeliveryReceiptsTab("");
+        	a = new DCIncompleteDeliverySchedulesTab("");
        	}
     	else if (prevPage.equals("ad")){
-    		a = new DCIncompleteDeliveryReceiptsTab("ad");
+    		a = new DCIncompleteDeliverySchedulesTab("ad");
      	}
         
-        a.setVisible(true);  
+        a.setVisible(true); 
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
@@ -208,20 +222,20 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DCViewDeliveryReceiptScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCViewDeliveryScheduleScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DCViewDeliveryReceiptScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCViewDeliveryScheduleScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DCViewDeliveryReceiptScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCViewDeliveryScheduleScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DCViewDeliveryReceiptScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DCViewDeliveryScheduleScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCViewDeliveryReceiptScreen("").setVisible(true);
+                new DCViewDeliveryScheduleScreen("").setVisible(true);
             }
         });
     }
@@ -229,14 +243,16 @@ public class DCViewDeliveryReceiptScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
     private javax.swing.JLabel dateDeliveryValueLabel;
+    private javax.swing.JLabel drNumberValueLabel;
     private javax.swing.JLabel dateLabel;
+    private javax.swing.JLabel dateLabel1;
     private javax.swing.JTable deliveryReceiptsTable;
     private javax.swing.JLabel drNumberLabel;
-    private javax.swing.JLabel drNumberValueLabel;
+    private javax.swing.JLabel schedCodeValueLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel totalAmountLabel;
-    private javax.swing.JLabel totalAmountValueLabel;
-    private javax.swing.JLabel viewDrLabel;
+    private javax.swing.JLabel outletValueLabel;
+    private javax.swing.JLabel viewDsLabel;
     // End of variables declaration//GEN-END:variables
     
     public void displayAll(String drNumber){
