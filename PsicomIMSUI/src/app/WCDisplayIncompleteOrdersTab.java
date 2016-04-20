@@ -7,6 +7,7 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;import java.sql.Connection;
@@ -37,7 +38,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
      */
     public WCDisplayIncompleteOrdersTab() {
         initComponents();
-        
+                
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         

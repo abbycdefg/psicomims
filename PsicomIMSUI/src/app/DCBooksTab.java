@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.WindowListener;
 import java.awt.font.TextAttribute;
 import java.awt.print.Book;
 import java.sql.Connection;
@@ -20,11 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +27,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 /**
  *
@@ -47,14 +48,15 @@ public class DCBooksTab extends javax.swing.JFrame {
      * Creates new form BookTabDC
      */
     public DCBooksTab(String page) {
-      	if (page.equals("")){
+    	initComponents("");
+    	if (page.equals("")){
     		initComponents(msgDC);
     	}
     	else if (page.equals("ad")){
     		initComponents(msgAD);
     	} 
     	
-        this.setExtendedState(this.MAXIMIZED_BOTH);
+        
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -96,8 +98,8 @@ public class DCBooksTab extends javax.swing.JFrame {
                 searchField.setText("");
             }
         });
-    }    
-    
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -154,16 +156,14 @@ public class DCBooksTab extends javax.swing.JFrame {
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(255, 255, 255));
         
-        
         this.displayAll();
-               
+
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
         booksTable.setRequestFocusEnabled(false);
         booksTable.setRowHeight(18);
         booksTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setColumnHeaderView(booksTable.getTableHeader());
         jScrollPane1.setViewportView(booksTable);
 
         titleLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
@@ -172,36 +172,35 @@ public class DCBooksTab extends javax.swing.JFrame {
 
         copyrightLabel.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
+        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(18)
-        			.addComponent(copyrightLabel)
-        			.addContainerGap(438, Short.MAX_VALUE))
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(449)
-        			.addComponent(titleLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        			.addGap(190))
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(28)
-        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
-        			.addContainerGap())
+            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tablePanelLayout.createSequentialGroup()
+                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tablePanelLayout.createSequentialGroup()
+                        .addGap(309, 309, 309)
+                        .addComponent(titleLabel))
+                    .addGroup(tablePanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(copyrightLabel)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         tablePanelLayout.setVerticalGroup(
-        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(22)
-        			.addComponent(titleLabel)
-        			.addGap(41)
-        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addComponent(copyrightLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-        			.addGap(7))
+            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(titleLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(copyrightLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7))
         );
-        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -361,54 +360,54 @@ public class DCBooksTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(logoLabel)
-        			.addPreferredGap(ComponentPlacement.RELATED, 459, Short.MAX_VALUE)
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(greetingLabel)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(signOutButton))
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
-        			.addGap(20))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addComponent(logoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(greetingLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(signOutButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(logoLabel))
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(25)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(signOutButton)
-        						.addComponent(greetingLabel))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(searchButton))))
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
-        				.addComponent(tablePanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logoLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(signOutButton)
+                            .addComponent(greetingLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchButton))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
-        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-    	if(prevPage.equals("ad")){
+       if(prevPage.equals("ad")){
     		this.dispose();
 	    	ADLogInScreen a = new ADLogInScreen();
 	    	a.setVisible(true);
@@ -420,8 +419,8 @@ public class DCBooksTab extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	this.dispose();
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        this.dispose();
     	DCAddBookScreen a = new DCAddBookScreen("");
     	
     	if (prevPage.equals("")){
@@ -432,10 +431,10 @@ public class DCBooksTab extends javax.swing.JFrame {
      	}
     	
     	a.setVisible(true);
-    }
+    }//GEN-LAST:event_addButtonActionPerformed
 
-    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
+       if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
     		
@@ -451,10 +450,10 @@ public class DCBooksTab extends javax.swing.JFrame {
 	        
 	        a.setVisible(true);
     	}
-    }
+    }//GEN-LAST:event_viewButtonActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
     		String title = booksTable.getValueAt(row, 0).toString();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
@@ -479,10 +478,10 @@ public class DCBooksTab extends javax.swing.JFrame {
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
-    }
+    }//GEN-LAST:event_editButtonActionPerformed
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
     		this.dispose();
@@ -497,10 +496,10 @@ public class DCBooksTab extends javax.swing.JFrame {
 	    	
 	    	a.setVisible(true);
     	}
-    }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        if(prevPage.equals("ad")){
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
+       	if(prevPage.equals("ad")){
         	this.dispose();
             ADHomeScreen a = new ADHomeScreen();
             a.setVisible(true);
@@ -510,7 +509,7 @@ public class DCBooksTab extends javax.swing.JFrame {
 	        DCHomeScreen a = new DCHomeScreen();
 	        a.setVisible(true);
         }
-    }
+    }//GEN-LAST:event_homeButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         if (searchField.getText() == null || searchField.getText() == " "){
@@ -572,7 +571,6 @@ public class DCBooksTab extends javax.swing.JFrame {
             booksTable.setModel(model);
             booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         }
-        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -668,7 +666,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
-    
+
     public static String getData(){
     	int selectedRowIndex = booksTable.getSelectedRow();
     	int selectedColumnIndex = booksTable.getSelectedColumn();
@@ -753,7 +751,4 @@ public class DCBooksTab extends javax.swing.JFrame {
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         
     }
-   
- 
 }
-

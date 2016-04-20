@@ -42,6 +42,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
      * @wbp.parser.constructor
      */
     public DCIncompleteDeliveryReceiptsTab(String page) {
+    	initComponents("");
     	if (page.equals("")){
     		initComponents(msgDC);
     	}
@@ -49,7 +50,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     		initComponents(msgAD);
     	}        
 
-        this.setExtendedState(MAXIMIZED_BOTH);
+
         prevPage = page;
 
         Color x = new Color(32, 55, 73);

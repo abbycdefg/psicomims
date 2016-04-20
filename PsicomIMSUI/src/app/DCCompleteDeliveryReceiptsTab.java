@@ -32,22 +32,23 @@ import javax.swing.LayoutStyle.ComponentPlacement;
  */
 public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
-	String msgAD = "Administrator";
-	String msgDC = "Documentation Clerk";
-	String prevPage;
-	private String quantityCount;
-	private String poNumber;
-	
+    String msgAD = "Administrator";
+    String msgDC = "Documentation Clerk";
+    String prevPage;
+    private String quantityCount;
+    private String poNumber;
+
     /**
      * Creates new form DCCompleteDeliveryReceiptsTab
      */
     public DCCompleteDeliveryReceiptsTab(String page) {
+    	initComponents("");
     	if (page.equals("")){
-    		initComponents(msgDC);
-    	}
-    	else if (page.equals("ad")){
-    		initComponents(msgAD);
-    	}
+            initComponents(msgDC);
+        }
+        else if (page.equals("ad")){
+            initComponents(msgAD);
+        }
         
         prevPage = page;
         
@@ -175,7 +176,7 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
@@ -258,48 +259,48 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
-        			.addComponent(tablePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE))
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(logoLabel)
-        			.addPreferredGap(ComponentPlacement.RELATED, 860, Short.MAX_VALUE)
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(greetingLabel)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(signOutButton))
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
-        			.addGap(20))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(logoLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(greetingLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(signOutButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(logoLabel))
-        				.addGroup(layout.createSequentialGroup()
-        					.addGap(25)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(signOutButton)
-        						.addComponent(greetingLabel))
-        					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        						.addComponent(searchButton))))
-        			.addPreferredGap(ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logoLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(signOutButton)
+                            .addComponent(greetingLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchButton))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
-        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -309,30 +310,30 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        if(prevPage.equals("ad")){
-    		this.dispose();
-	    	ADLogInScreen a = new ADLogInScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-	    	this.dispose();
-	    	DCLogInScreen a = new DCLogInScreen();
-	    	a.setVisible(true);
-    	}
+       if(prevPage.equals("ad")){
+            this.dispose();
+            ADLogInScreen a = new ADLogInScreen();
+            a.setVisible(true);
+        }
+        else{
+            this.dispose();
+            DCLogInScreen a = new DCLogInScreen();
+            a.setVisible(true);
+        }
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        if (searchField.getText() == null || searchField.getText() == " "){
+       if (searchField.getText() == null || searchField.getText() == " "){
             this.displayAll();
         }
         else{
-        	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+            String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
 
-        	DefaultTableModel model = new DefaultTableModel(){
-            	public boolean isCellEditable(int row, int column)
-            	 {
-            	     return false;
-            	 }
+            DefaultTableModel model = new DefaultTableModel(){
+                public boolean isCellEditable(int row, int column)
+                 {
+                     return false;
+                 }
             };
             model.setColumnIdentifiers(columnNames);
             
@@ -347,14 +348,14 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             String totalAmount = "";
             
             try {
-            	Class.forName("com.mysql.jdbc.Driver");
-            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
                 pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt  WHERE (delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%') AND status='COMPLETE' ORDER BY date_today ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
-                	drNumber = rs.getString("delivery_receipt_number");
-                	dateToday = rs.getString("date_today");
+                    drNumber = rs.getString("delivery_receipt_number");
+                    dateToday = rs.getString("date_today");
                     deliveryDate = rs.getString("date_delivery");
                     totalAmount = rs.getString("total_amount");
                     outlet = rs.getString("outlet");
@@ -387,15 +388,15 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         if(prevPage.equals("ad")){
-    		this.dispose();
-	    	ADHomeScreen a = new ADHomeScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-	    	this.dispose();
-	    	DCHomeScreen a = new DCHomeScreen();
-	    	a.setVisible(true);
-    	}
+            this.dispose();
+            ADHomeScreen a = new ADHomeScreen();
+            a.setVisible(true);
+        }
+        else{
+            this.dispose();
+            DCHomeScreen a = new DCHomeScreen();
+            a.setVisible(true);
+        }
     }//GEN-LAST:event_homeButtonActionPerformed
 
     /**
@@ -448,21 +449,21 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     // End of variables declaration//GEN-END:variables
 
-    public static String getColumnData(int n){
-    	int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
-    	int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
-    	String selectedCell = (String) deliveryReceiptsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-    	return selectedCell;
+public static String getColumnData(int n){
+        int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
+        int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
+        String selectedCell = (String) deliveryReceiptsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+        return selectedCell;
     }
     
     public void displayAll(){
-    	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+        String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
 
-    	DefaultTableModel model = new DefaultTableModel(){
-        	public boolean isCellEditable(int row, int column)
-        	 {
-        	     return false;
-        	 }
+        DefaultTableModel model = new DefaultTableModel(){
+            public boolean isCellEditable(int row, int column)
+             {
+                 return false;
+             }
         };
         model.setColumnIdentifiers(columnNames);
         
@@ -478,15 +479,15 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         String totalAmount = "";
         
         try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
             pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE status='COMPLETE' ORDER BY date_today ASC");
             ResultSet rs = pst.executeQuery();
 
             int i = 0;
             while (rs.next()) {
-            	drNumber = rs.getString("delivery_receipt_number");
-            	dateToday = rs.getString("date_today");
+                drNumber = rs.getString("delivery_receipt_number");
+                dateToday = rs.getString("date_today");
                 deliveryDate = rs.getString("date_delivery");
                 totalAmount = rs.getString("total_amount");
                 outlet = rs.getString("outlet");
@@ -516,4 +517,5 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable.setModel(model);
         deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
+
 }
