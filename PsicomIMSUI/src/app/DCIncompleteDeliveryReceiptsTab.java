@@ -50,6 +50,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     	}        
 
         this.setExtendedState(MAXIMIZED_BOTH);
+        navbarPanel.setAlignmentX(MAXIMIZED_HORIZ);
         prevPage = page;
 
         Color x = new Color(32, 55, 73);
@@ -235,7 +236,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         );
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
-        navbarPanel.setAlignmentX(0.0F);
+
 
         createButton.setBackground(new java.awt.Color(205, 0, 69));
         createButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
@@ -518,6 +519,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
                     .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -636,11 +638,42 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
           
         //This data needs to be written (Object[])
         Map<String, Object[]> data = new TreeMap<String, Object[]>();
-        data.put("1", new Object[] {"ID", "NAME", "LASTNAME"});
-        data.put("2", new Object[] {1, "Amit", "Shukla"});
-        data.put("3", new Object[] {2, "Lokesh", "Gupta"});
-        data.put("4", new Object[] {3, "John", "Adwards"});
-        data.put("5", new Object[] {4, "Brian", "Schultz"});
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String drNumber = "";
+        String dateToday = "";
+        String outlet = "";
+        String quantity = "";
+        String deliveryDate = "";
+        String totalAmount = "";
+        
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE status='INCOMPLETE' ORDER BY date_today ASC");
+            ResultSet rs = pst.executeQuery();
+
+            int i = 1;
+            while (rs.next()) {
+            	drNumber = rs.getString("delivery_receipt_number");
+            	dateToday = rs.getString("date_today");
+                deliveryDate = rs.getString("date_delivery");
+                totalAmount = rs.getString("total_amount");
+                outlet = rs.getString("outlet");
+                quantity = rs.getString("orders");
+                i++;
+                String num = Integer.toString(i);
+                data.put("1", new Object[] {"DR NUMBER", "OUTLET", "TOTAL", "DELIVERY DATE", "QUANTITY"});
+                data.put(num, new Object[] {drNumber, outlet, totalAmount, deliveryDate, quantity});
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+
           
         //Iterate over data and write to sheet
         Set<String> keyset = data.keySet();
@@ -662,10 +695,10 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         try
         {
             //Write the workbook in file system
-            FileOutputStream out = new FileOutputStream(new File("howtodoinjava_demo.xlsx"));
+            FileOutputStream out = new FileOutputStream(new File("DeliveryReceiptReport.xlsx"));
             workbook.write(out);
             out.close();
-            System.out.println("howtodoinjava_demo.xlsx written successfully on disk.");
+            System.out.println("DeliveryReceiptReport.xlsx written successfully on disk.");
             JOptionPane.showMessageDialog(null, "Export success!", "Success", JOptionPane.PLAIN_MESSAGE);
         } 
         catch (Exception e) 
