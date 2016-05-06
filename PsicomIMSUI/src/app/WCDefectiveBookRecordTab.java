@@ -14,6 +14,13 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JButton;
+import java.awt.Insets;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -94,6 +101,7 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
         searchField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
         navbarPanel = new javax.swing.JPanel();
+        navbarPanel.setForeground(new Color(0, 0, 0));
         addButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
 
@@ -109,7 +117,7 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
 
         titleLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(32, 55, 73));
-        titleLabel.setText("DEFECTIVE BOOK RECORD");
+        titleLabel.setText("RETURNED BOOKS");
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
@@ -245,27 +253,39 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
                 homeButtonActionPerformed(evt);
             }
         });
+        
+        updateButton = new JButton("Update Stock");
+        updateButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		
+        	}
+        });
+        updateButton.setForeground(new Color(0, 0, 0));
+        updateButton.setBackground(new Color(128, 128, 128));
 
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
-        navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
-            navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(homeButton)
-                    .addComponent(addButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+        	navbarPanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(navbarPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(navbarPanelLayout.createParallelGroup(Alignment.TRAILING, false)
+        				.addComponent(updateButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(homeButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
+        			.addGap(115))
         );
         navbarPanelLayout.setVerticalGroup(
-            navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(addButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+        	navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(navbarPanelLayout.createSequentialGroup()
+        			.addGap(35)
+        			.addComponent(addButton)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(updateButton)
+        			.addPreferredGap(ComponentPlacement.RELATED, 327, Short.MAX_VALUE)
+        			.addComponent(homeButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addGap(60))
         );
+        navbarPanel.setLayout(navbarPanelLayout);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -447,10 +467,11 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
     private javax.swing.JButton signOutButton;
     private javax.swing.JPanel tablePanel;
     private javax.swing.JLabel titleLabel;
+    private JButton updateButton;
     // End of variables declaration//GEN-END:variables
     
     public void displayAll(){
-    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY"};
+    	String[] columnNames = {"OUTLET","ITEM CODE", "TITLE", "QUANTITY", "CONDITION"};
 
     	DefaultTableModel model = new DefaultTableModel(){
         	public boolean isCellEditable(int row, int column)
@@ -466,6 +487,8 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
         String itemCode = "";
         String title = "";
         String quantity = "";
+        String state = "";
+        String outlet = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
@@ -477,7 +500,9 @@ public class WCDefectiveBookRecordTab extends javax.swing.JFrame {
                 itemCode = rs.getString("item_code");
                 title = rs.getString("title");
                 quantity = rs.getString("defects_quantity");
-                model.addRow(new Object[]{itemCode, title, quantity});
+                state = rs.getString("state");
+                outlet = rs.getString("outlet");
+                model.addRow(new Object[]{outlet, itemCode, title, quantity, state});
                 i++;
             }
             

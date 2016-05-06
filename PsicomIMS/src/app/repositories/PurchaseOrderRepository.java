@@ -9,5 +9,4 @@ import app.entity.PurchaseOrder;
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> 
 {
 	public PurchaseOrder findByPurchaseOrderNumber(String poNumber);
-	public PurchaseOrder findById(Long id);
 }

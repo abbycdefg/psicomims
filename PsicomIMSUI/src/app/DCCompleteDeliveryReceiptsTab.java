@@ -7,6 +7,7 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;
@@ -22,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -32,23 +34,26 @@ import javax.swing.LayoutStyle.ComponentPlacement;
  */
 public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
-	String msgAD = "Administrator";
-	String msgDC = "Documentation Clerk";
-	String prevPage;
-	private String quantityCount;
-	private String poNumber;
-	
+    String msgAD = "Administrator";
+    String msgDC = "Documentation Clerk";
+    String prevPage;
+    private String quantityCount;
+    private String poNumber;
+
     /**
      * Creates new form DCCompleteDeliveryReceiptsTab
      */
     public DCCompleteDeliveryReceiptsTab(String page) {
-    	if (page.equals("")){
-    		initComponents(msgDC);
-    	}
-    	else if (page.equals("ad")){
-    		initComponents(msgAD);
-    	}
+    	/**if (page.equals("")){
+            initComponents(msgDC);
+        }
+        else if (page.equals("ad")){
+            initComponents(msgAD);
+        }
+        */
         
+    	initComponents(msgDC);
+    	this.setExtendedState(Frame.MAXIMIZED_BOTH);
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -171,11 +176,11 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
         titleLabel1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         titleLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        titleLabel1.setText("DELIVERY RECEIPTS");
+        titleLabel1.setText("COMPLETE DELIVERY RECEIPTS");
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel1.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         deliveryReceiptsTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         deliveryReceiptsTable.setForeground(new java.awt.Color(255, 255, 255));
@@ -192,32 +197,33 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(290, 290, 290)
-                        .addComponent(titleLabel1))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(copyrightLabel1))))
-                .addContainerGap(20, Short.MAX_VALUE))
+        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(18)
+        			.addComponent(copyrightLabel1)
+        			.addGap(723))
+        		.addGroup(Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 1137, Short.MAX_VALUE)
+        			.addContainerGap())
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(357)
+        			.addComponent(titleLabel1)
+        			.addContainerGap(656, Short.MAX_VALUE))
         );
         tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(titleLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(19)
+        			.addComponent(titleLabel1)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -261,12 +267,12 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
-        			.addComponent(tablePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE)
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, 600, GroupLayout.PREFERRED_SIZE))
+        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         		.addGroup(layout.createSequentialGroup()
         			.addComponent(logoLabel)
-        			.addPreferredGap(ComponentPlacement.RELATED, 860, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 871, Short.MAX_VALUE)
         			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
         				.addGroup(layout.createSequentialGroup()
         					.addComponent(greetingLabel)
@@ -294,14 +300,13 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         						.addComponent(searchButton))))
-        			.addPreferredGap(ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
         				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)))
         );
         getContentPane().setLayout(layout);
 
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -309,30 +314,30 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }//GEN-LAST:event_searchFieldActionPerformed
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-        if(prevPage.equals("ad")){
-    		this.dispose();
-	    	ADLogInScreen a = new ADLogInScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-	    	this.dispose();
-	    	DCLogInScreen a = new DCLogInScreen();
-	    	a.setVisible(true);
-    	}
+       if(prevPage.equals("ad")){
+            this.dispose();
+            ADLogInScreen a = new ADLogInScreen();
+            a.setVisible(true);
+        }
+        else{
+            this.dispose();
+            DCLogInScreen a = new DCLogInScreen();
+            a.setVisible(true);
+        }
     }//GEN-LAST:event_signOutButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        if (searchField.getText() == null || searchField.getText() == " "){
+       if (searchField.getText() == null || searchField.getText() == " "){
             this.displayAll();
         }
         else{
-        	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+            String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
 
-        	DefaultTableModel model = new DefaultTableModel(){
-            	public boolean isCellEditable(int row, int column)
-            	 {
-            	     return false;
-            	 }
+            DefaultTableModel model = new DefaultTableModel(){
+                public boolean isCellEditable(int row, int column)
+                 {
+                     return false;
+                 }
             };
             model.setColumnIdentifiers(columnNames);
             
@@ -347,14 +352,14 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             String totalAmount = "";
             
             try {
-            	Class.forName("com.mysql.jdbc.Driver");
-            	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+                Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
                 pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt  WHERE (delivery_receipt_number LIKE '%" + searchField.getText() + "%' OR date_today LIKE '%" + searchField.getText() + "%' OR date_delivery LIKE '%" + searchField.getText() + "%' OR total_amount LIKE '%" + searchField.getText() + "%') AND status='COMPLETE' ORDER BY date_today ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
-                	drNumber = rs.getString("delivery_receipt_number");
-                	dateToday = rs.getString("date_today");
+                    drNumber = rs.getString("delivery_receipt_number");
+                    dateToday = rs.getString("date_today");
                     deliveryDate = rs.getString("date_delivery");
                     totalAmount = rs.getString("total_amount");
                     outlet = rs.getString("outlet");
@@ -387,15 +392,15 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         if(prevPage.equals("ad")){
-    		this.dispose();
-	    	ADHomeScreen a = new ADHomeScreen();
-	    	a.setVisible(true);
-    	}
-    	else{
-	    	this.dispose();
-	    	DCHomeScreen a = new DCHomeScreen();
-	    	a.setVisible(true);
-    	}
+            this.dispose();
+            ADHomeScreen a = new ADHomeScreen();
+            a.setVisible(true);
+        }
+        else{
+            this.dispose();
+            DCHomeScreen a = new DCHomeScreen();
+            a.setVisible(true);
+        }
     }//GEN-LAST:event_homeButtonActionPerformed
 
     /**
@@ -448,21 +453,21 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel1;
     // End of variables declaration//GEN-END:variables
 
-    public static String getColumnData(int n){
-    	int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
-    	int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
-    	String selectedCell = (String) deliveryReceiptsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-    	return selectedCell;
+public static String getColumnData(int n){
+        int selectedRowIndex = deliveryReceiptsTable.getSelectedRow();
+        int selectedColumnIndex = deliveryReceiptsTable.getSelectedColumn() + n;
+        String selectedCell = (String) deliveryReceiptsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+        return selectedCell;
     }
     
     public void displayAll(){
-    	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+        String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
 
-    	DefaultTableModel model = new DefaultTableModel(){
-        	public boolean isCellEditable(int row, int column)
-        	 {
-        	     return false;
-        	 }
+        DefaultTableModel model = new DefaultTableModel(){
+            public boolean isCellEditable(int row, int column)
+             {
+                 return false;
+             }
         };
         model.setColumnIdentifiers(columnNames);
         
@@ -478,15 +483,15 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         String totalAmount = "";
         
         try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
             pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE status='COMPLETE' ORDER BY date_today ASC");
             ResultSet rs = pst.executeQuery();
 
             int i = 0;
             while (rs.next()) {
-            	drNumber = rs.getString("delivery_receipt_number");
-            	dateToday = rs.getString("date_today");
+                drNumber = rs.getString("delivery_receipt_number");
+                dateToday = rs.getString("date_today");
                 deliveryDate = rs.getString("date_delivery");
                 totalAmount = rs.getString("total_amount");
                 outlet = rs.getString("outlet");
@@ -516,4 +521,5 @@ public class DCCompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         deliveryReceiptsTable.setModel(model);
         deliveryReceiptsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
+
 }

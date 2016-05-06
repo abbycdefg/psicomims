@@ -24,6 +24,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  *
@@ -42,12 +45,13 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
      * @wbp.parser.constructor
      */
     public DCIncompleteDeliveryReceiptsTab(String page) {
+    	
     	if (page.equals("")){
     		initComponents(msgDC);
     	}
     	else if (page.equals("ad")){
     		initComponents(msgAD);
-    	}        
+    	}       
 
         this.setExtendedState(MAXIMIZED_BOTH);
         navbarPanel.setAlignmentX(MAXIMIZED_HORIZ);
@@ -169,7 +173,6 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         editButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
         homeButton = new javax.swing.JButton();
-        exportButton = new javax.swing.JButton();
         completeButton = new javax.swing.JButton();
         createDSButton = new javax.swing.JButton();
         greetingLabel = new javax.swing.JLabel();
@@ -186,7 +189,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         tablePanel.setAlignmentX(0.0F);
         tablePanel.setAlignmentY(0.0F);
 
-        titleLabel1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        titleLabel1.setFont(new Font("Calibri", Font.PLAIN, 22)); // NOI18N
         titleLabel1.setForeground(new java.awt.Color(32, 55, 73));
         titleLabel1.setText("DELIVERY RECEIPTS");
 
@@ -208,32 +211,33 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         jScrollPane1.setViewportView(deliveryReceiptsTable);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(299, 299, 299)
-                        .addComponent(titleLabel1))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(copyrightLabel1))))
-                .addContainerGap(20, Short.MAX_VALUE))
+        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(18)
+        					.addComponent(copyrightLabel1))
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(463)
+        					.addComponent(titleLabel1))
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 1127, Short.MAX_VALUE)))
+        			.addContainerGap())
         );
         tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(titleLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(19)
+        			.addComponent(titleLabel1)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
 
@@ -333,24 +337,6 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             }
         });
 
-        exportButton.setBackground(new java.awt.Color(255, 255, 255));
-        exportButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        exportButton.setForeground(new java.awt.Color(255, 255, 255));
-        exportButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_export.png"))); // NOI18N
-        exportButton.setAlignmentY(0.0F);
-        exportButton.setBorder(null);
-        exportButton.setBorderPainted(false);
-        exportButton.setContentAreaFilled(false);
-        exportButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        exportButton.setIconTextGap(0);
-        exportButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        exportButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_export2.png"))); // NOI18N
-        exportButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exportButtonActionPerformed(evt);
-            }
-        });
-
         completeButton.setBackground(new java.awt.Color(255, 255, 255));
         completeButton.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         completeButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -388,46 +374,42 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
-        navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
-            navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(editButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(viewButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(deleteButton)
-                                .addComponent(homeButton))
-                            .addComponent(exportButton, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(completeButton)
-                    .addComponent(createDSButton, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+        	navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(navbarPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        					.addGroup(navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(editButton, Alignment.TRAILING)
+        						.addComponent(viewButton, Alignment.TRAILING)
+        						.addComponent(deleteButton)
+        						.addComponent(homeButton))
+        					.addComponent(createButton, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(completeButton)
+        				.addComponent(createDSButton, Alignment.TRAILING))
+        			.addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
-            navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(createButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(createDSButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
-                .addComponent(viewButton)
-                .addGap(18, 18, 18)
-                .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+        	navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(navbarPanelLayout.createSequentialGroup()
+        			.addGap(32)
+        			.addComponent(completeButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(createButton)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(createDSButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addGap(47)
+        			.addComponent(viewButton)
+        			.addGap(18)
+        			.addComponent(editButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(deleteButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+        			.addComponent(homeButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addGap(60))
         );
+        navbarPanel.setLayout(navbarPanelLayout);
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -476,51 +458,49 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(logoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(greetingLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signOutButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 1155, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(logoLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 871, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(greetingLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(signOutButton))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(20))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(signOutButton)
-                            .addComponent(greetingLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(logoLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(signOutButton)
+        						.addComponent(greetingLabel))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(searchButton))))
+        			.addGap(30)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
+        			.addContainerGap())
         );
-
-
-        pack();
+        getContentPane().setLayout(layout);
     }// </editor-fold>//GEN-END:initComponents
 
     private void createButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createButtonMouseEntered
@@ -545,8 +525,8 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
         if (deliveryReceiptsTable.getSelectedColumn() == 0){
     		
-    		String drNumber = DCIncompleteDeliveryReceiptsTab.getColumnData(0);
-			String dateDelivery = DCIncompleteDeliveryReceiptsTab.getColumnData(4);
+    		String drNumber = DCIncompleteDeliveryReceiptsTab.getColumnData(1);
+			String dateDelivery = DCIncompleteDeliveryReceiptsTab.getColumnData(3);
 			String totalAmount = DCIncompleteDeliveryReceiptsTab.getColumnData(5);
 			
 			this.dispose();
@@ -569,11 +549,11 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
     		int row = deliveryReceiptsTable.getSelectedRow();
-    		String drNumber = deliveryReceiptsTable.getValueAt(row, 0).toString();
-    		String dateToday = deliveryReceiptsTable.getValueAt(row, 1).toString();
+    		String drNumber = deliveryReceiptsTable.getValueAt(row, 1).toString();
+    		String dateToday = deliveryReceiptsTable.getValueAt(row, 0).toString();
     		String outlet = deliveryReceiptsTable.getValueAt(row, 2).toString();
-    		String quantity = deliveryReceiptsTable.getValueAt(row, 3).toString();
-    		String deliveryDate = deliveryReceiptsTable.getValueAt(row, 4).toString();
+    		String quantity = deliveryReceiptsTable.getValueAt(row, 4).toString();
+    		String deliveryDate = deliveryReceiptsTable.getValueAt(row, 3).toString();
     		String totalAmount = deliveryReceiptsTable.getValueAt(row, 5).toString();
     		
     		this.dispose();
@@ -597,7 +577,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         if (deliveryReceiptsTable.getSelectedRowCount() == 1 && deliveryReceiptsTable.getSelectedColumn() == 0){
     		int row = deliveryReceiptsTable.getSelectedRow();
-    		String drNumber = deliveryReceiptsTable.getValueAt(row, 0).toString();
+    		String drNumber = deliveryReceiptsTable.getValueAt(row, 1).toString();
     		this.dispose();
     		DCDeleteDeliveryReceiptScreen a = new DCDeleteDeliveryReceiptScreen(drNumber, "");
 	    	
@@ -629,84 +609,6 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_homeButtonActionPerformed
 
-    private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
-        //Blank workbook
-        XSSFWorkbook workbook = new XSSFWorkbook(); 
-         
-        //Create a blank sheet
-        XSSFSheet sheet = workbook.createSheet("Employee Data");
-          
-        //This data needs to be written (Object[])
-        Map<String, Object[]> data = new TreeMap<String, Object[]>();
-        
-        PreparedStatement pst;
-        Connection con;
-        
-        String drNumber = "";
-        String dateToday = "";
-        String outlet = "";
-        String quantity = "";
-        String deliveryDate = "";
-        String totalAmount = "";
-        
-        
-        try {
-        	Class.forName("com.mysql.jdbc.Driver");
-        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.delivery_receipt WHERE status='INCOMPLETE' ORDER BY date_today ASC");
-            ResultSet rs = pst.executeQuery();
-
-            int i = 1;
-            while (rs.next()) {
-            	drNumber = rs.getString("delivery_receipt_number");
-            	dateToday = rs.getString("date_today");
-                deliveryDate = rs.getString("date_delivery");
-                totalAmount = rs.getString("total_amount");
-                outlet = rs.getString("outlet");
-                quantity = rs.getString("orders");
-                i++;
-                String num = Integer.toString(i);
-                data.put("1", new Object[] {"DR NUMBER", "OUTLET", "TOTAL", "DELIVERY DATE", "QUANTITY"});
-                data.put(num, new Object[] {drNumber, outlet, totalAmount, deliveryDate, quantity});
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-
-          
-        //Iterate over data and write to sheet
-        Set<String> keyset = data.keySet();
-        int rownum = 0;
-        for (String key : keyset)
-        {
-            Row row = sheet.createRow(rownum++);
-            Object [] objArr = data.get(key);
-            int cellnum = 0;
-            for (Object obj : objArr)
-            {
-               Cell cell = row.createCell(cellnum++);
-               if(obj instanceof String)
-                    cell.setCellValue((String)obj);
-                else if(obj instanceof Integer)
-                    cell.setCellValue((Integer)obj);
-            }
-        }
-        try
-        {
-            //Write the workbook in file system
-            FileOutputStream out = new FileOutputStream(new File("DeliveryReceiptReport.xlsx"));
-            workbook.write(out);
-            out.close();
-            System.out.println("DeliveryReceiptReport.xlsx written successfully on disk.");
-            JOptionPane.showMessageDialog(null, "Export success!", "Success", JOptionPane.PLAIN_MESSAGE);
-        } 
-        catch (Exception e) 
-        {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_exportButtonActionPerformed
-
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
         if(prevPage.equals("ad")){
     		this.dispose();
@@ -729,7 +631,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
             this.displayAll();
         }
         else{
-        	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+        	String[] columnNames = { "DATE CREATED","DR NUMBER","OUTLET", "DELIVERY DATE", "QUANTITY", "TOTAL AMOUNT"};
 
         	DefaultTableModel model = new DefaultTableModel(){
             	public boolean isCellEditable(int row, int column)
@@ -762,7 +664,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
                     totalAmount = rs.getString("total_amount");
                     outlet = rs.getString("outlet");
                     quantity = rs.getString("orders");
-                    model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
+                    model.addRow(new Object[]{dateToday, drNumber, outlet, deliveryDate,quantity, totalAmount});
                     i++;
                 }
                 
@@ -890,7 +792,6 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     private javax.swing.JButton deleteButton;
     private static javax.swing.JTable deliveryReceiptsTable;
     private javax.swing.JButton editButton;
-    private javax.swing.JButton exportButton;
     private javax.swing.JLabel greetingLabel;
     private javax.swing.JButton homeButton;
     private javax.swing.JScrollPane jScrollPane1;
@@ -912,7 +813,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
     }
     
     public void displayAll(){
-    	String[] columnNames = { "DR NUMBER", "DATE", "OUTLET", "QUANTITY", "DELIVERY DATE", "TOTAL AMOUNT"};
+    	String[] columnNames = { "DATE CREATED","DR NUMBER","OUTLET", "DELIVERY DATE", "QUANTITY", "TOTAL AMOUNT"};
 
     	DefaultTableModel model = new DefaultTableModel(){
         	public boolean isCellEditable(int row, int column)
@@ -946,7 +847,7 @@ public class DCIncompleteDeliveryReceiptsTab extends javax.swing.JFrame {
                 totalAmount = rs.getString("total_amount");
                 outlet = rs.getString("outlet");
                 quantity = rs.getString("orders");
-                model.addRow(new Object[]{drNumber, dateToday, outlet, quantity, deliveryDate, totalAmount});
+                model.addRow(new Object[]{dateToday, drNumber, outlet, deliveryDate,quantity, totalAmount});
                 i++;
             }
             

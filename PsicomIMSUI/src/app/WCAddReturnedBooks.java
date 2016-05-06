@@ -49,7 +49,7 @@ import javax.swing.JTextField;
  *
  * @author Abby
  */
-public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
+public class WCAddReturnedBooks extends javax.swing.JFrame {
 
     /**
      * Creates new form WCAddDefectiveBookScreen
@@ -62,7 +62,7 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
 	JComboBox outComboBox = new JComboBox();
 	JComboBox itemCodeComboBox = new JComboBox();
 	
-    public WCAddDefectiveBookScreen() {
+    public WCAddReturnedBooks() {
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -112,7 +112,7 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
 
         addDefectiveBookLabel.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         addDefectiveBookLabel.setForeground(new java.awt.Color(255, 255, 255));
-        addDefectiveBookLabel.setText("ADD DEFECTIVE BOOK");
+        addDefectiveBookLabel.setText("ADD RETURNED BOOK");
 
         itemCodeLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         itemCodeLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -354,20 +354,20 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(WCAddDefectiveBookScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCAddReturnedBooks.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(WCAddDefectiveBookScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCAddReturnedBooks.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(WCAddDefectiveBookScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCAddReturnedBooks.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(WCAddDefectiveBookScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WCAddReturnedBooks.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new WCAddDefectiveBookScreen().setVisible(true);
+                new WCAddReturnedBooks().setVisible(true);
             }
         });
     }
@@ -393,7 +393,7 @@ public class WCAddDefectiveBookScreen extends javax.swing.JFrame {
         map.put("title", title);
         map.put("quantity", quantity);
         map.put("outlet", quantity);
-        map.put("outlet", "DEFECTIVE");
+        map.put("outlet", "GOOD");
         
         // CONVERT JAVA DATA TO JSON
         ObjectMapper mapper = new ObjectMapper();

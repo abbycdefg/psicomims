@@ -199,7 +199,8 @@ public class ADOutletsTab extends javax.swing.JFrame {
         						.addComponent(copyrightLabel1)))
         				.addGroup(tablePanelLayout.createSequentialGroup()
         					.addGap(328)
-        					.addComponent(titleLabel)))
+        					.addComponent(titleLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addGap(333)))
         			.addGap(26))
         );
         tablePanelLayout.setVerticalGroup(
@@ -389,7 +390,7 @@ public class ADOutletsTab extends javax.swing.JFrame {
     		this.displayAll();
     	}
     	else{
-	    	String[] columnNames = {"OUTLET ID", "OUTLETS", "DATE CREATED"};
+    		String[] columnNames = {"OUTLETS", "OUTLET ID", "DATE CREATED", "DISCOUNT PERCENT"};
 	
 	    	DefaultTableModel model = new DefaultTableModel(){
 	        	public boolean isCellEditable(int row, int column)
@@ -402,9 +403,10 @@ public class ADOutletsTab extends javax.swing.JFrame {
 	    	PreparedStatement pst;
 	        Connection con;
 	        
-	        String outletId = "";
 	        String outletName = "";
+	        String outletId = "";
 	        String dateCreated = "";
+	        String discountPercent = "";
 	        
 	        try {
 	        	Class.forName("com.mysql.jdbc.Driver");
@@ -413,10 +415,11 @@ public class ADOutletsTab extends javax.swing.JFrame {
 	            ResultSet rs = pst.executeQuery();
 	            int i = 0;
 	            while (rs.next()) {
-	                outletId = rs.getString("outlet_id");
 	                outletName = rs.getString("outlet_name");
+	                outletId = rs.getString("outlet_id");
 	                dateCreated = rs.getString("date_created");
-	                model.addRow(new Object[]{outletId, outletName, dateCreated});
+	                discountPercent = rs.getString("discount_percent");
+	                model.addRow(new Object[]{outletName, outletId, dateCreated, discountPercent});
 	                i++;
 	            }
 	            
@@ -467,7 +470,7 @@ public class ADOutletsTab extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
     	if (outletsTable.getSelectedRowCount() == 1 && outletsTable.getSelectedColumn() == 0){
-	    	this.getFirstColumnData();
+	    	this.getSecondColumnData();
 	    	this.dispose();
 	    	ADDeleteOutletScreen a = new ADDeleteOutletScreen();
 	    	a.setVisible(true);
@@ -558,10 +561,17 @@ public class ADOutletsTab extends javax.swing.JFrame {
     	return selectedCell;
     	
     }
+    public static String getFourthColumnData(){ 
+    	int selectedRowIndex = outletsTable.getSelectedRow();
+    	int selectedColumnIndex = outletsTable.getSelectedColumn() + 3;
+    	String selectedCell = (String) outletsTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+    	return selectedCell;
+    	
+    }
 
     
     public void displayAll(){
-    	String[] columnNames = {"OUTLET ID", "OUTLETS", "DATE CREATED"};
+    	String[] columnNames = {"OUTLETS", "OUTLET ID", "DATE CREATED", "DISCOUNT PERCENT"};
 
     	DefaultTableModel model = new DefaultTableModel(){
         	public boolean isCellEditable(int row, int column)
@@ -574,21 +584,23 @@ public class ADOutletsTab extends javax.swing.JFrame {
         PreparedStatement pst;
         Connection con;
         
-        String outletId = "";
         String outletName = "";
+        String outletId = "";
         String dateCreated = "";
+        String discountPercent = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.outlet");
+            pst = con.prepareStatement("SELECT * FROM psicomims.outlet ORDER BY outlet_name ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
-                outletId = rs.getString("outlet_id");
                 outletName = rs.getString("outlet_name");
+                outletId = rs.getString("outlet_id");
                 dateCreated = rs.getString("date_created");
-                model.addRow(new Object[]{outletId, outletName, dateCreated});
+                discountPercent = rs.getString("discount_percent");
+                model.addRow(new Object[]{outletName, outletId, dateCreated, discountPercent});
                 i++;
             }
             

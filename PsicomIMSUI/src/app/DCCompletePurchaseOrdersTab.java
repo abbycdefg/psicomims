@@ -15,6 +15,12 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
+
+import java.awt.Insets;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -36,14 +42,15 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
      * Creates new form WCCompletePurchaseOrdersTab
      */
     public DCCompletePurchaseOrdersTab(String page) {
-    	if (page.equals("")){
+    	setExtendedState(Frame.MAXIMIZED_BOTH);
+		if (page.equals("")){
     		initComponents(msgDC);
     	}
     	else if (page.equals("ad")){
     		initComponents(msgAD);
     	}
-        
-        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+
+
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -142,32 +149,31 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
         purchaseOrdersTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(copyrightLabel1)))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(290, 290, 290)
-                        .addComponent(titleLabel1)))
-                .addContainerGap(20, Short.MAX_VALUE))
+        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(18)
+        					.addComponent(copyrightLabel1))
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(290)
+        					.addComponent(titleLabel1))
+        				.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 1115, Short.MAX_VALUE))
+        			.addContainerGap())
         );
         tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(titleLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(19)
+        			.addComponent(titleLabel1)
+        			.addGap(18)
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -213,25 +219,25 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout navbarPanelLayout = new javax.swing.GroupLayout(navbarPanel);
-        navbarPanel.setLayout(navbarPanelLayout);
         navbarPanelLayout.setHorizontalGroup(
-            navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(homeButton)
-                    .addComponent(createButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+        	navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(navbarPanelLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(homeButton)
+        				.addComponent(createButton, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap())
         );
         navbarPanelLayout.setVerticalGroup(
-            navbarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(createButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+        	navbarPanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(navbarPanelLayout.createSequentialGroup()
+        			.addGap(35)
+        			.addComponent(createButton)
+        			.addPreferredGap(ComponentPlacement.RELATED, 441, Short.MAX_VALUE)
+        			.addComponent(homeButton, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+        			.addGap(60))
         );
+        navbarPanel.setLayout(navbarPanelLayout);
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -280,49 +286,49 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(logoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(greetingLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signOutButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 1143, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(logoLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 452, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(greetingLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(signOutButton))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(20))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(signOutButton)
-                            .addComponent(greetingLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(logoLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(signOutButton)
+        						.addComponent(greetingLabel))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(searchButton))))
+        			.addPreferredGap(ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)))
         );
-
+        getContentPane().setLayout(layout);
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -333,16 +339,19 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
     	this.dispose();
-    	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen("");
+    	int row = purchaseOrdersTable.getSelectedRow();
+		String poNumber = purchaseOrdersTable.getValueAt(row, 1).toString();
     	
         if (prevPage.equals("")){
-        	a = new DCAddDeliveryReceiptScreen("");
+        	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen("", poNumber);
+        	a.setVisible(true);
         }
         else if (prevPage.equals("ad")){
-        	a = new DCAddDeliveryReceiptScreen("ad");
+        	DCAddDeliveryReceiptScreen a = new DCAddDeliveryReceiptScreen("ad", poNumber);
+        	a.setVisible(true);
         }
         
-        a.setVisible(true);
+        
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
@@ -505,7 +514,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
     }
     
     public void displayAll(){
-    	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET"};
+    	String[] columnNames = {"OUTLET", "PO NUMBER", "DATE", "CONTACT PERSON"};
 
     	DefaultTableModel model = new DefaultTableModel(){
         	public boolean isCellEditable(int row, int column)
@@ -538,7 +547,7 @@ public class DCCompletePurchaseOrdersTab extends javax.swing.JFrame {
                 contactPerson = rs.getString("contact_person");
                 outlet = rs.getString("outlet");
                 status = rs.getString("po_status");
-                model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
+                model.addRow(new Object[]{outlet, poNumber, date, contactPerson});
                 i++;
             }
             

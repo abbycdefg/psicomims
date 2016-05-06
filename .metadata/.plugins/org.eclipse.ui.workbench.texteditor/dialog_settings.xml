@@ -2,29 +2,33 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
-		<item value="152" key="DIALOG_Y_ORIGIN"/>
-		<item value="1004" key="DIALOG_X_ORIGIN"/>
+		<item value="226" key="DIALOG_Y_ORIGIN"/>
 		<item value="372" key="DIALOG_HEIGHT"/>
+		<item value="915" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="true" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="webServerPort" key="selection"/>
+		<item value="search" key="selection"/>
 		<list key="findhistory">
-			<item value="webServerPort"/>
-			<item value="wedServerPort"/>
-			<item value="FROM"/>
-			<item value="where"/>
-			<item value="books"/>
-			<item value="ORDER BY"/>
-			<item value="specifi"/>
-			<item value="specificPo"/>
+			<item value="search"/>
+			<item value="d"/>
+			<item value="dclogin"/>
+			<item value="main"/>
+			<item value="run"/>
+			<item value="maximized"/>
+			<item value="anchor"/>
+			<item value="MAXIMIZED_BOTH"/>
 		</list>
 		<list key="replacehistory">
+			<item value="outletValueLabel"/>
+			<item value="drNumberValueLabel"/>
+			<item value="schedCodeValueLabel"/>
+			<item value="viewDrLabel"/>
 			<item value="purchaseOrdersTable"/>
 			<item value=""/>
 		</list>

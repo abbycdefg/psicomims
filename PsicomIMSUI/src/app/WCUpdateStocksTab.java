@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.font.TextAttribute;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +17,15 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+
+import ca.odell.glazedlists.impl.filter.SearchTerm;
+import java.awt.Frame;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -31,6 +43,7 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
      * Creates new form WCUpdateStocksTab
      */
     public WCUpdateStocksTab() {
+    	setExtendedState(Frame.MAXIMIZED_BOTH);
         initComponents();
                 
         Color x = new Color(32, 55, 73);
@@ -60,7 +73,11 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
             }
         }); 
              
-        
+             this.addWindowListener( new WindowAdapter() {
+                 public void windowOpened( WindowEvent e ){
+                     searchField.requestFocus();
+                 }
+             }); 
         
         searchField.addFocusListener(new FocusListener(){            
             @Override
@@ -107,7 +124,7 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
         tablePanel.setAlignmentX(0.0F);
         tablePanel.setAlignmentY(0.0F);
 
-        titleLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        titleLabel.setFont(new Font("Calibri", Font.PLAIN, 22)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(32, 55, 73));
         titleLabel.setText("UPDATE STOCKS");
 
@@ -128,33 +145,34 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
         stocksTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(stocksTable);
         stocksTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+      
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(titleLabel)
-                .addGap(316, 316, 316))
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(copyrightLabel1))
-                .addContainerGap(26, Short.MAX_VALUE))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addContainerGap(318, Short.MAX_VALUE)
+        			.addComponent(titleLabel)
+        			.addGap(316))
+        		.addGroup(Alignment.LEADING, tablePanelLayout.createSequentialGroup()
+        			.addGap(18)
+        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 710, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(copyrightLabel1))
+        			.addContainerGap(26, Short.MAX_VALUE))
         );
         tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(titleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(19)
+        			.addComponent(titleLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 494, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -241,12 +259,51 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
         searchField.setForeground(new java.awt.Color(153, 153, 153));
         searchField.setText("   Search");
         searchField.setToolTipText("Search");
-        searchField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFieldActionPerformed(evt);
-            }
-        });
+        
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+        	  public void changedUpdate(DocumentEvent e) {
+        		  if (searchField.getText().length() >= 9)
+                  {
+                  	System.out.println("searching");
+                  	search();
+                  }
+                  else {
+                  	System.out.println("no");
+                  }
+        	  }
 
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+        	  
+        	});
+
+        
+        searchField.addKeyListener(new KeyAdapter() {
+    		@Override
+    		public void keyPressed(KeyEvent e) {
+    			if(e.getKeyCode() == KeyEvent.VK_ENTER )
+    			{
+    				if (stocksTable.getRowCount() != 0)
+    		        {
+    				search();
+    				stocksTable.changeSelection(0, 0, false, false);
+    		        open();    		 
+    		        }
+    			}
+    		}
+    	});
+        
+
+        stocksTable.changeSelection(0, 0, false, false);
         searchButton.setBackground(new java.awt.Color(205, 0, 69));
         searchButton.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         searchButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -267,50 +324,50 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(logoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(greetingLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signOutButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(tablePanel, GroupLayout.PREFERRED_SIZE, 786, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(logoLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 521, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(greetingLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(signOutButton))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(20))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(signOutButton)
-                            .addComponent(greetingLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(logoLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(signOutButton)
+        						.addComponent(greetingLabel))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(searchButton))))
+        			.addGap(57)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)))
         );
-
+        getContentPane().setLayout(layout);
         pack();
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseEntered
@@ -349,62 +406,16 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
         if (searchField.getText() == null || searchField.getText() == " "){
             this.displayAll();
         }
-        else{
-        	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "DATE MODIFIED"};
-	
-        	DefaultTableModel model = new DefaultTableModel(){
-            	public boolean isCellEditable(int row, int column)
-            	 {
-            	     return false;
-            	 }
-            };
-	        model.setColumnIdentifiers(columnNames);
-	        
-	        PreparedStatement pst;
-	        Connection con;
-	        
-	        String date = "";
-	        String itemCode = "";
-	        String title = "";
-	        String quantity = "";
-	        
-	        try {
-	        	Class.forName("com.mysql.jdbc.Driver");
-	        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-	            pst = con.prepareStatement("SELECT * FROM psicomims.book WHERE item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%"  + searchField.getText() + "%' OR quantity LIKE '%"  + searchField.getText() + "%' OR release_date LIKE '%"  + searchField.getText() + "%'");
-	            ResultSet rs = pst.executeQuery();
-	            int i = 0;
-	            while (rs.next()) {
-	                itemCode = rs.getString("item_code");
-	                title = rs.getString("title");
-	                quantity = rs.getString("quantity");
-	                date = rs.getString("release_date");
-	                model.addRow(new Object[]{itemCode, title, quantity, date});
-	                i++;
-	            }
-	            
-	            if (i < 1) {
-	                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
-	            }
-	            
-	            if (i == 1) {
-	                System.out.println(i + " Record Found");
-	            } 
-	            
-	            else {
-	                System.out.println(i + " Records Found");
-	            }
-	
-	                  
-	        } catch (Exception e) {
-	            e.printStackTrace();
+        else
+        {
+        	
+        		search();
 	        }
+    }
 	        
 
-	        stocksTable.setModel(model);
-	        stocksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-	    }
-	}
+	     
+
     //GEN-LAST:event_searchButtonActionPerformed
 
     /**
@@ -465,8 +476,7 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
     	selectedRowIndex = stocksTable.getSelectedRow();
     	selectedColumnIndex = stocksTable.getSelectedColumn();
     	String selectedCell = (String) stocksTable.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-    	return selectedCell;
-    	
+    	return selectedCell;   	
     }
     
     public static String getSecondColumnData(){ 
@@ -479,10 +489,9 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
     	return selectedCell;
     }
 
-    
-    public void displayAll(){
+    public void search(){
     	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY", "DATE MODIFIED"};
-
+    	
     	DefaultTableModel model = new DefaultTableModel(){
         	public boolean isCellEditable(int row, int column)
         	 {
@@ -502,9 +511,8 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.book");
+            pst = con.prepareStatement("SELECT * FROM psicomims.book WHERE item_code LIKE '%" + searchField.getText() + "%' OR title LIKE '%"  + searchField.getText() + "%' OR quantity LIKE '%"  + searchField.getText() + "%' OR release_date LIKE '%"  + searchField.getText() + "%'");
             ResultSet rs = pst.executeQuery();
-            
             int i = 0;
             while (rs.next()) {
                 itemCode = rs.getString("item_code");
@@ -532,8 +540,70 @@ public class WCUpdateStocksTab extends javax.swing.JFrame {
             e.printStackTrace();
         }
         
+
+        stocksTable.setModel(model);
+        stocksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    
+    }
+    
+    public void displayAll(){
+    	String[] columnNames = {"ITEM CODE", "TITLE", "QUANTITY"};
+
+    	DefaultTableModel model = new DefaultTableModel(){
+        	public boolean isCellEditable(int row, int column)
+        	 {
+        	     return false;
+        	 }
+        };
+        model.setColumnIdentifiers(columnNames);
+        
+        PreparedStatement pst;
+        Connection con;
+        
+        String itemCode = "";
+        String title = "";
+        String quantity = "";
+        
+        try {
+        	Class.forName("com.mysql.jdbc.Driver");
+        	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+            pst = con.prepareStatement("SELECT * FROM psicomims.book");
+            ResultSet rs = pst.executeQuery();
+            
+            int i = 0;
+            while (rs.next()) {
+                itemCode = rs.getString("item_code");
+                title = rs.getString("title");
+                quantity = rs.getString("quantity");
+                model.addRow(new Object[]{itemCode, title, quantity});
+                i++;
+            }
+            
+            if (i < 1) {
+                JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (i == 1) {
+                System.out.println(i + " Record Found");
+            } 
+            
+            else {
+                System.out.println(i + " Records Found");
+            }
+
+                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         stocksTable = new JTable(model);
         stocksTable.setModel(model);
         stocksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    private void open()
+    {
+    	this.dispose();
+		WCUpdateStockLevelScreen a = new WCUpdateStockLevelScreen();
+        a.setVisible(true);
     }
 }

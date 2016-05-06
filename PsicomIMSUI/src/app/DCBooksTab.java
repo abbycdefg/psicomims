@@ -2,9 +2,9 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.WindowListener;
 import java.awt.font.TextAttribute;
 import java.awt.print.Book;
 import java.sql.Connection;
@@ -20,11 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import javax.swing.table.DefaultTableModel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +27,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 /**
  *
@@ -47,14 +48,15 @@ public class DCBooksTab extends javax.swing.JFrame {
      * Creates new form BookTabDC
      */
     public DCBooksTab(String page) {
-      	if (page.equals("")){
+    	if (page.equals("")){
     		initComponents(msgDC);
     	}
     	else if (page.equals("ad")){
     		initComponents(msgAD);
     	} 
-    	
-        this.setExtendedState(this.MAXIMIZED_BOTH);
+
+    	this.setExtendedState(Frame.MAXIMIZED_BOTH);
+        
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -96,8 +98,8 @@ public class DCBooksTab extends javax.swing.JFrame {
                 searchField.setText("");
             }
         });
-    }    
-    
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -154,16 +156,14 @@ public class DCBooksTab extends javax.swing.JFrame {
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(255, 255, 255));
         
-        
         this.displayAll();
-               
+
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
         booksTable.setRequestFocusEnabled(false);
         booksTable.setRowHeight(18);
         booksTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setColumnHeaderView(booksTable.getTableHeader());
         jScrollPane1.setViewportView(booksTable);
 
         titleLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
@@ -172,32 +172,31 @@ public class DCBooksTab extends javax.swing.JFrame {
 
         copyrightLabel.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel.setForeground(new java.awt.Color(32, 55, 73));
-        copyrightLabel.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
         tablePanelLayout.setHorizontalGroup(
-        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
         		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(18)
-        			.addComponent(copyrightLabel)
-        			.addContainerGap(438, Short.MAX_VALUE))
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(449)
-        			.addComponent(titleLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        			.addGap(190))
-        		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(28)
-        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 710, Short.MAX_VALUE)
-        			.addContainerGap())
+        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(18)
+        					.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 1118, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(copyrightLabel)))
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(481)
+        					.addComponent(titleLabel)))
+        			.addContainerGap(22, Short.MAX_VALUE))
         );
         tablePanelLayout.setVerticalGroup(
         	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
         		.addGroup(tablePanelLayout.createSequentialGroup()
-        			.addGap(22)
+        			.addGap(19)
         			.addComponent(titleLabel)
-        			.addGap(41)
-        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGap(18)
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
+        			.addGap(18)
         			.addComponent(copyrightLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
         			.addGap(7))
         );
@@ -363,13 +362,14 @@ public class DCBooksTab extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(layout.createSequentialGroup()
-        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 1162, Short.MAX_VALUE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         		.addGroup(layout.createSequentialGroup()
         			.addComponent(logoLabel)
-        			.addPreferredGap(ComponentPlacement.RELATED, 459, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 497, Short.MAX_VALUE)
         			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
         				.addGroup(layout.createSequentialGroup()
         					.addComponent(greetingLabel)
@@ -397,10 +397,11 @@ public class DCBooksTab extends javax.swing.JFrame {
         					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         						.addComponent(searchButton))))
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
-        				.addComponent(tablePanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)))
+        			.addGap(45)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(tablePanel, GroupLayout.PREFERRED_SIZE, 623, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap())
         );
         getContentPane().setLayout(layout);
 
@@ -408,7 +409,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed
-    	if(prevPage.equals("ad")){
+       if(prevPage.equals("ad")){
     		this.dispose();
 	    	ADLogInScreen a = new ADLogInScreen();
 	    	a.setVisible(true);
@@ -420,8 +421,8 @@ public class DCBooksTab extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_signOutButtonActionPerformed
 
-    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	this.dispose();
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        this.dispose();
     	DCAddBookScreen a = new DCAddBookScreen("");
     	
     	if (prevPage.equals("")){
@@ -432,10 +433,10 @@ public class DCBooksTab extends javax.swing.JFrame {
      	}
     	
     	a.setVisible(true);
-    }
+    }//GEN-LAST:event_addButtonActionPerformed
 
-    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+    private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
+       if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
     		
@@ -451,26 +452,21 @@ public class DCBooksTab extends javax.swing.JFrame {
 	        
 	        a.setVisible(true);
     	}
-    }
+    }//GEN-LAST:event_viewButtonActionPerformed
 
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
-    		String title = booksTable.getValueAt(row, 0).toString();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
-    		String price = booksTable.getValueAt(row, 2).toString();
-    		String author = booksTable.getValueAt(row, 3).toString();
-    		String releaseDate = booksTable.getValueAt(row, 4).toString();
-    		String threshold = booksTable.getValueAt(row, 6).toString();
-    		
+
     		this.dispose();
-	    	DCEditBookScreen a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold, "");
+	    	DCEditBookScreen a = new DCEditBookScreen(itemCode,"");
 	    	
 	        if (prevPage.equals("")){
-	        	a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold, "");
+	        	a = new DCEditBookScreen(itemCode, "");
 	       	}
 	    	else if (prevPage.equals("ad")){
-	    		a = new DCEditBookScreen(title, itemCode, price, author, releaseDate, threshold, "ad");
+	    		a = new DCEditBookScreen(itemCode, "ad");
 	     	}
 	        
 	        a.setVisible(true);
@@ -479,10 +475,10 @@ public class DCBooksTab extends javax.swing.JFrame {
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
-    }
+    }//GEN-LAST:event_editButtonActionPerformed
 
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if (booksTable.getSelectedRowCount() == 1 && booksTable.getSelectedColumn() == 0){
     		int row = booksTable.getSelectedRow();
     		String itemCode = booksTable.getValueAt(row, 1).toString();
     		this.dispose();
@@ -497,10 +493,10 @@ public class DCBooksTab extends javax.swing.JFrame {
 	    	
 	    	a.setVisible(true);
     	}
-    }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        if(prevPage.equals("ad")){
+    private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
+       	if(prevPage.equals("ad")){
         	this.dispose();
             ADHomeScreen a = new ADHomeScreen();
             a.setVisible(true);
@@ -510,7 +506,7 @@ public class DCBooksTab extends javax.swing.JFrame {
 	        DCHomeScreen a = new DCHomeScreen();
 	        a.setVisible(true);
         }
-    }
+    }//GEN-LAST:event_homeButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         if (searchField.getText() == null || searchField.getText() == " "){
@@ -572,7 +568,6 @@ public class DCBooksTab extends javax.swing.JFrame {
             booksTable.setModel(model);
             booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         }
-        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
@@ -668,7 +663,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton viewButton;
     // End of variables declaration//GEN-END:variables
-    
+
     public static String getData(){
     	int selectedRowIndex = booksTable.getSelectedRow();
     	int selectedColumnIndex = booksTable.getSelectedColumn();
@@ -678,7 +673,7 @@ public class DCBooksTab extends javax.swing.JFrame {
     
     
     public void displayAll(){
-    	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "AUTHOR", "RELEASE DATE", "QUANTITY", "THRESHOLD"};
+    	String[] columnNames = {"TITLE", "ITEM CODE", "PRICE", "QUANTITY"};
 
         DefaultTableModel model = new DefaultTableModel(){
         	public boolean isCellEditable(int row, int column)
@@ -694,27 +689,21 @@ public class DCBooksTab extends javax.swing.JFrame {
         String title = "";
         String itemCode = "";
         String price = "";
-        String author = "";
-        String releaseDate = "";
         String quantity = "";
         String state = "";
-        String threshold = "";
         
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT * FROM psicomims.book");
+            pst = con.prepareStatement("SELECT * FROM psicomims.book ORDER BY title ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
                 title = rs.getString("title");
                 itemCode = rs.getString("item_code");
                 price = rs.getString("price");
-                author = rs.getString("author");
-                releaseDate = rs.getString("release_date");
                 quantity = rs.getString("quantity");
-                threshold = rs.getString("threshold");
-                model.addRow(new Object[]{title, itemCode, price, author, releaseDate, quantity, threshold});
+                model.addRow(new Object[]{title, itemCode, price, quantity});
                 i++;
                 
                 
@@ -753,7 +742,4 @@ public class DCBooksTab extends javax.swing.JFrame {
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         
     }
-   
- 
 }
-

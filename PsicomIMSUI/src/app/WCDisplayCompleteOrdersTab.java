@@ -427,7 +427,7 @@ public class WCDisplayCompleteOrdersTab extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
         }   
         
-        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "PO ID", "STATUS"};
 
         DefaultTableModel model = new DefaultTableModel(){
             public boolean isCellEditable(int row, int column)
@@ -443,7 +443,6 @@ public class WCDisplayCompleteOrdersTab extends javax.swing.JFrame {
         String itemCode = "";
         String title = "";
         String quantity = "";
-        String location = "";
         String poId = "";
         String status = "";
         String spoId = "";
@@ -451,18 +450,17 @@ public class WCDisplayCompleteOrdersTab extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='COMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
+            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='COMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
                 title = rs.getString("title");
-                location = rs.getString("location");
                 itemCode = rs.getString("book_id");
                 quantity = rs.getString("quantity");
                 poId = rs.getString("po_id");
                 status = rs.getString("status");
                 spoId = rs.getString("id");
-                model.addRow(new Object[]{spoId, itemCode, title, quantity, location, poId, status});
+                model.addRow(new Object[]{spoId, itemCode, title, quantity, poId, status});
                 i++;
             }
             
@@ -548,7 +546,7 @@ public class WCDisplayCompleteOrdersTab extends javax.swing.JFrame {
     } 
     
     public void displayAll(){
-        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY","PO ID", "STATUS"};
 
         DefaultTableModel model = new DefaultTableModel(){
             public boolean isCellEditable(int row, int column)
@@ -564,7 +562,6 @@ public class WCDisplayCompleteOrdersTab extends javax.swing.JFrame {
         String itemCode = "";
         String title = "";
         String quantity = "";
-        String location = "";
         String poId = "";
         String status = "";
         String spoId = "";
@@ -572,18 +569,17 @@ public class WCDisplayCompleteOrdersTab extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='COMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
+            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='COMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
                 title = rs.getString("title");
-                location = rs.getString("location");
                 itemCode = rs.getString("book_id");
                 quantity = rs.getString("quantity");
                 poId = rs.getString("po_id");
                 status = rs.getString("status");
                 spoId = rs.getString("id");
-                model.addRow(new Object[]{spoId, itemCode, title, quantity, location, poId, status});
+                model.addRow(new Object[]{spoId, itemCode, title, quantity, poId, status});
                 i++;
             }
             

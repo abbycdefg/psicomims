@@ -30,7 +30,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
 
 	String prevPage;
-	
+	String poNumber1;
     /**
      * Creates new form DCViewPurchaseOrderScreen
      */
@@ -54,6 +54,7 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
         
         outletValueLabel.setText(outlet);
         poNumberValueLabel.setText(poNumber);
+        poNumber1 = poNumber;
         contactPersonValueLabel.setText(contactPerson);
         
         this.displayAll(poNumber);
@@ -260,10 +261,11 @@ public class DCViewPurchaseOrderScreen extends javax.swing.JFrame {
         String title = "";
         String quantity = "";
         String status = "";
+        System.out.println(poNumber1);
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-           	pst = con.prepareStatement("SELECT p.book_id, p.quantity, p.status, b.title FROM psicomims.book b, psicomims.specific_po p WHERE b.item_code=p.book_id AND p.po_id=" + poNumber);
+           	pst = con.prepareStatement("SELECT book_id, specific_po.quantity, status, title FROM psicomims.book, psicomims.specific_po  WHERE item_code=book_id AND po_id='" +poNumber1+"'" );
            	
         	ResultSet rs = pst.executeQuery();
             int i = 0;

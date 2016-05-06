@@ -7,6 +7,7 @@ package app;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.font.TextAttribute;import java.sql.Connection;
@@ -37,7 +38,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
      */
     public WCDisplayIncompleteOrdersTab() {
         initComponents();
-        
+                
         Color x = new Color(32, 55, 73);
         this.getContentPane().setBackground(x);
         
@@ -347,7 +348,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
             try{
                 
                 String itemCode = this.getColumnData(1);
-                String poId = this.getColumnData(5);
+                String poId = this.getColumnData(4);
                 String spoId = this.getColumnData(0);
                 String status = "COMPLETE";
                 
@@ -370,7 +371,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
         }   
         
-        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "PO ID", "STATUS"};
 
         DefaultTableModel model = new DefaultTableModel(){
             public boolean isCellEditable(int row, int column)
@@ -394,18 +395,17 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
+            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
                 title = rs.getString("title");
-                location = rs.getString("location");
                 itemCode = rs.getString("book_id");
                 quantity = rs.getString("quantity");
                 poId = rs.getString("po_id");
                 status = rs.getString("status");
                 spoId = rs.getString("id");
-                model.addRow(new Object[]{spoId, itemCode, title, quantity, location, poId, status});
+                model.addRow(new Object[]{spoId, itemCode, title, quantity, poId, status});
                 i++;
             }
             
@@ -441,7 +441,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
             this.displayAll();
         }
         else{
-            String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+        	String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "PO ID", "STATUS"};
 
             DefaultTableModel model = new DefaultTableModel(){
                 public boolean isCellEditable(int row, int column)
@@ -465,18 +465,17 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-                pst = con.prepareStatement("SELECT * FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE (b.item_code LIKE '%" + searchField.getText() + "%' OR p.book_id LIKE '%"  + searchField.getText() + "%' OR b.title LIKE '%"  + searchField.getText() + "%' OR b.quantity LIKE '%"  + searchField.getText() + "%' OR b.location LIKE '%"  + searchField.getText() + "%' OR p.po_id LIKE '%" + searchField.getText() + "%') AND b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
+                pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
                 ResultSet rs = pst.executeQuery();
                 int i = 0;
                 while (rs.next()) {
                     title = rs.getString("title");
-                    location = rs.getString("location");
                     itemCode = rs.getString("book_id");
                     quantity = rs.getString("quantity");
                     poId = rs.getString("po_id");
                     status = rs.getString("status");
                     spoId = rs.getString("id");
-                    model.addRow(new Object[]{spoId, itemCode, title, quantity, location, poId, status});
+                    model.addRow(new Object[]{spoId, itemCode, title, quantity, poId, status});
                     i++;
                 }
                 
@@ -497,7 +496,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            
             ordersTable.setModel(model);
             ordersTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         }
@@ -576,7 +575,7 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
     } 
     
     public void displayAll(){
-        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "LOCATION", "PO ID", "STATUS"};
+        String[] columnNames = {"ORDER NO.", "ITEM CODE", "TITLE", "QUANTITY", "PO ID", "STATUS"};
 
         DefaultTableModel model = new DefaultTableModel(){
             public boolean isCellEditable(int row, int column)
@@ -600,18 +599,17 @@ public class WCDisplayIncompleteOrdersTab extends javax.swing.JFrame {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title, b.location FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
+            pst = con.prepareStatement("SELECT p.id, p.book_id, p.quantity, p.status, p.po_id, b.title FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND p.status='INCOMPLETE' ORDER BY po.date_today ASC, p.po_id ASC");
             ResultSet rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
                 title = rs.getString("title");
-                location = rs.getString("location");
                 itemCode = rs.getString("book_id");
                 quantity = rs.getString("quantity");
                 poId = rs.getString("po_id");
                 status = rs.getString("status");
                 spoId = rs.getString("id");
-                model.addRow(new Object[]{spoId, itemCode, title, quantity, location, poId, status});
+                model.addRow(new Object[]{spoId, itemCode, title, quantity, poId, status});
                 i++;
             }
             

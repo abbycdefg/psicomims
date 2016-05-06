@@ -88,18 +88,20 @@ public class Admin
         
     }
     
-    public boolean addOutlet(String outletName, String dateCreated) {
+    public boolean addOutlet(String outletName, String dateCreated, float discountPercent) {
     	Outlet o = new Outlet();
     	o.setOutletName(outletName);
     	o.setDateCreated(dateCreated);
+    	o.setDiscountPercent(discountPercent);
     	o = outletDao.save(o);
     	
     	return o.getOutletId()!= null;    	
     }
     
-    public boolean editOutlet(String outletId, String outletName) {
+    public boolean editOutlet(String outletId, String outletName, float discountPercent) {
     	Outlet o = outletDao.findByOutletId(Long.parseLong(outletId));
     	o.setOutletName(outletName);
+    	o.setDiscountPercent(discountPercent);
     	o = outletDao.save(o);
     	
     	return o.getOutletId()!= null;    	

@@ -29,6 +29,8 @@ public class DCLogInScreen extends javax.swing.JFrame {
         Color y = new Color(205, 0, 69);
         loginButton.setBackground(y);
         
+
+        
         forgotPasswordButton.setOpaque(false);
         forgotPasswordButton.setContentAreaFilled(false);
         forgotPasswordButton.setBorderPainted(false);
@@ -113,15 +115,15 @@ public class DCLogInScreen extends javax.swing.JFrame {
 
         copyrightLabel.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel.setForeground(new java.awt.Color(255, 255, 255));
-        copyrightLabel.setText("Â© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
+        copyrightLabel.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
         logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/VS1.1.png"))); // NOI18N
         
         passwordField = new JPasswordField();
-        passwordField.setToolTipText("Password");
-        passwordField.setForeground(Color.BLACK);
-        passwordField.setFont(new Font("Calibri", Font.PLAIN, 12));
         passwordField.setEchoChar('*');
+        passwordField.setForeground(new Color(0, 0, 0));
+        passwordField.setToolTipText("Password");
+        passwordField.setFont(new Font("Calibri", Font.PLAIN, 12));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -135,10 +137,10 @@ public class DCLogInScreen extends javax.swing.JFrame {
         				.addGroup(layout.createSequentialGroup()
         					.addGap(78)
         					.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        							.addComponent(usernameField, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-        							.addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-        							.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+        							.addComponent(usernameField, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+        							.addComponent(loginButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+        							.addComponent(passwordField))
         						.addGroup(layout.createSequentialGroup()
         							.addGap(64)
         							.addComponent(forgotPasswordButton, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)))))
@@ -157,7 +159,7 @@ public class DCLogInScreen extends javax.swing.JFrame {
         			.addComponent(loginButton, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(forgotPasswordButton)
-        			.addPreferredGap(ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
         			.addComponent(copyrightLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap())
         );
@@ -195,12 +197,11 @@ public class DCLogInScreen extends javax.swing.JFrame {
             }
             catch (Exception e){
                 e.printStackTrace();
-            }
+            } 
     	}
         else{
     		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
     	}
-         
     }
 
     private void forgotPasswordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotPasswordButtonActionPerformed

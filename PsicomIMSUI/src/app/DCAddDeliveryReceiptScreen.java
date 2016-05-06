@@ -47,9 +47,48 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
      */
 	private List<String> booksList;
 	private List<String> quantityList;
-	private String poNumber = "";
+	private static String poNumber = "";
 	private String outlet = "";
-    public DCAddDeliveryReceiptScreen(String page) {
+	private String drCount;
+	public DCAddDeliveryReceiptScreen(String page) {
+	        initComponents();
+	        
+	        prevPage = page;
+	        
+	        Color x = new Color(32, 55, 73);
+	        this.getContentPane().setBackground(x);
+	        
+	        addBooksButton.setOpaque(false);
+	        addBooksButton.setContentAreaFilled(false);
+	        addBooksButton.setBorderPainted(false);
+	        addBooksButton.addMouseListener(new java.awt.event.MouseAdapter() {
+	            Font originalFont = null;
+	            public void mouseEntered(java.awt.event.MouseEvent evt) {
+	                originalFont = addBooksButton.getFont();
+	                Map attributes = originalFont.getAttributes();
+	                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+	                addBooksButton.setFont(originalFont.deriveFont(attributes));
+	            }
+	            public void mouseExited(java.awt.event.MouseEvent evt) {
+	                addBooksButton.setFont(originalFont);
+	            }
+	        });
+	        
+	        Color y = new Color(205, 0, 69);
+	        addButton.setBackground(y);
+	        
+	        Color z = new Color(102, 102, 102);
+	        cancelButton.setBackground(z);
+	        Date now = new Date();
+	        dateTodayChooser.setDate(now);
+	        deliveryDateChooser.setDate(now);
+	        totalAmountField.setEditable(false);
+	        dateTodayChooser.setEnabled(false);
+	        getDrNumber();
+	        deliveryReceiptNumberField.setText(drCount);
+	    }
+	   
+    public DCAddDeliveryReceiptScreen(String page, String poNumber1) {
         initComponents();
         
         prevPage = page;
@@ -82,7 +121,10 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         dateTodayChooser.setDate(now);
         deliveryDateChooser.setDate(now);
         totalAmountField.setEditable(false);
-        dateTodayChooser.setEnabled(false);
+        poNumber = poNumber1;
+        getDrNumber();
+        getOutlet(poNumber);
+        deliveryReceiptNumberField.setText(drCount);
     }
     
     public DCAddDeliveryReceiptScreen(String drNumber, String dateTodayStr, String totalAmt, String deliveryDateStr, List<String> booksList1, List<String> quantityList1, String poNumber1, String page) {
@@ -137,7 +179,9 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         quantityList = quantityList1;
         poNumber = poNumber1;
         getOutlet(poNumber);
-        
+        getDrNumber();
+        deliveryReceiptNumberField.setText(drCount);
+        System.out.println(drCount);
     }
 
 
@@ -482,7 +526,7 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DCAddDeliveryReceiptScreen("").setVisible(true);
+                new DCAddDeliveryReceiptScreen("", poNumber).setVisible(true);
             }
         });
     }
@@ -590,6 +634,33 @@ public class DCAddDeliveryReceiptScreen extends javax.swing.JFrame {
     			e.printStackTrace();
     		}		
     }
+    public void getDrNumber()
+    {
+    		String last = "";
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT delivery_receipt_number FROM psicomims.delivery_receipt ORDER BY delivery_receipt_number DESC LIMIT 1");
+    			ResultSet rs = pst.executeQuery();
+    			while (rs.next()) {
+    				last = rs.getString("delivery_receipt_number");
+    				int drCountInt = Integer.parseInt(last);
+    				drCount = Integer.toString(drCountInt + 1);
+    			}
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+
+    	
+    }    
 
 }
 

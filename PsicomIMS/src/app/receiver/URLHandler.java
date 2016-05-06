@@ -131,13 +131,16 @@ class URLHandler extends AbstractHandler {
 				else if (target.equalsIgnoreCase("/addOutlet")) {
 					HashMap<String, String> map = convertJsonToCommand(request);
 
-					String outletId = map.get("outletId");
 					String outletName = map.get("outletName");
 					String dateCreated = map.get("dateCreated");
+					String discountStr = map.get("discountPercent");
+					
+					int discountInt = Integer.parseInt(discountStr);
+					float percent = (discountInt * 100.0f) / 100;
 
 					
 					if(!ad.checkOutlet(outletName)){
-						ad.addOutlet(outletName, dateCreated);
+						ad.addOutlet(outletName, dateCreated, percent);
 						response.getWriter().println("You have succesfully registered " + outletName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
 					}
@@ -151,9 +154,13 @@ class URLHandler extends AbstractHandler {
 
 					String outletId = map.get("outletId");
 					String outletName = map.get("outletName");
+					String discountStr = map.get("discountPercent");
+					
+					int discountInt = Integer.parseInt(discountStr);
+					float percent = (discountInt * 100.0f) / 100;
 					
 
-						ad.editOutlet(outletId, outletName);
+						ad.editOutlet(outletId, outletName, percent);
 						response.getWriter().println("You have succesfully updated the information of " + outletName + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
 
@@ -559,17 +566,9 @@ class URLHandler extends AbstractHandler {
 					String itemCode = map.get("itemCode");
 					int newQuantity = Integer.parseInt(map.get("newQuantity"));
 					
-					if(wc.checkBook(itemCode)){
 						wc.updateStock(itemCode, newQuantity);
-						response.getWriter().println("You have succesfully updated the stocks to " + newQuantity + ".");
-						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
+						response.getWriter().println("You have succesfully updated the stocks to " + newQuantity + ".");						
 
-					}
-					else{
-
-						response.getWriter().println("Invalid request.");
-						JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
-					}
 				}
 				
 				else if (target.equalsIgnoreCase("/addDefectiveBook")) {
@@ -577,9 +576,11 @@ class URLHandler extends AbstractHandler {
 
 					String itemCode = map.get("itemCode");
 					int quantity = Integer.parseInt(map.get("quantity"));
+					String outlet = map.get("outlet");
+					String state = map.get("state");
 					
 					if(wc.checkBook(itemCode)){
-						wc.addDefectiveBook(itemCode, quantity);
+						wc.addDefectiveBook(itemCode, quantity, outlet, state);
 						response.getWriter().println("You have succesfully added " + wc.getBookTitle(itemCode) + ".");
 						JOptionPane.showMessageDialog(null, "Success!", "Success", JOptionPane.PLAIN_MESSAGE);
 

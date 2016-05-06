@@ -1,6 +1,7 @@
 package app.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -14,26 +15,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
 @Entity
 public class PurchaseOrder implements Serializable{
 	
 	
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column
-	private Long id;
-	
 	@Id
 	@Column
+	@Size(min=1, max=9)
 	private String purchaseOrderNumber;
 
 	@Column	
-	private String dateToday;
+	private Date dateToday;
 	
 	@Column	
+	@Size(min=2, max=30)
 	private String contactPerson;
 	
 	@Column
+	@Size(min=2, max=30)
 	private String outlet;
 	
 	@OneToMany(cascade={CascadeType.ALL}, mappedBy = "poId")
@@ -64,22 +65,18 @@ public class PurchaseOrder implements Serializable{
 	public void setSpecPo(Set<SpecificPo> specPo) {
 		this.specPo = specPo;
 	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}	
+
 	public String getPurchaseOrderNumber() {
 		return purchaseOrderNumber;
 	}
 	public void setPurchaseOrderNumber(String purchaseOrderNumber) {
 		this.purchaseOrderNumber = purchaseOrderNumber;
 	}
-	public String getDateToday() {
+
+	public Date getDateToday() {
 		return dateToday;
 	}
-	public void setDateToday(String dateToday) {
+	public void setDateToday(Date dateToday) {
 		this.dateToday = dateToday;
 	}
 	public String getContactPerson() {

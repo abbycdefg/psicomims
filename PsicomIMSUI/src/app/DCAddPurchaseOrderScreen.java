@@ -57,6 +57,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     private JComboBox outletComboBox = new JComboBox();
 	private String []co;
 	private String []ou;
+	private String poCount = "0";
 	
 	String prevPage;
 	
@@ -95,6 +96,11 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
         
         getContactPersonList();
         getOutletList();
+        getPoNumber();
+        
+        int po = Integer.parseInt(poCount) + 1;
+
+        purchaseOrderNumberField.setText(Integer.toString(po));
         
         co = new String[contactList.size()];
         contactList.toArray(co);
@@ -609,7 +615,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
 
     			Class.forName("com.mysql.jdbc.Driver");
     			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM contact_person");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM contact_person LIMIT 5");
     			ResultSet rs = pst.executeQuery();
     		    Set<String> contactPersonSet = new HashSet();
     		    int i = 0;
@@ -621,6 +627,29 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
     				i++;
     			}
     			contactList.addAll(contactPersonSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    }  
+    
+    public void getPoNumber()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT purchase_order_number FROM psicomims.purchase_order ORDER BY purchase_order_number DESC LIMIT 1");
+    			ResultSet rs = pst.executeQuery();
+    			while (rs.next()) {
+    				poCount = rs.getString("purchase_order_number");
+    			}
     		} catch (ClassNotFoundException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
@@ -641,7 +670,7 @@ public class DCAddPurchaseOrderScreen extends javax.swing.JFrame {
 
     			Class.forName("com.mysql.jdbc.Driver");
     			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM outlet");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT outlet_name FROM outlet");
     			ResultSet rs = pst.executeQuery();
     		    Set<String> outletSet = new HashSet();
     			while (rs.next()) {

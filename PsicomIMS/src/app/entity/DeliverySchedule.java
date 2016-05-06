@@ -1,50 +1,47 @@
 package app.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Entity
 public class DeliverySchedule {
 	
 	
 	
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column
-	private Long id;
-	
 	@Column	
-	private String date;
+	private Date date;
 	
 	@Id
 	@Column	
+	@Size(min=1, max=9)
 	private String scheduleCode;
 	
 	@Column
+	@Size(min=2, max=30)
 	private String outlet;
 	
 	@Column
+	@Size(min=1, max=9)
 	private String deliveryReceiptCode;
 	
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getScheduleCode() {
 		return scheduleCode;
 	}
 	public void setScheduleCode(String scheduleCode) {
 		this.scheduleCode = scheduleCode;
 	}
-	public String getDate() {
+
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public String getOutlet() {

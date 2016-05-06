@@ -1,15 +1,21 @@
 package app;
 
 import java.awt.Color;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
@@ -36,6 +42,13 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     /**
      * Creates new form DCEditBookScreen
      */
+	private static String title;
+	private static String itemCode;
+	private static String price;
+	private static String author;
+	private static String quantity;
+	private static String threshold;
+	private static String dateReleased;
     public DCEditBookScreen(String page) {
         initComponents();
         
@@ -50,11 +63,12 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
+    
 
 
 
     
-    public DCEditBookScreen( String title, String itemCode, String price, String author, String releaseDateStr, String threshold1, String page) {
+    public DCEditBookScreen(String itemCode1, String page) {
         initComponents();
         
         prevPage = page;
@@ -68,22 +82,27 @@ public class DCEditBookScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
         
+        itemCode = itemCode1;   
+        
+        findBook(itemCode);
+        
         titleField.setText(title);
         itemCodeField.setText(itemCode);
         itemCodeField.setEditable(false);
         priceField.setText(price);
         authorField.setText(author);
-        thresholdTextField.setText(threshold1);
+        thresholdTextField.setText(threshold);
         
         
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-			java.util.Date releaseDate = df.parse(releaseDateStr);
+			java.util.Date releaseDate = df.parse(dateReleased);
 			releaseDateChooser.setDate(releaseDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
     }
 
     /**
@@ -126,7 +145,7 @@ public class DCEditBookScreen extends javax.swing.JFrame {
 
         priceLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         priceLabel.setForeground(new java.awt.Color(255, 255, 255));
-        priceLabel.setText("Price");
+        priceLabel.setText("SRP");
 
         titleLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -511,5 +530,37 @@ public class DCEditBookScreen extends javax.swing.JFrame {
     	catch (Exception e){
     		return true;
     	}
+    }
+    public void findBook(String itemCode1)
+    {
+
+    	
+			PreparedStatement pst;
+			Connection con;
+			
+			try {
+
+				Class.forName("com.mysql.jdbc.Driver");
+				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book WHERE item_code ='" + itemCode +"'");
+				ResultSet rs = pst.executeQuery();
+				while (rs.next()) {
+
+				    	 title = rs.getString("title");
+				    	 price = rs.getString("price");
+				    	 author = rs.getString("author");
+				    	 quantity = rs.getString("quantity");
+				    	 threshold = rs.getString("threshold");
+				    	 dateReleased = rs.getString("release_date");
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		
     }
 }

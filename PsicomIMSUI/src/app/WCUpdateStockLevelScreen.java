@@ -1,6 +1,10 @@
 package app;
 
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
@@ -33,6 +37,12 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
         
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
+        
+        this.addWindowListener( new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+                newQuantityField.requestFocus();
+            }
+        }); 
         
         itemCodeField.setText(WCUpdateStocksTab.getFirstColumnData());
         titleField.setText(WCUpdateStocksTab.getSecondColumnData());
@@ -103,6 +113,7 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
                 quantityFieldActionPerformed(evt);
             }
         });
+        
 
         newQuantityLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         newQuantityLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -126,6 +137,16 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
                 updateButtonActionPerformed(evt);
             }
         });
+        newQuantityField.addKeyListener(new KeyAdapter() {
+    		@Override
+    		public void keyPressed(KeyEvent e) {
+    			if(e.getKeyCode() == KeyEvent.VK_ENTER )
+    			{
+    				update();
+    		        
+    			}
+    		}
+    	});
 
         cancelButton.setBackground(new java.awt.Color(102, 102, 102));
         cancelButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -225,43 +246,9 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_newQuantityFieldActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-    	HashMap map;
-        if(!itemCodeField.getText().equals("") && !quantityField.getText().equals("") && !newQuantityField.getText().equals(""))
-        {
-        	if(this.isNumeric(itemCodeField.getText()) && this.isNumeric(quantityField.getText()) && this.isNumeric(newQuantityField.getText())){
-        		try{
-                	String itemCode = itemCodeField.getText();
-                	String newQuantity = newQuantityField.getText();
-                    
-
-                    try{
-                        map = doCommand("updateStocks", itemCode, newQuantity);
-                        
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    cancelButton.setEnabled(false);
-                    
-                	this.dispose();
-                	WCUpdateStocksTab a = new WCUpdateStocksTab();
-                	a.setVisible(true);
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-	    	  }
-        	else
-        	{
-        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
-	    	}
-    	}
-        else{
-    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
-    	}
-        
-        
-        
+    	
+       update();
+    	
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -327,6 +314,8 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
 
         map.put("itemCode", itemCode);
         map.put("newQuantity", newQuantity);
+        
+        System.out.println(itemCode + newQuantity);
 
         
         // CONVERT JAVA DATA TO JSON
@@ -368,5 +357,43 @@ public class WCUpdateStockLevelScreen extends javax.swing.JFrame {
     public static boolean isNumeric(String s)
     {
       return s.matches("-?\\d+(\\.\\d+)?");
+    }
+    private void update()
+    {
+    	HashMap map;
+        if(!itemCodeField.getText().equals("") && !quantityField.getText().equals("") && !newQuantityField.getText().equals(""))
+        {
+        	if(this.isNumeric(itemCodeField.getText()) && this.isNumeric(quantityField.getText()) && this.isNumeric(newQuantityField.getText())){
+        		try{
+                	String itemCode = itemCodeField.getText();
+                	String newQuantity = newQuantityField.getText();
+                    
+
+                    try{
+                        map = doCommand("updateStocks", itemCode, newQuantity);
+                        
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    cancelButton.setEnabled(false);
+                    
+                	this.dispose();
+                	WCUpdateStocksTab a = new WCUpdateStocksTab();
+                	a.setVisible(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+	    	  }
+        	else
+        	{
+        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+	    	}
+    	}
+        else{
+    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    	}
+        
     }
 }

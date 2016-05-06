@@ -23,12 +23,24 @@ public class Outlet implements Serializable
     private Long outletId;
 
 	@Column
+	@Size(min=2, max=30)
     private String outletName;
 	
 	@Column
     private String dateCreated;
 	
+	@Column
+    private float discountPercent;
+	
 
+
+	public float getDiscountPercent() {
+		return discountPercent;
+	}
+
+	public void setDiscountPercent(float discountPercent) {
+		this.discountPercent = discountPercent;
+	}
 
 	public Long getOutletId() {
 		return outletId;

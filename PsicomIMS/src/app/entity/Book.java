@@ -1,6 +1,7 @@
 package app.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,29 +14,31 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Book implements Serializable{
 	
 
 	@Column
+	@Size(min=2, max=50)
 	private String title;
 	
 	@Id
 	@Column	
+	@Size(min=1, max=12)
 	private String itemCode;
 	
 	@Column	
 	private double price;
 	
 	@Column	
+	@Size(min=2, max=30)
 	private String author;
 	
 	@Column
-	private String releaseDate;
+	private Date releaseDate;
 	
-	@Column
-	private String location;
 	
 	@Column	
 	private int threshold;
@@ -52,7 +55,6 @@ public class Book implements Serializable{
 	@Column
 	private int quantity;
 
-	private double discountedPrice;
 	
 	public int getThreshold() {
 		return threshold;
@@ -66,24 +68,12 @@ public class Book implements Serializable{
 	public void setSpecDr(Set<SpecificDr> specDr) {
 		this.specDr = specDr;
 	}
-	public double getDiscountedPrice() {
-		return discountedPrice;
-	}
-	public void setDiscountedPrice(double discountedPrice) {
-		this.discountedPrice = discountedPrice;
-	}
+
 	public Set<SpecificPo> getSpecPo() {
 		return specPo;
 	}
 	public void setSpecPo(Set<SpecificPo> specPo) {
 		this.specPo = specPo;
-	}
-	
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
 	}
 	
 	public String getTitle() {
@@ -110,13 +100,14 @@ public class Book implements Serializable{
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public String getReleaseDate() {
+
+	
+	public Date getReleaseDate() {
 		return releaseDate;
 	}
-	public void setReleaseDate(String releaseDate) {
+	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
 	}
-	
 	public int getQuantity() {
 		return quantity;
 	}

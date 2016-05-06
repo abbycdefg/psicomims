@@ -23,6 +23,7 @@ public class ContactPerson implements Serializable
     private Long contactPersonId;
 	
 	@Column
+	@Size(min=2, max=30)
     private String contactPersonName;
 	
 	@Column

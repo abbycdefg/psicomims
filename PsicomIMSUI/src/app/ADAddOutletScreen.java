@@ -12,6 +12,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTextField;
+import java.awt.Font;
+import javax.swing.JLabel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -108,6 +111,14 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
+        
+        discountField = new JTextField();
+        discountField.setFont(new Font("Calibri", Font.PLAIN, 12));
+        
+        discountLabel = new JLabel();
+        discountLabel.setText("Discount (in per cent)");
+        discountLabel.setForeground(Color.WHITE);
+        discountLabel.setFont(new Font("Calibri", Font.PLAIN, 15));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
@@ -120,14 +131,18 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
         				.addGroup(layout.createSequentialGroup()
         					.addGap(58)
         					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        						.addComponent(outletNameField)
         						.addGroup(layout.createSequentialGroup()
         							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
-        							.addPreferredGap(ComponentPlacement.UNRELATED)
-        							.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
-        						.addComponent(dateCreatedChooser, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        						.addComponent(dateCreatedLabel)
-        						.addComponent(outletNameField)
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(dateCreatedChooser, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        								.addGroup(layout.createSequentialGroup()
+        									.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+        									.addPreferredGap(ComponentPlacement.UNRELATED)
+        									.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
+        								.addComponent(dateCreatedLabel)
+        								.addComponent(discountField, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+        								.addComponent(discountLabel, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)))
         						.addComponent(outletNameLabel))))
         			.addContainerGap(70, Short.MAX_VALUE))
         );
@@ -136,15 +151,19 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
         		.addGroup(layout.createSequentialGroup()
         			.addGap(40)
         			.addComponent(addOutletLabel)
-        			.addGap(45)
+        			.addGap(50)
         			.addComponent(outletNameLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(outletNameField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-        			.addGap(28)
-        			.addComponent(dateCreatedLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(discountLabel)
+        			.addGap(7)
+        			.addComponent(discountField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(dateCreatedLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(4)
         			.addComponent(dateCreatedChooser, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-        			.addGap(56)
+        			.addGap(18)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
         				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
@@ -161,7 +180,7 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
     	HashMap map;
-        if( !outletNameField.getText().equals("") && dateCreatedChooser.getDate() != null)
+        if( !outletNameField.getText().equals("") && dateCreatedChooser.getDate() != null && !discountField.getText().equals("") && isNumeric(discountField.getText()) == true)
         {
         	
         		try{
@@ -171,8 +190,10 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
                     Date dc = dateCreatedChooser.getDate();
                     String dateCreated = df.format(dc);
                     
+                    String discountPercent = discountField.getText();
+                    
                     try{                   	
-                        map = doCommand("addOutlet", outletName, dateCreated);
+                        map = doCommand("addOutlet", outletName, dateCreated, discountPercent);
                     }
                     catch (Exception e){
                         e.printStackTrace();
@@ -188,9 +209,13 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
                     e.printStackTrace();
                 }
 	    	  }
+        	else if (!discountField.getText().equals("") && isNumeric(discountField.getText()) == false)
+        	{
+        		JOptionPane.showMessageDialog(null, "Please enter a numeric discount value.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
         	else
         	{
-        		JOptionPane.showMessageDialog(null, "Invalid input", "Error", JOptionPane.ERROR_MESSAGE);
+        		JOptionPane.showMessageDialog(null, "All field are required.", "Error", JOptionPane.ERROR_MESSAGE);
 	    	}
     	}
 
@@ -247,9 +272,11 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
     private javax.swing.JLabel dateCreatedLabel;
     private javax.swing.JTextField outletNameField;
     private javax.swing.JLabel outletNameLabel;
+    private JTextField discountField;
+    private JLabel discountLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String outletName, String dateCreated) throws Exception
+    private HashMap doCommand(String command, String outletName, String dateCreated, String discountPercent) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
@@ -257,6 +284,7 @@ public class ADAddOutletScreen extends javax.swing.JFrame {
 
         map.put("outletName", outletName);
         map.put("dateCreated", dateCreated);
+        map.put("discountPercent", discountPercent);
 
         
         // CONVERT JAVA DATA TO JSON

@@ -55,10 +55,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 public class DCEditBookToPOScreen extends javax.swing.JFrame {
 
 	String prevPage;
-
-    /**
-     * Creates new form DCEditBookToPO
-     */
 	private static String purchaseOrderNumber;
 	private static String contactPerson;
 	private static String outlet;
@@ -66,10 +62,14 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
 	private static List<String> booksList = new ArrayList<String>();
 	private static List<String> quantityList = new ArrayList<String>();
 	private String []co;
+	private String []ti;
 	private List<String> bookAutoList  = new ArrayList<String>();
+	private List<String> titleAutoList  = new ArrayList<String>();
 	private  JComboBox comboBox = new JComboBox();
+	private  JComboBox comboBox1 = new JComboBox();
 	private String title;
 	private String stocksOnHand;
+	private String itemCode;
 	
 	
     public DCEditBookToPOScreen(String page) {
@@ -86,7 +86,11 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
     }
+    /**
+     * @wbp.parser.constructor
+     */
     public DCEditBookToPOScreen(String purchaseOrderNumber1, String dateToday1, String contactPerson1, String outlet1, List<String> booksList1, List<String> quantityList1, String page) {
+
         initComponents();
         
         prevPage = page;
@@ -111,13 +115,62 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         if(booksList != null && quantityList !=null)
         {
         	System.out.println("pasok dito");  
-        	displayTable2(purchaseOrderNumber1, booksList, quantityList);
+        	displayTable2(booksList, quantityList);
         }
+        
         getItemCodeList();
+        getTitleList();
         co = new String[bookAutoList.size()];
+        ti = new String[titleAutoList.size()];
         bookAutoList.toArray(co);
+        titleAutoList.toArray(ti);
         AutoCompleteSupport.install(comboBox, GlazedLists.eventListOf(co));
+        AutoCompleteSupport.install(comboBox1, GlazedLists.eventListOf(ti));
+        TableColumn itemCodeColumn = booksTable.getColumnModel().getColumn(0);
+
+        itemCodeColumn.setCellEditor(new DefaultCellEditor(comboBox));
+        
+        comboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+					System.out.println(comboBox.getSelectedIndex());
+				
+				String s = (String) comboBox.getSelectedItem();
+				int row = booksTable.getSelectedRow();
+				if(s != null)
+				{
+					getItemCode(s);
+					System.out.println(title);
+					booksTable.remove(row);
+			       booksTable.setValueAt(title, row, 1);
+			       booksTable.setValueAt(stocksOnHand, row, 2);
+				}
+			}
+		});
+
+        
+        TableColumn titleColumn = booksTable.getColumnModel().getColumn(1);
+
+        titleColumn.setCellEditor(new DefaultCellEditor(comboBox1));
+        
+        comboBox1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String s = (String) comboBox1.getSelectedItem();
+				int row = booksTable.getSelectedRow();
+				if(s != null && comboBox1.getSelectedIndex() != -1)
+				{
+					getTitle(s);
+			       booksTable.setValueAt(itemCode, row, 0);
+			       booksTable.setValueAt(stocksOnHand, row, 2);
+				}
+			}
+		});
     }
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -144,25 +197,33 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
 
         booksTable.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
         booksTable.setForeground(new java.awt.Color(51, 51, 51));
-        booksTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER", "DELIVERY DATE"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
-            };
+        booksTable.setModel(new DefaultTableModel(
+        	new Object[][] {
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        		{null, null, null, null},
+        	},
+        	new String[] {
+        		"ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER"
+        	}
+        ));
+        
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
         booksTable.setToolTipText("");
         booksTable.setCellSelectionEnabled(true);
         booksTable.setGridColor(new java.awt.Color(204, 204, 255));
@@ -170,26 +231,9 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         booksTable.setRowHeight(18);
         booksTable.getTableHeader().setReorderingAllowed(false);
         
-        booksTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+       
         
-        TableColumn itemCodeColumn = booksTable.getColumnModel().getColumn(0);
-
-        itemCodeColumn.setCellEditor(new DefaultCellEditor(comboBox));
         
-        comboBox.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String s = (String) comboBox.getSelectedItem();
-				int row = booksTable.getSelectedRow();
-				if(s != null)
-				{
-					getItemCode(s);
-			       booksTable.setValueAt(title, row, 1);
-			       booksTable.setValueAt(stocksOnHand, row, 2);
-				}				
-			}
-		});
         jScrollPane1.setViewportView(booksTable);
         editButton.setBackground(new java.awt.Color(205, 0, 69));
         editButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -259,34 +303,39 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         	
         	int rowCount = booksTable.getRowCount();
         	for(int i=0; i<rowCount; i++) {
-        	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 1);
-        	    	if(selectedBook != null)
+        	    	String selectedBook = (String) booksTable.getModel().getValueAt(i, 0);
+        	    	if(!selectedBook.equals(""))
         	    	{
         	    	booksList.add(selectedBook);
-        	    	}
-        	    	 
-        	    	if (booksTable.getModel().getValueAt(i,3) != null)
+        	    	if (!booksTable.getModel().getValueAt(i,3).equals(""))
         	    	{
         	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 3).toString();
         	    		quantityList.add(quantitySelected); 
         	    	}
+        	    	else {
+        	    		go = false;
+        	           	 JOptionPane.showMessageDialog(null, "Please enter quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
+        	    	}
+        	    	
+        	    	}  
+        	    	
+        	    	
+        	    	else {
+        	    		break;
+        	    	}
    	    
         	}
-	    	if(booksList.size() != 0 && quantityList.size() == 0)
-	    	{
-	    		go = false;
-           	 JOptionPane.showMessageDialog(null, "Please enter quantity value.", "Error", JOptionPane.ERROR_MESSAGE);
-	    	}      
+
         	
         }
         catch (Exception e){
             e.printStackTrace();
-        }
-;
+        };
+        
         if(go == true)
         {
 	        this.dispose();
-	    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
+	        DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "" );
 	    	
 	        if (prevPage.equals("")){
 	        	a = new DCEditPurchaseOrderScreen(purchaseOrderNumber, dateToday, contactPerson, outlet, booksList, quantityList, "");
@@ -443,50 +492,103 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
             }
 
     }
-    public void displayTable2(String poNumber, List<String> booksList, List<String> quantityList){
-    	String[] columnNames = { "TITLE", "ITEM CODE", "STOCKS ON HAND", "ORDER"};
+    public void getTitleList()
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+    			ResultSet rs = pst.executeQuery();
+    		    Set<String> titleSet = new HashSet();
+    		    int i = 0;
+    			while (rs.next()) {
+    				if(!rs.getString("title").equals(null))
+    				{
+    					titleSet.add(rs.getString("title"));
+    				}
+    				i++;
+    			}
+    			titleAutoList.addAll(titleSet);
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+
+    	
+    }   
+    public void getTitle(String title1)
+    {
+    		PreparedStatement pst;
+    		Connection con;
+    		
+    		try {
+
+    			Class.forName("com.mysql.jdbc.Driver");
+    			con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
+    			pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+    			ResultSet rs = pst.executeQuery();
+    			while (rs.next()) {
+    				if(rs.getString("title").equals(title1))
+    				{ 
+    					itemCode = rs.getString("item_code");
+    					stocksOnHand = rs.getString("quantity");
+    					break;
+    				}
+    			}
+    			
+    		} catch (ClassNotFoundException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}		
+    }
+   
+    public void displayTable2(List<String> booksList, List<String> quantityList){
+    	String[] columnNames = { "ITEM CODE", "TITLE", "STOCKS ON HAND", "ORDER"};
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnNames);
 
         PreparedStatement pst;
-        PreparedStatement pst2;
+		PreparedStatement pst2;
         Connection con;
         
-        String itemCode = "";
-        String quantity = "";
-        String title = "";
-        String stocksOnHand = "";
+        String itemCode1 = "";
+        String quantity1 = "";
+        String title1 = "";
+        String stocksOnHand1 = "";
         try {
         Class.forName("com.mysql.jdbc.Driver");
     	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-        pst = con.prepareStatement("SELECT * FROM psicomims.book");
-        ResultSet rs = pst.executeQuery();
-        pst2 = con.prepareStatement("SELECT * FROM psicomims.specific_po");
-        ResultSet rs2 = pst2.executeQuery();
+
    
             int i = 0;
             for(int j = 0; j<booksList.size(); j++)
             {
                 itemCode = booksList.get(j).toString();
-                while (rs.next()) {
-            		if (booksList.get(j).equals(rs.getString("item_code"))) {
-            			title = rs.getString("title");
-            			itemCode = rs.getString("item_code");
-            			stocksOnHand = rs.getString("quantity");   			
-            			i++;
-            			break;
-            		}
-            	}
-                while (rs2.next()) {
-            		if (poNumber.equals(rs2.getString("po_id")) && booksList.get(j).equals(rs2.getString("book_id"))) {
-            			quantity = rs2.getString("quantity");
-            			break;
-            		}
-                }
+                pst = con.prepareStatement("SELECT * FROM psicomims.book WHERE item_code='" +booksList.get(j)+"'");
+                ResultSet rs = pst.executeQuery();
 
-                
-                model.addRow(new Object[]{title, itemCode, stocksOnHand, quantity});    
+                while (rs.next()) {
+            			title1 = rs.getString("title");
+            			itemCode1 = rs.getString("item_code");
+            			stocksOnHand1 = rs.getString("quantity");      			
+            	}
+                pst2 = con.prepareStatement("SELECT * FROM psicomims.specific_po WHERE book_id='" +booksList.get(j)+"' AND po_id='" + purchaseOrderNumber+"'");
+                ResultSet rs2 = pst2.executeQuery();
+                while (rs2.next()) {
+            			quantity1 = rs2.getString("quantity");
+            	}
+                model.addRow(new Object[]{itemCode1, title1, stocksOnHand1, quantity1});    
                 i++;
             }
             
@@ -510,6 +612,7 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         
         booksTable = new JTable(model);
         booksTable.addKeyListener(new KeyAdapter() {
+    		@Override
     		public void keyPressed(KeyEvent e) {
     			if(e.getKeyCode() == KeyEvent.VK_ENTER )
     			{
@@ -530,6 +633,8 @@ public class DCEditBookToPOScreen extends javax.swing.JFrame {
         booksTable.setCellSelectionEnabled(true);
         booksTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setColumnHeaderView(booksTable.getTableHeader());
-        jScrollPane1.getViewport().add (booksTable);
+        jScrollPane1.setViewportView(booksTable);
+        
     }
+    
 }

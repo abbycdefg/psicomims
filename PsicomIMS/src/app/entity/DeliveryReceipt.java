@@ -1,5 +1,6 @@
 package app.entity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -14,35 +15,36 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 
 @Entity
 public class DeliveryReceipt {
 	
 
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column
-	private Long id;
 	
 	@Id
 	@Column
+	@Size(min=1, max=9)
 	private String deliveryReceiptNumber;
 
 	@Column	
-	private String dateToday;
+	private Date dateToday;
 	
 	@Column	
-	private String totalAmount;
+	private double totalAmount;
 	
 	@Column
-	private String dateDelivery;
+	private Date dateDelivery;
 	
 	@Column
+	@Size(min=1, max=9)
 	private String purchaseOrderNumber;
 	
 	@Column
 	private String orders;
 	
 	@Column
+	@Size(min=2, max=30)
 	private String outlet;
 	
 	@Column
@@ -84,14 +86,6 @@ public class DeliveryReceipt {
 		this.outlet = outlet;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getDeliveryReceiptNumber() {
 		return deliveryReceiptNumber;
 	}
@@ -100,29 +94,31 @@ public class DeliveryReceipt {
 		this.deliveryReceiptNumber = deliveryReceiptNumber;
 	}
 
-	public String getDateToday() {
+
+	public Date getDateToday() {
 		return dateToday;
 	}
 
-	public void setDateToday(String dateToday) {
-		this.dateToday = dateToday;
+	public void setDateToday(java.util.Date dt) {
+		this.dateToday = (Date) dt;
 	}
 
-	public String getTotalAmount() {
+	public double getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(String totalAmount) {
+	public void setTotalAmount(double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 
-	public String getDateDelivery() {
+	public Date getDateDelivery() {
 		return dateDelivery;
 	}
 
-	public void setDateDelivery(String dateDelivery) {
-		this.dateDelivery = dateDelivery;
+	public void setDateDelivery(java.util.Date dd) {
+		this.dateDelivery = (Date) dd;
 	}
+
 	public boolean checkDRNumber(String deliveryReceiptNumber){
 		return deliveryReceiptNumber.equals(this.deliveryReceiptNumber);
 	}

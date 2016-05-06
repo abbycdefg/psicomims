@@ -126,14 +126,26 @@ public class WarehouseClerk
     }
     
     @Transactional
-    public boolean addDefectiveBook(String itemCode, int defQuantity) {
+    public boolean addDefectiveBook(String itemCode, int defQuantity, String outlet, String state) {
     	
     	DefectiveBook d = new DefectiveBook();    	
     	Book b = bookDao.findByItemCode(itemCode);
+    	int a = 0;
     	
     	d.setItemCode(itemCode);
     	d.setTitle(b.getTitle());
     	d.setDefectsQuantity(defQuantity);
+    	d.setOutlet(outlet);
+    	d.setState(state);
+    	if (state.equals("GOOD"))
+    	{     	
+        	a = b.getQuantity();
+        	b.setQuantity(a+=defQuantity);
+        	b.setState("old");
+        	b = bookDao.save(b);
+    	}
+    	java.util.Date starttijd = new java.util.Date();
+    	d.setDateCreated(starttijd);
     	d = defectiveBookDao.save(d);
     	
     	return d.getId()!= null;    	
@@ -175,7 +187,7 @@ public class WarehouseClerk
     	}
     	    	
     	poDao.save(p);  
-      	return p.getId()!= null;
+      	return p.getPurchaseOrderNumber()!= null;
     }
 
 }

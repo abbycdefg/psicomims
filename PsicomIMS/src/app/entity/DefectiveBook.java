@@ -2,6 +2,9 @@ package app.entity;
 
 import java.io.Serializable;
 
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
 @Entity
 public class DefectiveBook implements Serializable{
@@ -20,14 +24,44 @@ public class DefectiveBook implements Serializable{
 	private Long id;
 
 	@Column	
+	@Size(min=1, max=12)
 	private String itemCode;
 	
 	@Column
+	@Size(min=2, max=50)
 	private String title;
+	
+	@Column
+	@Size(min=2, max=30)
+	private String outlet;
+	
+	@Column
+	private String state;
 		
 	@Column
 	private int defectsQuantity;
 	
+	@Column
+	private Date dateCreated;
+	
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+	public String getOutlet() {
+		return outlet;
+	}
+	public void setOutlet(String outlet) {
+		this.outlet = outlet;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public Long getId() {
 		return id;
 	}

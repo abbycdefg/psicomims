@@ -27,6 +27,7 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
     /**
      * Creates new form ADEditOutletScreen
      */
+	private static String outletId;
     public ADEditOutletScreen() {
         initComponents();
         
@@ -39,12 +40,14 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
         
-        String outletId = ADOutletsTab.getFirstColumnData();
-    	String outletName = ADOutletsTab.getSecondColumnData();     
+
+    	String outletName = ADOutletsTab.getFirstColumnData();     
+        outletId = ADOutletsTab.getSecondColumnData();
         String date = ADOutletsTab.getThirdColumnData();
-        outletIDField.setText(outletId);
-        outletIDField.setEnabled(false);
-        outletNameField.setText(outletName);  
+        String discount = ADOutletsTab.getFourthColumnData();
+        
+        outletNameField.setText(outletName);
+        discountField.setText(discount);  
         try {
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 			java.util.Date dateCreated = df.parse(date);
@@ -71,10 +74,10 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         dateCreatedChooser = new com.toedter.calendar.JDateChooser();
         dateCreatedLabel = new javax.swing.JLabel();
+        discountField = new javax.swing.JTextField();
+        discountLabel = new javax.swing.JLabel();
         outletNameField = new javax.swing.JTextField();
         outletNameLabel = new javax.swing.JLabel();
-        outletIDField = new javax.swing.JTextField();
-        outletIDLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Edit Outlet");
@@ -113,27 +116,27 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
         dateCreatedLabel.setForeground(new java.awt.Color(255, 255, 255));
         dateCreatedLabel.setText("Date Created");
 
+        discountField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        discountField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outletNameFieldActionPerformed(evt);
+            }
+        });
+
+        discountLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        discountLabel.setForeground(new java.awt.Color(255, 255, 255));
+        discountLabel.setText("Discount (in per cent)");
+
         outletNameField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         outletNameField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                outletNameFieldActionPerformed(evt);
+                outletIDFieldActionPerformed(evt);
             }
         });
 
         outletNameLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         outletNameLabel.setForeground(new java.awt.Color(255, 255, 255));
         outletNameLabel.setText("Outlet Name");
-
-        outletIDField.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        outletIDField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                outletIDFieldActionPerformed(evt);
-            }
-        });
-
-        outletIDLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        outletIDLabel.setForeground(new java.awt.Color(255, 255, 255));
-        outletIDLabel.setText("Outlet ID");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,10 +150,10 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(outletIDLabel)
                             .addComponent(outletNameLabel)
-                            .addComponent(outletIDField)
+                            .addComponent(discountLabel)
                             .addComponent(outletNameField)
+                            .addComponent(discountField)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -167,13 +170,13 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addComponent(editOutletLabel)
                 .addGap(30, 30, 30)
-                .addComponent(outletIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(outletIDField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(outletNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(outletNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(discountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(discountField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(dateCreatedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -191,14 +194,15 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
     	HashMap map;
     	
-        if(!outletIDField.getText().equals("") && !outletNameField.getText().equals(""))
-        {
-        	
-                	String outletId = outletIDField.getText();
-                    String outletName = outletNameField.getText();         
-
+    	 if( !outletNameField.getText().equals("") && dateCreatedChooser.getDate() != null && !discountField.getText().equals("") && isNumeric(discountField.getText()) == true)
+         {
+         	
+         		try{
+                     String outletName = outletNameField.getText();
+                     
+                     String discountPercent = discountField.getText();
                     try{
-                        map = doCommand("editOutlet", outletId, outletName);
+                        map = doCommand("editOutlet", outletName, outletId, discountPercent);
                         
                     }
                     catch (Exception e){
@@ -210,9 +214,17 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
                 	this.dispose();
                 	ADOutletsTab a = new ADOutletsTab();
                 	a.setVisible(true);
+         		}
+                	 catch (Exception e){
+                         e.printStackTrace();
+                     }
     	}
+    	 else if (!discountField.getText().equals("") && isNumeric(discountField.getText()) == false)
+     	{
+     		JOptionPane.showMessageDialog(null, "Please enter a numeric discount value.", "Error", JOptionPane.ERROR_MESSAGE);
+     	}
         else{
-    		JOptionPane.showMessageDialog(null, "Missing input", "Error", JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, "All fields are required.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
     	
     }//GEN-LAST:event_editButtonActionPerformed
@@ -272,21 +284,21 @@ public class ADEditOutletScreen extends javax.swing.JFrame {
     private javax.swing.JLabel dateCreatedLabel;
     private javax.swing.JButton editButton;
     private javax.swing.JLabel editOutletLabel;
-    private javax.swing.JTextField outletIDField;
-    private javax.swing.JLabel outletIDLabel;
     private javax.swing.JTextField outletNameField;
     private javax.swing.JLabel outletNameLabel;
+    private javax.swing.JTextField discountField;
+    private javax.swing.JLabel discountLabel;
     // End of variables declaration//GEN-END:variables
     
-    private HashMap doCommand(String command, String outletId, String outletName) throws Exception
+    private HashMap doCommand(String command, String outletName, String outletId, String discountPercent) throws Exception
     {
         String url1 = "http://localhost:8080/"+command;
         
         HashMap<String, Object> map = new HashMap<String, Object>();
 
-        map.put("outletId", outletId);
         map.put("outletName", outletName);
-
+        map.put("outletId", outletId);
+        map.put("discountPercent", discountPercent);
         
         // CONVERT JAVA DATA TO JSON
         ObjectMapper mapper = new ObjectMapper();

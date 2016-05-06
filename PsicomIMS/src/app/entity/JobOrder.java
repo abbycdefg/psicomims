@@ -1,35 +1,37 @@
 package app.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 
 @Entity
 public class JobOrder implements Serializable{
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column
-	private Long id;
 	
+	
+	@Id
 	@Column
+	@Size(min=1, max=9)
 	private String joNumber;
 	
 	@Column
-	private String date;
+	private Date date;
 	
 	@Column
+	@Size(min=1, max=12)
 	private String itemCode;
 	
 	@Column
 	private String title;
 	
 	@Column
-	private String quantity;
+	private int quantity;
 	
 	@Column
 	private String joStatus;
@@ -50,22 +52,17 @@ public class JobOrder implements Serializable{
 		this.joStatus = status;
 	}
 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getJoNumber() {
 		return joNumber;
 	}
 	public void setJoNumber(String joNumber) {
 		this.joNumber = joNumber;
 	}
-	public String getDate() {
+
+	public Date getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	public String getItemCode() {
@@ -80,13 +77,13 @@ public class JobOrder implements Serializable{
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getQuantity() {
+
+	public int getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(String quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
 	public boolean checkJobOrder(String joNumber){
 		return joNumber.equals(this.joNumber);
 	}

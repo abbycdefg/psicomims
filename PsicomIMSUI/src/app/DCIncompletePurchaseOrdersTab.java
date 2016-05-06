@@ -39,14 +39,15 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
      * Creates new form DCIncompletePurchaseOrdersTab
      */
     public DCIncompletePurchaseOrdersTab(String page) {
-    	if (page.equals("")){
+    	setExtendedState(Frame.MAXIMIZED_BOTH);
+    	 /**if (page.equals("")){
     		initComponents(msgDC);
     	}
     	else if (page.equals("ad")){
     		initComponents(msgAD);
-    	}  
-    	
-        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+    	} */  
+    	initComponents(msgDC);
+
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -128,7 +129,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
 
         titleLabel1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         titleLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        titleLabel1.setText("PURCHASE ORDERS");
+        titleLabel1.setText("INCOMPLETE PURCHASE ORDERS");
 
         copyrightLabel1.setFont(new java.awt.Font("Calibri", 0, 8)); // NOI18N
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
@@ -148,32 +149,31 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
         jScrollPane1.setViewportView(purchaseOrdersTable);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(copyrightLabel1)))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(290, 290, 290)
-                        .addComponent(titleLabel1)))
-                .addContainerGap(20, Short.MAX_VALUE))
+        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(18)
+        					.addComponent(copyrightLabel1))
+        				.addGroup(tablePanelLayout.createSequentialGroup()
+        					.addGap(382)
+        					.addComponent(titleLabel1))
+        				.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 1118, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap(31, Short.MAX_VALUE))
         );
         tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(titleLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(23)
+        			.addComponent(titleLabel1)
+        			.addGap(33)
+        			.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+        			.addGap(18)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -374,14 +374,10 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         layout.setHorizontalGroup(
-        	layout.createParallelGroup(Alignment.LEADING)
-        		.addGroup(Alignment.TRAILING, layout.createSequentialGroup()
-        			.addComponent(tablePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        			.addGap(273)
-        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, 333, GroupLayout.PREFERRED_SIZE))
+        	layout.createParallelGroup(Alignment.TRAILING)
         		.addGroup(layout.createSequentialGroup()
         			.addComponent(logoLabel)
-        			.addPreferredGap(ComponentPlacement.RELATED, 860, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 871, Short.MAX_VALUE)
         			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
         				.addGroup(layout.createSequentialGroup()
         					.addComponent(greetingLabel)
@@ -392,6 +388,11 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
         					.addPreferredGap(ComponentPlacement.RELATED)
         					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
         			.addGap(20))
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(8)
+        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 1149, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
@@ -409,13 +410,13 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
         					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         						.addComponent(searchButton))))
-        			.addGap(99)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        			.addGap(29)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
         				.addComponent(navbarPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addContainerGap())
         );
         getContentPane().setLayout(layout);
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -439,11 +440,10 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
 
     private void viewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewButtonActionPerformed
     	if (purchaseOrdersTable.getSelectedColumn() == 0){
-    		
-    		String poNumber = DCIncompletePurchaseOrdersTab.getColumnData(0);
-			String contactPerson = DCIncompletePurchaseOrdersTab.getColumnData(2);
-			String outlet = DCIncompletePurchaseOrdersTab.getColumnData(3);
-			this.dispose();
+    		int row = purchaseOrdersTable.getSelectedRow();
+    		String poNumber = purchaseOrdersTable.getValueAt(row, 1).toString();
+    		String contactPerson = purchaseOrdersTable.getValueAt(row, 3).toString();
+    		String outlet = purchaseOrdersTable.getValueAt(row, 0).toString();
 			DCViewPurchaseOrderScreen a = new DCViewPurchaseOrderScreen(poNumber, contactPerson, outlet, "");
 	        
 	         if (prevPage.equals("")){
@@ -454,6 +454,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
 	         }
             
             a.setVisible(true);
+            this.dispose();
     	}
     	else{
     		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -463,10 +464,10 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
     	if (purchaseOrdersTable.getSelectedRowCount() == 1 && purchaseOrdersTable.getSelectedColumn() == 0){
     		int row = purchaseOrdersTable.getSelectedRow();
-    		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
-    		String date = purchaseOrdersTable.getValueAt(row, 1).toString();
-    		String contactPers = purchaseOrdersTable.getValueAt(row, 2).toString();
-    		String outlet = purchaseOrdersTable.getValueAt(row, 3).toString();
+    		String poNumber = purchaseOrdersTable.getValueAt(row, 1).toString();
+    		String date = purchaseOrdersTable.getValueAt(row, 2).toString();
+    		String contactPers = purchaseOrdersTable.getValueAt(row, 3).toString();
+    		String outlet = purchaseOrdersTable.getValueAt(row, 0).toString();
     		this.dispose();
 	    	DCEditPurchaseOrderScreen a = new DCEditPurchaseOrderScreen(poNumber, date, contactPers, outlet, "");
 	    	
@@ -488,7 +489,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
     	if (purchaseOrdersTable.getSelectedRowCount() == 1 && purchaseOrdersTable.getSelectedColumn() == 0){
     		int row = purchaseOrdersTable.getSelectedRow();
-    		String poNumber = purchaseOrdersTable.getValueAt(row, 0).toString();
+    		String poNumber = purchaseOrdersTable.getValueAt(row, 1).toString();
     		System.out.println(poNumber);
     		this.dispose();
 	    	DCDeletePurchaseOrderScreen a = new DCDeletePurchaseOrderScreen(poNumber, "");
@@ -684,7 +685,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
     }
     
     public void displayAll(){
-    	String[] columnNames = {"PO NUMBER", "DATE", "CONTACT PERSON", "OUTLET"};
+    	String[] columnNames = {"OUTLET", "PO NUMBER", "DATE", "CONTACT PERSON"};
 
     	DefaultTableModel model = new DefaultTableModel(){
         	public boolean isCellEditable(int row, int column)
@@ -720,7 +721,7 @@ public class DCIncompletePurchaseOrdersTab extends javax.swing.JFrame {
                 contactPerson = rs.getString("contact_person");
                 outlet = rs.getString("outlet");
                 status = rs.getString("po_status");               
-                model.addRow(new Object[]{poNumber, date, contactPerson, outlet});
+                model.addRow(new Object[]{outlet, poNumber, date, contactPerson});
                 i++;
 	              
             }

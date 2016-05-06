@@ -124,7 +124,7 @@ public class ADDeleteOutletScreen extends javax.swing.JFrame {
     	HashMap map;
     	
         try{
-        	String outletId = ADOutletsTab.getFirstColumnData();         
+        	String outletId = ADOutletsTab.getSecondColumnData();         
 
             try{
                 map = doCommand("deleteOutlet", outletId);

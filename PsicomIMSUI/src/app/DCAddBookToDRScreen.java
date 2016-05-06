@@ -60,7 +60,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
 	private String drNumber;
 	private String dateToday;
 	private String totalAmt;
-	private Integer totalAmtInt;
+	private float totalAmtInt;
 	private String quantityCount;
 	private Integer quantityCountInt;
 	private String dateDelivery;
@@ -101,6 +101,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         cancelButton.setBackground(z);
         
         drNumber = drNumber1;
+        System.out.println(drNumber1);
         dateToday = dateToday1;
         dateDelivery = dateDelivery1;
         getPoList();
@@ -110,7 +111,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         totalAmt = totalAmt1;
 
         if(!totalAmt.equals("")){
-        totalAmtInt = Integer.parseInt(totalAmt);
+        totalAmtInt = Float.parseFloat(totalAmt);
         }
         else {
         totalAmtInt = 0;
@@ -119,6 +120,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         if(!poNumber.equals(""))
         {
         	displayAll(poNumber);
+        	poNumberComboBox.setSelectedItem(poNumber);
         }
     }
 
@@ -315,18 +317,18 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
     	    	{
     	    		System.out.println("pasok");
     	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 2).toString();
-    	    		int quantInt = Integer.parseInt(quantitySelected);
+    	    		float quantInt = Float.parseFloat(quantitySelected);
     	    		quantityList.add(quantitySelected);     
-        	    	if(booksTable.getModel().getValueAt(i,4) != null)
+        	    	if(booksTable.getModel().getValueAt(i,3) != null)
         	    	{
-        	    		Integer amountSelected = Integer.parseInt(booksTable.getModel().getValueAt(i,4).toString());
+        	    		float amountSelected = Float.parseFloat(booksTable.getModel().getValueAt(i,3).toString());
         	    		totalAmtInt += amountSelected*quantInt;
         	    	}
     	    	}
 
         	}
         	
-        	totalAmt = totalAmtInt.toString();
+        	totalAmt = Float.toString(totalAmtInt);
         	
         }
         catch (Exception e){
@@ -407,7 +409,7 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
 
     //END
     public void displayAll(String poNumber){
-    	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};
+    	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "SALES PRICE", "SRP"};
 
         DefaultTableModel model = new DefaultTableModel(){
         	@Override
@@ -418,7 +420,6 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
-        PreparedStatement pst2;
         Connection con;
         
         String title = "";
@@ -434,42 +435,21 @@ public class DCAddBookToDRScreen extends javax.swing.JFrame {
         try {
         	Class.forName("com.mysql.jdbc.Driver");
         	con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-            pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+            pst = (PreparedStatement) con.prepareStatement("SELECT b.title, b.item_code, p.quantity, o.discount_percent, b.price FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po, psicomims.outlet o WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND o.outlet_name=po.outlet AND p.po_id='" + poNumber + "'");
             ResultSet rs = pst.executeQuery();
             int i = 0;
 
             while (rs.next()) {
-            	if(poNumber.equals(rs.getString("po_id")))
-            	{
-            		System.out.println("adding inside");
-            		listBooks.add(rs.getString("book_id"));
-            		quantityList.add(rs.getString("quantity"));
-            	}
-                //model.addRow(new Object[]{title, itemCode, price, author, releaseDate});
-                i++;               
+            	title = rs.getString("title");
+                itemCode = rs.getString("item_code");
+                srp = rs.getString("price");
+                quantity = rs.getString("quantity");
+                discountedPrice = Float.toString(Float.parseFloat(rs.getString("price")) - (Float.parseFloat(rs.getString("price")) * Float.parseFloat(rs.getString("discount_percent")))/100);
+                model.addRow(new Object[]{title, itemCode, quantity, discountedPrice, srp});
+                i++;
             }
             
-            pst2 = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
-            ResultSet rs2 = pst2.executeQuery();
-            while (rs2.next()) {
-                for(int k = 0; k < listBooks.size(); k++)
-                {
-                	
-                	if(listBooks.get(k).equals(rs2.getString("item_code")))
-                	{
-                		System.out.println(listBooks);
-                		title = rs2.getString("title");
-                        itemCode = rs2.getString("item_code");
-                        srp = rs2.getString("price");
-                        quantity = quantityList.get(k);
-                        System.out.println(quantity);
-                        model.addRow(new Object[]{title, itemCode, quantity, "", srp}); 
-                        break;
-                	}
-                }
-                          
-            }
-
+            
             if (i < 1) {
                 JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
             }

@@ -384,7 +384,7 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
 	    	a.setVisible(true);
     	}
     	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, "Please select item to edit.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
     }//GEN-LAST:event_editButtonActionPerformed
 
@@ -396,7 +396,7 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
 	    	a.setVisible(true);
     	}
     	else{
-    		JOptionPane.showMessageDialog(null, "Invalid request.", "Error", JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(null, "Please select item to delete.", "Error", JOptionPane.ERROR_MESSAGE);
     	}
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -415,7 +415,7 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
     		this.displayAll();
     	}
     	else{
-        	String[] columnNames = {"CONTACT PERSON ID", "CONTACT PERSONS", "DATE CREATED"};
+        	String[] columnNames = { "CONTACT PERSONS","CONTACT PERSON ID", "DATE CREATED"};
 
         	DefaultTableModel model = new DefaultTableModel(){
             	public boolean isCellEditable(int row, int column)
@@ -442,7 +442,7 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
                 	contactPersonId = rs.getString("contact_person_id");
                 	contactPersonName = rs.getString("contact_person_name");
                     dateCreated = rs.getString("date_created");
-                    model.addRow(new Object[]{contactPersonId, contactPersonName, dateCreated});
+                    model.addRow(new Object[]{ contactPersonName,contactPersonId, dateCreated});
                     i++;
                 }
                 
@@ -552,7 +552,7 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
     }
     
     public void displayAll(){
-    	String[] columnNames = {"CONTACT PERSON ID", "CONTACT PERSONS", "DATE CREATED"};
+    	String[] columnNames = { "CONTACT PERSONS", "CONTACT PERSON ID", "DATE CREATED"};
 
     	DefaultTableModel model = new DefaultTableModel(){
         	public boolean isCellEditable(int row, int column)
@@ -579,7 +579,7 @@ public class ADContactPersonsTab extends javax.swing.JFrame {
             	contactPersonId = rs.getString("contact_person_id");
             	contactPersonName = rs.getString("contact_person_name");
                 dateCreated = rs.getString("date_created");
-                model.addRow(new Object[]{contactPersonId, contactPersonName, dateCreated});
+                model.addRow(new Object[]{ contactPersonName, contactPersonId, dateCreated});
                 i++;
             }
             

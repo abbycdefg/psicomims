@@ -24,6 +24,9 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  *
@@ -39,14 +42,14 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
      * Creates new form DCCompleteDeliverySchedulesTab
      */
     public DCCompleteDeliverySchedulesTab(String page) {
-    	if (page.equals("")){
+    	setExtendedState(Frame.MAXIMIZED_BOTH);
+    	/**if (page.equals("")){
     		initComponents(msgDC);
     	}
     	else if (page.equals("ad")){
     		initComponents(msgAD);
-    	}
-        
-        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+    	} */
+    	initComponents(msgDC);
         prevPage = page;
         
         Color x = new Color(32, 55, 73);
@@ -181,9 +184,9 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
         copyrightLabel1.setForeground(new java.awt.Color(32, 55, 73));
         copyrightLabel1.setText("© 2016 PSICOM Inventory Mgt. System Powered by VIPE Solutions. All Rights Reserved. ");
 
-        titleLabel1.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        titleLabel1.setFont(new Font("Calibri", Font.PLAIN, 22)); // NOI18N
         titleLabel1.setForeground(new java.awt.Color(32, 55, 73));
-        titleLabel1.setText("DELIVERY SCHEDULES");
+        titleLabel1.setText("COMPLETE DELIVERY SCHEDULES");
 
         advanceSearchPanel1.setBackground(new java.awt.Color(234, 234, 234));
         advanceSearchPanel1.setOpaque(true);
@@ -232,64 +235,61 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
         dsPerWeekMonthLabel1.setText("Delivery Schedules Per Week/Month");
 
         javax.swing.GroupLayout advanceSearchPanel1Layout = new javax.swing.GroupLayout(advanceSearchPanel1);
-        advanceSearchPanel1.setLayout(advanceSearchPanel1Layout);
         advanceSearchPanel1Layout.setHorizontalGroup(
-            advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(advanceSearchPanel1Layout.createSequentialGroup()
-                .addGroup(advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(advanceSearchPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(advSearchButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, advanceSearchPanel1Layout.createSequentialGroup()
-                        .addGroup(advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, advanceSearchPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(advancedSearchLabel1))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, advanceSearchPanel1Layout.createSequentialGroup()
-                                .addGap(67, 67, 67)
-                                .addGroup(advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dsPerWeekMonthLabel1)
-                                    .addGroup(advanceSearchPanel1Layout.createSequentialGroup()
-                                        .addGroup(advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(dsPerDayLabel1)
-                                            .addComponent(dsFromLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
-                                        .addGroup(advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(advanceSearchPanel1Layout.createSequentialGroup()
-                                                .addGap(6, 6, 6)
-                                                .addComponent(dsFromChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(dsToLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(dsToChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(advanceSearchPanel1Layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(dsPerDayChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                        .addGap(0, 9, Short.MAX_VALUE)))
-                .addContainerGap())
+        	advanceSearchPanel1Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        			.addGroup(advanceSearchPanel1Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(advancedSearchLabel1))
+        				.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        					.addGap(67)
+        					.addGroup(advanceSearchPanel1Layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(dsPerWeekMonthLabel1)
+        						.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        							.addGroup(advanceSearchPanel1Layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(dsPerDayLabel1)
+        								.addComponent(dsFromLabel1, Alignment.TRAILING))
+        							.addGroup(advanceSearchPanel1Layout.createParallelGroup(Alignment.LEADING)
+        								.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        									.addGap(6)
+        									.addComponent(dsFromChooser1, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+        									.addPreferredGap(ComponentPlacement.UNRELATED)
+        									.addComponent(dsToLabel1)
+        									.addPreferredGap(ComponentPlacement.UNRELATED)
+        									.addComponent(dsToChooser1, GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE)
+        									.addPreferredGap(ComponentPlacement.RELATED)
+        									.addComponent(advSearchButton))
+        								.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        									.addPreferredGap(ComponentPlacement.UNRELATED)
+        									.addComponent(dsPerDayChooser1, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)))))))
+        			.addContainerGap(301, Short.MAX_VALUE))
         );
         advanceSearchPanel1Layout.setVerticalGroup(
-            advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(advanceSearchPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(dsPerDayChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(advanceSearchPanel1Layout.createSequentialGroup()
-                        .addComponent(advancedSearchLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dsPerDayLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dsPerWeekMonthLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(advanceSearchPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(dsToLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(dsToChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(dsFromChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dsFromLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(advSearchButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	advanceSearchPanel1Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(advanceSearchPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(advSearchButton)
+        				.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        					.addGroup(advanceSearchPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        						.addComponent(dsPerDayChooser1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addGroup(advanceSearchPanel1Layout.createSequentialGroup()
+        							.addComponent(advancedSearchLabel1)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(dsPerDayLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)))
+        					.addPreferredGap(ComponentPlacement.UNRELATED)
+        					.addComponent(dsPerWeekMonthLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(advanceSearchPanel1Layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(advanceSearchPanel1Layout.createParallelGroup(Alignment.LEADING)
+        							.addComponent(dsToLabel1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        							.addComponent(dsToChooser1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        						.addComponent(dsFromChooser1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(dsFromLabel1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))))
+        			.addContainerGap(42, Short.MAX_VALUE))
         );
+        advanceSearchPanel1.setLayout(advanceSearchPanel1Layout);
         advanceSearchPanel1.setLayer(dsPerDayChooser1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         advanceSearchPanel1.setLayer(dsPerDayLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         advanceSearchPanel1.setLayer(advancedSearchLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -314,34 +314,34 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
         jScrollPane1.setViewportView(deliverySchedulesTable);
 
         javax.swing.GroupLayout tablePanelLayout = new javax.swing.GroupLayout(tablePanel);
-        tablePanel.setLayout(tablePanelLayout);
         tablePanelLayout.setHorizontalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tablePanelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1)
-                        .addComponent(advanceSearchPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(tablePanelLayout.createSequentialGroup()
-                        .addGap(275, 275, 275)
-                        .addComponent(titleLabel1))
-                    .addComponent(copyrightLabel1))
-                .addContainerGap(20, Short.MAX_VALUE))
+        	tablePanelLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(18)
+        			.addGroup(tablePanelLayout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(copyrightLabel1)
+        				.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 1095, Short.MAX_VALUE)
+        				.addComponent(advanceSearchPanel1))
+        			.addContainerGap(23, Short.MAX_VALUE))
+        		.addGroup(Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
+        			.addContainerGap(443, Short.MAX_VALUE)
+        			.addComponent(titleLabel1)
+        			.addGap(414))
         );
         tablePanelLayout.setVerticalGroup(
-            tablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tablePanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(titleLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(advanceSearchPanel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(copyrightLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7))
+        	tablePanelLayout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(tablePanelLayout.createSequentialGroup()
+        			.addGap(14)
+        			.addComponent(titleLabel1)
+        			.addGap(18)
+        			.addComponent(advanceSearchPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 340, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(copyrightLabel1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        			.addGap(7))
         );
+        tablePanel.setLayout(tablePanelLayout);
 
         navbarPanel.setBackground(new java.awt.Color(227, 234, 245));
         navbarPanel.setAlignmentX(0.0F);
@@ -382,50 +382,49 @@ public class DCCompleteDeliverySchedulesTab extends javax.swing.JFrame {
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(logoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(greetingLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(signOutButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(navbarPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addComponent(logoLabel)
+        			.addPreferredGap(ComponentPlacement.RELATED, 871, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(greetingLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(signOutButton))
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(searchButton, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(20))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(logoLabel))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(signOutButton)
-                            .addComponent(greetingLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(logoLabel))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(25)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(signOutButton)
+        						.addComponent(greetingLabel))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(searchButton))))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(tablePanel, GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
+        				.addComponent(navbarPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)))
         );
+        getContentPane().setLayout(layout);
 
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void signOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signOutButtonActionPerformed

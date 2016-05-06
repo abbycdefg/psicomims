@@ -12,6 +12,20 @@ import org.springframework.util.WeakReferenceMonitor.ReleaseListener;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
+import javax.swing.JLabel;
+
+import java.awt.Font;
+
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+import java.awt.Dimension;
+
+import javax.swing.SwingConstants;
+
+import java.awt.Component;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -34,7 +48,8 @@ public class DCViewBookScreen extends javax.swing.JFrame {
 	private static String price;
 	private static String author;
 	private static String quantity;
-	private static String location;
+	private static String threshold;
+	private static String dateReleased;
     public DCViewBookScreen(String page) {
         initComponents();
         
@@ -51,9 +66,13 @@ public class DCViewBookScreen extends javax.swing.JFrame {
         priceValueLabel.setText("");
         authorValueLabel.setText("");
         quantityValueLabel.setText("");
-        locationValueLabel.setText("");
+        thresholdValueLabel.setText("");
     }
+    /**
+     * @wbp.parser.constructor
+     */
     public DCViewBookScreen(String itemCode1, String page) {
+    	setSize(new Dimension(483, 472));
         initComponents();
         
         prevPage = page;
@@ -69,7 +88,8 @@ public class DCViewBookScreen extends javax.swing.JFrame {
         priceValueLabel.setText("");
         authorValueLabel.setText("");
         quantityValueLabel.setText("");
-        locationValueLabel.setText("");
+        thresholdValueLabel.setText("");
+        dateReleasedValueLabel.setText("");
         
         itemCode = itemCode1;
         
@@ -77,12 +97,11 @@ public class DCViewBookScreen extends javax.swing.JFrame {
         
         titleValueLabel.setText(title);
         itemCodeValueLabel.setText(itemCode);
-        priceValueLabel.setText(price);
         authorValueLabel.setText(author);
+        priceValueLabel.setText(price);
         quantityValueLabel.setText(quantity);
-        locationValueLabel.setText(location);
-        
-        
+        thresholdValueLabel.setText(threshold);
+        dateReleasedValueLabel.setText(dateReleased);
     }
 
     /**
@@ -103,11 +122,10 @@ public class DCViewBookScreen extends javax.swing.JFrame {
         itemCodeLabel = new javax.swing.JLabel();
         priceLabel = new javax.swing.JLabel();
         quantityLabel = new javax.swing.JLabel();
-        locationLabel = new javax.swing.JLabel();
+        thresholdLabel = new javax.swing.JLabel();
+        thresholdLabel.setSize(new Dimension(483, 472));
         itemCodeValueLabel = new javax.swing.JLabel();
-        priceValueLabel = new javax.swing.JLabel();
-        quantityValueLabel = new javax.swing.JLabel();
-        locationValueLabel = new javax.swing.JLabel();
+        thresholdValueLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("View Book");
@@ -156,106 +174,129 @@ public class DCViewBookScreen extends javax.swing.JFrame {
         quantityLabel.setForeground(new java.awt.Color(255, 255, 255));
         quantityLabel.setText("Quantity:");
 
-        locationLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        locationLabel.setForeground(new java.awt.Color(255, 255, 255));
-        locationLabel.setText("Location:");
+        thresholdLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        thresholdLabel.setForeground(new java.awt.Color(255, 255, 255));
+        thresholdLabel.setText("Threshold:");
 
         itemCodeValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         itemCodeValueLabel.setForeground(new java.awt.Color(255, 255, 255));
         itemCodeValueLabel.setText("AYUSIN");
 
-        priceValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        priceValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        priceValueLabel.setText("MO");
-
-        quantityValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        quantityValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        quantityValueLabel.setText("ITO");
-
-        locationValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        locationValueLabel.setForeground(new java.awt.Color(255, 255, 255));
-        locationValueLabel.setText("ABBY");
+        thresholdValueLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        thresholdValueLabel.setForeground(new java.awt.Color(255, 255, 255));
+        thresholdValueLabel.setText("test");
+        
+        relaseDateLabel = new JLabel();
+        relaseDateLabel.setText("Date Released:");
+        relaseDateLabel.setForeground(Color.WHITE);
+        relaseDateLabel.setFont(new Font("Calibri", Font.PLAIN, 15));
+        
+        quantityValueLabel = new JLabel();
+        quantityValueLabel.setText("test");
+        quantityValueLabel.setForeground(Color.WHITE);
+        quantityValueLabel.setFont(new Font("Calibri", Font.PLAIN, 15));
+        
+        priceValueLabel = new JLabel();
+        priceValueLabel.setText("test");
+        priceValueLabel.setForeground(Color.WHITE);
+        priceValueLabel.setFont(new Font("Calibri", Font.PLAIN, 15));
+        
+        dateReleasedValueLabel = new JLabel();
+        dateReleasedValueLabel.setText("test");
+        dateReleasedValueLabel.setForeground(Color.WHITE);
+        dateReleasedValueLabel.setFont(new Font("Calibri", Font.PLAIN, 15));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(157, 157, 157)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(viewBookLabel)
-                                .addGap(196, 196, 196))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(titleValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(authorLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(authorValueLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(locationLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(locationValueLabel))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(quantityLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(quantityValueLabel))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(priceLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(priceValueLabel))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(itemCodeLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(itemCodeValueLabel))
-                                    .addComponent(line))))
-                        .addContainerGap())))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(45)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(itemCodeLabel)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(itemCodeValueLabel))
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(authorLabel)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(authorValueLabel))
+        						.addGroup(layout.createSequentialGroup()
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(titleValueLabel, GroupLayout.PREFERRED_SIZE, 357, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(layout.createSequentialGroup()
+        							.addGap(157)
+        							.addComponent(viewBookLabel))
+        						.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        							.addComponent(backButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        							.addComponent(line))
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(relaseDateLabel, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(dateReleasedValueLabel, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(layout.createSequentialGroup()
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(priceLabel)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(priceValueLabel, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)))
+        					.addGap(65))
+        				.addGroup(layout.createSequentialGroup()
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(quantityLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(quantityValueLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addGap(60)
+        					.addComponent(thresholdLabel)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(thresholdValueLabel, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+        					.addGap(109)))
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(viewBookLabel)
-                .addGap(41, 41, 41)
-                .addComponent(titleValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(authorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(authorValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(line)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(itemCodeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(itemCodeValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(priceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(priceValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(quantityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(quantityValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(locationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(locationValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(40)
+        			.addComponent(viewBookLabel)
+        			.addGap(41)
+        			.addComponent(titleValueLabel, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(authorLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(authorValueLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(line)
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(itemCodeLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(itemCodeValueLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addGap(17)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(priceValueLabel, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(priceLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        			.addGap(25)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        						.addComponent(quantityLabel)
+        						.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        							.addComponent(quantityValueLabel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
+        							.addComponent(thresholdLabel, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)))
+        					.addGap(17))
+        				.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        					.addComponent(thresholdValueLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED)))
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(relaseDateLabel)
+        				.addComponent(dateReleasedValueLabel, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE))
+        			.addGap(48)
+        			.addComponent(backButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+        			.addGap(41))
         );
-
-        pack();
+        layout.linkSize(SwingConstants.VERTICAL, new Component[] {thresholdLabel, thresholdValueLabel});
+        layout.linkSize(SwingConstants.HORIZONTAL, new Component[] {thresholdLabel, thresholdValueLabel});
+        layout.linkSize(SwingConstants.HORIZONTAL, new Component[] {itemCodeLabel, itemCodeValueLabel});
+        getContentPane().setLayout(layout);
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -314,14 +355,16 @@ public class DCViewBookScreen extends javax.swing.JFrame {
     private javax.swing.JLabel itemCodeLabel;
     private javax.swing.JLabel itemCodeValueLabel;
     private javax.swing.JLabel line;
-    private javax.swing.JLabel locationLabel;
-    private javax.swing.JLabel locationValueLabel;
+    private javax.swing.JLabel thresholdLabel;
+    private javax.swing.JLabel thresholdValueLabel;
     private javax.swing.JLabel priceLabel;
-    private javax.swing.JLabel priceValueLabel;
     private javax.swing.JLabel quantityLabel;
-    private javax.swing.JLabel quantityValueLabel;
     private javax.swing.JLabel titleValueLabel;
     private javax.swing.JLabel viewBookLabel;
+    private JLabel relaseDateLabel;
+    private JLabel quantityValueLabel;
+    private JLabel priceValueLabel;
+    private JLabel dateReleasedValueLabel;
     // End of variables declaration//GEN-END:variables
     
     public void findBook(String itemCode1)
@@ -335,19 +378,17 @@ public class DCViewBookScreen extends javax.swing.JFrame {
 
 				Class.forName("com.mysql.jdbc.Driver");
 				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
+				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM book WHERE item_code ='" + itemCode +"'");
 				ResultSet rs = pst.executeQuery();
 				int i = 0;
 			    
 				while (rs.next()) {
-					if(rs.getString("item_code").equals(itemCode1))
-					{
 				    	 title = rs.getString("title");
 				    	 price = rs.getString("price");
 				    	 author = rs.getString("author");
 				    	 quantity = rs.getString("quantity");
-				    	 location = rs.getString("location");
-					}
+				    	 threshold = rs.getString("threshold");
+				    	 dateReleased = rs.getString("release_date");
 					i++;
 				}
 			} catch (ClassNotFoundException e) {

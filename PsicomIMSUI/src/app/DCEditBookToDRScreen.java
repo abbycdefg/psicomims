@@ -55,7 +55,7 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
 	private String drNumber;
 	private String dateToday;
 	private String totalAmt;
-	private Integer totalAmtInt;
+	private float totalAmtInt;
 	private String quantityCount;
 	private Integer quantityCountInt;
 	private String dateDelivery;
@@ -98,29 +98,30 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         drNumber = drNumber1;
         dateToday = dateToday1;
         dateDelivery = dateDelivery1;
-        totalAmt = totalAmt1;
-       
-        
         getPoList();
         po = new String[poList.size()];
         poList.toArray(po);
         AutoCompleteSupport.install(poNumberComboBox, GlazedLists.eventListOf(po));
-
-        getBookList();
-        displayAll("");
+        totalAmt = totalAmt1;
+       
         
-
         if(!totalAmt.equals("")){
-        totalAmtInt = Integer.parseInt(totalAmt);
-        }
-        else {
-        totalAmtInt = 0;
-        }      
-        poNumber = poNumber1;
-        if(!poNumber.equals(""))
-        {
-        	displayAll(poNumber);
-        }
+            totalAmtInt = Float.parseFloat(totalAmt);
+            }
+            else {
+            totalAmtInt = 0;
+            }      
+            poNumber = poNumber1;
+            System.out.println(poNumber + "check");
+            if(!poNumber.equals(""))
+            {
+            	displayAll(poNumber);
+            	poNumberComboBox.setSelectedItem(poNumber);
+            }
+            else {
+            	displayAll("000");
+            	
+            }
     }
 
 
@@ -312,17 +313,17 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
    	    	{
    	    		System.out.println("pasok");
    	    		String quantitySelected = (String) booksTable.getModel().getValueAt(i, 2).toString();
-   	    		int quantInt = Integer.parseInt(quantitySelected);
+   	    		float quantInt = Float.parseFloat(quantitySelected);
    	    		quantityList.add(quantitySelected);     
-       	    	if(booksTable.getModel().getValueAt(i,4) != null)
+       	    	if(booksTable.getModel().getValueAt(i,3) != null)
        	    	{
-       	    		Integer amountSelected = Integer.parseInt(booksTable.getModel().getValueAt(i,4).toString());
+       	    		float amountSelected = Float.parseFloat(booksTable.getModel().getValueAt(i,3).toString());
        	    		totalAmtInt += amountSelected*quantInt;
        	    	}
    	    	}
          	}
          	
-         	totalAmt = totalAmtInt.toString();
+         	totalAmt = Float.toString(totalAmtInt);
          	
          }
          catch (Exception e){
@@ -406,7 +407,7 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
 
 				Class.forName("com.mysql.jdbc.Driver");
 				con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-				pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+				pst = (PreparedStatement) con.prepareStatement("SELECT po_id FROM specific_po");
 				ResultSet rs = pst.executeQuery();
 				int i = 0;
 			    Set<String> poSetList = new HashSet();
@@ -464,7 +465,7 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
 			}
     }
     public void displayAll(String poNumber){
-    	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "DISCOUNTED PRICE", "SRP"};
+    	String[] columnNames = {"TITLE", "ITEM CODE", "QUANTITY", "SALES PRICE", "SRP"};
 
         DefaultTableModel model = new DefaultTableModel(){
         	@Override
@@ -475,7 +476,6 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         model.setColumnIdentifiers(columnNames);
         
         PreparedStatement pst;
-        PreparedStatement pst2;
         Connection con;
         
         String title = "";
@@ -484,81 +484,46 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         String srp = "";
         String quantity = "";
         List<String> listBooks = new ArrayList<String>();
-        List<String> listQuantity = new ArrayList<String>();
+        List<String> quantityList = new ArrayList<String>();
         int row = booksTable.getRowCount();
         int column = booksTable.getColumnCount();
         
         try {
+        	int i = 0;
         	Class.forName("com.mysql.jdbc.Driver");
         	con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/psicomims", "root", "root");
-        	int i = 0;
-            if(!poNumber.equals(""))
+        	if(!poNumber.equals("000"))
         	{
-        	
-            pst = (PreparedStatement) con.prepareStatement("SELECT * FROM specific_po");
+            pst = (PreparedStatement) con.prepareStatement("SELECT b.title, b.item_code, p.quantity, o.discount_percent, b.price FROM psicomims.book b, psicomims.specific_po p, psicomims.purchase_order po, psicomims.outlet o WHERE b.item_code=p.book_id AND p.po_id=po.purchase_order_number AND o.outlet_name=po.outlet AND p.po_id='" + poNumber + "'");
             ResultSet rs = pst.executeQuery();
             
 
             while (rs.next()) {
-            	
-            		if(poNumber.equals(rs.getString("po_id")))
-            		{
-            		listBooks.add(rs.getString("book_id"));
-            		listQuantity.add(rs.getString("quantity"));
-            		}
-                i++;           	
-            	}
-        	
-            
-            pst2 = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
-            ResultSet rs2 = pst2.executeQuery();
-            while (rs2.next()) {
-                for(int k = 0; k < listBooks.size(); k++)
-                {
-                	
-                	if(listBooks.get(k).equals(rs2.getString("item_code")))
-                	{
-                		System.out.println(listBooks);
-                		title = rs2.getString("title");
-                        itemCode = rs2.getString("item_code");
-                        srp = rs2.getString("price");
-                        quantity = listQuantity.get(k);
-                        model.addRow(new Object[]{title, itemCode, quantity, "", srp});
-                        break;
-                	}
-                }
-                           
-            	}
+            	title = rs.getString("title");
+                itemCode = rs.getString("item_code");
+                srp = rs.getString("price");
+                quantity = rs.getString("quantity");
+                discountedPrice = Float.toString(Float.parseFloat(rs.getString("price")) - (Float.parseFloat(rs.getString("price")) * Float.parseFloat(rs.getString("discount_percent")))/100);
+                model.addRow(new Object[]{title, itemCode, quantity, discountedPrice, srp});
+                i++;
+            }
+        	}
+        	else {
+        		 pst = (PreparedStatement) con.prepareStatement("SELECT b.title, b.item_code, d.quantity, o.discount_percent, b.price FROM psicomims.book b, psicomims.specific_dr d, psicomims.delivery_receipt dr, psicomims.outlet o WHERE b.item_code=d.book_id AND d.dr_id=dr.delivery_receipt_number AND o.outlet_name=dr.outlet AND d.dr_id='" + drNumber + "'");
+                 ResultSet rs = pst.executeQuery();
+
+                 while (rs.next()) {
+                 	title = rs.getString("title");
+                     itemCode = rs.getString("item_code");
+                     srp = rs.getString("price");
+                     quantity = rs.getString("quantity");
+                     discountedPrice = Float.toString(Float.parseFloat(rs.getString("price")) - (Float.parseFloat(rs.getString("price")) * Float.parseFloat(rs.getString("discount_percent")))/100);
+                     model.addRow(new Object[]{title, itemCode, quantity, discountedPrice, srp});
+                     i++;
+                 }
         	}
             
-            else {
-                pst2 = (PreparedStatement) con.prepareStatement("SELECT * FROM book");
-                ResultSet rs2 = pst2.executeQuery();
-                while (rs2.next()) {
-                	loop:
-                    for(int k = 0; k < booksList.size(); k++)
-                    {
-                    	
-                    	if(booksList.get(k).equals(rs2.getString("item_code")))
-                    	{
-                    		System.out.println(quantityList);
-                    		System.out.println(booksList);
-                    		title = rs2.getString("title");
-                            itemCode = rs2.getString("item_code");
-                            srp = rs2.getString("price");
-                            
-                            quantity = quantityList.get(k);
-                            System.out.println(quantityList.get(k));
-                            model.addRow(new Object[]{title, itemCode, quantity, "", srp});     
-                            break loop;
-                    	}
-                    }
-                           
-                	}	
-            	
-            	i++;
-            }
-
+            
             if (i < 1) {
                 JOptionPane.showMessageDialog(null, "No Record Found", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -575,7 +540,7 @@ public class DCEditBookToDRScreen extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+                                 
         booksTable = new JTable(model);
         booksTable.setModel(model);
         booksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);

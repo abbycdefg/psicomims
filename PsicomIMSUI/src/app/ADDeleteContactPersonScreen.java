@@ -122,7 +122,7 @@ public class ADDeleteContactPersonScreen extends javax.swing.JFrame {
     	HashMap map;
     	
         try{
-        	String contactPersonId = ADContactPersonsTab.getFirstColumnData();         
+        	String contactPersonId = ADContactPersonsTab.getSecondColumnData();         
 
             try{
                 map = doCommand("deleteContactPerson", contactPersonId);

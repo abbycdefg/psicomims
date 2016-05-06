@@ -38,8 +38,8 @@ public class ADEditContactPersonScreen extends javax.swing.JFrame {
         Color z = new Color(102, 102, 102);
         cancelButton.setBackground(z);
         
-        String contactPersonId = ADContactPersonsTab.getFirstColumnData();
-    	String contactPersonName = ADContactPersonsTab.getSecondColumnData(); 
+        String contactPersonId = ADContactPersonsTab.getSecondColumnData();
+    	String contactPersonName =  ADContactPersonsTab.getFirstColumnData();
     	String date = ADContactPersonsTab.getThirdColumnData();
         
     	

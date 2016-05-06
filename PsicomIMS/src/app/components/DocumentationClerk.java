@@ -26,6 +26,9 @@ import app.repositories.PurchaseOrderRepository;
 import app.repositories.SpecificDrRepository;
 import app.repositories.SpecificPoRepository;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -106,7 +109,16 @@ public class DocumentationClerk
 
     	Set<Book> listOfBooks= new HashSet<Book>();
     	p.setPurchaseOrderNumber(poNumber);
-    	p.setDateToday(dateToday);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date dt = null;
+
+		try {
+			dt = df.parse(dateToday);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	p.setDateToday(dt);
     	p.setContactPerson(contactPerson);
     	p.setOutlet(outlet);
     	p.setPoStatus("INCOMPLETE");
@@ -150,32 +162,102 @@ public class DocumentationClerk
     	
 
     	System.out.println(listOfBooks);   
-      	return p.getId()!= null;
+      	return p.getPurchaseOrderNumber()!= null;
     	
     }
+    @Transactional
     public boolean editPurchaseOrder(String poNumber, String dateToday, String contactPerson, String outlet, List<String> booksList, List<String> quantityList)
     {
     	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
 
     	Set<Book> listOfBooks= new HashSet<Book>();
-    	p.setDateToday(dateToday);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date dt = null;
+
+		try {
+			dt = df.parse(dateToday);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	p.setDateToday(dt);
     	p.setContactPerson(contactPerson);
     	p.setOutlet(outlet);
-    	//p.setBooks(listOfBooks);
     	p = poDao.save(p);
+    	
+    	
+    	List <SpecificPo> oldBooks = spoDao.findAllByPoId(p);
+		System.out.println(oldBooks + "check book");
+    	for(int i = 0; i<oldBooks.size(); i++)
+    	{
+    		SpecificPo spd = oldBooks.get(i);
+    		Book bd = bookDao.findByItemCode(spd.getBookId().getItemCode()); 
+    		int oldQty = spd.getQuantity();
+    		int bookQty = bd.getQuantity();
+    		int addQty = oldQty + bookQty;
+    		bd.setQuantity(addQty);
+    		spoDao.delete(spd);
+    	}
+    	for(int i = 0; i<booksList.size(); i++)
+    	{
+    		int bQty = 0;
+    		SpecificPo sp = new SpecificPo();
+    		Book b = bookDao.findByItemCode(booksList.get(i)); 
+
+    		if(b!=null)
+    		{    		
+    		bQty = b.getQuantity();
+    		sp.setStatus("INCOMPLETE");	
+    		sp.setBookId(b);
+			listOfBooks.add(b);
+    		}
+    		
+    		PurchaseOrder po = poDao.findByPurchaseOrderNumber(poNumber);
+    		sp.setPoId(po);
+    		
+    		if(quantityList.get(i) != null)
+    		{
+    			String quantity = quantityList.get(i);
+    			
+    			if (quantity != "")
+    			{    			
+    			int qty = Integer.parseInt(quantity);
+    			sp.setQuantity(qty);
+    			int newQty = bQty - qty;
+    			System.out.println(b);
+    				b.setQuantity(newQty);
+    			}
+    		}
+    		
+    		spoDao.save(sp); 
+    		bookDao.save(b);
+    	}
     	
 
     	System.out.println(listOfBooks);   
-      	return p.getId()!= null;
+      	return p.getPurchaseOrderNumber()!= null;
     	
     }
+    @Transactional
     public boolean deletePurchaseOrder(String poNumber)
     {
 
     	PurchaseOrder p = poDao.findByPurchaseOrderNumber(poNumber);
+    	List <SpecificPo> oldBooks = spoDao.findAllByPoId(p);
+		System.out.println(oldBooks + "check book");
+    	for(int i = 0; i<oldBooks.size(); i++)
+    	{
+    		SpecificPo spd = oldBooks.get(i);
+    		Book bd = bookDao.findByItemCode(spd.getBookId().getItemCode()); 
+    		int oldQty = spd.getQuantity();
+    		int bookQty = bd.getQuantity();
+    		int addQty = oldQty + bookQty;
+    		bd.setQuantity(addQty);
+    		spoDao.delete(spd);
+    	}
     	System.out.println(p);
     	poDao.delete(p);
-      	return p.getId()!= null;
+      	return p.getPurchaseOrderNumber()!= null;
     }
     
     public boolean checkBook(String itemCode)
@@ -200,9 +282,20 @@ public class DocumentationClerk
     	Set<Book> listOfBooks= new HashSet<Book>();
     	System.out.println(order);
     	d.setDeliveryReceiptNumber(drNumber);
-    	d.setDateToday(dateToday);
-    	d.setTotalAmount(totalAmt);
-    	d.setDateDelivery(dateDelivery);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date dt = null;
+    	Date dd = null;
+		try {
+			dt = df.parse(dateToday);
+			dd = df.parse(dateDelivery);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	double amount = Double.parseDouble(totalAmt);
+    	d.setDateToday((java.util.Date) dt);
+    	d.setTotalAmount(amount);
+    	d.setDateDelivery((java.util.Date) dd);
     	d.setPurchaseOrderNumber(poNumber);
     	d.setOutlet(outlet);
     	d.setOrders(order);
@@ -243,7 +336,7 @@ public class DocumentationClerk
 
     	d = drDao.save(d);
    
-    	return d.getId()!= null;
+    	return d.getDeliveryReceiptNumber()!= null;
     	
     }
     @Transactional
@@ -251,11 +344,21 @@ public class DocumentationClerk
     {   
     	Set<Book> listOfBooks= new HashSet<Book>();
     	DeliveryReceipt d = drDao.findByDeliveryReceiptNumber(drNumber);
-    	
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date dt = null;
+    	Date dd = null;
+		try {
+			dt = df.parse(dateToday);
+			dd = df.parse(dateDelivery);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	double amount = Double.parseDouble(totalAmt);
     	d.setDeliveryReceiptNumber(drNumber);
-    	d.setDateToday(dateToday);
-    	d.setTotalAmount(totalAmt);
-    	d.setDateDelivery(dateDelivery);
+    	d.setDateToday((java.util.Date) dt);
+    	d.setTotalAmount(amount);
+    	d.setDateDelivery((java.util.Date) dd);
     	d = drDao.save(d);
     	
 		List<SpecificDr> sdsList = sdrDao.findAll();
@@ -301,7 +404,7 @@ public class DocumentationClerk
 
     	d = drDao.save(d);
    
-    	return d.getId()!= null;
+    	return d.getDeliveryReceiptNumber()!= null;
     	
     }
     public boolean deleteDeliveryReceipt(String drNumber)
@@ -310,7 +413,7 @@ public class DocumentationClerk
     	DeliveryReceipt d = drDao.findByDeliveryReceiptNumber(drNumber);
     	System.out.println(d);
     	drDao.delete(d);
-      	return d.getId()!= null;
+      	return d.getDeliveryReceiptNumber()!= null;
     }
     
     @Transactional
@@ -319,41 +422,70 @@ public class DocumentationClerk
     	JobOrder j = new JobOrder();
     	
     	j.setJoNumber(joNumber);
-    	j.setDate(dateToday);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date dt = null;
+
+		try {
+			dt = df.parse(dateToday);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	j.setDate(dt);
     	j.setItemCode(itemCode);
     	j.setTitle(title);
-    	j.setQuantity(quantity);
+    	int a = Integer.parseInt(quantity);
+    	j.setQuantity(a);
     	j.setJoStatus("INCOMPLETE");
     	j.setRemainingOrders(quantity);
     	
     	j = joDao.save(j);
    
-    	return j.getId()!= null;
+    	return j.getJoNumber()!= null;
     	
     }
     public boolean editJobOrder(String joNumber, String dateToday, String itemCode, String title, String quantity) {
     	JobOrder j = joDao.findByJoNumber(joNumber);
     	j.setJoNumber(joNumber);
-    	j.setDate(dateToday);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date dt = null;
+
+		try {
+			dt = df.parse(dateToday);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	j.setDate(dt);
     	j.setItemCode(itemCode);
     	j.setTitle(title);
-    	j.setQuantity(quantity);
+    	int a = Integer.parseInt(quantity);
+    	j.setQuantity(a);
     	j.setRemainingOrders(quantity);
     	
     	j = joDao.save(j);
-    	return j.getId()!= null;    	
+    	return j.getJoNumber()!= null;    	
     }
     
     public boolean deleteJobOrder(String joNumber) {
     	JobOrder j = joDao.findByJoNumber(joNumber);
     	joDao.delete(j);;
-    	return j.getId()!= null;    	
+    	return j.getJoNumber()!= null;    	
     }
     
     public boolean addDeliverySchedule(String scheduleCode, String date, String outlet, String drCode) {
     	DeliverySchedule d = new DeliverySchedule();
     	d.setScheduleCode(scheduleCode);
-    	d.setDate(date);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date dt = null;
+
+		try {
+			dt = df.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	d.setDate(dt);
     	d.setOutlet(outlet);
     	d.setDeliveryReceiptCode(drCode);
     	System.out.println(scheduleCode);
@@ -366,7 +498,16 @@ public class DocumentationClerk
     	
     	DeliverySchedule d = dsDao.findByScheduleCode(scheduleCode);
     	System.out.println(scheduleCode);
-    	d.setDate(date);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date dt = null;
+
+		try {
+			dt = df.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	d.setDate(dt);
     	d.setOutlet(outlet);
     	d.setDeliveryReceiptCode(drCode);
     	
@@ -398,6 +539,6 @@ public class DocumentationClerk
     	d.setStatus(status);    	
     	drDao.save(d);
     	
-      	return d.getId()!= null;
+      	return d.getDeliveryReceiptNumber()!= null;
     }
 }

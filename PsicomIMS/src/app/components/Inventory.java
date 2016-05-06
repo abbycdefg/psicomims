@@ -1,5 +1,11 @@
 package app.components;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +40,16 @@ public class Inventory {
     	b.setItemCode(itemCode);
     	b.setPrice(price);
     	b.setAuthor(author);
-    	b.setReleaseDate(releaseDate);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date rd = null;
+
+		try {
+			rd = df.parse(releaseDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	b.setReleaseDate(rd);
     	b.setState(state);
     	b.setThreshold(threshold);
     	b = bookDao.save(b);
@@ -47,7 +62,16 @@ public class Inventory {
     	b.setTitle(title);
     	b.setPrice(price);
     	b.setAuthor(author);
-    	b.setReleaseDate(releaseDate);
+    	DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    	Date rd = null;
+
+		try {
+			rd = df.parse(releaseDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	b.setReleaseDate(rd);
     	b.setThreshold(threshold);
     	b = bookDao.save(b);
     	

@@ -25,6 +25,8 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.Component;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -53,7 +55,6 @@ public class DCAddBookScreen extends javax.swing.JFrame {
     	setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
     	setBounds(new Rectangle(0, 0, 4, 4));
     	getContentPane().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-    	setExtendedState(Frame.MAXIMIZED_BOTH);
         initComponents();
         
         Color x = new Color(32, 55, 73);
@@ -93,7 +94,6 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         releaseDateLabel = new javax.swing.JLabel();
         releaseDateChooser = new com.toedter.calendar.JDateChooser();
         setTitle("Add Book");
-        setResizable(false);
 
         cancelButton.setBackground(new java.awt.Color(102, 102, 102));
         cancelButton.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
@@ -146,7 +146,7 @@ public class DCAddBookScreen extends javax.swing.JFrame {
 
         priceLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         priceLabel.setForeground(new java.awt.Color(255, 255, 255));
-        priceLabel.setText("Price");
+        priceLabel.setText("SRP");
 
         itemCodeLabel.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         itemCodeLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -182,58 +182,58 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addContainerGap(69, Short.MAX_VALUE)
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
-        				.addGroup(layout.createSequentialGroup()
-        					.addComponent(addBookLabel)
-        					.addGap(199))
-        				.addGroup(layout.createSequentialGroup()
+        			.addGap(65)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(Alignment.TRAILING, layout.createParallelGroup(Alignment.LEADING)
+        					.addGroup(layout.createSequentialGroup()
+        						.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        						.addPreferredGap(ComponentPlacement.RELATED)
+        						.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
         					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(titleLabel)
         						.addGroup(layout.createSequentialGroup()
-        							.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(releaseDateChooser, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
+        								.addComponent(releaseDateLabel))
         							.addPreferredGap(ComponentPlacement.RELATED)
-        							.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE))
-        						.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        							.addComponent(titleField)
-        							.addGroup(layout.createSequentialGroup()
-        								.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        									.addComponent(itemCodeLabel)
-        									.addComponent(itemCodeField, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE))
-        								.addPreferredGap(ComponentPlacement.RELATED)
-        								.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        									.addComponent(priceLabel)
-        									.addComponent(priceField, GroupLayout.PREFERRED_SIZE, 165, GroupLayout.PREFERRED_SIZE)))
-        							.addComponent(authorLabel)
-        							.addComponent(authorField)
-        							.addComponent(titleLabel)
-        							.addGroup(layout.createSequentialGroup()
-        								.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        									.addComponent(releaseDateChooser, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
-        									.addComponent(releaseDateLabel))
-        								.addPreferredGap(ComponentPlacement.RELATED)
-        								.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        									.addComponent(lblThreshold)
-        									.addComponent(thresholdTextField, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))))
-        					.addGap(67))))
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(thresholdTextField, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+        								.addComponent(lblThreshold)))
+        						.addGroup(layout.createSequentialGroup()
+        							.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+        								.addComponent(itemCodeLabel, Alignment.LEADING)
+        								.addComponent(itemCodeField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE))
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        								.addComponent(priceLabel)
+        								.addComponent(priceField, GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)))))
+        				.addComponent(authorLabel)
+        				.addComponent(titleField, GroupLayout.PREFERRED_SIZE, 331, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(authorField, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE))
+        			.addGap(76))
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(201)
+        			.addComponent(addBookLabel)
+        			.addContainerGap(208, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addGap(40)
+        			.addGap(43)
         			.addComponent(addBookLabel)
-        			.addGap(31)
+        			.addGap(27)
         			.addComponent(titleLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(titleField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
         			.addGap(18)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
-        				.addComponent(priceLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(itemCodeLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(itemCodeLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(priceLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(itemCodeField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
         				.addComponent(priceField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-        			.addGap(18)
+        			.addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
         			.addComponent(authorLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(authorField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
@@ -242,17 +242,17 @@ public class DCAddBookScreen extends javax.swing.JFrame {
         				.addComponent(releaseDateLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
         				.addComponent(lblThreshold))
         			.addPreferredGap(ComponentPlacement.RELATED)
-        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
         				.addComponent(thresholdTextField)
         				.addComponent(releaseDateChooser, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
         			.addGap(23)
         			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
         				.addComponent(addButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
         				.addComponent(cancelButton, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-        			.addContainerGap(35, Short.MAX_VALUE))
+        			.addGap(36))
         );
+        layout.linkSize(SwingConstants.HORIZONTAL, new Component[] {authorField, titleField});
         getContentPane().setLayout(layout);
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 

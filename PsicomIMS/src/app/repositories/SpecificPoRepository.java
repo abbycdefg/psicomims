@@ -1,5 +1,9 @@
 package app.repositories;
 
+
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +17,7 @@ public interface SpecificPoRepository  extends JpaRepository<SpecificPo, Long> {
 	public SpecificPo findByBookId(Book bookId);
 	public SpecificPo findById(Long id);
 	public SpecificPo findByPoId(PurchaseOrder poId);
+	public List<SpecificPo> findAllByPoId(PurchaseOrder poId);
 }
 
 
